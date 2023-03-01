@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'WorkSans-ExtraLight';
+        src: url('/fonts/WorkSans-ExtraLight.ttf');
+    }
+
+    @font-face {
+        font-family: 'WorkSans-Light';
+        src: url('/fonts/WorkSans-Light.ttf');
+    }
+
+    @font-face {
+        font-family: 'WorkSans-Thin';
+        src: url('/fonts/WorkSans-Thin.ttf');
+    }
+
+    @font-face {
+        font-family: 'WorkSans-Regular';
+        src: url('/fonts/WorkSans-Regular.ttf');
+    }
+    
+    @font-face {
+        font-family: 'WorkSans-Medium';
+        src: url('/fonts/WorkSans-Medium.ttf');
+    }
+
+    @font-face {
+        font-family: 'WorkSans-SemiBold';
+        src: url('/fonts/WorkSans-SemiBold.ttf');
+    }
+
+    @font-face {
+        font-family: 'WorkSans-Bold';
+        src: url('/fonts/WorkSans-Bold.ttf');
+    }
+
+    @font-face {
+        font-family: 'WorkSans-Black';
+        src: url('/fonts/WorkSans-Black.ttf');
+    }
+}
+
+body, html {
+    background: #11141E;
+    color: #FAFAFA;
+    font-family: WorkSans-Regular;
+}
+
+.linear-bg-gradient-home { 
+    background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24B592 63.3%);
+}
+
+.linear-bg-gradient-subscription {
+    background: linear-gradient(180deg, #191E2D 0%, rgba(25, 30, 45, 0) 100%);
+}
