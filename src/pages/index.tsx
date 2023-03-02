@@ -1,5 +1,5 @@
 import { DocumentTextIcon, QuoteIcon } from "@/assets/icons";
-import { ChartImg, HomeImg } from "@/assets/images";
+import { ChartImg, HomeBgImg, HomeImg } from "@/assets/images";
 import { DiscoverProjectItem } from "@/components/Home";
 import CommentItem from "@/components/Home/CommentItem";
 import SubscriptionItem from "@/components/Home/SubscriptionItem";
@@ -36,12 +36,25 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex justify-center mt-8">
-          <Image src={HomeImg} width={952.81} height={549} alt="home-image" />
+        <div className="flex justify-center mt-8 relative">
+          <Image
+            src={HomeBgImg}
+            width={1360}
+            height={1198}
+            alt="home-bg"
+            className="absolute z-[2] top-[-300px] max-lg:top-[0px] object-fill"
+          />
+          <Image
+            src={HomeImg}
+            width={952.81}
+            height={549}
+            alt="home-image"
+            className="z-[5]"
+          />
         </div>
 
         <div className="flex justify-center items-center max-lg:flex-col  mt-[102px] w-full px-36 max-lg:px-0 ">
-          <div className="flex justify-center max-w-[1350px]">
+          <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
             <CommentItem />
             <CommentItem />
           </div>

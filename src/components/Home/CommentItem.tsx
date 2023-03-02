@@ -4,7 +4,7 @@ import React from "react";
 
 const CommentItem = () => {
   return (
-    <div className="mx-4">
+    <div className="mx-4  max-lg:mt-5">
       <div className="">
         <div className="border border-success-500 px-8 pt-8 ">
           <p className="text-lg">
