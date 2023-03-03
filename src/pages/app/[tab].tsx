@@ -7,7 +7,6 @@ const AppPage: NextPage = () => {
   return (
     <AppLayout>
       <AppContent />
-      {/* test */}
     </AppLayout>
   );
 };

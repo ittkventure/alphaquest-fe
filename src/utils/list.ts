@@ -3,15 +3,19 @@ import { TableObject } from "@/components/App/Table/TableRow";
 const initListMonth = [
   {
     label: "1d",
-    value: 0,
+    value: "1D",
   },
   {
     label: "7d",
-    value: 1,
+    value: "7D",
   },
   {
     label: "30d",
-    value: 2,
+    value: "30D",
+  },
+  {
+    label: "ALL",
+    value: "ALL",
   },
 ];
 

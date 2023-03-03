@@ -1,4 +1,3 @@
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import React, { FC, useState } from "react";
 
@@ -19,8 +18,6 @@ const SelectCustom: FC<SelectCustomTypes> = ({ placeholder, initList }) => {
     label: placeholder ?? "Select",
     value: -1,
   });
-  const { width } = useWindowDimensions();
-  console.log(width);
 
   return (
     <div>

@@ -1,14 +1,24 @@
+import { TwitterItem } from "@/api-client/types/TwitterType";
 import { listRowMock } from "@/utils/list";
-import React, { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
+import SkeletonRow from "./SkeletonRow";
 import TableRow from "./TableRow";
 
-const TableContent = () => {
-  const [listRows, setListRows] = useState(listRowMock);
+interface TableContentTypes {
+  initListRows: TwitterItem[];
+}
+
+const TableContent: FC<TableContentTypes> = ({ initListRows }) => {
+  const [listRows, setListRows] = useState<TwitterItem[]>(initListRows);
+
+  useEffect(() => {
+    setListRows(initListRows);
+  }, [initListRows]);
 
   return (
     <div>
-      {listRows.map((value) => {
-        return <TableRow key={value.index} item={value} />;
+      {listRows.map((value, index) => {
+        return <TableRow key={index} item={value} index={index} />;
       })}
     </div>
   );
