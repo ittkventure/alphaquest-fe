@@ -13,6 +13,7 @@ const nextConfig = {
       "i.ytimg.com",
       "i.pinimg.com",
       "i.pravatar.cc",
+      "pbs.twimg.com",
     ],
   },
 };

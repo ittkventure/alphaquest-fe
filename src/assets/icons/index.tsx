@@ -6,6 +6,7 @@ import CodeIcon from "./code-icon.svg";
 import NewestIcon from "./newest-icon.svg";
 import TrendingIcon from "./trending-icon.svg";
 import CrownIcon from "./crown-icon.svg";
+import TwitterIcon from "./twitter-icon.svg";
 
 export {
   QuoteIcon,
@@ -16,4 +17,5 @@ export {
   NewestIcon,
   TrendingIcon,
   CrownIcon,
+  TwitterIcon,
 };

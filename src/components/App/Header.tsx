@@ -1,15 +1,20 @@
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
+import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 const Header = () => {
+  const router = useRouter();
+  const { tab } = router.query;
+
   return (
     <div className="flex justify-between items-center w-full">
       <div>
         <h1 className="font-workSansSemiBold text-[36px] max-lg:hidden">
-          Trending
+          {capitalized(tab ? tab?.toString() : "Trending")}
         </h1>
         <div className="hidden max-lg:block">
           <Image src={LogoWithText} width={169} height={40} alt="logo" />

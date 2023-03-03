@@ -1,3 +1,4 @@
+import ApiTwitter from "@/api-client/twitter";
 import AppContent from "@/components/App";
 import AppLayout from "@/layouts/AppLayout";
 import { NextPage } from "next";

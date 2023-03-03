@@ -1,19 +1,28 @@
+import { TimeFrameTypes } from "@/api-client/types/TwitterType";
 import { initListMonth } from "@/utils/list";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 export type MothType = {
   label?: string;
-  value?: number;
+  value?: TimeFrameTypes;
 };
 
-const MonthSelect = () => {
+interface MonthSelectTypes {
+  onChangeSelect: (month: MothType) => void;
+}
+
+const MonthSelect: FC<MonthSelectTypes> = ({ onChangeSelect }) => {
   const [listMonth, setListMonth] = useState(initListMonth);
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [selectedValue, setSelectedValue] = useState<MothType>({
-    label: "Month",
-    value: -1,
+    label: "All",
+    value: "ALL",
   });
+
+  useEffect(() => {
+    onChangeSelect(selectedValue);
+  }, [onChangeSelect, selectedValue]);
 
   return (
     <div>
@@ -43,7 +52,7 @@ const MonthSelect = () => {
                 isShowMenu ? "" : "hidden"
               } ${selectedValue.value === value.value ? "bg-success-500" : ""}`}
               onClick={() => {
-                setSelectedValue(value);
+                setSelectedValue(value as MothType);
                 setIsShowMenu(false);
               }}
             >
