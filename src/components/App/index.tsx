@@ -62,6 +62,7 @@ const AppContent = () => {
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      setHasLoadMore(false)
     }
   };
 
