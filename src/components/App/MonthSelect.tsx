@@ -16,8 +16,8 @@ const MonthSelect: FC<MonthSelectTypes> = ({ onChangeSelect }) => {
   const [listMonth, setListMonth] = useState(initListMonth);
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [selectedValue, setSelectedValue] = useState<MothType>({
-    label: "All",
-    value: "ALL",
+    label: "7d",
+    value: "7D",
   });
 
   useEffect(() => {
