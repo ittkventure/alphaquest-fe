@@ -64,7 +64,7 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
       </div>
       <div className="flex max-lg:flex-col max-lg:justify-between max-lg:py-2 justify-end items-center ">
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-[12px]">
-          <p>+${item.score}</p>
+          <p>+{item.trendingScore}</p>
         </div>
         <button>
           <HeartIcon className="h-5 w-7" />

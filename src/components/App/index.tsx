@@ -18,7 +18,7 @@ const AppContent = () => {
   const router = useRouter();
   const { tab } = router.query;
 
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [newest, setNewest] = useState<boolean>(
     tab === "newest" ? true : false
@@ -48,8 +48,14 @@ const AppContent = () => {
         timeFrame,
         newest,
       });
-
-      if (pageNumber === 0) setListItem(data.items);
+      if (
+        data == undefined ||
+        data == null ||
+        data.items == undefined ||
+        data.items == null
+      )
+        return;
+      if (pageNumber === 1) setListItem(data.items);
       else setListItem((items) => items.concat(data.items));
       setTotalCount(data.totalCount.toString());
       setIsLoading(false);
@@ -64,15 +70,15 @@ const AppContent = () => {
   const _handleSelectTab = (tabIndex: number) => {
     switch (tabIndex) {
       case 0:
-        setPageNumber(0);
+        setPageNumber(1);
         setNewest(false);
         return;
       case 1:
-        setPageNumber(0);
+        setPageNumber(1);
         setNewest(true);
         return;
       default:
-        setPageNumber(0);
+        setPageNumber(1);
         setNewest(false);
         return;
     }
@@ -137,7 +143,7 @@ const AppContent = () => {
           <TableContent initListRows={listItems ?? []} />
 
           {isLoading ? (
-            <SkeletonLoading numberOfRow={pageNumber === 0 ? 10 : 2} />
+            <SkeletonLoading numberOfRow={pageNumber === 1 ? 10 : 2} />
           ) : null}
           {!isLoading ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
