@@ -1,14 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import { CrownIcon } from "@/assets/icons";
 import Header from "./Header";
 import MonthSelect from "./MonthSelect";
 import SelectCustom from "../common/Select";
 import { initListCategory, initListChain } from "@/utils/list";
 import TableContent from "./Table/TableContent";
 import TabApp from "./TabApp";
-import { useQuery } from "react-query";
 import ApiTwitter from "@/api-client/twitter";
 import {
   SortByType,
@@ -27,7 +23,7 @@ const AppContent = () => {
   const [newest, setNewest] = useState<boolean>(
     tab === "newest" ? true : false
   );
-  const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("ALL");
+  const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
@@ -45,7 +41,6 @@ const AppContent = () => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      setTimeout(() => console.clear(), 500);
       const data = await apiTwitter.getListTwitter({
         pageNumber,
         pageSize,
@@ -62,6 +57,7 @@ const AppContent = () => {
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      setHasLoadMore(false);
     }
   };
 
@@ -144,7 +140,7 @@ const AppContent = () => {
             <SkeletonLoading numberOfRow={pageNumber === 0 ? 10 : 2} />
           ) : null}
           {!isLoading ? (
-            <div className="h-7 w-full bg-white" ref={triggerElement}></div>
+            <div className="h-7 w-full" ref={triggerElement}></div>
           ) : null}
         </div>
       </div>
