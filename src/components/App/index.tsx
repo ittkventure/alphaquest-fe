@@ -32,6 +32,7 @@ const AppContent = () => {
   const [totalCount, setTotalCount] = useState<string>("");
   const [listItems, setListItem] = useState<TwitterItem[]>([]);
   const [errorMsg, setErrorMsg] = useState("");
+  const [firstCalled, setFirstCalled] = useState(false);
 
   const apiTwitter = new ApiTwitter();
 
@@ -41,17 +42,23 @@ const AppContent = () => {
   }, []);
 
   useEffect(() => {
-    if (pageNumber !== 1) fetchDataLoadMore();
+    if (firstCalled) fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
+
+  useEffect(() => {
+    if (pageNumber !== 1 && firstCalled) fetchDataLoadMore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber]);
 
   useEffect(() => {
-    fetchData();
+    if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newest, timeFrame]);
+  }, [timeFrame]);
 
-  const fetchData = async () => {
+  const fetchData = async (currentTab?: string) => {
     try {
+      const tabCheck = currentTab ?? tab;
       setIsLoading(true);
       setErrorMsg("");
       setPageNumber(1);
@@ -62,7 +69,7 @@ const AppContent = () => {
         pageSize,
         sortBy,
         timeFrame,
-        newest: newest === "newest" ? true : false,
+        newest: tabCheck === "newest" ? true : false,
       });
       setIsLoading(false);
       if (
@@ -75,9 +82,8 @@ const AppContent = () => {
         setListItem([]);
         return;
       }
-
+      setFirstCalled(true);
       setListItem(data.items);
-
       setTotalCount(data?.totalCount.toString());
     } catch (error) {
       setErrorMsg("Error please try again.");
