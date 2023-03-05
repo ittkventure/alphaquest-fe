@@ -29,7 +29,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({ onChangeSelect }) => {
       {isShowMenu ? (
         <div
           onClick={() => setIsShowMenu(false)}
-          className="absolute w-screen h-screen opacity-0 top-0 left-0 z-30"
+          className="absolute w-[98vw] h-screen opacity-0 top-0 left-0 z-30"
         />
       ) : null}
       <div className="relative">

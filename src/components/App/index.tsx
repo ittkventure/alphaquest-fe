@@ -20,49 +20,100 @@ const AppContent = () => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [newest, setNewest] = useState<boolean>(
-    tab === "newest" ? true : false
+  const [newest, setNewest] = useState<string>(
+    tab ? tab?.toString() : "trending"
   );
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<string>("");
   const [listItems, setListItem] = useState<TwitterItem[]>([]);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const apiTwitter = new ApiTwitter();
 
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber, pageSize, sortBy, timeFrame, newest]);
+  }, []);
+
+  useEffect(() => {
+    if (pageNumber !== 1) fetchDataLoadMore();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNumber]);
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newest, timeFrame]);
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
+      setErrorMsg("");
+      setPageNumber(1);
+      setHasLoadMore(true);
+
       const data = await apiTwitter.getListTwitter({
-        pageNumber,
+        pageNumber: 1,
         pageSize,
         sortBy,
         timeFrame,
-        newest,
+        newest: newest === "newest" ? true : false,
       });
+      setIsLoading(false);
       if (
         data == undefined ||
         data == null ||
         data.items == undefined ||
         data.items == null
-      )
+      ) {
+        setErrorMsg("Not found data.");
+        setListItem([]);
         return;
-      if (pageNumber === 1) setListItem(data.items);
-      else setListItem((items) => items.concat(data.items));
-      setTotalCount(data.totalCount.toString());
-      setIsLoading(false);
-      if (data.items.length === 0) setHasLoadMore(false);
+      }
+
+      setListItem(data.items);
+
+      setTotalCount(data?.totalCount.toString());
     } catch (error) {
-      console.log(error);
+      setErrorMsg("Error please try again.");
       setIsLoading(false);
+    }
+  };
+
+  const fetchDataLoadMore = async () => {
+    try {
+      setIsLoadingMore(true);
+      setErrorMsg("");
+
+      const data = await apiTwitter.getListTwitter({
+        pageNumber,
+        pageSize,
+        sortBy,
+        timeFrame,
+        newest: newest === "newest" ? true : false,
+      });
+      setIsLoadingMore(false);
+      if (pageNumber === 1) setListItem([]);
+      if (
+        data == undefined ||
+        data == null ||
+        data.items == undefined ||
+        data.items == null
+      ) {
+        setHasLoadMore(false);
+        setIsLoadingMore(false);
+        return;
+      }
+      if (data.items.length === 0) setHasLoadMore(false);
+      setListItem((items) => items.concat(data.items));
+    } catch (error) {
+      setErrorMsg("Error when load more data, please try again.");
+      setIsLoadingMore(false);
       setHasLoadMore(false);
     }
   };
@@ -70,16 +121,13 @@ const AppContent = () => {
   const _handleSelectTab = (tabIndex: number) => {
     switch (tabIndex) {
       case 0:
-        setPageNumber(1);
-        setNewest(false);
+        setNewest("trending");
         return;
       case 1:
-        setPageNumber(1);
-        setNewest(true);
+        setNewest("newest");
         return;
       default:
-        setPageNumber(1);
-        setNewest(false);
+        setNewest("watchlist");
         return;
     }
   };
@@ -119,7 +167,9 @@ const AppContent = () => {
               the last
             </p>
             <MonthSelect
-              onChangeSelect={(month) => setTimeFrame(month.value ?? "ALL")}
+              onChangeSelect={(month) => {
+                setTimeFrame(month.value ?? "ALL");
+              }}
             />
           </div>
 
@@ -140,12 +190,11 @@ const AppContent = () => {
         </div>
 
         <div className="mt-7 max-lg:mt-9">
-          <TableContent initListRows={listItems ?? []} />
-
-          {isLoading ? (
-            <SkeletonLoading numberOfRow={pageNumber === 1 ? 10 : 2} />
-          ) : null}
-          {!isLoading ? (
+          {!isLoading ? <TableContent initListRows={listItems ?? []} /> : null}
+          {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
+          {isLoading ? <SkeletonLoading numberOfRow={10} /> : null}
+          {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
+          {!isLoadingMore && !errorMsg && !isLoading ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
           ) : null}
         </div>
@@ -155,6 +204,3 @@ const AppContent = () => {
 };
 
 export default AppContent;
-function setPage(arg0: (page: any) => any) {
-  throw new Error("Function not implemented.");
-}

@@ -5,11 +5,19 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
+interface MenuItemType {
+  key: string;
+  url: string;
+  icon: JSX.Element;
+  label: string;
+  active: boolean;
+}
+
 const SideMenu = () => {
   const router = useRouter();
   const { tab } = router.query;
 
-  const [listMenu, setListMenu] = useState([
+  const [listMenu, setListMenu] = useState<MenuItemType[]>([
     {
       key: "trending",
       url: "/app/trending",
@@ -33,6 +41,11 @@ const SideMenu = () => {
     },
   ]);
 
+  const _checkActiveTab = (item: MenuItemType, index: number) => {
+    if (!tab && index === 0) return "bg-success-500";
+    return tab === item.key ? "bg-success-500" : "hover:bg-secondary-600";
+  };
+
   return (
     <aside className="fixed top-0 left-0 z-40 w-64 h-screen border-r border-white border-opacity-20 px-3 py-6 max-lg:hidden">
       <ul className="w-full">
@@ -44,11 +57,7 @@ const SideMenu = () => {
           return (
             <li className="mt-2" key={value.key}>
               <div
-                className={`p-[13px] ${
-                  tab === value.key
-                    ? "bg-success-500"
-                    : "hover:bg-secondary-600"
-                } w-full`}
+                className={`p-[13px]  ${_checkActiveTab(value, index)} w-full`}
               >
                 <a
                   href={`/app/${value.key}`}

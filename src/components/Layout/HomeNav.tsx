@@ -17,7 +17,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
             <Link href="/app">Projects</Link>
           </li>
           <li className="max-lg:flex-1 mr-6">
-            <Link href="/app">Trends</Link>
+            <Link href="/app/trending">Trends</Link>
           </li>
           <li className="max-lg:flex-1 mr-6">
             <Link href="/app">Ecosystems</Link>
