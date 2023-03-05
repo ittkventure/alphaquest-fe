@@ -2,6 +2,7 @@ import { NewestIcon, TrendingIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
 import { FireIcon, HeartIcon, BoltIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
@@ -59,7 +60,7 @@ const SideMenu = () => {
               <div
                 className={`p-[13px]  ${_checkActiveTab(value, index)} w-full`}
               >
-                <a
+                <Link
                   href={`/app/${value.key}`}
                   className={`flex ${
                     tab === value.key ? "text-dark-900 " : "text-white"
@@ -67,7 +68,7 @@ const SideMenu = () => {
                 >
                   {value.icon}
                   {value.label}
-                </a>
+                </Link>
               </div>
             </li>
           );
