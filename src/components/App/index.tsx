@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import MonthSelect from "./MonthSelect";
 import SelectCustom from "../common/Select";
@@ -14,7 +14,15 @@ import {
 import SkeletonLoading from "./Table/SkeletonLoading";
 import { useRouter } from "next/router";
 
-const AppContent = () => {
+interface AppContentTypes {
+  listItemsProps?: TwitterItem[];
+  totalCountProps?: string;
+}
+
+const AppContent: FC<AppContentTypes> = ({
+  listItemsProps,
+  totalCountProps,
+}) => {
   const router = useRouter();
   const { tab } = router.query;
 
@@ -29,16 +37,17 @@ const AppContent = () => {
   const observer: React.MutableRefObject<any> = useRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-  const [totalCount, setTotalCount] = useState<string>("");
-  const [listItems, setListItem] = useState<TwitterItem[]>([]);
+  const [totalCount, setTotalCount] = useState<string>(totalCountProps ?? "");
+  const [listItems, setListItem] = useState<TwitterItem[]>(
+    listItemsProps ?? []
+  );
   const [errorMsg, setErrorMsg] = useState("");
   const [firstCalled, setFirstCalled] = useState(false);
 
   const apiTwitter = new ApiTwitter();
 
   useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setFirstCalled(true);
   }, []);
 
   useEffect(() => {
@@ -80,12 +89,14 @@ const AppContent = () => {
       ) {
         setErrorMsg("Not found data.");
         setListItem([]);
+        setTotalCount("0");
         return;
       }
       setFirstCalled(true);
       setListItem(data.items);
       setTotalCount(data?.totalCount.toString());
     } catch (error) {
+      setTotalCount("0");
       setErrorMsg("Error please try again.");
       setIsLoading(false);
     }
@@ -113,12 +124,14 @@ const AppContent = () => {
       ) {
         setHasLoadMore(false);
         setIsLoadingMore(false);
+        setTotalCount("0");
         return;
       }
       if (data.items.length === 0) setHasLoadMore(false);
       setListItem((items) => items.concat(data.items));
     } catch (error) {
       setErrorMsg("Error when load more data, please try again.");
+      setTotalCount("0");
       setIsLoadingMore(false);
       setHasLoadMore(false);
     }
@@ -155,6 +168,13 @@ const AppContent = () => {
     },
     [setPageLoadMore]
   );
+
+  const _renderTable = () => {
+    if (isLoading) return null;
+    if (listItems.length === 0 && !errorMsg)
+      return <p className="text-center">No data.</p>;
+    return <TableContent initListRows={listItems ?? []} />;
+  };
 
   return (
     <div className=" w-full">
@@ -196,7 +216,7 @@ const AppContent = () => {
         </div>
 
         <div className="mt-7 max-lg:mt-9">
-          {!isLoading ? <TableContent initListRows={listItems ?? []} /> : null}
+          {_renderTable()}
           {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
           {isLoading ? <SkeletonLoading numberOfRow={10} /> : null}
           {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
