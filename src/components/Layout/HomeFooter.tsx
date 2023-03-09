@@ -23,7 +23,7 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
         </li>
         <li>
           <Link href={"/term"}>
-            Term <span className="mr-1 text-success-500">/</span>
+            Terms <span className="mr-1 text-success-500">/</span>
           </Link>
         </li>
         <li>
