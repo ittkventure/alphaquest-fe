@@ -22,7 +22,7 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
           Telegram <span className="mr-1 text-success-500">/</span>
         </li>
         <li>
-          <Link href={"/term"}>
+          <Link href={"/terms"}>
             Terms <span className="mr-1 text-success-500">/</span>
           </Link>
         </li>
