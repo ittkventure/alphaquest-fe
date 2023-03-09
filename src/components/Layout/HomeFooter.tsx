@@ -1,5 +1,6 @@
 import { LogoWithText } from "@/assets/images";
 import Image from "next/image";
+import Link from "next/link";
 import React, { FC } from "react";
 
 interface HomeFooterTypes {}
@@ -17,7 +18,17 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
         <li>
           Twitter <span className="mr-1 text-success-500">/</span>
         </li>
-        <li>Telegram</li>
+        <li>
+          Telegram <span className="mr-1 text-success-500">/</span>
+        </li>
+        <li>
+          <Link href={"/term"}>
+            Term <span className="mr-1 text-success-500">/</span>
+          </Link>
+        </li>
+        <li>
+          <Link href={"/privacy-policy"}>Privacy policy</Link>
+        </li>
       </ul>
     </div>
   );
