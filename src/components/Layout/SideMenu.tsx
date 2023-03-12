@@ -18,6 +18,10 @@ const SideMenu = () => {
   const router = useRouter();
   const { tab } = router.query;
 
+  const onGoHome = () => {
+    router.push("/");
+  };
+
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
     {
       key: "trending",
@@ -51,7 +55,9 @@ const SideMenu = () => {
     <aside className="fixed top-0 left-0 z-40 w-64 h-screen border-r border-white border-opacity-20 px-3 py-6 max-lg:hidden">
       <ul className="w-full">
         <li className="mb-6">
-          <Image src={LogoWithText} width={169} height={40} alt="logo" />
+          <button onClick={onGoHome}>
+            <Image src={LogoWithText} width={169} height={40} alt="logo" />
+          </button>
         </li>
 
         {listMenu.map((value, index) => {

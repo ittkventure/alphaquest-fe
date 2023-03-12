@@ -5,11 +5,21 @@ import AQInput from "@/components/AQForm/AQInput";
 import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 const Login = () => {
+  const router = useRouter();
+
   const onSubmit = (data: any) => console.log(data);
 
+  const onGoSignUp = () => {
+    router.push("/sign-up");
+  };
+
+  const onGoAccountDetails = () => {
+    router.push("/account-details");
+  };
   return (
     <HomeLayout hiddenFooter>
       <div className="w-[100vw] mt-8 flex justify-center items-center relative">
@@ -39,7 +49,10 @@ const Login = () => {
               />
             </div>
 
-            <button className="w-full bg-success-500 flex justify-center items-center py-3 mt-5">
+            <button
+              onClick={onGoAccountDetails}
+              className="w-full bg-success-500 flex justify-center items-center py-3 mt-5"
+            >
               <p>Log in</p>
             </button>
 
@@ -56,7 +69,13 @@ const Login = () => {
 
             <p className="text-[16px] mt-5 text-center">
               No account?
-              <span className="text-success-500"> Sign up for free</span>
+              <span
+                className="text-success-500 cursor-pointer"
+                onClick={onGoSignUp}
+              >
+                {" "}
+                Sign up for free
+              </span>
             </p>
           </AQForm>
         </div>

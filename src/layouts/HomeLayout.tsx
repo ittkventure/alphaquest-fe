@@ -15,7 +15,7 @@ const HomeLayout: FC<HomeLayoutTypes> = ({ hiddenFooter, children }) => {
     <div>
       <SEO />
       <HomeNav />
-      {children}
+      <div className="pt-[100px]">{children}</div>
       {!hiddenFooter ? <HomeFooter /> : null}
     </div>
   );

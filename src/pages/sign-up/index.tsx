@@ -5,13 +5,20 @@ import AQCheckbox from "@/components/AQForm/AQCheckbox";
 import AQInput from "@/components/AQForm/AQInput";
 import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 const SignUp = () => {
+  const router = useRouter();
+
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedSub, setCheckedSub] = useState(false);
 
   const onSubmit = (data: any) => console.log(data);
+
+  const onGoLogin = () => {
+    router.push("/login");
+  };
 
   return (
     <HomeLayout hiddenFooter>
@@ -63,7 +70,10 @@ const SignUp = () => {
               />
             </div>
 
-            <button className="w-full bg-success-500 flex justify-center items-center py-3 mt-5">
+            <button
+              onClick={onGoLogin}
+              className="w-full bg-success-500 flex justify-center items-center py-3 mt-5"
+            >
               <p>Sign up</p>
             </button>
 
@@ -74,7 +84,13 @@ const SignUp = () => {
 
             <p className="text-[16px] mt-5 text-center">
               Already have an account?
-              <span className="text-success-500"> Sign in</span>
+              <span
+                className="text-success-500 cursor-pointer"
+                onClick={onGoLogin}
+              >
+                {" "}
+                Sign in
+              </span>
             </p>
           </AQForm>
         </div>
