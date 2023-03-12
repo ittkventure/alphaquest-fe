@@ -22,7 +22,7 @@
         font-family: 'WorkSans-Regular';
         src: url('/fonts/WorkSans-Regular.ttf');
     }
-    
+
     @font-face {
         font-family: 'WorkSans-Medium';
         src: url('/fonts/WorkSans-Medium.ttf');
@@ -44,16 +44,45 @@
     }
 }
 
-body, html {
+body,
+html {
     background: #11141E;
     color: #FAFAFA;
     font-family: WorkSans-Regular;
 }
 
-.linear-bg-gradient-home { 
+.linear-bg-gradient-home {
     background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24B592 63.3%);
 }
 
 .linear-bg-gradient-subscription {
     background: linear-gradient(180deg, #191E2D 0%, rgba(25, 30, 45, 0) 100%);
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border: 1px solid "#38405B";
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: none;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.custom-circle-linear-btn {
+    background: linear-gradient(245.26deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(17px);
+    /* Note: backdrop-filter has minimal browser support */
+}
+
+.custom-border-linear {
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right bottom, #24B592, #E25148);
 }

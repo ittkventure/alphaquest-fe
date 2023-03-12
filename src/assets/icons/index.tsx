@@ -7,6 +7,13 @@ import NewestIcon from "./newest-icon.svg";
 import TrendingIcon from "./trending-icon.svg";
 import CrownIcon from "./crown-icon.svg";
 import TwitterIcon from "./twitter-icon.svg";
+import EmptyWallet from "./empty-wallet.svg";
+import EmptyWalletGreen from "./empty-wallet-green.svg";
+
+import TickIcon from "./tick-icon.svg";
+import UserIcon from "./user-icon.svg";
+import GiftIcon from "./gift-icon.svg";
+import LogoutIcon from "./logout-icon.svg";
 
 export {
   QuoteIcon,
@@ -18,4 +25,10 @@ export {
   TrendingIcon,
   CrownIcon,
   TwitterIcon,
+  EmptyWallet,
+  TickIcon,
+  UserIcon,
+  EmptyWalletGreen,
+  GiftIcon,
+  LogoutIcon,
 };

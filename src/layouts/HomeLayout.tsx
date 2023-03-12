@@ -7,15 +7,16 @@ import React, { FC } from "react";
 
 interface HomeLayoutTypes {
   children: React.ReactElement;
+  hiddenFooter?: boolean;
 }
 
-const HomeLayout: FC<HomeLayoutTypes> = ({ children }) => {
+const HomeLayout: FC<HomeLayoutTypes> = ({ hiddenFooter, children }) => {
   return (
     <div>
       <SEO />
       <HomeNav />
-      {children}
-      <HomeFooter />
+      <div className="pt-[100px]">{children}</div>
+      {!hiddenFooter ? <HomeFooter /> : null}
     </div>
   );
 };
