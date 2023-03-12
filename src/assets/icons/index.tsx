@@ -7,6 +7,8 @@ import NewestIcon from "./newest-icon.svg";
 import TrendingIcon from "./trending-icon.svg";
 import CrownIcon from "./crown-icon.svg";
 import TwitterIcon from "./twitter-icon.svg";
+import EmptyWallet from "./empty-wallet.svg";
+import TickIcon from "./tick-icon.svg";
 
 export {
   QuoteIcon,
@@ -18,4 +20,6 @@ export {
   TrendingIcon,
   CrownIcon,
   TwitterIcon,
+  EmptyWallet,
+  TickIcon,
 };
