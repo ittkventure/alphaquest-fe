@@ -1,17 +1,54 @@
+import ApiAuth from "@/api-client/auth";
 import { EmptyWallet } from "@/assets/icons";
 import { BlurBgImg, HomeBgImg } from "@/assets/images";
 import AQForm from "@/components/AQForm";
 import AQInput from "@/components/AQForm/AQInput";
+import Spinner from "@/components/Spinner";
+import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ToastContainer, toast, Slide } from "react-toastify";
+import * as yup from "yup";
+
+const loginValidationSchema = yup.object({
+  username: yup.string().required("Required"),
+  password: yup.string().required("Required"),
+});
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { handleLogged, authState } = useContext(AuthContext);
+  const authApi = new ApiAuth();
 
-  const onSubmit = (data: any) => console.log(data);
+  useEffect(() => {
+    if (authState) router.back();
+  }, [authState, router]);
+
+  const onSubmit = async (data: any) => {
+    try {
+      setIsLoading(true);
+      let res = await authApi.login({
+        client_id: "AlphaQuest_App",
+        grant_type: "password",
+        username: data.username,
+        password: data.password,
+      });
+      console.log(res, "res");
+      handleLogged(res);
+      setIsLoading(false);
+    } catch (error: any) {
+      toast.error(
+        `${error?.response?.data?.error_description ?? error?.message}`,
+        {}
+      );
+      console.log(error?.response?.data?.error_description);
+      setIsLoading(false);
+    }
+  };
 
   const onGoSignUp = () => {
     router.push("/sign-up");
@@ -20,6 +57,7 @@ const Login = () => {
   const onGoAccountDetails = () => {
     router.push("/account-details");
   };
+
   return (
     <HomeLayout hiddenFooter>
       <div className="w-[100vw] mt-8 flex justify-center items-center relative">
@@ -32,27 +70,33 @@ const Login = () => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1 className="font-workSansSemiBold text-[32px]">Log in</h1>
-          <AQForm defaultValues={{}} onSubmit={onSubmit}>
-            <div className="mt-5">
-              <AQInput
-                name="email"
-                labelText="Email address"
-                placeholder="Enter email"
-              />
-            </div>
-            <div className="mt-5">
-              <AQInput
-                name="password"
-                labelText="Password"
-                type="password"
-                placeholder="Enter password"
-              />
-            </div>
+          <AQForm
+            defaultValues={{}}
+            onSubmit={onSubmit}
+            validationSchemaParams={loginValidationSchema}
+          >
+            <AQInput
+              name="username"
+              labelText="Username"
+              placeholder="Enter username"
+              containerClassName="mt-5"
+            />
+            <AQInput
+              name="password"
+              labelText="Password"
+              type="password"
+              placeholder="Enter password"
+              containerClassName="mt-5"
+            />
 
             <button
-              onClick={onGoAccountDetails}
-              className="w-full bg-success-500 flex justify-center items-center py-3 mt-5"
+              type="submit"
+              className={`w-full ${
+                isLoading ? " bg-success-600" : "bg-success-500"
+              } flex justify-center items-center py-3 mt-5`}
+              disabled={isLoading}
             >
+              {isLoading ? <Spinner /> : null}
               <p>Log in</p>
             </button>
 
@@ -62,7 +106,10 @@ const Login = () => {
               </p>
             </Link>
 
-            <button className="w-full border border-primary-500 text-primary-500 flex justify-center items-center py-3 mt-5">
+            <button
+              type="button"
+              className="w-full border border-primary-500 text-primary-500 flex justify-center items-center py-3 mt-5"
+            >
               <Image src={EmptyWallet} className="h-6 w-6" alt="wallet" />
               <p className="ml-2">Log in with Wallet</p>
             </button>
@@ -79,6 +126,14 @@ const Login = () => {
             </p>
           </AQForm>
         </div>
+        <ToastContainer
+          position="top-center"
+          theme="dark"
+          hideProgressBar
+          autoClose={1000}
+          style={{ color: "#E25148" }}
+          transition={Slide}
+        />
       </div>
     </HomeLayout>
   );

@@ -1,9 +1,11 @@
 import ApiTwitter from "@/api-client/twitter";
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import AppContent from "@/components/App";
+import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { NextPage } from "next";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect } from "react";
 
 interface Props {
   listItems?: TwitterItem[];

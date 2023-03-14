@@ -1,13 +1,17 @@
 import { LogoWithText } from "@/assets/images";
+import { AuthContext } from "@/contexts/useAuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
+import AQAvatar from "../AQAvatar";
 
 interface HomeNavTypes {}
 
 const HomeNav: FC<HomeNavTypes> = () => {
   const router = useRouter();
+
+  const { handleLogged, authState } = useContext(AuthContext);
 
   const onGoLogin = () => {
     router.push("/login");
@@ -37,12 +41,16 @@ const HomeNav: FC<HomeNavTypes> = () => {
             <Link href="/app">About</Link>
           </li>
           <li className="max-lg:flex-1 max-lg:hidden">
-            <button
-              onClick={onGoLogin}
-              className="py-2 px-6 bg-success-500 text-white"
-            >
-              Login
-            </button>
+            {authState ? (
+              <AQAvatar />
+            ) : (
+              <button
+                onClick={onGoLogin}
+                className="py-2 px-6 bg-success-500 text-white"
+              >
+                Login
+              </button>
+            )}
           </li>
         </ul>
       </div>

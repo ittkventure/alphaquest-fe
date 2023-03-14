@@ -33,42 +33,39 @@ const SignUp = () => {
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1 className="font-workSansSemiBold text-[32px]">Sign up</h1>
           <AQForm defaultValues={{}} onSubmit={onSubmit}>
-            <div className="mt-5">
-              <AQInput
-                name="email"
-                labelText="Email address"
-                placeholder="Enter email"
-              />
-            </div>
+            <AQInput
+              name="email"
+              labelText="Email address"
+              placeholder="Enter email"
+              containerClassName="mt-5"
+            />
 
-            <div className="mt-5">
-              <AQCheckbox
-                name="terms"
-                checked={checkedSub}
-                onChange={() => setCheckedSub(!checkedSub)}
-                content={
-                  <p className="ml-2">
-                    I agree to the{" "}
-                    <span className="underline">Terms & Conditions</span> and{" "}
-                    <span className="underline">Privacy Policy</span>
-                  </p>
-                }
-              />
-            </div>
+            <AQCheckbox
+              containerClassName="mt-5"
+              name="terms"
+              checked={checkedSub}
+              onChange={() => setCheckedSub(!checkedSub)}
+              content={
+                <p className="ml-2">
+                  I agree to the{" "}
+                  <span className="underline">Terms & Conditions</span> and{" "}
+                  <span className="underline">Privacy Policy</span>
+                </p>
+              }
+            />
 
-            <div className="mt-5">
-              <AQCheckbox
-                name="terms"
-                checked={checkedTerms}
-                onChange={() => setCheckedTerms(!checkedTerms)}
-                content={
-                  <p className="ml-2">
-                    Subscribe to receive company news and product updates from
-                    AlphaQuest. You may unsubscribe at any time.
-                  </p>
-                }
-              />
-            </div>
+            <AQCheckbox
+              containerClassName="mt-5"
+              name="terms"
+              checked={checkedTerms}
+              onChange={() => setCheckedTerms(!checkedTerms)}
+              content={
+                <p className="ml-2">
+                  Subscribe to receive company news and product updates from
+                  AlphaQuest. You may unsubscribe at any time.
+                </p>
+              }
+            />
 
             <button
               onClick={onGoLogin}
