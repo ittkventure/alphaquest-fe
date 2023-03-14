@@ -11,6 +11,7 @@ interface AQCheckboxTypes
   name: string;
   content?: React.ReactElement;
   checked?: boolean;
+  containerClassName?: string;
 }
 
 const AQCheckbox: FC<AQCheckboxTypes> = ({
@@ -18,17 +19,17 @@ const AQCheckbox: FC<AQCheckboxTypes> = ({
   name,
   content,
   checked,
+  containerClassName,
   ...rest
 }) => {
-  const checkBoxRef = useRef(null);
-
   return (
-    <label className="flex relative cursor-pointer checkbox-custom ">
+    <label
+      className={`flex relative cursor-pointer checkbox-custom ${containerClassName}`}
+    >
       <input
         type="checkbox"
         {...rest}
         className="opacity-0 absolute w-5 h-5 "
-        ref={checkBoxRef}
       />
       <div className="h-5 w-5 border border-success-500 flex justify-center items-center">
         {checked ? (

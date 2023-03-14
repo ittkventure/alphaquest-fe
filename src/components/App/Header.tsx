@@ -1,14 +1,22 @@
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
+import { AuthContext } from "@/contexts/useAuthContext";
 import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import AQAvatar from "../AQAvatar";
 
 const Header = () => {
   const router = useRouter();
   const { tab } = router.query;
+
+  const { authState } = useContext(AuthContext);
+
+  const onGoLogin = () => {
+    router.push("/login");
+  };
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -34,21 +42,19 @@ const Header = () => {
         <button>
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
         </button>
-
-        <div className="ml-6 max-lg:ml-3 mr-6 flex items-center">
-          <div className="w-10 h-10 rounded-[50%] border border-white overflow-hidden relative ">
-            <Image
-              src={
-                "https://i.pinimg.com/736x/0c/01/62/0c01627379bbe834af8150c606d65f1b.jpg"
-              }
-              width={40}
-              height={40}
-              alt="avt"
-              className="object-cover"
-            />
+        {authState ? (
+          <AQAvatar />
+        ) : (
+          <div className="mx-6">
+            <button
+              onClick={onGoLogin}
+              className="py-2 px-6 bg-success-500 text-white"
+            >
+              Login
+            </button>
           </div>
-          <p className="pl-2 text-[16px] max-lg:hidden">Melinda</p>
-        </div>
+        )}
+
         <div>
           <button className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden">
             <Image

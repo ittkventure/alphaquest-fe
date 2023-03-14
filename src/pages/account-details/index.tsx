@@ -8,13 +8,22 @@ import {
 } from "@/assets/icons";
 import { CircleButton } from "@/components/AQButton";
 import HomeFooter from "@/components/Layout/HomeFooter";
+import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect } from "react";
 
 const AccountDetails = () => {
+  const { handleLogOut, authState } = useContext(AuthContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!authState) router.push("/login");
+  }, [authState, router]);
+
   const _renderAccountMobile = () => {
     return (
       <div className="hidden max-sm:block max-sm:mt-[33px]">
@@ -110,7 +119,7 @@ const AccountDetails = () => {
 
             <div className="h-[1px] w-[100%] bg-[#38405B] mt-10 mb-5" />
 
-            <button className="flex">
+            <button className="flex" onClick={handleLogOut}>
               <Image src={LogoutIcon} width={24} height={24} alt="logout" />
               <p className="font-workSansLight text-primary-500 ml-2">
                 Sign out

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { FieldErrors } from "react-hook-form";
 
 interface AQInputTypes
   extends React.DetailedHTMLProps<
@@ -8,11 +9,20 @@ interface AQInputTypes
   register?: any;
   name: string;
   labelText?: string;
+  containerClassName?: string;
+  errors?: FieldErrors<any>;
 }
 
-const AQInput: FC<AQInputTypes> = ({ register, name, labelText, ...rest }) => {
+const AQInput: FC<AQInputTypes> = ({
+  register,
+  name,
+  labelText,
+  containerClassName,
+  errors,
+  ...rest
+}) => {
   return (
-    <div className="w-full">
+    <div className={`w-full ${containerClassName}`}>
       {labelText ? (
         <div>
           <label>{labelText}</label>
@@ -20,10 +30,16 @@ const AQInput: FC<AQInputTypes> = ({ register, name, labelText, ...rest }) => {
       ) : null}
       <div className="mt-3">
         <input
+          {...register(name)}
           className="w-full p-3 bg-dark-800 border border-secondary-700 focus:outline-none focus:border-success-500"
           {...rest}
         />
       </div>
+      {errors && errors[name] ? (
+        <p className="text-sm text-primary-500">
+          {errors[name]?.message?.toString()}
+        </p>
+      ) : null}
     </div>
   );
 };
