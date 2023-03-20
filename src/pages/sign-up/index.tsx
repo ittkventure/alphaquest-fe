@@ -7,6 +7,13 @@ import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import * as yup from "yup";
+
+const signUpValidationSchema = yup.object({
+  email: yup.string().required("Email is required"),
+  terms: yup.string().required("Required"),
+  sub: yup.string().required("Required"),
+});
 
 const SignUp = () => {
   const router = useRouter();
@@ -32,7 +39,11 @@ const SignUp = () => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1 className="font-workSansSemiBold text-[32px]">Sign up</h1>
-          <AQForm defaultValues={{}} onSubmit={onSubmit}>
+          <AQForm
+            defaultValues={{}}
+            onSubmit={onSubmit}
+            validationSchemaParams={signUpValidationSchema}
+          >
             <AQInput
               name="email"
               labelText="Email address"
@@ -56,7 +67,7 @@ const SignUp = () => {
 
             <AQCheckbox
               containerClassName="mt-5"
-              name="terms"
+              name="sub"
               checked={checkedTerms}
               onChange={() => setCheckedTerms(!checkedTerms)}
               content={
@@ -68,7 +79,7 @@ const SignUp = () => {
             />
 
             <button
-              onClick={onGoLogin}
+              type="submit"
               className="w-full bg-success-500 flex justify-center items-center py-3 mt-5"
             >
               <p>Sign up</p>

@@ -20,6 +20,15 @@ class ApiAuth extends ApiClientBase {
     );
     return res.data;
   }
+
+  public async getUserInfo(access_token: string): Promise<LoginResponseType> {
+    const res = await this.instance.get("/api/account/my-profile", {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+    return res.data;
+  }
 }
 
 export default ApiAuth;

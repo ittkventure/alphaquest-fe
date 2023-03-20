@@ -18,6 +18,8 @@ export const useAuthContext = (): IAuthContext => {
     LoginResponseType | null | undefined
   >(null);
 
+  const [userInfo, setUserInfo] = useState<any>();
+
   useEffect(() => {
     const dataLocal = localStorage.getItem("AQToken") ?? "null";
     const auth = JSON.parse(dataLocal);
