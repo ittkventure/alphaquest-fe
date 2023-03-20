@@ -3,6 +3,7 @@ export interface LoginParamsType {
   grant_type: string;
   username: string;
   password: string;
+  scope: string;
 }
 
 export interface LoginResponseType {

@@ -35,9 +35,9 @@ const AQInput: FC<AQInputTypes> = ({
           {...rest}
         />
       </div>
-      {errors && errors[name] ? (
+      {errors ? (
         <p className="text-sm text-primary-500">
-          {errors[name]?.message?.toString()}
+          {errors?.message?.toString()}
         </p>
       ) : null}
     </div>

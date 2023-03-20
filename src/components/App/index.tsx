@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Header from "./Header";
 import MonthSelect from "./MonthSelect";
 import SelectCustom from "../common/Select";
@@ -13,6 +20,7 @@ import {
 } from "@/api-client/types/TwitterType";
 import SkeletonLoading from "./Table/SkeletonLoading";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/useAuthContext";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -25,6 +33,7 @@ const AppContent: FC<AppContentTypes> = ({
 }) => {
   const router = useRouter();
   const { tab } = router.query;
+  const { authState } = useContext(AuthContext);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -73,13 +82,16 @@ const AppContent: FC<AppContentTypes> = ({
       setPageNumber(1);
       setHasLoadMore(true);
 
-      const data = await apiTwitter.getListTwitter({
-        pageNumber: 1,
-        pageSize,
-        sortBy,
-        timeFrame,
-        newest: tabCheck === "newest" ? true : false,
-      });
+      const data = await apiTwitter.getListTwitter(
+        {
+          pageNumber: 1,
+          pageSize,
+          sortBy,
+          timeFrame,
+          newest: tabCheck === "newest" ? true : false,
+        },
+        authState?.access_token ?? ""
+      );
       setIsLoading(false);
       if (
         data == undefined ||
@@ -107,13 +119,16 @@ const AppContent: FC<AppContentTypes> = ({
       setIsLoadingMore(true);
       setErrorMsg("");
 
-      const data = await apiTwitter.getListTwitter({
-        pageNumber,
-        pageSize,
-        sortBy,
-        timeFrame,
-        newest: newest === "newest" ? true : false,
-      });
+      const data = await apiTwitter.getListTwitter(
+        {
+          pageNumber,
+          pageSize,
+          sortBy,
+          timeFrame,
+          newest: newest === "newest" ? true : false,
+        },
+        authState?.access_token ?? ""
+      );
       setIsLoadingMore(false);
       if (pageNumber === 1) setListItem([]);
       if (

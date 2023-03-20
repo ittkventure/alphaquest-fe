@@ -1,6 +1,6 @@
 import ApiAuth from "@/api-client/auth";
 import { EmptyWallet } from "@/assets/icons";
-import { BlurBgImg, HomeBgImg } from "@/assets/images";
+import { BlurBgImg } from "@/assets/images";
 import AQForm from "@/components/AQForm";
 import AQInput from "@/components/AQForm/AQInput";
 import Spinner from "@/components/Spinner";
@@ -36,6 +36,7 @@ const Login = () => {
         grant_type: "password",
         username: data.username,
         password: data.password,
+        scope: "AlphaQuest",
       });
       console.log(res, "res");
       handleLogged(res);
@@ -92,8 +93,8 @@ const Login = () => {
             <button
               type="submit"
               className={`w-full ${
-                isLoading ? " bg-success-600" : "bg-success-500"
-              } flex justify-center items-center py-3 mt-5`}
+                isLoading ? "opacity-70" : "opacity-100"
+              } flex justify-center items-center py-3 mt-5 bg-success-500`}
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : null}

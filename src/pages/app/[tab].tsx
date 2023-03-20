@@ -1,16 +1,44 @@
 import ApiTwitter from "@/api-client/twitter";
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import AppContent from "@/components/App";
+import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { NextPage } from "next";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useContext, useEffect, useState } from "react";
 
 interface Props {
-  listItems?: TwitterItem[];
-  totalCount?: string;
+  tab?: string;
+  newest: boolean;
 }
 
-const AppPage: NextPage<Props> = ({ listItems, totalCount }: Props) => {
+const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
+  const { authState } = useContext(AuthContext);
+  const router = useRouter();
+  const [listItems, setListItems] = useState<TwitterItem[]>([]);
+  const [totalCount, setTotalCount] = useState<string>("");
+  const apiTwitter = new ApiTwitter();
+
+  const getData = async () => {
+    const getData = await apiTwitter.getListTwitter(
+      {
+        pageNumber: 1,
+        pageSize: 20,
+        timeFrame: "7D",
+        sortBy: "SCORE",
+        newest: newest,
+      },
+      authState?.access_token ?? ""
+    );
+
+    setListItems(getData.items ?? []);
+    setTotalCount(getData.totalCount?.toString() ?? "");
+  };
+
+  useEffect(() => {
+    if (authState?.access_token) getData();
+  }, []);
+
   return (
     <AppLayout>
       <AppContent
@@ -24,20 +52,10 @@ const AppPage: NextPage<Props> = ({ listItems, totalCount }: Props) => {
 export default AppPage;
 
 export async function getServerSideProps({ params }: any) {
-  const apiTwitter = new ApiTwitter();
-
-  const getData = await apiTwitter.getListTwitter({
-    pageNumber: 1,
-    pageSize: 20,
-    timeFrame: "7D",
-    sortBy: "SCORE",
-    newest: params?.tab === "newest" ? true : false,
-  });
-
   return {
     props: {
-      listItems: getData.items ?? [],
-      totalCount: getData.totalCount ?? "",
+      tab: params?.tab,
+      newest: params?.tab === "newest" ? true : false,
     }, // will be passed to the page component as props
   };
 }
