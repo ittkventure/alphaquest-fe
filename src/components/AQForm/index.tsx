@@ -32,6 +32,7 @@ const AQForm: FC<AQFormTypes> = ({
                 ...child.props,
                 register: methods.register,
                 key: child.props.name,
+                errors: errors[child.props.name],
               },
             })
           : child;

@@ -92,8 +92,8 @@ const Login = () => {
             <button
               type="submit"
               className={`w-full ${
-                isLoading ? " bg-success-600" : "bg-success-500"
-              } flex justify-center items-center py-3 mt-5`}
+                isLoading ? "opacity-70" : "opacity-100"
+              } flex justify-center items-center py-3 mt-5 bg-success-500`}
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : null}

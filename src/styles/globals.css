@@ -86,3 +86,14 @@ select:-webkit-autofill:focus {
     border-image-slice: 1;
     border-image-source: linear-gradient(to right bottom, #24B592, #E25148);
 }
+
+.custom-card-sub {
+    background: linear-gradient(245.26deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(17px);
+}
+
+.custom-circle-bg {
+    background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24B592 63.3%);
+    opacity: 0.4;
+}
