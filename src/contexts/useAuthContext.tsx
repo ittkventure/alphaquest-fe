@@ -1,15 +1,20 @@
 import { apiAuth } from "@/api-client";
-import { LoginResponseType } from "@/api-client/types/AuthType";
+import {
+  AccountDetailResponse,
+  LoginResponseType,
+} from "@/api-client/types/AuthType";
 import React, { useEffect, useState } from "react";
 
 export interface IAuthContext {
   authState?: LoginResponseType | null;
+  accountExtendDetail?: AccountDetailResponse | null;
   handleLogged: (authState?: LoginResponseType) => void;
   handleLogOut: () => void;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({
   authState: null,
+  accountExtendDetail: null,
   handleLogged: (authState?: LoginResponseType) => {},
   handleLogOut: () => {},
 });
@@ -19,6 +24,8 @@ export const useAuthContext = (): IAuthContext => {
     LoginResponseType | null | undefined
   >(null);
 
+  const [accountExtendDetail, setAccountExtendDetail] = useState<any>(null);
+
   useEffect(() => {
     const dataLocal = localStorage.getItem("AQToken") ?? "null";
     const auth = JSON.parse(dataLocal);
@@ -26,7 +33,7 @@ export const useAuthContext = (): IAuthContext => {
   }, []);
 
   useEffect(() => {
-    if (authState?.access_token) getUserInfo();
+    if (authState?.access_token) getAccountExtendDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState?.access_token]);
 
@@ -35,6 +42,17 @@ export const useAuthContext = (): IAuthContext => {
       authState?.access_token ?? ""
     );
     console.log(userInfoData);
+  };
+
+  const getAccountExtendDetails = async () => {
+    try {
+      const accountEDData = await apiAuth.getAccountExtendDetails(
+        authState?.access_token ?? ""
+      );
+      setAccountExtendDetail(accountEDData);
+    } catch (error) {
+      alert("Error please try again");
+    }
   };
 
   const handleLogged = (authState?: LoginResponseType) => {
@@ -46,5 +64,5 @@ export const useAuthContext = (): IAuthContext => {
     setAuthState(null);
   };
 
-  return { authState, handleLogged, handleLogOut };
+  return { authState, accountExtendDetail, handleLogged, handleLogOut };
 };
