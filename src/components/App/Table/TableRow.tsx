@@ -28,26 +28,48 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
           <p>{index + 1}</p>
         </div>
         <div className="mr-4">
-          <div className="w-10 h-10 rounded-[50%] border border-white overflow-hidden relative ">
-            <Image
-              src={item.profileImageUrl}
-              width={40}
-              height={40}
-              alt="avt"
-              className="object-cover"
-            />
+          <div
+            className={`w-10 h-10 rounded-[50%]  ${
+              item.profileImageUrl === "UNKNOWN"
+                ? ""
+                : "border border-white animate-pulse"
+            } bg-secondary-600 overflow-hidden relative`}
+          >
+            {item.profileImageUrl === "UNKNOWN" ? (
+              <div> </div>
+            ) : (
+              <Image
+                src={item.profileImageUrl}
+                width={40}
+                height={40}
+                alt="avt"
+                className="object-cover"
+              />
+            )}
           </div>
         </div>
         <div className="mr-4">
-          <div className="flex">
-            <p className="text-success-500 max-lg:text-[14px] font-workSansSemiBold mr-2">
-              {item.name}
-            </p>
-            <div>
-              <a href={item.twitterUrl} target="_blank" rel="noreferrer">
-                <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
-              </a>
-            </div>
+          <div
+            className={`flex ${
+              item.name !== "UNKNOWN"
+                ? ""
+                : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
+            }`}
+          >
+            {item.name !== "UNKNOWN" ? (
+              <>
+                <p className="text-success-500 max-lg:text-[14px] font-workSansSemiBold mr-2">
+                  {item.name}
+                </p>
+                <div>
+                  <a href={item.twitterUrl} target="_blank" rel="noreferrer">
+                    <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div />
+            )}
           </div>
           <div>
             <p className="font-workSansRegular max-lg:text-[12px] text-sm">
