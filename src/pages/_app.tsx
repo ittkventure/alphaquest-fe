@@ -7,10 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authState, handleLogOut, handleLogged } = useAuthContext();
+  const { authState, accountExtendDetail, handleLogOut, handleLogged } =
+    useAuthContext();
 
   return (
-    <AuthContext.Provider value={{ authState, handleLogOut, handleLogged }}>
+    <AuthContext.Provider
+      value={{ authState, accountExtendDetail, handleLogOut, handleLogged }}
+    >
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
       </QueryClientProvider>

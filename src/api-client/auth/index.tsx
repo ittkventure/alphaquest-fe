@@ -1,6 +1,10 @@
 import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
-import { LoginParamsType, LoginResponseType } from "../types/AuthType";
+import {
+  AccountDetailResponse,
+  LoginParamsType,
+  LoginResponseType,
+} from "../types/AuthType";
 import qs from "qs";
 
 class ApiAuth extends ApiClientBase {
@@ -17,6 +21,29 @@ class ApiAuth extends ApiClientBase {
     const res = await this.instance.post(
       "/connect/token",
       qs.stringify(params)
+    );
+    return res.data;
+  }
+
+  public async getUserInfo(access_token: string): Promise<LoginResponseType> {
+    const res = await this.instance.get("/api/account/my-profile", {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+    return res.data;
+  }
+
+  public async getAccountExtendDetails(
+    access_token: string
+  ): Promise<AccountDetailResponse> {
+    const res = await this.instance.get(
+      "/api/app/account-extend/account-detail",
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
     );
     return res.data;
   }

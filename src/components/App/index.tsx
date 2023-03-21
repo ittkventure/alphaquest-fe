@@ -33,7 +33,7 @@ const AppContent: FC<AppContentTypes> = ({
 }) => {
   const router = useRouter();
   const { tab } = router.query;
-  const { authState } = useContext(AuthContext);
+  const { authState, accountExtendDetail } = useContext(AuthContext);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -62,17 +62,22 @@ const AppContent: FC<AppContentTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab]);
+  }, [tab, accountExtendDetail]);
 
   useEffect(() => {
-    if (pageNumber !== 1 && firstCalled) fetchDataLoadMore();
+    if (
+      pageNumber !== 1 &&
+      firstCalled &&
+      accountExtendDetail?.currentPlanKey !== "FREE"
+    )
+      fetchDataLoadMore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNumber]);
+  }, [pageNumber, accountExtendDetail]);
 
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeFrame]);
+  }, [timeFrame, accountExtendDetail]);
 
   const fetchData = async (currentTab?: string) => {
     try {
@@ -85,7 +90,8 @@ const AppContent: FC<AppContentTypes> = ({
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber: 1,
-          pageSize,
+          pageSize:
+            accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,

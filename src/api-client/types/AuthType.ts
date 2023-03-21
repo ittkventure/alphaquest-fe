@@ -11,3 +11,13 @@ export interface LoginResponseType {
   expires_in: number;
   token_type: string;
 }
+
+export interface AccountDetailResponse {
+  name: string;
+  currentPlanKey: string;
+  planExpiredAt: string;
+  createdAt: string;
+  email: string;
+  inviteCode: string;
+  confirmedEmail: boolean;
+}

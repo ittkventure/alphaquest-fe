@@ -16,6 +16,14 @@ const nextConfig = {
       "pbs.twimg.com",
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/alpha-quest",
+        destination: "https://api.alphaquest.io", // Proxy to Backend
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
