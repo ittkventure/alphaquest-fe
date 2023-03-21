@@ -15,7 +15,7 @@ interface Props {
 }
 
 const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
-  const { authState } = useContext(AuthContext);
+  const { authState, accountExtendDetail } = useContext(AuthContext);
   const router = useRouter();
   const [listItems, setListItems] = useState<TwitterItem[]>([]);
   const [totalCount, setTotalCount] = useState<string>("");
@@ -26,7 +26,7 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
     const getData = await apiTwitter.getListTwitter(
       {
         pageNumber: 1,
-        pageSize: 20,
+        pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
         timeFrame: "7D",
         sortBy: "SCORE",
         newest: newest,
@@ -40,9 +40,9 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
   };
 
   useEffect(() => {
-    if (authState?.access_token) getData();
+    if (authState?.access_token && accountExtendDetail) getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authState?.access_token]);
+  }, [authState?.access_token, accountExtendDetail]);
 
   return (
     <AppLayout>
