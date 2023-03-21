@@ -19,7 +19,7 @@ const TableContent: FC<TableContentTypes> = ({ initListRows }) => {
     <div>
       {listRows.map((value, index) => {
         return value.name === "UNKNOWN" ? (
-          <SkeletonRow />
+          <SkeletonRow key={index} />
         ) : (
           <TableRow key={index} item={value} index={index} />
         );
