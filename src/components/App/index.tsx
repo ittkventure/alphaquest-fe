@@ -96,7 +96,8 @@ const AppContent: FC<AppContentTypes> = ({
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
         },
-        authState?.access_token ?? ""
+        authState?.access_token ?? "",
+        authState?.access_token ? false : true
       );
       setIsLoading(false);
       if (
@@ -122,6 +123,7 @@ const AppContent: FC<AppContentTypes> = ({
 
   const fetchDataLoadMore = async () => {
     try {
+      if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
 
@@ -133,7 +135,8 @@ const AppContent: FC<AppContentTypes> = ({
           timeFrame,
           newest: newest === "newest" ? true : false,
         },
-        authState?.access_token ?? ""
+        authState?.access_token ?? "",
+        authState?.access_token ? false : true
       );
       setIsLoadingMore(false);
       if (pageNumber === 1) setListItem([]);

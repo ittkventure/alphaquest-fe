@@ -23,6 +23,8 @@ const AppPage: NextPage<Props> = () => {
   const apiTwitter = new ApiTwitter();
 
   const getData = async () => {
+    console.log(authState?.access_token);
+
     const getData = await apiTwitter.getListTwitter(
       {
         pageNumber: 1,
@@ -31,7 +33,8 @@ const AppPage: NextPage<Props> = () => {
         sortBy: "SCORE",
         newest: false,
       },
-      authState?.access_token ?? ""
+      authState?.access_token ?? "",
+      authState?.access_token ? false : true
     );
 
     setListItems(getData.items ?? []);
@@ -40,7 +43,7 @@ const AppPage: NextPage<Props> = () => {
   };
 
   useEffect(() => {
-    if (authState?.access_token && accountExtendDetail) getData();
+    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState?.access_token, accountExtendDetail]);
 

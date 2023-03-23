@@ -31,8 +31,8 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
           <div
             className={`w-10 h-10 rounded-[50%]  ${
               item.profileImageUrl === "UNKNOWN"
-                ? ""
-                : "border border-white animate-pulse"
+                ? "animate-pulse"
+                : "border border-white"
             } bg-secondary-600 overflow-hidden relative`}
           >
             {item.profileImageUrl === "UNKNOWN" ? (

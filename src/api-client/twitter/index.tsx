@@ -13,10 +13,15 @@ class ApiTwitter extends ApiClientBase {
    */
   public async getListTwitter(
     params: TwitterGetListRequest,
-    access_token: string
+    access_token: string,
+    is_guest?: boolean
   ): Promise<BaseResponse> {
+    console.log(is_guest, "is_guest");
+
     const res = await this.instance.get(
-      `/api/app/twitter?${qs.stringify(params)}`,
+      !is_guest
+        ? `/api/app/twitter?${qs.stringify(params)}`
+        : `/api/app/twitter/for-guest?${qs.stringify(params)}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,

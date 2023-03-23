@@ -31,7 +31,8 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
         sortBy: "SCORE",
         newest: newest,
       },
-      authState?.access_token ?? ""
+      authState?.access_token ?? "",
+      authState?.access_token ? false : true
     );
 
     setIsLoading(false);
@@ -40,7 +41,7 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
   };
 
   useEffect(() => {
-    if (authState?.access_token && accountExtendDetail) getData();
+    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState?.access_token, accountExtendDetail]);
 
