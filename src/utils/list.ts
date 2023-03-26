@@ -6,6 +6,10 @@ const initListMonth = [
     value: "1D",
   },
   {
+    label: "3d",
+    value: "3D",
+  },
+  {
     label: "7d",
     value: "7D",
   },

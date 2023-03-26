@@ -23,8 +23,6 @@ const AppPage: NextPage<Props> = () => {
   const apiTwitter = new ApiTwitter();
 
   const getData = async () => {
-    console.log(authState?.access_token);
-
     const getData = await apiTwitter.getListTwitter(
       {
         pageNumber: 1,

@@ -1,8 +1,11 @@
+import { AuthContext } from "@/contexts/useAuthContext";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 
 const AQAvatar = () => {
+  const { accountExtendDetail } = useContext(AuthContext);
+
   return (
     <Link href={"/account-details"}>
       <div className="ml-6 max-lg:ml-3 mr-6 flex items-center">
@@ -17,7 +20,9 @@ const AQAvatar = () => {
             className="object-cover"
           />
         </div>
-        <p className="pl-2 text-[16px] max-lg:hidden">Melinda</p>
+        <p className="pl-2 text-[16px] max-lg:hidden">
+          {accountExtendDetail?.name}
+        </p>
       </div>
     </Link>
   );

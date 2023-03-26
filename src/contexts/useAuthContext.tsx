@@ -41,7 +41,6 @@ export const useAuthContext = (): IAuthContext => {
     const userInfoData = await apiAuth.getUserInfo(
       authState?.access_token ?? ""
     );
-    console.log(userInfoData);
   };
 
   const getAccountExtendDetails = async () => {

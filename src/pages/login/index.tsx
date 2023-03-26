@@ -38,7 +38,6 @@ const Login = () => {
         password: data.password,
         scope: "AlphaQuest",
       });
-      console.log(res, "res");
       handleLogged(res);
       setIsLoading(false);
     } catch (error: any) {
@@ -46,7 +45,6 @@ const Login = () => {
         `${error?.response?.data?.error_description ?? error?.message}`,
         {}
       );
-      console.log(error?.response?.data?.error_description);
       setIsLoading(false);
     }
   };

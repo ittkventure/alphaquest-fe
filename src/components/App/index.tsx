@@ -8,8 +8,7 @@ import React, {
 } from "react";
 import Header from "./Header";
 import MonthSelect from "./MonthSelect";
-import SelectCustom from "../common/Select";
-import { initListCategory, initListChain } from "@/utils/list";
+import SelectCustom, { OptionType } from "../common/Select";
 import TableContent from "./Table/TableContent";
 import TabApp from "./TabApp";
 import ApiTwitter from "@/api-client/twitter";
@@ -52,11 +51,16 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [errorMsg, setErrorMsg] = useState("");
   const [firstCalled, setFirstCalled] = useState(false);
-
+  const [chains, setChains] = useState<Array<OptionType>>([]);
+  const [category, setCategory] = useState<Array<OptionType>>([]);
+  const [chainSelected, setChainSelected] = useState<OptionType>();
+  const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
 
   useEffect(() => {
     setFirstCalled(true);
+    fetchCategoryAndChain("CHAIN");
+    fetchCategoryAndChain("CATEGORY");
   }, []);
 
   useEffect(() => {
@@ -77,7 +81,7 @@ const AppContent: FC<AppContentTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeFrame, accountExtendDetail]);
+  }, [timeFrame, accountExtendDetail, chainSelected, categorySelected]);
 
   const fetchData = async (currentTab?: string) => {
     try {
@@ -95,6 +99,8 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
+          categories: categorySelected?.code ? [categorySelected.code] : [],
+          chains: chainSelected?.code ? [chainSelected.code] : [],
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -134,6 +140,8 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: newest === "newest" ? true : false,
+          categories: categorySelected?.code ? [categorySelected.code] : [],
+          chains: chainSelected?.code ? [chainSelected.code] : [],
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -200,6 +208,18 @@ const AppContent: FC<AppContentTypes> = ({
     return <TableContent initListRows={listItems ?? []} />;
   };
 
+  const fetchCategoryAndChain = async (type: "CHAIN" | "CATEGORY") => {
+    try {
+      if (type === "CHAIN") {
+        const chains = await apiTwitter.getChain();
+        setChains(chains);
+        return;
+      }
+      const category = await apiTwitter.getCategory();
+      setCategory(category);
+    } catch (error) {}
+  };
+
   return (
     <div className=" w-full">
       <div className="p-6">
@@ -227,13 +247,15 @@ const AppContent: FC<AppContentTypes> = ({
             <div className="mr-3">
               <SelectCustom
                 placeholder="Chain - All"
-                initList={initListChain}
+                initList={chains}
+                onChangeSelected={(item) => setChainSelected(item)}
               />
             </div>
             <div>
               <SelectCustom
                 placeholder="Category - All"
-                initList={initListCategory}
+                initList={category}
+                onChangeSelected={(item) => setCategorySelected(item)}
               />
             </div>
           </div>

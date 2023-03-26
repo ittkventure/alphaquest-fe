@@ -48,7 +48,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({ onChangeSelect }) => {
           {listMonth.map((value, index) => (
             <button
               key={index.toString()}
-              className={`flex justify-center items-center w-24 py-2 hover:bg-success-500 font-workSansThin ${
+              className={`flex justify-center items-center w-24 py-2 hover:bg-success-500 font-workSansLight ${
                 isShowMenu ? "" : "hidden"
               } ${selectedValue.value === value.value ? "bg-success-500" : ""}`}
               onClick={() => {

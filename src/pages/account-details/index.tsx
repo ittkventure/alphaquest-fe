@@ -11,13 +11,15 @@ import HomeFooter from "@/components/Layout/HomeFooter";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 
 const AccountDetails = () => {
-  const { handleLogOut, authState } = useContext(AuthContext);
+  const { handleLogOut, authState, accountExtendDetail } =
+    useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,18 +31,34 @@ const AccountDetails = () => {
       <div className="hidden max-sm:block max-sm:mt-[33px]">
         <div className="flex justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className="font-workSansLight">Your account type</p>
-          <p className="font-workSansSemiBold">David Beckham</p>
+          <p className="font-workSansSemiBold">{accountExtendDetail?.name}</p>
         </div>
         <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className=" font-workSansLight">Your subscription ends</p>
-          <p className=" font-workSansSemiBold">in 12 days</p>
+          <p className=" font-workSansSemiBold">
+            {moment(accountExtendDetail?.planExpiredAt).fromNow()}
+          </p>
         </div>
         <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className=" font-workSansLight">You joined on</p>
-          <p className=" font-workSansSemiBold">Sep 05, 2022, 10:49</p>
+          <p className=" font-workSansSemiBold">
+            {moment(accountExtendDetail?.planExpiredAt).format(
+              "DD-MM-YYYY hh:mm"
+            )}
+          </p>
+        </div>
+        <div className="flex justify-between border-b-[1px] mt-4 border-secondary-600 pb-4">
+          <p className="font-workSansLight">Email</p>
+          <p className="font-workSansSemiBold">{accountExtendDetail?.email}</p>
         </div>
         <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className=" font-workSansLight">To change your plan</p>
+          <Link href={"#"}>
+            <p className="text-success-500 font-workSansLight">Click here</p>
+          </Link>
+        </div>
+        <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
+          <p className=" font-workSansLight">Wallet</p>
           <Link href={"#"}>
             <p className="text-success-500 font-workSansLight">Click here</p>
           </Link>
@@ -78,10 +96,16 @@ const AccountDetails = () => {
                 <p className="mt-4 font-workSansLight">To change your plan</p>
               </div>
               <div className="ml-8">
-                <p className="font-workSansSemiBold">David Beckham</p>
-                <p className="mt-4 font-workSansSemiBold">in 12 days</p>
+                <p className="font-workSansSemiBold">
+                  {accountExtendDetail?.name}
+                </p>
                 <p className="mt-4 font-workSansSemiBold">
-                  Sep 05, 2022, 10:49
+                  {moment(accountExtendDetail?.planExpiredAt).fromNow()}
+                </p>
+                <p className="mt-4 font-workSansSemiBold">
+                  {moment(accountExtendDetail?.createdAt).format(
+                    "MM-DD-YYYY, hh:mm"
+                  )}
                 </p>
                 <Link href={"#"}>
                   <p className="mt-4 text-success-500 font-workSansLight">
@@ -107,7 +131,9 @@ const AccountDetails = () => {
                 <p className="mt-4 font-workSansLight">Wallet</p>
               </div>
               <div className="ml-8">
-                <p className="font-workSansSemiBold">david2329@gmail.com</p>
+                <p className="font-workSansSemiBold">
+                  {accountExtendDetail?.email}
+                </p>
 
                 <Link href={"#"}>
                   <p className="mt-4 text-success-500 font-workSansLight">
@@ -146,7 +172,8 @@ const AccountDetails = () => {
               <div className="p-3 font-workSansLight text-sm flex  justify-center items-center">
                 <Link href={"#"}>
                   <p className="text-[16px] max-2xl:text-[13px]">
-                    alphaquest.com/auth/signup?inviter=593498
+                    alphaquest.com/auth/signup?inviter=
+                    {accountExtendDetail?.inviteCode}
                   </p>
                 </Link>
               </div>

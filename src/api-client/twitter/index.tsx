@@ -2,6 +2,7 @@ import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
 import { TwitterGetListRequest } from "../types/TwitterType";
 import qs from "qs";
+import { AxiosError } from "axios";
 
 class ApiTwitter extends ApiClientBase {
   constructor() {
@@ -15,9 +16,7 @@ class ApiTwitter extends ApiClientBase {
     params: TwitterGetListRequest,
     access_token: string,
     is_guest?: boolean
-  ): Promise<BaseResponse> {
-    console.log(is_guest, "is_guest");
-
+  ): Promise<BaseResponse | any> {
     const res = await this.instance.get(
       !is_guest
         ? `/api/app/twitter?${qs.stringify(params)}`
@@ -28,6 +27,22 @@ class ApiTwitter extends ApiClientBase {
         },
       }
     );
+    return res.data;
+  }
+
+  /**
+   * getCategory
+   */
+  public async getCategory() {
+    const res = await this.instance.get(`/api/app/twitter-attribute/category`);
+    return res.data;
+  }
+
+  /**
+   * getChain
+   */
+  public async getChain() {
+    const res = await this.instance.get(`/api/app/twitter-attribute/chain`);
     return res.data;
   }
 }

@@ -59,6 +59,12 @@ html {
     background: linear-gradient(180deg, #191E2D 0%, rgba(25, 30, 45, 0) 100%);
 }
 
+.linear-bg-gradient-subscription-2 {
+    background: linear-gradient(266.9deg, #24B592 0%, #E25148 100%);
+    opacity: 0.15;
+
+}
+
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

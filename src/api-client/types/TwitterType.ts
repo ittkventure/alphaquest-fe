@@ -7,6 +7,8 @@ export interface TwitterGetListRequest {
   timeFrame: TimeFrameTypes;
   sortBy: SortByType;
   newest: boolean;
+  chains?: Array<string>;
+  categories?: Array<string>;
 }
 
 export interface TwitterItem {

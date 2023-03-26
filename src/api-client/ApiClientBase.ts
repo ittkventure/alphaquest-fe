@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/utils/config";
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 class ApiClientBase {
   protected instance: AxiosInstance;
@@ -11,7 +11,31 @@ class ApiClientBase {
         "Content-Type": "application/json",
       },
     });
+
+    this.initializeResponseInterceptor();
   }
+
+  private initializeResponseInterceptor = () => {
+    this.instance.interceptors.response.use(
+      this.handleResponse,
+      this.handleError
+    );
+  };
+
+  private handleResponse = (res: AxiosResponse) => {
+    return res;
+  };
+
+  protected handleError = (err: any) => {
+    if (err?.response) {
+      if (err?.response?.status == 401) {
+        localStorage.removeItem("AQToken");
+        window.location.href = "/login";
+      }
+    }
+
+    return Promise.reject(err);
+  };
 
   public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.instance.get<T>(url, config);
