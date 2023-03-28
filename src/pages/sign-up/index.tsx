@@ -1,18 +1,32 @@
+import { apiAuth } from "@/api-client";
 import { EmptyWallet } from "@/assets/icons";
 import { BlurBgImg, HomeBgImg } from "@/assets/images";
 import AQForm from "@/components/AQForm";
 import AQCheckbox from "@/components/AQForm/AQCheckbox";
 import AQInput from "@/components/AQForm/AQInput";
+import Spinner from "@/components/Spinner";
+import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 
+const passwordRegex = /^(?=.*[!@#$%^&*])(?=.*\d)(?=.*[A-Z])/i;
+
 const signUpValidationSchema = yup.object({
+  userName: yup.string().required("Username is required"),
   email: yup.string().required("Email is required"),
-  terms: yup.string().required("Required"),
-  sub: yup.string().required("Required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .matches(
+      passwordRegex,
+      "Passwords must have at least one non alphanumeric character., Passwords must have at least one digit ('0'-'9')., Passwords must have at least one uppercase ('A'-'Z')."
+    ),
+  terms: yup.string(),
+  sub: yup.string(),
 });
 
 const SignUp = () => {
@@ -20,8 +34,45 @@ const SignUp = () => {
 
   const [checkedTerms, setCheckedTerms] = useState(false);
   const [checkedSub, setCheckedSub] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { handleLogged, authState } = useContext(AuthContext);
 
-  const onSubmit = (data: any) => console.log(data);
+  useEffect(() => {
+    setError("");
+  }, [checkedTerms, checkedSub]);
+
+  const onSubmit = async (data: any) => {
+    setIsLoading(true);
+    if (!checkedTerms || !checkedSub) setError("Please confirm our terms");
+    try {
+      await apiAuth.signUp({
+        userName: data.userName,
+        emailAddress: data.email,
+        password: data.password,
+        appName: "AlphaQuest",
+      });
+
+      let res = await apiAuth.login({
+        client_id: "AlphaQuest_App",
+        grant_type: "password",
+        username: data.userName,
+        password: data.password,
+        scope: "AlphaQuest",
+      });
+      handleLogged(res);
+      setIsLoading(false);
+      router.push("/mail-sent");
+    } catch (error: any) {
+      console.log(error, "error");
+
+      toast.error(
+        `${error?.response?.data?.error?.message ?? error?.message}`,
+        {}
+      );
+      setIsLoading(false);
+    }
+  };
 
   const onGoLogin = () => {
     router.push("/login");
@@ -45,10 +96,23 @@ const SignUp = () => {
             validationSchemaParams={signUpValidationSchema}
           >
             <AQInput
+              name="userName"
+              labelText="Username"
+              placeholder="Enter username"
+              containerClassName="mt-5"
+            />
+            <AQInput
               name="email"
               labelText="Email address"
               placeholder="Enter email"
               containerClassName="mt-5"
+            />
+            <AQInput
+              name="password"
+              labelText="Password"
+              placeholder="Enter password"
+              containerClassName="mt-5"
+              type="password"
             />
 
             <AQCheckbox
@@ -77,11 +141,21 @@ const SignUp = () => {
                 </p>
               }
             />
-
+            {error ? (
+              <button type="button">
+                <p className="text-sm text-primary-500">{error}</p>
+              </button>
+            ) : (
+              <button />
+            )}
             <button
               type="submit"
-              className="w-full bg-success-500 flex justify-center items-center py-3 mt-5"
+              className={`w-full ${
+                isLoading ? "opacity-70" : "opacity-100"
+              } flex justify-center items-center py-3 mt-5 bg-success-500`}
+              disabled={isLoading}
             >
+              {isLoading ? <Spinner /> : null}
               <p>Sign up</p>
             </button>
 

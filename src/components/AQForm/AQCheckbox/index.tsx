@@ -1,6 +1,7 @@
 import { TickIcon } from "@/assets/icons";
 import Image from "next/image";
 import React, { createRef, FC, useRef } from "react";
+import { UseFormWatch } from "react-hook-form";
 
 interface AQCheckboxTypes
   extends React.DetailedHTMLProps<
