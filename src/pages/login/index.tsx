@@ -125,14 +125,6 @@ const Login = () => {
             </p>
           </AQForm>
         </div>
-        <ToastContainer
-          position="top-center"
-          theme="dark"
-          hideProgressBar
-          autoClose={1000}
-          style={{ color: "#E25148" }}
-          transition={Slide}
-        />
       </div>
     </HomeLayout>
   );

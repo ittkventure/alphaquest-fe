@@ -4,6 +4,7 @@ import {
   AccountDetailResponse,
   LoginParamsType,
   LoginResponseType,
+  RegisterParamsType,
 } from "../types/AuthType";
 import qs from "qs";
 
@@ -21,6 +22,55 @@ class ApiAuth extends ApiClientBase {
     const res = await this.instance.post(
       "/connect/token",
       qs.stringify(params)
+    );
+    return res.data;
+  }
+
+  /**
+   * sign up
+   */
+  public async signUp(params: RegisterParamsType): Promise<any> {
+    const res = await this.instance.post(
+      "/api/app/account-extend/register",
+      params,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * confirm email
+   */
+  public async confirmEmail(token: string, access_token: string): Promise<any> {
+    const res = await this.instance.post(
+      "/api/app/account-extend/confirm-email",
+      {
+        token: token.replaceAll(" ", ""),
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  public async verifyEmail(access_token: string): Promise<any> {
+    const res = await this.instance.post(
+      "/api/app/account-extend/verify-email",
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + access_token,
+        },
+      }
     );
     return res.data;
   }
