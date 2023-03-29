@@ -24,7 +24,7 @@ const Verify = () => {
       setIsLoading(true);
       console.log(vr);
       await apiAuth.confirmEmail(
-        vr ? vr.toString() : "",
+        vr ? decodeURIComponent(vr.toString()) : "",
         authState?.access_token ?? ""
       );
       setIsLoading(false);
