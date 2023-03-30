@@ -61,11 +61,9 @@ const SignUp = () => {
         scope: "AlphaQuest",
       });
       handleLogged(res);
-      setIsLoading(false);
       router.push("/price");
+      setIsLoading(false);
     } catch (error: any) {
-      console.log(error, "error");
-
       toast.error(
         `${error?.response?.data?.error?.message ?? error?.message}`,
         {}
@@ -77,6 +75,10 @@ const SignUp = () => {
   const onGoLogin = () => {
     router.push("/login");
   };
+
+  useEffect(() => {
+    if (authState?.access_token && !isLoading) router.push("/");
+  }, [authState?.access_token]);
 
   return (
     <HomeLayout hiddenFooter>
