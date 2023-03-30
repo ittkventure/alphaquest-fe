@@ -21,6 +21,12 @@ interface TableRowTypes {
 }
 
 const TableRow: FC<TableRowTypes> = ({ item, index }) => {
+  const _renderCategories = () => {
+    if (!item.categories) return "";
+    if (item.categories.length === 0) return "";
+    return item.categories.map((value) => ` · ${value.name}`);
+  };
+
   return (
     <div className="flex justify-between mt-4 max-lg:border-b max-lg:border-b-secondary-600 max-lg:pb-4">
       <div className="flex items-center">
@@ -78,8 +84,9 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
           </div>
           <div>
             <p className="font-workSansRegular text-sm max-lg:text-[12px] text-secondary-500">
-              {moment(item.discoveredTime).fromNow()} · {item.userType} ·{" "}
-              {item.username}
+              {moment(item.discoveredTime).fromNow()}
+              {item.chain ? ` · ${item.chain.name}` : ""}
+              {_renderCategories()}
             </p>
           </div>
         </div>
@@ -88,9 +95,9 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-[12px]">
           <p>+{item.trendingScore}</p>
         </div>
-        <button>
+        {/* <button>
           <HeartIcon className="h-5 w-7" />
-        </button>
+        </button> */}
       </div>
     </div>
   );

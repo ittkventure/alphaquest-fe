@@ -56,7 +56,7 @@ const SelectCustom: FC<SelectCustomTypes> = ({
           <ChevronDownIcon className="h-5 w-5 ml-2" />
         </button>
         <div
-          className={`bg-secondary-600 max-h-[400px] overflow-scroll transition-all duration-300 w-52 max-lg:w-[44vw] absolute top-[36px] z-40 ${
+          className={`bg-secondary-600 max-h-[400px] overflow-y-scroll overflow-x-hidden transition-all duration-300 w-52 max-lg:w-[44vw] absolute top-[36px] z-40 ${
             isShowMenu ? "opacity-100" : "opacity-0"
           }`}
         >

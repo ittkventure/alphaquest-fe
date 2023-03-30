@@ -81,6 +81,26 @@ select:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #2f3138;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .custom-circle-linear-btn {
     background: linear-gradient(245.26deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -102,4 +122,8 @@ select:-webkit-autofill:focus {
 .custom-circle-bg {
     background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24B592 63.3%);
     opacity: 0.4;
+}
+
+.bg-linear-backdrop {
+    background: linear-gradient(180deg, rgba(17, 20, 30, 0) 0%, #11141E 69.93%);
 }

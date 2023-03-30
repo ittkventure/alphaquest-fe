@@ -7,12 +7,13 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 import AQAvatar from "../AQAvatar";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 const Header = () => {
   const router = useRouter();
   const { tab } = router.query;
 
-  const { authState } = useContext(AuthContext);
+  const { authState, accountExtendDetail } = useContext(AuthContext);
 
   const onGoLogin = () => {
     router.push("/login");
@@ -55,18 +56,20 @@ const Header = () => {
           </div>
         )}
 
-        <div>
-          <button className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden">
-            <Image
-              src={CrownIcon}
-              width={17}
-              height={14}
-              alt="crown-icon"
-              className="mr-2"
-            />
-            Upgrade to Pro
-          </button>
-        </div>
+        {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? null : (
+          <div>
+            <button className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden">
+              <Image
+                src={CrownIcon}
+                width={17}
+                height={14}
+                alt="crown-icon"
+                className="mr-2"
+              />
+              Upgrade to Pro
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

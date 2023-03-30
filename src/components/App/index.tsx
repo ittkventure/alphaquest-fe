@@ -20,6 +20,9 @@ import {
 import SkeletonLoading from "./Table/SkeletonLoading";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/useAuthContext";
+import { UserPayType } from "@/api-client/types/AuthType";
+import Image from "next/image";
+import { CrownIcon } from "@/assets/icons";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -221,7 +224,28 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   return (
-    <div className=" w-full">
+    <div className="w-full relative">
+      {accountExtendDetail?.currentPlanKey === UserPayType.FREE ? (
+        <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+          <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+            <p className="mb-4">Upgrade account to see all</p>
+
+            <button
+              onClick={() => router.push("/price")}
+              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+            >
+              <Image
+                src={CrownIcon}
+                width={17}
+                height={14}
+                alt="crown-icon"
+                className="mr-2"
+              />
+              Upgrade to Pro
+            </button>
+          </div>
+        </div>
+      ) : null}
       <div className="p-6">
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
@@ -229,7 +253,7 @@ const AppContent: FC<AppContentTypes> = ({
       <div className="hidden max-lg:block">
         <TabApp onChangeTab={_handleSelectTab} />
       </div>
-      <div className="px-6 pb-6">
+      <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           <div className="flex items-center max-lg:mt-2">
             <p>
