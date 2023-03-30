@@ -11,6 +11,16 @@ export interface TwitterGetListRequest {
   categories?: Array<string>;
 }
 
+export interface TwitterChain {
+  code: string;
+  name: string;
+}
+
+export interface TwitterCategory {
+  code: string;
+  name: string;
+}
+
 export interface TwitterItem {
   name: string;
   username: string;
@@ -37,4 +47,6 @@ export interface TwitterItem {
   tweetCountChange?: any;
   listedCount?: any;
   listedCountChange?: any;
+  chain?: TwitterChain;
+  categories?: Array<TwitterCategory>;
 }

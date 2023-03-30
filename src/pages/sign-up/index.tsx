@@ -62,7 +62,7 @@ const SignUp = () => {
       });
       handleLogged(res);
       setIsLoading(false);
-      router.push("/mail-sent");
+      router.push("/price");
     } catch (error: any) {
       console.log(error, "error");
 

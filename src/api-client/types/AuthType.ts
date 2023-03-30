@@ -28,3 +28,8 @@ export interface RegisterParamsType {
   password: string;
   appName: string;
 }
+
+export enum UserPayType {
+  FREE = "FREE",
+  PREMIUM = "PREMIUM",
+}

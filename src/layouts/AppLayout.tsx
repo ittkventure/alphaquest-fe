@@ -1,5 +1,7 @@
+import { CrownIcon } from "@/assets/icons";
 import SideMenu from "@/components/Layout/SideMenu";
 import SEO from "@/components/SEO";
+import Image from "next/image";
 import React, { FC } from "react";
 
 interface AppLayoutTypes {
@@ -11,8 +13,9 @@ const AppLayout: FC<AppLayoutTypes> = ({ children }) => {
     <div>
       <SEO />
       <div className="flex pl-64 max-lg:pl-0">
-        <SideMenu />
         {children}
+
+        <SideMenu />
       </div>
     </div>
   );

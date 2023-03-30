@@ -7,7 +7,7 @@ interface HomeFooterTypes {}
 
 const HomeFooter: FC<HomeFooterTypes> = () => {
   return (
-    <div className=" flex flex-col justify-center items-center py-[30px]">
+    <div className="flex flex-col justify-center items-center py-[30px]">
       <div>
         <Image src={LogoWithText} width={169} height={40} alt="logo" />
       </div>

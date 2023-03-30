@@ -37,13 +37,13 @@ const SideMenu = () => {
       label: "Newest",
       active: false,
     },
-    {
-      key: "watchlist",
-      url: "/app/watchlist",
-      icon: <HeartIcon className="h-5 w-5 mr-2" />,
-      label: "Watch List",
-      active: false,
-    },
+    // {
+    //   key: "watchlist",
+    //   url: "/app/watchlist",
+    //   icon: <HeartIcon className="h-5 w-5 mr-2" />,
+    //   label: "Watch List",
+    //   active: false,
+    // },
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
@@ -52,7 +52,7 @@ const SideMenu = () => {
   };
 
   return (
-    <aside className="fixed top-0 left-0 z-40 w-64 h-screen border-r border-white border-opacity-20 px-3 py-6 max-lg:hidden">
+    <aside className="fixed transition-all duration-300 top-0 left-0 z-40 w-64 h-screen border-r border-white border-opacity-20 px-3 py-6 max-lg:hidden">
       <ul className="w-full">
         <li className="mb-6">
           <button onClick={onGoHome}>
@@ -64,11 +64,14 @@ const SideMenu = () => {
           return (
             <li className="mt-2" key={value.key}>
               <div
-                className={`p-[13px]  ${_checkActiveTab(value, index)} w-full`}
+                className={`p-[13px] transition-all duration-300 ${_checkActiveTab(
+                  value,
+                  index
+                )} w-full`}
               >
                 <Link
                   href={`/app/${value.key}`}
-                  className={`flex ${
+                  className={`flex transition-all duration-300 ${
                     tab === value.key ? "text-dark-900 " : "text-white"
                   }`}
                 >

@@ -1,4 +1,6 @@
+import { CrownIcon } from "@/assets/icons";
 import { AuthContext } from "@/contexts/useAuthContext";
+import { StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -23,6 +25,10 @@ const AQAvatar = () => {
         <p className="pl-2 text-[16px] max-lg:hidden">
           {accountExtendDetail?.name}
         </p>
+        <div className="border-[2px] border-purple-600 text-purple-600 rounded-xl max-lg:rounded-3xl px-2 ml-3 flex justify-center items-center py-[2px]">
+          <StarIcon className="h-5 w-5" />
+          <p className="max-lg:hidden">Premium</p>
+        </div>
       </div>
     </Link>
   );

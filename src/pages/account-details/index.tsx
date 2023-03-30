@@ -1,38 +1,80 @@
+import { apiAuth } from "@/api-client";
+import { UserPayType } from "@/api-client/types/AuthType";
 import {
-  EmptyWallet,
   EmptyWalletGreen,
   GiftIcon,
   LogoutIcon,
-  TwitterIcon,
   UserIcon,
 } from "@/assets/icons";
 import { CircleButton } from "@/components/AQButton";
-import HomeFooter from "@/components/Layout/HomeFooter";
+import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
-import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon, StarIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const AccountDetails = () => {
   const { handleLogOut, authState, accountExtendDetail } =
     useContext(AuthContext);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!authState) router.push("/login");
   }, [authState, router]);
 
+  const onSendVerifyMail = async () => {
+    setIsLoading(true);
+    try {
+      if (!authState?.access_token) {
+        setIsLoading(false);
+        return;
+      }
+      await apiAuth.verifyEmail(authState?.access_token);
+      setIsLoading(false);
+      router.push("/mail-sent");
+    } catch (error: any) {
+      setIsLoading(false);
+      toast.error(
+        `${error?.response?.data?.error?.message ?? error?.message}`,
+        {}
+      );
+    }
+  };
+
   const _renderAccountMobile = () => {
     return (
       <div className="hidden max-sm:block max-sm:mt-[33px]">
         <div className="flex justify-between border-b-[1px] border-secondary-600 pb-4">
-          <p className="font-workSansLight">Your account type</p>
+          <p className="font-workSansLight">Username</p>
           <p className="font-workSansSemiBold">{accountExtendDetail?.name}</p>
         </div>
+
+        <div className="flex mt-4  justify-between border-b-[1px] border-secondary-600 pb-4">
+          <p className="font-workSansLight">Your account type</p>
+          {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+            <div className="border-[2px] border-purple-600 text-purple-600 rounded-xl px-2 ml-3 flex justify-center items-center py-[2px]">
+              <StarIcon className="h-5 w-5" />
+              <p>Premium</p>
+            </div>
+          ) : (
+            <p
+              className={`font-workSansSemiBold ${
+                accountExtendDetail?.currentPlanKey === UserPayType.FREE
+                  ? "text-secondary-500"
+                  : "text-primary-500"
+              }`}
+            >
+              {accountExtendDetail?.currentPlanKey}
+            </p>
+          )}
+        </div>
+
         <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className=" font-workSansLight">Your subscription ends</p>
           <p className=" font-workSansSemiBold">
@@ -49,7 +91,28 @@ const AccountDetails = () => {
         </div>
         <div className="flex justify-between border-b-[1px] mt-4 border-secondary-600 pb-4">
           <p className="font-workSansLight">Email</p>
-          <p className="font-workSansSemiBold">{accountExtendDetail?.email}</p>
+          <div className="flex justify-center items-center">
+            <p className="font-workSansSemiBold">
+              {accountExtendDetail?.email}
+            </p>
+            {accountExtendDetail?.confirmedEmail ? (
+              ""
+            ) : (
+              <button
+                className="ml-2"
+                disabled={isLoading}
+                onClick={onSendVerifyMail}
+              >
+                {isLoading ? (
+                  <Spinner />
+                ) : (
+                  <p className="text-success-500 font-workSansLight">
+                    Verify Email
+                  </p>
+                )}
+              </button>
+            )}
+          </div>
         </div>
         <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className=" font-workSansLight">To change your plan</p>
@@ -88,7 +151,8 @@ const AccountDetails = () => {
                 </CircleButton>
               </div>
               <div className="ml-8 w-[200px]">
-                <p className="font-workSansLight">Your account type</p>
+                <p className="font-workSansLight">Username</p>
+                <p className="font-workSansLight mt-4">Your account type</p>
                 <p className="mt-4 font-workSansLight">
                   Your subscription ends
                 </p>
@@ -97,8 +161,23 @@ const AccountDetails = () => {
               </div>
               <div className="ml-8">
                 <p className="font-workSansSemiBold">
-                  {accountExtendDetail?.name}
+                  {accountExtendDetail?.name ?? " "}
                 </p>
+                <div className="flex items-center  mt-4">
+                  {accountExtendDetail?.currentPlanKey ===
+                  UserPayType.PREMIUM ? (
+                    <StarIcon className="h-5 w-5 mb-1 text-purple-600" />
+                  ) : null}
+                  <p
+                    className={`font-workSansSemiBold ml-1 ${
+                      accountExtendDetail?.currentPlanKey === UserPayType.FREE
+                        ? "text-secondary-500"
+                        : "text-purple-600"
+                    }`}
+                  >
+                    {accountExtendDetail?.currentPlanKey}
+                  </p>
+                </div>
                 <p className="mt-4 font-workSansSemiBold">
                   {moment(accountExtendDetail?.planExpiredAt).fromNow()}
                 </p>
@@ -131,9 +210,30 @@ const AccountDetails = () => {
                 <p className="mt-4 font-workSansLight">Wallet</p>
               </div>
               <div className="ml-8">
-                <p className="font-workSansSemiBold">
-                  {accountExtendDetail?.email}
-                </p>
+                <div className="flex justify-center items-center">
+                  <p className="font-workSansSemiBold">
+                    {accountExtendDetail?.email}
+                  </p>
+                  {accountExtendDetail?.confirmedEmail ? (
+                    ""
+                  ) : (
+                    <button
+                      className="ml-2"
+                      disabled={isLoading}
+                      onClick={onSendVerifyMail}
+                    >
+                      {isLoading ? (
+                        <div className="ml-2">
+                          <Spinner />
+                        </div>
+                      ) : (
+                        <p className="text-success-500 font-workSansLight">
+                          Verify Email
+                        </p>
+                      )}
+                    </button>
+                  )}
+                </div>
 
                 <Link href={"#"}>
                   <p className="mt-4 text-success-500 font-workSansLight">
@@ -143,7 +243,7 @@ const AccountDetails = () => {
               </div>
             </div>
 
-            <div className="h-[1px] w-[100%] bg-[#38405B] mt-10 mb-5" />
+            <div className="h-[1px] w-[100%] bg-[#38405B] mt-10 mb-1" />
 
             <button className="flex" onClick={handleLogOut}>
               <Image src={LogoutIcon} width={24} height={24} alt="logout" />
