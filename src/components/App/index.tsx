@@ -230,7 +230,10 @@ const AppContent: FC<AppContentTypes> = ({
           <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
             <p className="mb-4">Upgrade account to see all</p>
 
-            <button className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center">
+            <button
+              onClick={() => router.push("/price")}
+              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+            >
               <Image
                 src={CrownIcon}
                 width={17}
