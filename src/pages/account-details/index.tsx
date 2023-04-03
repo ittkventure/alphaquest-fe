@@ -1,4 +1,4 @@
-import { apiAuth } from "@/api-client";
+import { apiAuth, apiPayment } from "@/api-client";
 import { UserPayType } from "@/api-client/types/AuthType";
 import {
   EmptyWalletGreen,
@@ -15,18 +15,30 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, Fragment } from "react";
 import { toast } from "react-toastify";
+import { Dialog, Transition } from "@headlessui/react";
 
 const AccountDetails = () => {
-  const { handleLogOut, authState, accountExtendDetail } =
-    useContext(AuthContext);
+  const {
+    handleLogOut,
+    authState,
+    accountExtendDetail,
+    canCancel,
+    getAccountExtendDetails,
+    getCanCancel,
+  } = useContext(AuthContext);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  let [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (!authState) router.push("/login");
-  }, [authState, router]);
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
 
   const onSendVerifyMail = async () => {
     setIsLoading(true);
@@ -47,6 +59,31 @@ const AccountDetails = () => {
     }
   };
 
+  const onCancelSub = async () => {
+    setIsLoading(true);
+    try {
+      if (authState?.access_token) {
+        await apiPayment.cancelPayment(authState?.access_token);
+        await getAccountExtendDetails();
+        await getCanCancel();
+
+        closeModal();
+        toast.success("Cancel successful");
+      } else {
+        toast.error("Error when cancel please try again");
+      }
+
+      setIsLoading(false);
+    } catch (error: any) {
+      if (error?.response?.data?.error?.message) {
+        toast.error(error?.response?.data?.error?.message);
+      } else {
+        toast.error("Error when payment, please try again!");
+      }
+      setIsLoading(false);
+    }
+  };
+
   const _renderAccountMobile = () => {
     return (
       <div className="hidden max-sm:block max-sm:mt-[33px]">
@@ -60,9 +97,19 @@ const AccountDetails = () => {
         <div className="flex mt-4  justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className="font-workSansLight">Your account type</p>
           {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <div className="border-[2px] border-purple-600 text-purple-600 rounded-xl px-2 ml-3 flex justify-center items-center py-[2px]">
-              <StarIcon className="h-5 w-5" />
-              <p>Premium</p>
+            <div className="flex">
+              <div className="border-[2px] border-purple-600 text-purple-600 rounded-xl px-2 ml-3 flex justify-center items-center py-[2px]">
+                <StarIcon className="h-5 w-5" />
+                <p>Premium</p>
+              </div>
+              {canCancel ? (
+                <button
+                  onClick={openModal}
+                  className="text-primary-500 font-workSansLight ml-2"
+                >
+                  Cancel
+                </button>
+              ) : null}
             </div>
           ) : (
             <p
@@ -179,6 +226,15 @@ const AccountDetails = () => {
                   >
                     {accountExtendDetail?.currentPlanKey}
                   </p>
+                  {accountExtendDetail?.currentPlanKey ===
+                    UserPayType.PREMIUM && canCancel ? (
+                    <button
+                      onClick={openModal}
+                      className="text-primary-500 font-workSansLight ml-2"
+                    >
+                      Cancel
+                    </button>
+                  ) : null}
                 </div>
                 <p className="mt-4 font-workSansSemiBold">
                   {moment(accountExtendDetail?.planExpiredAt).fromNow()}
@@ -291,6 +347,71 @@ const AccountDetails = () => {
             </div>
           </div>
         </div>
+
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={closeModal}>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-dark-800 p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium leading-6 text-primary-500"
+                    >
+                      Are you sure you want to unsubscribe?
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        Your payment has been successfully submitted. We’ve sent
+                        you an email with all of the details of your order.
+                      </p>
+                    </div>
+
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center items-center rounded-md border border-transparent bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? <Spinner /> : <p>No</p>}
+                      </button>
+
+                      <button
+                        type="button"
+                        className="inline-flex ml-3 justify-center items-center rounded-md border border-transparent  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={onCancelSub}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? <Spinner /> : <p>Yes, sure</p>}
+                      </button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
       </div>
     </HomeLayout>
   );

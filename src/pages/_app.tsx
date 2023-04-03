@@ -15,6 +15,8 @@ export default function App({ Component, pageProps }: AppProps) {
     handleLogOut,
     handleLogged,
     getAccountExtendDetails,
+    canCancel,
+    getCanCancel,
   } = useAuthContext();
 
   return (
@@ -25,6 +27,8 @@ export default function App({ Component, pageProps }: AppProps) {
         handleLogOut,
         handleLogged,
         getAccountExtendDetails,
+        canCancel,
+        getCanCancel,
       }}
     >
       <PaddleLoader />

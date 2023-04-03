@@ -8,9 +8,11 @@ import React, { useEffect, useState } from "react";
 export interface IAuthContext {
   authState?: LoginResponseType | null;
   accountExtendDetail?: AccountDetailResponse | null;
+  canCancel?: boolean | null;
   handleLogged: (authState?: LoginResponseType) => void;
   handleLogOut: () => void;
-  getAccountExtendDetails: () => void;
+  getAccountExtendDetails: () => Promise<void>;
+  getCanCancel: () => Promise<void>;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({
@@ -18,7 +20,9 @@ export const AuthContext = React.createContext<IAuthContext>({
   accountExtendDetail: null,
   handleLogged: (authState?: LoginResponseType) => {},
   handleLogOut: () => {},
-  getAccountExtendDetails: () => {},
+  getAccountExtendDetails: async () => {},
+  canCancel: false,
+  getCanCancel: async () => {},
 });
 
 export const useAuthContext = (): IAuthContext => {
@@ -27,6 +31,7 @@ export const useAuthContext = (): IAuthContext => {
   >(null);
 
   const [accountExtendDetail, setAccountExtendDetail] = useState<any>(null);
+  const [canCancel, setCanCancel] = useState<boolean | null | undefined>(null);
 
   useEffect(() => {
     const dataLocal = localStorage.getItem("AQToken") ?? "null";
@@ -35,7 +40,10 @@ export const useAuthContext = (): IAuthContext => {
   }, []);
 
   useEffect(() => {
-    if (authState?.access_token) getAccountExtendDetails();
+    if (authState?.access_token) {
+      getAccountExtendDetails();
+      getCanCancel();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState?.access_token]);
 
@@ -45,14 +53,27 @@ export const useAuthContext = (): IAuthContext => {
     );
   };
 
+  const getCanCancel = async () => {
+    try {
+      const canCancelRes = await apiAuth.canCancel(
+        authState?.access_token ?? ""
+      );
+      setCanCancel(canCancelRes);
+      return;
+    } catch (error) {
+      return;
+    }
+  };
+
   const getAccountExtendDetails = async () => {
     try {
       const accountEDData = await apiAuth.getAccountExtendDetails(
         authState?.access_token ?? ""
       );
       setAccountExtendDetail(accountEDData);
+      return;
     } catch (error) {
-      alert("Error please try again");
+      return;
     }
   };
 
@@ -71,5 +92,7 @@ export const useAuthContext = (): IAuthContext => {
     handleLogged,
     handleLogOut,
     getAccountExtendDetails,
+    canCancel: canCancel,
+    getCanCancel,
   };
 };
