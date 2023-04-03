@@ -1,7 +1,13 @@
 import { CheckIcon } from "@heroicons/react/24/solid";
-import React from "react";
+import React, { FC } from "react";
+import Spinner from "../Spinner";
 
-const SubContent = () => {
+interface ISubContent {
+  onPayment: () => void;
+  isLoading: boolean;
+}
+
+const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
   return (
     <div className="flex justify-center items-center max-xl:flex-col  mt-[102px] w-full px-36 max-lg:px-0 ">
       <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
@@ -25,7 +31,18 @@ const SubContent = () => {
             </div>
 
             <div className="mt-[91px] flex justify-end">
-              <button className="py-3 px-6 bg-primary-500">
+              <button
+                disabled={isLoading}
+                onClick={onPayment}
+                className={`py-3 px-6 flex items-center bg-primary-500 ${
+                  isLoading ? "opacity-40" : ""
+                }`}
+              >
+                {isLoading ? (
+                  <div className="mr-2">
+                    <Spinner />
+                  </div>
+                ) : null}
                 <p>Public Leaderboard</p>
               </button>
             </div>
@@ -68,7 +85,18 @@ const SubContent = () => {
             </div>
 
             <div className="mt-[43px] flex justify-end">
-              <button className="py-3 px-6 bg-primary-500">
+              <button
+                disabled={isLoading}
+                onClick={onPayment}
+                className={`py-3 px-6 bg-primary-500 flex items-center ${
+                  isLoading ? "opacity-40" : ""
+                }`}
+              >
+                {isLoading ? (
+                  <div className="mr-2">
+                    <Spinner />
+                  </div>
+                ) : null}
                 <p>Public Leaderboard</p>
               </button>
             </div>

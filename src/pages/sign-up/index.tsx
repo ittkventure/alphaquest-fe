@@ -60,9 +60,9 @@ const SignUp = () => {
         password: data.password,
         scope: "AlphaQuest",
       });
-      handleLogged(res);
       router.push("/price");
-      setIsLoading(false);
+
+      handleLogged(res);
     } catch (error: any) {
       toast.error(
         `${error?.response?.data?.error?.message ?? error?.message}`,

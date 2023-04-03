@@ -6,15 +6,28 @@ import { Slide, ToastContainer } from "react-toastify";
 const queryClient = new QueryClient();
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
+import PaddleLoader from "./../components/Payment";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authState, accountExtendDetail, handleLogOut, handleLogged } =
-    useAuthContext();
+  const {
+    authState,
+    accountExtendDetail,
+    handleLogOut,
+    handleLogged,
+    getAccountExtendDetails,
+  } = useAuthContext();
 
   return (
     <AuthContext.Provider
-      value={{ authState, accountExtendDetail, handleLogOut, handleLogged }}
+      value={{
+        authState,
+        accountExtendDetail,
+        handleLogOut,
+        handleLogged,
+        getAccountExtendDetails,
+      }}
     >
+      <PaddleLoader />
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
         <ToastContainer
