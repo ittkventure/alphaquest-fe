@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import Spinner from "../Spinner";
 
 interface ISubContent {
-  onPayment: () => void;
+  onPayment: (withoutTrial: boolean) => void;
   isLoading: boolean;
 }
 
@@ -33,7 +33,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
             <div className="mt-[91px] flex justify-end">
               <button
                 disabled={isLoading}
-                onClick={onPayment}
+                onClick={() => onPayment(false)}
                 className={`py-3 px-6 flex items-center bg-primary-500 ${
                   isLoading ? "opacity-40" : ""
                 }`}
@@ -87,7 +87,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
             <div className="mt-[43px] flex justify-end">
               <button
                 disabled={isLoading}
-                onClick={onPayment}
+                onClick={() => onPayment(true)}
                 className={`py-3 px-6 bg-primary-500 flex items-center ${
                   isLoading ? "opacity-40" : ""
                 }`}

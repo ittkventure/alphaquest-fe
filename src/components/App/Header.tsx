@@ -58,7 +58,10 @@ const Header = () => {
 
         {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? null : (
           <div>
-            <button className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden">
+            <button
+              onClick={() => router.push("/price")}
+              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
+            >
               <Image
                 src={CrownIcon}
                 width={17}

@@ -24,7 +24,7 @@ const AQAvatar = () => {
           />
         </div>
         <p className="pl-2 text-[16px] max-lg:hidden">
-          {accountExtendDetail?.name}
+          {accountExtendDetail?.username}
         </p>
         {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
           <div className="border-[2px] border-purple-600 text-purple-600 rounded-xl max-lg:rounded-3xl px-2 ml-3 flex justify-center items-center py-[2px]">

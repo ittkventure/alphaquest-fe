@@ -5,8 +5,11 @@ import CommentItem from "@/components/Home/CommentItem";
 import SubscriptionItem from "@/components/Home/SubscriptionItem";
 import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <HomeLayout>
       <div className="max-lg:px-5">
@@ -24,8 +27,11 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex justify-center mt-8">
-          <button className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]">
+        <div className="flex justify-center mt-8 z-50">
+          <button
+            onClick={() => router.push("/price")}
+            className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem] z-50"
+          >
             Start 7-Day Trial for $9
           </button>
         </div>
@@ -42,7 +48,7 @@ export default function Home() {
             width={1360}
             height={1198}
             alt="home-bg"
-            className="absolute z-[2] top-[-300px] max-lg:top-[0px] object-fill"
+            className="absolute z-[0] top-[-300px] max-lg:top-[0px] object-fill"
           />
           <Image
             src={HomeImg}
@@ -95,7 +101,10 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center mt-8">
-          <button className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]">
+          <button
+            onClick={() => router.push("/price")}
+            className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
+          >
             Start 7-Day Trial for $9
           </button>
         </div>
@@ -122,7 +131,10 @@ export default function Home() {
         </div>
 
         <div className="flex justify-center mt-8">
-          <button className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]">
+          <button
+            onClick={() => router.push("/price")}
+            className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
+          >
             Start 7-Day Trial for $9
           </button>
         </div>
@@ -139,7 +151,10 @@ export default function Home() {
           </div>
 
           <div className="flex justify-center mt-8">
-            <button className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]">
+            <button
+              onClick={() => router.push("/price")}
+              className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
+            >
               Start 7-Day Trial for $9
             </button>
           </div>
