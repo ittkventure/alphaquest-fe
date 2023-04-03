@@ -1,12 +1,41 @@
+import { apiPayment } from "@/api-client";
 import { Logo1, Logo2, Logo3 } from "@/assets/images";
 import AQDisclosure from "@/components/AQDisclosure";
 import CommentSwiper from "@/components/CommentSwiper";
 import SubContent from "@/components/Subscription/SubContent";
+import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import Image from "next/image";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Subscription = () => {
+  const { handleLogged, authState } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {}, []);
+
+  const getPaymentLink = async () => {
+    setIsLoading(true);
+    try {
+      if (authState?.access_token) {
+        const paymentLink = await apiPayment.getLinkPayment(
+          authState?.access_token
+        );
+        Paddle.Checkout.open({
+          override: paymentLink,
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error?.response?.data?.error?.message) {
+        toast.error(error?.response?.data?.error?.message);
+      } else {
+        toast.error("Error when payment, please try again!");
+      }
+      setIsLoading(false);
+    }
+  };
+
   return (
     <HomeLayout>
       <div className="max-lg:px-5 flex flex-col items-center">
@@ -21,7 +50,7 @@ const Subscription = () => {
           </p>
         </div>
 
-        <SubContent />
+        <SubContent isLoading={isLoading} onPayment={getPaymentLink} />
         <div className="flex items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[33px] px-10 bg-dark-800 mt-11">
           <div>
             <p className="font-workSansBold text-2xl">

@@ -10,6 +10,7 @@ export interface IAuthContext {
   accountExtendDetail?: AccountDetailResponse | null;
   handleLogged: (authState?: LoginResponseType) => void;
   handleLogOut: () => void;
+  getAccountExtendDetails: () => void;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({
@@ -17,6 +18,7 @@ export const AuthContext = React.createContext<IAuthContext>({
   accountExtendDetail: null,
   handleLogged: (authState?: LoginResponseType) => {},
   handleLogOut: () => {},
+  getAccountExtendDetails: () => {},
 });
 
 export const useAuthContext = (): IAuthContext => {
@@ -63,5 +65,11 @@ export const useAuthContext = (): IAuthContext => {
     setAuthState(null);
   };
 
-  return { authState, accountExtendDetail, handleLogged, handleLogOut };
+  return {
+    authState,
+    accountExtendDetail,
+    handleLogged,
+    handleLogOut,
+    getAccountExtendDetails,
+  };
 };

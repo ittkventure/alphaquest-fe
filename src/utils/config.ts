@@ -1,1 +1,2 @@
-export const BASE_URL = process.env.BASE_URL || "https://api.alphaquest.io";
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://api.alphaquest.io";
