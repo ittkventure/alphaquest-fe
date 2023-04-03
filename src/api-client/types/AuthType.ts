@@ -20,6 +20,7 @@ export interface AccountDetailResponse {
   email: string;
   inviteCode: string;
   confirmedEmail: boolean;
+  username: string;
 }
 
 export interface RegisterParamsType {

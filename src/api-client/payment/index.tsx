@@ -10,13 +10,17 @@ class ApiPayment extends ApiClientBase {
    * getLinkPayment
    */
   public async getLinkPayment(
-    access_token: string
+    access_token: string,
+    withoutTrial: boolean
   ): Promise<BaseResponse | any> {
-    const res = await this.instance.get("/api/app/payment/pay-link", {
-      headers: {
-        Authorization: "Bearer " + access_token,
-      },
-    });
+    const res = await this.instance.get(
+      `/api/app/payment/pay-link?withoutTrial=${withoutTrial}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
     return res.data;
   }
 

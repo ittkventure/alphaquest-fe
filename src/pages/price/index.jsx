@@ -14,16 +14,20 @@ const Subscription = () => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {}, []);
 
-  const getPaymentLink = async () => {
+  const getPaymentLink = async (withoutTrial) => {
     setIsLoading(true);
     try {
       if (authState?.access_token) {
         const paymentLink = await apiPayment.getLinkPayment(
-          authState?.access_token
+          authState?.access_token,
+          withoutTrial
         );
         Paddle.Checkout.open({
           override: paymentLink,
         });
+        setIsLoading(false);
+      } else {
+        toast.warning("Please login or register before payment!");
         setIsLoading(false);
       }
     } catch (error) {
@@ -62,7 +66,10 @@ const Subscription = () => {
           </div>
 
           <div>
-            <button className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem]">
+            <button
+              onClick={() => router.push("/price")}
+              className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem]"
+            >
               Start 7-Day Trial for $9
             </button>
           </div>

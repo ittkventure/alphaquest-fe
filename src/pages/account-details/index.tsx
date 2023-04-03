@@ -52,7 +52,9 @@ const AccountDetails = () => {
       <div className="hidden max-sm:block max-sm:mt-[33px]">
         <div className="flex justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className="font-workSansLight">Username</p>
-          <p className="font-workSansSemiBold">{accountExtendDetail?.name}</p>
+          <p className="font-workSansSemiBold">
+            {accountExtendDetail?.username}
+          </p>
         </div>
 
         <div className="flex mt-4  justify-between border-b-[1px] border-secondary-600 pb-4">
@@ -161,7 +163,7 @@ const AccountDetails = () => {
               </div>
               <div className="ml-8">
                 <p className="font-workSansSemiBold">
-                  {accountExtendDetail?.name ?? " "}
+                  {accountExtendDetail?.username ?? " "}
                 </p>
                 <div className="flex items-center  mt-4">
                   {accountExtendDetail?.currentPlanKey ===
