@@ -111,6 +111,26 @@ class ApiAuth extends ApiClientBase {
     );
     return res.data;
   }
+
+  public async changePassword(
+    access_token: string,
+    currentPassword: string,
+    newPassword: string
+  ): Promise<any> {
+    const res = await this.instance.post(
+      "/api/account/my-profile/change-password",
+      {
+        currentPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
 }
 
 export default ApiAuth;

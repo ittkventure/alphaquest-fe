@@ -18,6 +18,8 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState, Fragment } from "react";
 import { toast } from "react-toastify";
 import { Dialog, Transition } from "@headlessui/react";
+import { KeyIcon } from "@heroicons/react/24/outline";
+import ChangePasswordModal from "@/components/AQModal/ChangePasswordModal";
 
 const AccountDetails = () => {
   const {
@@ -30,7 +32,8 @@ const AccountDetails = () => {
   } = useContext(AuthContext);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenChangePassword, setIsOpenChangePassword] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
@@ -93,14 +96,25 @@ const AccountDetails = () => {
             {accountExtendDetail?.username}
           </p>
         </div>
+        <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
+          <p className=" font-workSansLight">Password</p>
+          <button
+            className="flex"
+            onClick={() => setIsOpenChangePassword(true)}
+          >
+            <p className="font-workSansLight text-success-500">
+              Change password
+            </p>
+          </button>
+        </div>
 
         <div className="flex mt-4  justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className="font-workSansLight">Your account type</p>
           {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
             <div className="flex">
-              <div className="border-[2px] border-purple-600 text-purple-600 rounded-xl px-2 ml-3 flex justify-center items-center py-[2px]">
+              <div className="text-yellow-400 rounded-xl px-2 ml-3 flex justify-center items-center py-[2px]">
                 <StarIcon className="h-5 w-5" />
-                <p>Premium</p>
+                <p>PRO</p>
               </div>
               {canCancel ? (
                 <button
@@ -163,18 +177,13 @@ const AccountDetails = () => {
             )}
           </div>
         </div>
-        <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
-          <p className=" font-workSansLight">To change your plan</p>
-          <Link href={"#"}>
-            <p className="text-success-500 font-workSansLight">Click here</p>
-          </Link>
-        </div>
-        <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
+
+        {/* <div className="flex mt-4 justify-between border-b-[1px] border-secondary-600 pb-4">
           <p className=" font-workSansLight">Wallet</p>
           <Link href={"#"}>
             <p className="text-success-500 font-workSansLight">Click here</p>
           </Link>
-        </div>
+        </div> */}
 
         <div className="flex mt-4 justify-between">
           <button className="flex">
@@ -201,30 +210,43 @@ const AccountDetails = () => {
               </div>
               <div className="ml-8 w-[200px]">
                 <p className="font-workSansLight">Username</p>
+                <p className="font-workSansLight mt-4 ">Password</p>
                 <p className="font-workSansLight mt-4">Your account type</p>
                 <p className="mt-4 font-workSansLight">
                   Your subscription ends
                 </p>
                 <p className="mt-4 font-workSansLight">You joined on</p>
-                <p className="mt-4 font-workSansLight">To change your plan</p>
+                {/* <p className="mt-4 font-workSansLight">To change your plan</p> */}
               </div>
               <div className="ml-8">
                 <p className="font-workSansSemiBold">
                   {accountExtendDetail?.username ?? " "}
                 </p>
+                <div className="mt-4 flex items-center">
+                  <button
+                    className="flex"
+                    onClick={() => setIsOpenChangePassword(true)}
+                  >
+                    <p className="font-workSansLight text-success-500">
+                      Change password
+                    </p>
+                  </button>
+                </div>
                 <div className="flex items-center  mt-4">
                   {accountExtendDetail?.currentPlanKey ===
                   UserPayType.PREMIUM ? (
-                    <StarIcon className="h-5 w-5 mb-1 text-purple-600" />
+                    <StarIcon className="h-5 w-5 mb-1 text-yellow-400" />
                   ) : null}
                   <p
                     className={`font-workSansSemiBold ml-1 ${
                       accountExtendDetail?.currentPlanKey === UserPayType.FREE
                         ? "text-secondary-500"
-                        : "text-purple-600"
+                        : "text-yellow-400"
                     }`}
                   >
-                    {accountExtendDetail?.currentPlanKey}
+                    {accountExtendDetail?.currentPlanKey === UserPayType.FREE
+                      ? "FREE"
+                      : "PRO"}
                   </p>
                   {accountExtendDetail?.currentPlanKey ===
                     UserPayType.PREMIUM && canCancel ? (
@@ -244,11 +266,11 @@ const AccountDetails = () => {
                     "MM-DD-YYYY, hh:mm"
                   )}
                 </p>
-                <Link href={"#"}>
+                {/* <Link href={"#"}>
                   <p className="mt-4 text-success-500 font-workSansLight">
                     Click here
                   </p>
-                </Link>
+                </Link> */}
               </div>
             </div>
 
@@ -263,11 +285,11 @@ const AccountDetails = () => {
                   />
                 </CircleButton>
               </div>
-              <div className="ml-8 w-[200px]">
+              <div className="ml-8 w-[200px] mt-5">
                 <p className="font-workSansLight">Your current email</p>
-                <p className="mt-4 font-workSansLight">Wallet</p>
+                {/* <p className="mt-4 font-workSansLight">Wallet</p> */}
               </div>
-              <div className="ml-8">
+              <div className="ml-8 mt-5">
                 <div className="flex justify-center items-center">
                   <p className="font-workSansSemiBold">
                     {accountExtendDetail?.email}
@@ -293,22 +315,24 @@ const AccountDetails = () => {
                   )}
                 </div>
 
-                <Link href={"#"}>
+                {/* <Link href={"#"}>
                   <p className="mt-4 text-success-500 font-workSansLight">
                     Click here
                   </p>
-                </Link>
+                </Link> */}
               </div>
             </div>
 
             <div className="h-[1px] w-[100%] bg-[#38405B] mt-10 mb-1" />
 
-            <button className="flex" onClick={handleLogOut}>
-              <Image src={LogoutIcon} width={24} height={24} alt="logout" />
-              <p className="font-workSansLight text-primary-500 ml-2">
-                Sign out
-              </p>
-            </button>
+            <div className="flex">
+              <button className="flex" onClick={handleLogOut}>
+                <Image src={LogoutIcon} width={24} height={24} alt="logout" />
+                <p className="font-workSansLight text-primary-500 ml-2">
+                  Sign out
+                </p>
+              </button>
+            </div>
           </div>
 
           {/* */}
@@ -326,7 +350,11 @@ const AccountDetails = () => {
                 Learn more
               </p>
             </Link>
-            <div className="bg-secondary-300 flex max-lg:flex-col mt-6  py-1 justify-between">
+
+            <div className="mt-10 flex">
+              <p>Coming soon</p>
+            </div>
+            {/* <div className="bg-secondary-300 flex max-lg:flex-col mt-6  py-1 justify-between">
               <div className="p-3 font-workSansLight text-sm flex  justify-center items-center">
                 <Link href={"#"}>
                   <p className="text-[16px] max-2xl:text-[13px]">
@@ -344,7 +372,7 @@ const AccountDetails = () => {
                   <DocumentDuplicateIcon className="h-5 w-5" />
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -412,6 +440,11 @@ const AccountDetails = () => {
             </div>
           </Dialog>
         </Transition>
+
+        <ChangePasswordModal
+          isOpen={isOpenChangePassword}
+          closeModal={() => setIsOpenChangePassword(false)}
+        />
       </div>
     </HomeLayout>
   );

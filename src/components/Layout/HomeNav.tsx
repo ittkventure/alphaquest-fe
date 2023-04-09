@@ -29,17 +29,12 @@ const HomeNav: FC<HomeNavTypes> = () => {
       <div>
         <ul className="flex items-center max-lg:text-[14px] mt-3 max-lg:border-b max-lg:border-b-secondary-600 max-lg:pb-2">
           <li className="max-lg:flex-1 mr-6">
-            <Link href="/app">Projects</Link>
+            <Link href="/projects">Projects</Link>
           </li>
           <li className="max-lg:flex-1 mr-6">
-            <Link href="/app/trending">Trends</Link>
+            <Link href="/pricing">Pricing</Link>
           </li>
-          <li className="max-lg:flex-1 mr-6">
-            <Link href="/app">Ecosystems</Link>
-          </li>
-          <li className="max-lg:flex-1 mr-6">
-            <Link href="/app">About</Link>
-          </li>
+
           <li className="max-lg:flex-1 max-lg:hidden">
             {authState ? (
               <AQAvatar />

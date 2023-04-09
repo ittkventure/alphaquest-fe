@@ -13,14 +13,11 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
       </div>
       <ul className="flex mt-2">
         <li>
-          About <span className="mr-1 text-success-500">/</span>
+          <Link href={"https://twitter.com/alphaquestio"}>
+            Twitter <span className="mr-1 text-success-500">/</span>
+          </Link>
         </li>
-        <li>
-          Twitter <span className="mr-1 text-success-500">/</span>
-        </li>
-        <li>
-          Telegram <span className="mr-1 text-success-500">/</span>
-        </li>
+
         <li>
           <Link href={"/terms"}>
             Terms <span className="mr-1 text-success-500">/</span>

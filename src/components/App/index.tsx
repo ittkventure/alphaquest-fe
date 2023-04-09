@@ -231,7 +231,7 @@ const AppContent: FC<AppContentTypes> = ({
             <p className="mb-4">Upgrade account to see all</p>
 
             <button
-              onClick={() => router.push("/price")}
+              onClick={() => router.push("/pricing")}
               className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
             >
               <Image

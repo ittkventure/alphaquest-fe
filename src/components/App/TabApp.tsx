@@ -28,14 +28,14 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
       <Tab.List className="flex mb-3">
         <Tab
           onClick={() => {
-            router.push("/app/trending");
+            router.push("/projects/trending");
           }}
           className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
         >
           Trending
         </Tab>
         <Tab
-          onClick={() => router.push("/app/newest")}
+          onClick={() => router.push("/projects/newest")}
           className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
         >
           Newest

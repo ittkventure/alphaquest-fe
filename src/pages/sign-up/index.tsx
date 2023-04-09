@@ -44,7 +44,12 @@ const SignUp = () => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    if (!checkedTerms || !checkedSub) setError("Please confirm our terms");
+    if (!checkedTerms || !checkedSub) {
+      setError("Please confirm our terms");
+      setIsLoading(false);
+
+      return;
+    }
     try {
       await apiAuth.signUp({
         userName: data.userName,
@@ -60,7 +65,7 @@ const SignUp = () => {
         password: data.password,
         scope: "AlphaQuest",
       });
-      router.push("/price");
+      router.push("/pricing");
 
       handleLogged(res);
     } catch (error: any) {
@@ -172,7 +177,6 @@ const SignUp = () => {
                 className="text-success-500 cursor-pointer"
                 onClick={onGoLogin}
               >
-                {" "}
                 Sign in
               </span>
             </p>
