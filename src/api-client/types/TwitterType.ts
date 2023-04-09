@@ -1,5 +1,9 @@
 export type TimeFrameTypes = "ALL" | "30D" | "7D" | "1D";
-export type SortByType = "SCORE" | "DISCOVERED_DATE";
+export type SortByType =
+  | "SCORE"
+  | "DISCOVERED_DATE"
+  | "TWITTER_FOLLOWER"
+  | "TWITTER_CREATED_DATE";
 
 export interface TwitterGetListRequest {
   pageNumber: number;

@@ -1,5 +1,24 @@
 import { TableObject } from "@/components/App/Table/TableRow";
 
+const initListSort = [
+  {
+    label: "score",
+    value: "SCORE",
+  },
+  {
+    label: "discovered date",
+    value: "DISCOVERED_DATE",
+  },
+  {
+    label: "twitter follow",
+    value: "TWITTER_FOLLOWER",
+  },
+  {
+    label: "twitter create date",
+    value: "TWITTER_CREATED_DATE",
+  },
+];
+
 const initListMonth = [
   {
     label: "1d",
@@ -128,4 +147,10 @@ const listRowMock: TableObject[] = [
   },
 ];
 
-export { initListMonth, initListChain, initListCategory, listRowMock };
+export {
+  initListMonth,
+  initListChain,
+  initListCategory,
+  listRowMock,
+  initListSort,
+};
