@@ -1,11 +1,10 @@
 import { apiPayment } from "@/api-client";
-import { Logo1, Logo2, Logo3 } from "@/assets/images";
 import AQDisclosure from "@/components/AQDisclosure";
 import CommentSwiper from "@/components/CommentSwiper";
 import SubContent from "@/components/Subscription/SubContent";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
-import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -13,7 +12,7 @@ const Subscription = () => {
   const { handleLogged, authState } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {}, []);
-
+  const router = useRouter();
   const getPaymentLink = async (withoutTrial) => {
     setIsLoading(true);
     try {
@@ -61,16 +60,16 @@ const Subscription = () => {
               Uncover The Next Big Thing in Crypto Now
             </p>
             <p className="font-workSansLight mt-2">
-              Try the Standart plan for 7 days
+              Try the Pro Plan for 7 days
             </p>
           </div>
 
           <div>
             <button
-              onClick={() => router.push("/price")}
+              onClick={() => router.push("/pricing")}
               className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem]"
             >
-              Start 7-Day Trial for $9
+              Try the Pro Plan for 7 days
             </button>
           </div>
         </div>
@@ -83,7 +82,7 @@ const Subscription = () => {
           <CommentSwiper />
         </div>
 
-        <div className="flex w-full items-center justify-center text-[2rem] font-workSansSemiBold mt-[30px]">
+        {/* <div className="flex w-full items-center justify-center text-[2rem] font-workSansSemiBold mt-[30px]">
           <div className="h-[1px] w-[430px] bg-white opacity-20"></div>
           <p className="mx-9">As seen as</p>
           <div className="h-[1px] w-[430px] bg-white opacity-20"></div>
@@ -113,9 +112,9 @@ const Subscription = () => {
           <div className="py-10 bg-dark-800 flex items-center justify-center">
             <Image src={Logo1} alt="" height={36} />
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex w-full items-center justify-center text-[2rem] font-workSansSemiBold mt-[120px]">
+        <div className="flex w-full items-center justify-center text-[2rem] font-workSansSemiBold mt-[70px]">
           <p className="mx-9">Frequently Asked Questions</p>
         </div>
         <div className="mt-12 w-[835px] max-xl:w-full max-w-[1350px]">

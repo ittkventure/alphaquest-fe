@@ -8,7 +8,6 @@ import React, { useState } from "react";
 
 interface MenuItemType {
   key: string;
-  url: string;
   icon: JSX.Element;
   label: string;
   active: boolean;
@@ -25,14 +24,12 @@ const SideMenu = () => {
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
     {
       key: "trending",
-      url: "/app/trending",
       icon: <FireIcon className="h-5 w-5 mr-2" />,
       label: "Trending",
       active: false,
     },
     {
       key: "newest",
-      url: "/app/newest",
       icon: <BoltIcon className="h-5 w-5 mr-2" />,
       label: "Newest",
       active: false,
@@ -70,7 +67,7 @@ const SideMenu = () => {
                 )} w-full`}
               >
                 <Link
-                  href={`/app/${value.key}`}
+                  href={`/projects/${value.key}`}
                   className={`flex transition-all duration-300 ${
                     tab === value.key ? "text-dark-900 " : "text-white"
                   }`}
@@ -87,13 +84,7 @@ const SideMenu = () => {
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">
         <ul>
           <li className="mt-2">
-            <a href="#">About</a>
-          </li>
-          <li className="mt-2">
-            <a href="#">Twitter</a>
-          </li>
-          <li className="mt-2">
-            <a href="#">Discord</a>
+            <Link href={"https://twitter.com/alphaquestio"}>Twitter</Link>
           </li>
         </ul>
       </div>

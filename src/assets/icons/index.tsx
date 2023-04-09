@@ -9,6 +9,10 @@ import CrownIcon from "./crown-icon.svg";
 import TwitterIcon from "./twitter-icon.svg";
 import EmptyWallet from "./empty-wallet.svg";
 import EmptyWalletGreen from "./empty-wallet-green.svg";
+import CodeIconHome from "./code-icon-home.svg";
+import HeartIconHome from "./heart-icon-home.svg";
+import NotificationCircleIconHome from "./notification-circle-icon-home.svg";
+import ChestKingIcon from "./chess-king-icon.svg";
 
 import TickIcon from "./tick-icon.svg";
 import UserIcon from "./user-icon.svg";
@@ -31,4 +35,8 @@ export {
   EmptyWalletGreen,
   GiftIcon,
   LogoutIcon,
+  CodeIconHome,
+  HeartIconHome,
+  NotificationCircleIconHome,
+  ChestKingIcon,
 };

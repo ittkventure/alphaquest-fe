@@ -1,4 +1,10 @@
-import { DocumentTextIcon, QuoteIcon } from "@/assets/icons";
+import {
+  CodeIconHome,
+  DocumentTextIcon,
+  HeartIconHome,
+  NotificationCircleIconHome,
+  QuoteIcon,
+} from "@/assets/icons";
 import { ChartImg, HomeBgImg, HomeImg } from "@/assets/images";
 import { DiscoverProjectItem } from "@/components/Home";
 import CommentItem from "@/components/Home/CommentItem";
@@ -29,7 +35,7 @@ export default function Home() {
 
         <div className="flex justify-center mt-8 z-50">
           <button
-            onClick={() => router.push("/price")}
+            onClick={() => router.push("/pricing")}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem] z-50"
           >
             Start 7-Day Trial for $9
@@ -66,7 +72,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center mt-32 ">
+        {/* <div className="flex flex-col items-center justify-center mt-32 ">
           <p className="text-[2.75rem] font-workSansSemiBold">
             Find trends & Narratives Before They Happen
           </p>
@@ -102,12 +108,12 @@ export default function Home() {
 
         <div className="flex justify-center mt-8">
           <button
-            onClick={() => router.push("/price")}
+            onClick={() => router.push("/pricing")}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
           >
             Start 7-Day Trial for $9
           </button>
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center justify-center mt-32">
           <p className="text-[2.75rem] font-workSansSemiBold">
@@ -132,7 +138,7 @@ export default function Home() {
 
         <div className="flex justify-center mt-8">
           <button
-            onClick={() => router.push("/price")}
+            onClick={() => router.push("/pricing")}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
           >
             Start 7-Day Trial for $9
@@ -145,14 +151,31 @@ export default function Home() {
           </h3>
 
           <div className="flex flex-wrap justify-center mt-12">
-            <SubscriptionItem />
-            <SubscriptionItem />
-            <SubscriptionItem />
+            <SubscriptionItem
+              icon={DocumentTextIcon}
+              name="Weekly Newsletter"
+              description={`Each week we send you a newletter containing all newly discovered projects and trends for the week`}
+            />
+            <SubscriptionItem
+              icon={DocumentTextIcon}
+              name="Full Projects and trends database"
+              description={`Use our growing database to easily find emerging trends and projects`}
+            />
+            <SubscriptionItem
+              icon={HeartIconHome}
+              name="Personal Watchlist"
+              description={`Keep track of projects and trends you find interesting to get up-to-date on their growth and development`}
+            />
+            <SubscriptionItem
+              icon={NotificationCircleIconHome}
+              name="Intelligent Alerts"
+              description={`Get instantly notified via Telegram when a new project or narrative emerges, so you can stay ahead of the game`}
+            />
           </div>
 
           <div className="flex justify-center mt-8">
             <button
-              onClick={() => router.push("/price")}
+              onClick={() => router.push("/pricing")}
               className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
             >
               Start 7-Day Trial for $9
