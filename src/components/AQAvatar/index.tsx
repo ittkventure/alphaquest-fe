@@ -29,9 +29,12 @@ const AQAvatar = () => {
             className="object-cover z-10"
           />
         </div>
-        <div className="absolute z-50 left-[29px] top-[-5px] max-lg:left-[31px]">
-          <Image src={ChestKingIcon} width={20} height={20} alt="" />
-        </div>
+        {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+          <div className="absolute z-50 left-[29px] top-[-5px] max-lg:left-[31px]">
+            <Image src={ChestKingIcon} width={20} height={20} alt="" />
+          </div>
+        ) : null}
+
         <div className="pl-2">
           <p className=" text-[16px] max-lg:hidden">
             {accountExtendDetail?.username}
