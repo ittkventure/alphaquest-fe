@@ -1,24 +1,32 @@
-import { TimeFrameTypes } from "@/api-client/types/TwitterType";
+import { SortByType, TimeFrameTypes } from "@/api-client/types/TwitterType";
 import { initListMonth } from "@/utils/list";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import React, { FC, useEffect, useState } from "react";
 
 export type MothType = {
   label?: string;
-  value?: TimeFrameTypes;
+  value?: TimeFrameTypes | SortByType;
 };
 
 interface MonthSelectTypes {
   onChangeSelect: (month: MothType) => void;
+  listData?: Array<MothType>;
+  defaultData?: MothType;
 }
 
-const MonthSelect: FC<MonthSelectTypes> = ({ onChangeSelect }) => {
-  const [listMonth, setListMonth] = useState(initListMonth);
+const MonthSelect: FC<MonthSelectTypes> = ({
+  onChangeSelect,
+  listData,
+  defaultData,
+}) => {
+  const [listMonth, setListMonth] = useState(listData ?? initListMonth);
   const [isShowMenu, setIsShowMenu] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<MothType>({
-    label: "7d",
-    value: "7D",
-  });
+  const [selectedValue, setSelectedValue] = useState<MothType>(
+    defaultData ?? {
+      label: "7d",
+      value: "7D",
+    }
+  );
 
   useEffect(() => {
     onChangeSelect(selectedValue);

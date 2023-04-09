@@ -23,6 +23,7 @@ import { AuthContext } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
+import { initListSort } from "@/utils/list";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -84,7 +85,7 @@ const AppContent: FC<AppContentTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeFrame, accountExtendDetail, chainSelected, categorySelected]);
+  }, [timeFrame, accountExtendDetail, chainSelected, categorySelected, sortBy]);
 
   const fetchData = async (currentTab?: string) => {
     try {
@@ -255,16 +256,31 @@ const AppContent: FC<AppContentTypes> = ({
       </div>
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
-          <div className="flex items-center max-lg:mt-2">
-            <p>
-              {totalCount.toLocaleString()} trending projects discovered during
-              the last
-            </p>
-            <MonthSelect
-              onChangeSelect={(month) => {
-                setTimeFrame(month.value ?? "ALL");
-              }}
-            />
+          <div className="flex items-center max-lg:flex-col max-lg:mt-2">
+            <div className="flex">
+              <p>
+                {totalCount.toLocaleString()} trending projects discovered
+                during the last
+              </p>
+              <MonthSelect
+                onChangeSelect={(month) => {
+                  setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                }}
+              />
+            </div>
+            <div className="flex">
+              <p className="ml-1">sorted by</p>
+              <MonthSelect
+                onChangeSelect={(month) => {
+                  setSortBy((month.value as SortByType) ?? "SCORE");
+                }}
+                defaultData={{
+                  value: "SCORE",
+                  label: "score",
+                }}
+                listData={initListSort as Array<any>}
+              />
+            </div>
           </div>
 
           <div className="flex max-lg:items-center justify-between max-lg:mt-5">
