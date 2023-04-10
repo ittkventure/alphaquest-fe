@@ -37,11 +37,11 @@ const AQDisclosure: FC<IAQDisclosure> = ({
       </div>
 
       <div
-        className={`transition-all w-full duration-300 text-left ml-14 font-workSansLight ${
+        className={`transition-all w-full duration-500 text-left ml-14 font-workSansLight ${
           open ? "max-h-max py-4  mb-6" : "h-0 py-0 overflow-hidden"
         }`}
       >
-        <p className="mt-4">{content}</p>
+        <p className="mt-4 pr-3">{content}</p>
       </div>
     </button>
   );

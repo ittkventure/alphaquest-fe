@@ -1,3 +1,5 @@
+import { UserPayType } from "@/api-client/types/AuthType";
+import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
 import { AuthContext } from "@/contexts/useAuthContext";
 import Image from "next/image";
@@ -11,7 +13,8 @@ interface HomeNavTypes {}
 const HomeNav: FC<HomeNavTypes> = () => {
   const router = useRouter();
 
-  const { handleLogged, authState } = useContext(AuthContext);
+  const { handleLogged, authState, accountExtendDetail } =
+    useContext(AuthContext);
 
   const onGoLogin = () => {
     router.push("/login");
@@ -33,6 +36,27 @@ const HomeNav: FC<HomeNavTypes> = () => {
           </li>
           <li className="max-lg:flex-1 mr-6">
             <Link href="/pricing">Pricing</Link>
+          </li>
+
+          <li>
+            {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
+            authState?.access_token ? (
+              <div>
+                <button
+                  onClick={() => router.push("/pricing")}
+                  className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
+                >
+                  <Image
+                    src={CrownIcon}
+                    width={17}
+                    height={14}
+                    alt="crown-icon"
+                    className="mr-2"
+                  />
+                  Upgrade to Pro
+                </button>
+              </div>
+            ) : null}
           </li>
 
           <li className="max-lg:flex-1 max-lg:hidden">
