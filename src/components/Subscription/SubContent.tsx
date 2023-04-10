@@ -46,7 +46,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                     <Spinner />
                   </div>
                 ) : null}
-                <p>Free Dashboard</p>
+                <p>Access Now</p>
               </button>
             </div>
           </div>
