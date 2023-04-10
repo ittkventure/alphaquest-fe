@@ -12,7 +12,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-center items-center max-xl:flex-col  mt-[102px] w-full px-36 max-lg:px-0 ">
+    <div className="flex justify-center items-center max-lg:flex-col  mt-[102px] w-full px-36 max-lg:px-0 ">
       <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
         <div className="relative mx-6 w-[576px] max-xl:w-full">
           <div className="rounded-[100%] w-52 h-52 custom-circle-bg absolute top-[-30px] right-[-30px]"></div>

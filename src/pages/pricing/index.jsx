@@ -81,12 +81,12 @@ const Subscription = () => {
 
   return (
     <HomeLayout>
-      <div className="max-lg:px-5 flex flex-col items-center">
+      <div className="max-lg:px-5 flex flex-col items-center overflow-hidden">
         <div className="flex flex-col items-center justify-center text-[2rem] font-workSansSemiBold ">
           <p>Uncover The Next Big Thing in Crypto Now</p>
         </div>
         <div className="flex justify-center mt-8 font-workSansLight text-center">
-          <p className=" w-[900px]">
+          <p className=" w-[900px] max-lg:w-full">
             Your Alpha Quest Pro subscription includes a weekly newsletter, a
             full projects and trends database, a personal watchlist, and
             intelligent alerts.

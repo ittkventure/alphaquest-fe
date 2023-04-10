@@ -10,6 +10,7 @@ import { DiscoverProjectItem } from "@/components/Home";
 import CommentItem from "@/components/Home/CommentItem";
 import SubscriptionItem from "@/components/Home/SubscriptionItem";
 import HomeLayout from "@/layouts/HomeLayout";
+import { listDiscoverProjects } from "@/utils/list";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -145,12 +146,9 @@ export default function Home() {
 
         <div className="flex flex-wrap justify-center items-center mt-16 w-full">
           <div className="flex flex-wrap justify-center max-w-[1500px]">
-            <DiscoverProjectItem />
-            <DiscoverProjectItem />
-            <DiscoverProjectItem />
-            <DiscoverProjectItem />
-            <DiscoverProjectItem />
-            <DiscoverProjectItem />
+            {listDiscoverProjects.map((value, index) => {
+              return <DiscoverProjectItem key={index} {...value} />;
+            })}
           </div>
         </div>
 

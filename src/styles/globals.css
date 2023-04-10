@@ -132,3 +132,7 @@ select:-webkit-autofill:focus {
 .bg-linear-backdrop {
     background: linear-gradient(180deg, rgba(17, 20, 30, 0) 0%, #11141E 69.93%);
 }
+
+.filter-backdrop-custom {
+    filter: drop-shadow(0px 15px 15px rgba(0, 0, 0, 0.2));
+}
