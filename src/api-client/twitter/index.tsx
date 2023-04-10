@@ -2,7 +2,6 @@ import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
 import { TwitterGetListRequest } from "../types/TwitterType";
 import qs from "qs";
-import { AxiosError } from "axios";
 
 class ApiTwitter extends ApiClientBase {
   constructor() {

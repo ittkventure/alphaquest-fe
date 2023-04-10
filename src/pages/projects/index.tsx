@@ -8,6 +8,7 @@ import AppLayout from "@/layouts/AppLayout";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 
 interface Props {
   listItems?: TwitterItem[];
@@ -16,39 +17,31 @@ interface Props {
 
 const AppPage: NextPage<Props> = () => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
-  const router = useRouter();
-  const [listItems, setListItems] = useState<TwitterItem[]>([]);
-  const [totalCount, setTotalCount] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
   const apiTwitter = new ApiTwitter();
 
-  const getData = async () => {
-    const getData = await apiTwitter.getListTwitter(
-      {
-        pageNumber: 1,
-        pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
-        timeFrame: "7D",
-        sortBy: "SCORE",
-        newest: false,
-      },
-      authState?.access_token ?? "",
-      authState?.access_token ? false : true
-    );
-
-    setListItems(getData.items ?? []);
-    setTotalCount(getData.totalCount?.toString() ?? "");
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authState?.access_token, accountExtendDetail]);
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["getListTwitter"],
+    queryFn: async () =>
+      await apiTwitter.getListTwitter(
+        {
+          pageNumber: 1,
+          pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
+          timeFrame: "7D",
+          sortBy: "SCORE",
+          newest: false,
+        },
+        authState?.access_token ?? "",
+        authState?.access_token ? false : true
+      ),
+  });
 
   return (
     <AppLayout>
       {isLoading === false ? (
-        <AppContent listItemsProps={listItems} totalCountProps={totalCount} />
+        <AppContent
+          listItemsProps={data.items}
+          totalCountProps={data.totalCount}
+        />
       ) : (
         <div className="w-full">
           <div className="p-6">

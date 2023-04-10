@@ -5,7 +5,7 @@ import {
   NotificationCircleIconHome,
   QuoteIcon,
 } from "@/assets/icons";
-import { ChartImg, HomeBgImg, HomeImg } from "@/assets/images";
+import { ChartImg, HomeBgImg, HomeImg, User1, User2 } from "@/assets/images";
 import { DiscoverProjectItem } from "@/components/Home";
 import CommentItem from "@/components/Home/CommentItem";
 import SubscriptionItem from "@/components/Home/SubscriptionItem";
@@ -67,8 +67,26 @@ export default function Home() {
 
         <div className="flex justify-center items-center max-lg:flex-col  mt-[102px] w-full px-36 max-lg:px-0 ">
           <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
-            <CommentItem />
-            <CommentItem />
+            <div className="w-[650px] max-lg:w-full">
+              <CommentItem
+                avatar={User1}
+                content={
+                  "This has been our secret weapon for identifying early-stage crypto projects since 2021. We’re thrilled to finally release this powerful tool to the public, offering everyone the opportunity to benefit from our in-house expertise and insights."
+                }
+                name="Shayne"
+                des="Head of Ventures at TK Ventures"
+              />
+            </div>
+            <div className="w-[650px] max-lg:w-full">
+              <CommentItem
+                avatar={User2}
+                content={
+                  "AlphaQuest is my go-to resource for discovering promising crypto projects in their infancy. Their weekly newsletter keeps me updated and ready to capitalize on greatest alpha. Highly recommended!"
+                }
+                name="James R., Degen"
+                des="CEO @ FeedHive"
+              />
+            </div>
           </div>
         </div>
 

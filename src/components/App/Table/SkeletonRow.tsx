@@ -10,18 +10,18 @@ const SkeletonRow = () => {
         </div>
         <div className="mr-4">
           <div className="flex bg-slate-500 w-[10vw] h-2">
-            <p className="text-success-500 max-lg:text-[14px] font-workSansSemiBold mr-2"></p>
+            <p className="text-success-500 max-lg: text-sm font-workSansSemiBold mr-2"></p>
           </div>
           <div className="flex bg-slate-500 w-[55vw] h-2 mt-1">
-            <p className="font-workSansRegular max-lg:text-[12px] text-sm"></p>
+            <p className="font-workSansRegular max-lg:text-xs text-sm"></p>
           </div>
           <div className="flex bg-slate-500 w-[23vw] h-2 mt-1">
-            <p className="font-workSansRegular text-sm max-lg:text-[12px] text-secondary-500"></p>
+            <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500"></p>
           </div>
         </div>
       </div>
       <div className="flex max-lg:flex-col max-lg:justify-between max-lg:py-2 justify-end items-center ">
-        <div className="border bg-slate-500 px-1 mr-2 max-lg:text-[12px]"></div>
+        <div className="border bg-slate-500 px-1 mr-2 max-lg:text-xs"></div>
       </div>
     </div>
   );

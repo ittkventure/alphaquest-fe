@@ -4,9 +4,16 @@ import React, { FC, useState } from "react";
 interface IAQDisclosure {
   index: number;
   classNameContainer?: string;
+  title: string;
+  content: string;
 }
 
-const AQDisclosure: FC<IAQDisclosure> = ({ index, classNameContainer }) => {
+const AQDisclosure: FC<IAQDisclosure> = ({
+  index,
+  classNameContainer,
+  title,
+  content,
+}) => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -20,7 +27,7 @@ const AQDisclosure: FC<IAQDisclosure> = ({ index, classNameContainer }) => {
           <p className="text-[40px] mx-4 font-workSansExtraLight text-success-500">
             /
           </p>{" "}
-          <p>How does the 7-day free trial work</p>
+          <p>{title}</p>
         </div>
         <div
           className={`transition-all duration-200 ${!open ? "" : "rotate-180"}`}
@@ -30,23 +37,11 @@ const AQDisclosure: FC<IAQDisclosure> = ({ index, classNameContainer }) => {
       </div>
 
       <div
-        className={`transition-all duration-300 text-left ml-14 font-workSansLight ${
+        className={`transition-all w-full duration-300 text-left ml-14 font-workSansLight ${
           open ? "max-h-max py-4  mb-6" : "h-0 py-0 overflow-hidden"
         }`}
       >
-        <p className="mt-4">
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. Lorem ipsum may be
-          used as a placeholder before final copy is available.
-        </p>
-
-        <p className="mt-4">
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. Lorem ipsum may be
-          used as a placeholder before final copy is available.
-        </p>
+        <p className="mt-4">{content}</p>
       </div>
     </button>
   );

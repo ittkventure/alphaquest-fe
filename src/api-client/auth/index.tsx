@@ -1,5 +1,4 @@
 import ApiClientBase from "../ApiClientBase";
-import { BaseResponse } from "../types/BaseResponse";
 import {
   AccountDetailResponse,
   LoginParamsType,
@@ -118,11 +117,8 @@ class ApiAuth extends ApiClientBase {
     newPassword: string
   ): Promise<any> {
     const res = await this.instance.post(
-      "/api/account/my-profile/change-password",
-      {
-        currentPassword,
-        newPassword,
-      },
+      `/api/app/account-extend/change-password?currentPassword=${currentPassword}&newPassword=${newPassword}`,
+      {},
       {
         headers: {
           Authorization: "Bearer " + access_token,

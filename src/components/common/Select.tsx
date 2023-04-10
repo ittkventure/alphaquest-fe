@@ -63,7 +63,7 @@ const SelectCustom: FC<SelectCustomTypes> = ({
           {listMonth.map((value, index) => (
             <button
               key={index.toString()}
-              className={`flex justify-center items-center w-52 max-lg:w-[44vw] max-lg:text-[14px] py-2 hover:bg-success-500 font-workSansLight ${
+              className={`flex justify-center items-center w-52 max-lg:w-[44vw] max-lg: text-sm py-2 hover:bg-success-500 font-workSansLight ${
                 isShowMenu ? "" : "hidden"
               } ${selectedValue.code === value.code ? "bg-success-500" : ""}`}
               onClick={() => {
