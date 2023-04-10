@@ -1,9 +1,7 @@
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import { TwitterIcon } from "@/assets/icons";
-import { HeartIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import Image from "next/image";
-import Link from "next/link";
 import React, { FC } from "react";
 
 export interface TableObject {
@@ -64,7 +62,7 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
           >
             {item.name !== "UNKNOWN" ? (
               <>
-                <p className="text-success-500 max-lg:text-[14px] font-workSansSemiBold mr-2">
+                <p className="text-success-500 max-lg: text-sm font-workSansSemiBold mr-2">
                   {item.name}
                 </p>
                 <div>
@@ -78,12 +76,12 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
             )}
           </div>
           <div>
-            <p className="font-workSansRegular max-lg:text-[12px] text-sm">
+            <p className="font-workSansRegular max-lg:text-xs text-sm">
               {item.description}
             </p>
           </div>
           <div>
-            <p className="font-workSansRegular text-sm max-lg:text-[12px] text-secondary-500">
+            <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500">
               {moment(item.discoveredTime).fromNow()}
               {item.chain ? ` · ${item.chain.name}` : ""}
               {_renderCategories()}
@@ -92,7 +90,7 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
         </div>
       </div>
       <div className="flex max-lg:flex-col max-lg:justify-between max-lg:py-2 justify-end items-center ">
-        <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-[12px]">
+        <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{item.trendingScore}</p>
         </div>
         {/* <button>

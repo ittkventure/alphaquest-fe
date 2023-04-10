@@ -7,10 +7,50 @@ import HomeLayout from "@/layouts/HomeLayout";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 const Subscription = () => {
   const { handleLogged, authState } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const listSub = [
+    {
+      title: "Can I use Alpha Quest if I’m new to cryptocurrency?",
+      content: `A: Yes, Alpha Quest is designed to be easy to use and accessible to everyone, regardless of their level of experience with cryptocurrency.`,
+    },
+    {
+      title: "What’s included in the subscription?",
+      content: `A: Your Alpha Quest subscription includes a weekly newsletter, a full projects and trends database, a personal watchlist, and intelligent alerts.`,
+    },
+    {
+      title: "What happens after my trial ends?",
+      content: `A: After your 7-day trial ends, you’ll have the option to continue using Alpha Quest by subscribing to one of our paid plans.`,
+    },
+    {
+      title: "How much does Alpha Quest cost?",
+      content: `A: You can start a 7-day trial for just $9 to try the app’s features. After that, it’s $99 per month.`,
+    },
+    {
+      title: "Can I cancel my subscription?",
+      content: `A: Yes, you can cancel your subscription at any time.`,
+    },
+    {
+      title: "How can I get help if I have questions or issues with the app?",
+      content: `A: Our customer support team is available to help you via telegram at https://t.me/alphaquestio`,
+    },
+    {
+      title: "Is Alpha Quest available on all devices?",
+      content: `A: Alpha Quest is accessible from your desktop or laptop computer, as well as your iOS or Android mobile device, so you can stay connected and informed wherever you are`,
+    },
+    {
+      title: "Is the payment process secure?",
+      content: `A: Yes, Alpha Quest uses secure payment processing methods to protect your payment information.`,
+    },
+    {
+      title: "What kind of data does Alpha Quest collect?",
+      content: `A: Alpha Quest collects data related to crypto projects and trends, as well as user data related to subscription preferences and usage of the app. We take privacy and security very seriously and only collect data necessary to provide our services.`,
+    },
+  ];
+
   useEffect(() => {}, []);
   const router = useRouter();
   const getPaymentLink = async (withoutTrial) => {
@@ -26,7 +66,7 @@ const Subscription = () => {
         });
         setIsLoading(false);
       } else {
-        toast.warning("Please login or register before payment!");
+        router.push("/login");
         setIsLoading(false);
       }
     } catch (error) {
@@ -46,10 +86,10 @@ const Subscription = () => {
           <p>Uncover The Next Big Thing in Crypto Now</p>
         </div>
         <div className="flex justify-center mt-8 font-workSansLight text-center">
-          <p className=" w-[922px]">
-            Access our automated projects sourcing to discover and connect with
-            a large number of stealth and about to launch protocols &
-            applications before anyone else
+          <p className=" w-[900px]">
+            Your Alpha Quest Pro subscription includes a weekly newsletter, a
+            full projects and trends database, a personal watchlist, and
+            intelligent alerts.
           </p>
         </div>
 
@@ -66,9 +106,15 @@ const Subscription = () => {
 
           <div>
             <button
-              onClick={() => router.push("/pricing")}
-              className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem]"
+              onClick={() => getPaymentLink(false)}
+              className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem] flex justify-center items-center"
+              disabled={isLoading}
             >
+              {isLoading ? (
+                <div className="mr-1">
+                  <Spinner />
+                </div>
+              ) : null}
               Try the Pro Plan for 7 days
             </button>
           </div>
@@ -118,11 +164,16 @@ const Subscription = () => {
           <p className="mx-9">Frequently Asked Questions</p>
         </div>
         <div className="mt-12 w-[835px] max-xl:w-full max-w-[1350px]">
-          <AQDisclosure index={1} classNameContainer="mt-4" />
-          <AQDisclosure index={2} classNameContainer="mt-4" />
-          <AQDisclosure index={3} classNameContainer="mt-4" />
-          <AQDisclosure index={4} classNameContainer="mt-4" />
-          <AQDisclosure index={5} classNameContainer="mt-4" />
+          {listSub.map((value, index) => {
+            return (
+              <AQDisclosure
+                title={value.title}
+                content={value.content}
+                index={index + 1}
+                classNameContainer="mt-4"
+              />
+            );
+          })}
         </div>
 
         <div className="flex justify-center items-center mt-[120px] mb-12 h-[400px] w-full relative">

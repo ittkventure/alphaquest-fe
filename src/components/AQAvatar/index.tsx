@@ -1,5 +1,6 @@
 import { UserPayType } from "@/api-client/types/AuthType";
 import { ChestKingIcon, CrownIcon } from "@/assets/icons";
+import { LogoCircle } from "@/assets/images";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -20,9 +21,7 @@ const AQAvatar = () => {
           } overflow-hidden relative`}
         >
           <Image
-            src={
-              "https://i.pinimg.com/736x/0c/01/62/0c01627379bbe834af8150c606d65f1b.jpg"
-            }
+            src={LogoCircle}
             width={40}
             height={40}
             alt="avt"

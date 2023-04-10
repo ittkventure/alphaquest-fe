@@ -23,6 +23,10 @@ const changePasswordValidationSchema = yup.object({
     .matches(
       passwordRegex,
       "New passwords must have at least one non alphanumeric character., Passwords must have at least one digit ('0'-'9')., Passwords must have at least one uppercase ('A'-'Z')."
+    )
+    .notOneOf(
+      [yup.ref("currentPassword")],
+      "New passwords must be different with current password"
     ),
   confirmPassword: yup
     .string()

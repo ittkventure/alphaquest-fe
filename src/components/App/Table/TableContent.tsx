@@ -1,7 +1,5 @@
 import { TwitterItem } from "@/api-client/types/TwitterType";
-import { listRowMock } from "@/utils/list";
 import React, { FC, useEffect, useState } from "react";
-import SkeletonRow from "./SkeletonRow";
 import TableRow from "./TableRow";
 
 interface TableContentTypes {
