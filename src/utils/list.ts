@@ -1,4 +1,13 @@
+import {
+  AptosLogo,
+  BlurLogo,
+  ConduitLogo,
+  LensLogo,
+  StargateLogo,
+  StepnLogo,
+} from "@/assets/images";
 import { TableObject } from "@/components/App/Table/TableRow";
+import { DiscoverProjectItemTypes } from "@/components/Home/DiscoverProjectItem";
 
 const initListSort = [
   {
@@ -147,10 +156,68 @@ const listRowMock: TableObject[] = [
   },
 ];
 
+const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
+  {
+    project: "Aptos",
+    found: "2/9/2022 9:36:49.000 PM",
+    dayAfter: "4 days after account created",
+    des: "Retroactive up to 50k",
+    follow: "380k+",
+    whenFound: "703",
+    logo: AptosLogo,
+  },
+  {
+    project: "Blur",
+    found: "2022-02-07 02:16:36.027024",
+    dayAfter: "4 days after account created",
+    des: "Retroactive up to 1M",
+    follow: "240k+",
+    whenFound: "112",
+    logo: BlurLogo,
+  },
+  {
+    project: "Stargate Finance",
+    found: "2021-11-01 02:00:45.904789",
+    dayAfter: "4 days after account created",
+    des: "6x Return",
+    follow: "139k+",
+    whenFound: "1401",
+    logo: StargateLogo,
+  },
+  {
+    project: "Stepn",
+    found: "03:17, 01 Thg10 2021",
+    dayAfter: "4 days after account created",
+    des: "40x Return",
+    follow: "571k+",
+    whenFound: "720",
+    logo: StepnLogo,
+  },
+  {
+    project: "Lens Protocol",
+    found: "2022-01-22 02:16:31.597150",
+    dayAfter: "4 days after account created",
+    des: "NFT worth $100",
+    follow: "296k+",
+    whenFound: "2359",
+    logo: LensLogo,
+  },
+  {
+    project: "Conduitxyz",
+    found: "11:05, 2 Thg2 2023",
+    dayAfter: "4 days after account created",
+    des: "Fundraising announcement publish on 28th March 2023",
+    follow: "2k+",
+    whenFound: "489",
+    logo: ConduitLogo,
+  },
+];
+
 export {
   initListMonth,
   initListChain,
   initListCategory,
   listRowMock,
   initListSort,
+  listDiscoverProjects,
 };

@@ -24,13 +24,58 @@ const HomeNav: FC<HomeNavTypes> = () => {
     router.push("/");
   };
 
+  const renderMobile = () => {
+    return (
+      <div className="hidden max-lg:block">
+        <ul className="flex items-center justify-end text-sm max-lg:pb-2">
+          <li>
+            {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
+            authState?.access_token ? (
+              <div>
+                <button
+                  onClick={() => router.push("/pricing")}
+                  className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+                >
+                  <Image
+                    src={CrownIcon}
+                    width={17}
+                    height={14}
+                    alt="crown-icon"
+                    className="mr-2"
+                  />
+                  Upgrade to Pro
+                </button>
+              </div>
+            ) : null}
+          </li>
+
+          <li className="max-lg:flex-1">
+            {authState ? (
+              <AQAvatar />
+            ) : (
+              <button
+                onClick={onGoLogin}
+                className="py-2 px-6 bg-success-500 text-white"
+              >
+                Login
+              </button>
+            )}
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
   return (
-    <div className="flex max-lg:flex-col h-24 justify-between p-6 max-lg:mb-5 z-[100] absolute w-full">
+    <div className="flex h-24 justify-between p-6 max-lg:mb-5 z-[100] absolute w-full">
       <button onClick={onGoHome} className="cursor-pointer">
         <Image src={LogoWithText} width={169} height={40} alt="logo" />
       </button>
+
       <div>
-        <ul className="flex items-center max-lg: text-sm mt-3 max-lg:border-b max-lg:border-b-secondary-600 max-lg:pb-2">
+        {renderMobile()}
+
+        <ul className="flex items-center max-lg:hidden text-sm mt-3 max-lg:border-b max-lg:border-b-secondary-600 max-lg:pb-2">
           <li className="max-lg:flex-1 mr-6">
             <Link href="/projects">Projects</Link>
           </li>
