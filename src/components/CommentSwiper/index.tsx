@@ -34,8 +34,8 @@ const CommentSwiper = () => {
           content={
             "AlphaQuest is my go-to resource for discovering promising crypto projects in their infancy. Their weekly newsletter keeps me updated and ready to capitalize on greatest alpha. Highly recommended!"
           }
-          name="James R., Degen"
-          des="CEO @ FeedHive"
+          name="James R"
+          des="Crypto Degen"
         />
       </SwiperSlide>
     </Swiper>

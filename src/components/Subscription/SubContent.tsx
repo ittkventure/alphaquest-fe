@@ -30,7 +30,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
             <div className="flex items-center font-workSansLight">
               <CheckIcon className="h-4 w-4 text-success-500" />
-              <p className="ml-2">Access to discoveries with a delay</p>
+              <p className="ml-2">Access to a limited projects & trends database</p>
             </div>
 
             <div className="mt-[91px] flex justify-end">
