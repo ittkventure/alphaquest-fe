@@ -17,6 +17,8 @@ export default function App({ Component, pageProps }: AppProps) {
     getAccountExtendDetails,
     canCancel,
     getCanCancel,
+    typePayment,
+    setTypePaymentAction,
   } = useAuthContext();
 
   return (
@@ -29,6 +31,8 @@ export default function App({ Component, pageProps }: AppProps) {
         getAccountExtendDetails,
         canCancel,
         getCanCancel,
+        typePayment,
+        setTypePaymentAction,
       }}
     >
       <PaddleLoader />

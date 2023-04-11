@@ -2,7 +2,7 @@ import { apiPayment } from "@/api-client";
 import AQDisclosure from "@/components/AQDisclosure";
 import CommentSwiper from "@/components/CommentSwiper";
 import SubContent from "@/components/Subscription/SubContent";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
 
 const Subscription = () => {
-  const { handleLogged, authState } = useContext(AuthContext);
+  const { authState, typePayment, setTypePaymentAction } =
+    useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const listSub = [
     {
@@ -51,12 +52,22 @@ const Subscription = () => {
     },
   ];
 
-  useEffect(() => {}, []);
   const router = useRouter();
+
+  useEffect(() => {
+    if (router.query?.action === "open" && authState?.access_token) {
+      if (typePayment === TypePayment.TRIAL) {
+        getPaymentLink(false);
+      } else if (typePayment === TypePayment.PRO) {
+        getPaymentLink(true);
+      }
+    }
+  }, [typePayment, router.query]);
+
   const getPaymentLink = async (withoutTrial) => {
     setIsLoading(true);
     try {
-      if (authState?.access_token) {
+      if (authState) {
         const paymentLink = await apiPayment.getLinkPayment(
           authState?.access_token,
           withoutTrial
@@ -66,7 +77,12 @@ const Subscription = () => {
         });
         setIsLoading(false);
       } else {
-        router.push("/login");
+        setTypePaymentAction
+          ? setTypePaymentAction(
+              withoutTrial ? TypePayment.PRO : TypePayment.TRIAL
+            )
+          : null;
+        router.push("/sign-up");
         setIsLoading(false);
       }
     } catch (error) {

@@ -14,7 +14,6 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 
 const passwordRegex = /^(?=.*[!@#$%^&*])(?=.*\d)(?=.*[A-Z])/i;
-
 const signUpValidationSchema = yup.object({
   userName: yup.string().required("Username is required"),
   email: yup.string().required("Email is required"),
@@ -40,11 +39,11 @@ const SignUp = () => {
 
   useEffect(() => {
     setError("");
-  }, [checkedTerms, checkedSub]);
+  }, [checkedTerms]);
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    if (!checkedTerms || !checkedSub) {
+    if (!checkedTerms) {
       setError("Please confirm our terms");
       setIsLoading(false);
 
@@ -65,7 +64,7 @@ const SignUp = () => {
         password: data.password,
         scope: "AlphaQuest",
       });
-      router.push("/pricing");
+      router.push("/pricing?action=open");
 
       handleLogged(res);
     } catch (error: any) {
@@ -125,8 +124,8 @@ const SignUp = () => {
             <AQCheckbox
               containerClassName="mt-5"
               name="terms"
-              checked={checkedSub}
-              onChange={() => setCheckedSub(!checkedSub)}
+              checked={checkedTerms}
+              onChange={() => setCheckedTerms(!checkedTerms)}
               content={
                 <p className="ml-2">
                   I agree to the{" "}
@@ -136,18 +135,6 @@ const SignUp = () => {
               }
             />
 
-            <AQCheckbox
-              containerClassName="mt-5"
-              name="sub"
-              checked={checkedTerms}
-              onChange={() => setCheckedTerms(!checkedTerms)}
-              content={
-                <p className="ml-2">
-                  Subscribe to receive company news and product updates from
-                  AlphaQuest. You may unsubscribe at any time.
-                </p>
-              }
-            />
             {error ? (
               <button type="button">
                 <p className="text-sm text-primary-500">{error}</p>
@@ -166,13 +153,13 @@ const SignUp = () => {
               <p>Sign up</p>
             </button>
 
-            <button className="w-full border border-primary-500 text-primary-500 flex justify-center items-center py-3 mt-5">
+            {/* <button className="w-full border border-primary-500 text-primary-500 flex justify-center items-center py-3 mt-5">
               <Image src={EmptyWallet} className="h-6 w-6" alt="wallet" />
               <p className="ml-2">Sign up with Wallet</p>
-            </button>
+            </button> */}
 
             <p className="text-[16px] mt-5 text-center">
-              Already have an account?
+              Already have an account?{" "}
               <span
                 className="text-success-500 cursor-pointer"
                 onClick={onGoLogin}

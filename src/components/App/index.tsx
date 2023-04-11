@@ -225,7 +225,7 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative ">
       {accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
       !accountExtendDetail?.currentPlanKey ? (
         <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
@@ -257,11 +257,11 @@ const AppContent: FC<AppContentTypes> = ({
       </div>
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
-          <div className="flex items-center max-lg:flex-col max-lg:mt-2">
-            <div className="flex">
+          <div className="flex items-center max-xl:flex-col max-lg:mt-2">
+            <div className="flex justify-start">
               <p>
-                {totalCount.toLocaleString()} trending projects discovered
-                during the last
+                {totalCount.toLocaleString()} projects discovered during the
+                last
               </p>
               <MonthSelect
                 onChangeSelect={(month) => {
