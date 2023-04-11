@@ -5,6 +5,11 @@ import {
 } from "@/api-client/types/AuthType";
 import React, { useEffect, useState } from "react";
 
+export enum TypePayment {
+  PRO = "PRO",
+  TRIAL = "TRIAL",
+}
+
 export interface IAuthContext {
   authState?: LoginResponseType | null;
   accountExtendDetail?: AccountDetailResponse | null;
@@ -13,6 +18,8 @@ export interface IAuthContext {
   handleLogOut: () => void;
   getAccountExtendDetails: () => Promise<void>;
   getCanCancel: () => Promise<void>;
+  typePayment?: TypePayment;
+  setTypePaymentAction?: (type: TypePayment) => void;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({
@@ -32,6 +39,7 @@ export const useAuthContext = (): IAuthContext => {
 
   const [accountExtendDetail, setAccountExtendDetail] = useState<any>(null);
   const [canCancel, setCanCancel] = useState<boolean | null | undefined>(null);
+  const [typePayment, setTypePayment] = useState<TypePayment | undefined>();
 
   useEffect(() => {
     const dataLocal = localStorage.getItem("AQToken") ?? "null";
@@ -85,6 +93,9 @@ export const useAuthContext = (): IAuthContext => {
     localStorage.removeItem("AQToken");
     setAuthState(null);
   };
+  const setTypePaymentAction = (type?: TypePayment) => {
+    setTypePayment(type);
+  };
 
   return {
     authState,
@@ -94,5 +105,7 @@ export const useAuthContext = (): IAuthContext => {
     getAccountExtendDetails,
     canCancel: canCancel,
     getCanCancel,
+    typePayment,
+    setTypePaymentAction,
   };
 };

@@ -105,13 +105,13 @@ const Login = () => {
               </p>
             </Link>
 
-            <button
+            {/* <button
               type="button"
               className="w-full border border-primary-500 text-primary-500 flex justify-center items-center py-3 mt-5"
             >
               <Image src={EmptyWallet} className="h-6 w-6" alt="wallet" />
               <p className="ml-2">Log in with Wallet</p>
-            </button>
+            </button> */}
 
             <p className="text-[16px] mt-5 text-center">
               No account?

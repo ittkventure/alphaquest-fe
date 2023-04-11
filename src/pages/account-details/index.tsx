@@ -186,7 +186,13 @@ const AccountDetails = () => {
         </div> */}
 
         <div className="flex mt-4 justify-between">
-          <button className="flex">
+          <button
+            onClick={() => {
+              handleLogOut();
+              router.push("login");
+            }}
+            className="flex"
+          >
             <Image src={LogoutIcon} width={24} height={24} alt="logout" />
             <p className="font-workSansLight text-primary-500 ml-2">Sign out</p>
           </button>
@@ -326,7 +332,13 @@ const AccountDetails = () => {
             <div className="h-[1px] w-[100%] bg-[#38405B] mt-10 mb-1" />
 
             <div className="flex">
-              <button className="flex" onClick={handleLogOut}>
+              <button
+                className="flex"
+                onClick={() => {
+                  handleLogOut();
+                  router.push("login");
+                }}
+              >
                 <Image src={LogoutIcon} width={24} height={24} alt="logout" />
                 <p className="font-workSansLight text-primary-500 ml-2">
                   Sign out

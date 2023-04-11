@@ -1,21 +1,32 @@
 import {
-  CodeIconHome,
   DocumentTextIcon,
   HeartIconHome,
   NotificationCircleIconHome,
-  QuoteIcon,
 } from "@/assets/icons";
-import { ChartImg, HomeBgImg, HomeImg, User1, User2 } from "@/assets/images";
+import { HomeBgImg, HomeImg, User1, User2 } from "@/assets/images";
 import { DiscoverProjectItem } from "@/components/Home";
 import CommentItem from "@/components/Home/CommentItem";
 import SubscriptionItem from "@/components/Home/SubscriptionItem";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import { listDiscoverProjects } from "@/utils/list";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const { setTypePaymentAction, authState } = useContext(AuthContext);
+
+  const onClickPaymentTrial = () => {
+    if (authState) {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/pricing?action=open");
+    } else {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/sign-up");
+    }
+  };
 
   return (
     <HomeLayout>
@@ -36,7 +47,7 @@ export default function Home() {
 
         <div className="flex justify-center mt-8 z-50">
           <button
-            onClick={() => router.push("/pricing")}
+            onClick={onClickPaymentTrial}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem] z-50"
           >
             Start 7-Day Trial for $9
@@ -154,7 +165,7 @@ export default function Home() {
 
         <div className="flex justify-center mt-8">
           <button
-            onClick={() => router.push("/pricing")}
+            onClick={onClickPaymentTrial}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
           >
             Start 7-Day Trial for $9
@@ -191,7 +202,7 @@ export default function Home() {
 
           <div className="flex justify-center mt-8">
             <button
-              onClick={() => router.push("/pricing")}
+              onClick={onClickPaymentTrial}
               className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
             >
               Start 7-Day Trial for $9

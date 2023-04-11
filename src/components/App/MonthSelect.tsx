@@ -37,7 +37,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({
       {isShowMenu ? (
         <div
           onClick={() => setIsShowMenu(false)}
-          className="absolute w-[98vw] h-screen opacity-0 top-0 left-0 z-30"
+          className="absolute w-[100vw] h-screen opacity-0 top-0 left-[-260px] max-lg:left-0 z-30"
         />
       ) : null}
       <div className="relative">
