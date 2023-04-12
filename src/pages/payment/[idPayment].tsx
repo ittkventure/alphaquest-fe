@@ -64,8 +64,38 @@ const PaymentProcess: FC<IPaymentProcess> = ({ idPayment }) => {
           >
             {isLoading
               ? "Payment processing, please wait..."
-              : "Congratulations on becoming a premium member"}
+              : "You're Now a Pro Member! Here's What To Do Next"}
           </h1>
+
+          {!isLoading &&
+            <div className="mt-6">
+
+              <div className="flex  items-center">
+                <div className="mt-2 w-6 flex  items-center bg-success-500 rounded-full">
+                  <p className="text-[#171B28] ml-2"> 1</p>
+                </div>
+                <p className="text-[#bec1c2] mt-2 ml-2 ">Verify your email: We've sent an email to your inbox.</p>
+              </div>
+
+              <div className="flex  items-center my-4">
+                <div className="mt-2 w-6 flex  items-center bg-success-500 rounded-full">
+                  <p className="text-[#171B28] ml-2"> 2</p>
+                </div>
+                <p className="text-[#bec1c2] mt-2 ml-2 "> <a href="https://t.me/+0d8skT2bV1YxNTU1" className=" font-extrabold text-success-500">Click here </a> to join our private telegram channel.</p>
+              </div>
+
+              <div className="flex  items-center">
+                <div className="mt-2 w-6 flex  items-center bg-success-500 rounded-full">
+                  <p className="text-[#171B28] ml-2"> 3</p>
+                </div>
+                <p className="text-[#bec1c2] mt-2 ml-2 "> Start trying our app by clicking the button below.</p>
+              </div>
+
+
+            </div>
+
+
+          }
 
           <div className="flex justify-center mt-7">
             {isLoading ? (
