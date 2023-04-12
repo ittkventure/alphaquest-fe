@@ -124,7 +124,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
                 onClick={onGoSignup}
                 className="py-2 px-6 bg-success-500 text-white"
               >
-                Signup
+                Sign up
               </button>
 
             </li>
