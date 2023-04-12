@@ -96,6 +96,8 @@ const SignUp = () => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1 className="font-workSansSemiBold text-[32px]">Sign up</h1>
+
+          <p className="text-sm text-[#9da0a1]">Your Pro subscription is linked with your account. So please sign up and log in before making the payment</p>
           <AQForm
             defaultValues={{}}
             onSubmit={onSubmit}

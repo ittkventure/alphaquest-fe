@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 
-interface SEOType {}
+interface SEOType { }
 
 const SEO = () => {
   return (
@@ -12,6 +12,18 @@ const SEO = () => {
         content="Be the first to discover the hottest crypto trends and projects with our powerful crypto research tool"
       />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+      <meta content="Alpha Quest - Uncover The Next Big Thing in Crypto Now" property="og:title"/>
+      <meta content="Discover the hottest cryptocurrency projects before they take off with Alpha Quest. Start your 7-day trial for only $9!" property="og:description"/>
+      <meta property="og:type" content="website"/>
+      <meta content="https://alphaquest.io/images/thumb.png" property="og:image"/>
+
+      <meta content="Alpha Quest - Uncover The Next Big Thing in Crypto Now" property="twitter:title"/>
+      <meta content="Discover the hottest cryptocurrency projects before they take off with Alpha Quest. Start your 7-day trial for only $9!" property="twitter:description"/>
+      <meta content="https://alphaquest.io/images/thumb.png" property="twitter:image"/>
+      <meta content="summary_large_image" name="twitter:card"/>
+
       <link rel="icon" href="/favicon.ico" />
       {/* <meta name="robots" content="noindex" /> */}
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
@@ -66,6 +78,21 @@ const SEO = () => {
         type="image/png"
         sizes="16x16"
         href="/favicon-16x16.png"
+      />
+
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-L12NY9ZK82"
+      ></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-L12NY9ZK82');
+          `
+        }}
       />
       <link rel="manifest" href="/manifest.json" />
       <meta name="msapplication-TileColor" content="#ffffff" />
