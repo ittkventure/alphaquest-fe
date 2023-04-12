@@ -28,6 +28,7 @@ import { initListSort } from "@/utils/list";
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
+
 }
 
 const AppContent: FC<AppContentTypes> = ({
@@ -134,7 +135,7 @@ const AppContent: FC<AppContentTypes> = ({
       }
       setFirstCalled(true);
       setListItem(data.items);
-      setTotalCount(data?.totalCount.toString());
+      setTotalCount(data?.discoveredProjectCount.toString());
     } catch (error) {
       setTotalCount("0");
       setErrorMsg("Error please try again.");
@@ -232,13 +233,13 @@ const AppContent: FC<AppContentTypes> = ({
       }
       const category = await apiTwitter.getCategory();
       setCategory(category);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
     <div className="w-full relative ">
       {accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !accountExtendDetail?.currentPlanKey ? (
+        !accountExtendDetail?.currentPlanKey ? (
         <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
           <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
             <p className="mb-4">Upgrade account to see all</p>

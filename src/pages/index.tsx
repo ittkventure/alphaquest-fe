@@ -73,7 +73,7 @@ export default function Home() {
             width={952.81}
             height={549}
             alt="home-image"
-            className="z-[5]"
+            className="z-[5] border-2 border-solid border-[#393F52]"
           />
         </div>
 

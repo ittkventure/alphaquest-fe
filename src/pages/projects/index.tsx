@@ -40,7 +40,7 @@ const AppPage: NextPage<Props> = () => {
       {isLoading === false ? (
         <AppContent
           listItemsProps={data.items}
-          totalCountProps={data.totalCount}
+          totalCountProps={data.discoveredProjectCount}
         />
       ) : (
         <div className="w-full">
