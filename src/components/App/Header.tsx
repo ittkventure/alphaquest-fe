@@ -22,10 +22,10 @@ const Header = () => {
 
   const onClickPaymentTrial = () => {
     if (authState) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/pricing?action=open");
     } else {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
   };
