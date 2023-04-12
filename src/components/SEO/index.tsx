@@ -6,10 +6,10 @@ interface SEOType {}
 const SEO = () => {
   return (
     <Head>
-      <title>Alpha Quest</title>
+      <title>AlphaQuest - Uncover The Next Big Thing in Crypto Now</title>
       <meta
         name="description"
-        content="AlphaQuest - Uncover The Next Big Thing in Crypto Now Description: Be the first to discover the hottest crypto trends and projects with our powerful crypto research tool"
+        content="Be the first to discover the hottest crypto trends and projects with our powerful crypto research tool"
       />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href="/favicon.ico" />
