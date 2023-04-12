@@ -44,7 +44,7 @@ const DiscoverProjectItem: FC<DiscoverProjectItemTypes> = ({
           <p className="text-center">{found}</p>
         </div>
         <div className="mt-[6px] text-success-500 font-workSansLight text-xs">
-          <p className="text-center">{dayAfter}</p>
+          {/* <p className="text-center">{dayAfter}</p> */}
         </div>
         <div className="w-full px-5">
           <div className="mt-[25px] px-3 py-[6px] border border-white w-full text-sm">
