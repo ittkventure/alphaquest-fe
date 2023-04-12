@@ -59,9 +59,8 @@ const PaymentProcess: FC<IPaymentProcess> = ({ idPayment }) => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1
-            className={`text-center ${
-              isLoading ? "text-blue-400" : "text-success-500"
-            } font-workSansBold text-3xl`}
+            className={`text-center ${isLoading ? "text-blue-400" : "text-success-500"
+              } font-workSansBold text-3xl`}
           >
             {isLoading
               ? "Payment processing, please wait..."
@@ -72,16 +71,16 @@ const PaymentProcess: FC<IPaymentProcess> = ({ idPayment }) => {
             {isLoading ? (
               <Spinner />
             ) : (
-              <CheckBadgeIcon className="h-[100px] w-[100px] text-success-500" />
+              <></>
             )}
           </div>
           {!isLoading ? (
             <a
-              href="/"
+              href="/projects/trending"
               type="button"
               className="w-full border border-primary-500 text-primary-500 hover:border-success-600 hover:text-success-500 flex justify-center items-center py-3 mt-5"
             >
-              Go Home
+              Access Pro Dashboard
             </a>
           ) : null}
         </div>

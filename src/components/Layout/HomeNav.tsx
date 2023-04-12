@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import React, { FC, useContext } from "react";
 import AQAvatar from "../AQAvatar";
 
-interface HomeNavTypes {}
+interface HomeNavTypes { }
 
 const HomeNav: FC<HomeNavTypes> = () => {
   const router = useRouter();
@@ -18,6 +18,10 @@ const HomeNav: FC<HomeNavTypes> = () => {
 
   const onGoLogin = () => {
     router.push("/login");
+  };
+
+  const onGoSignup = () => {
+    router.push("/sign-up");
   };
 
   const onGoHome = () => {
@@ -30,7 +34,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
         <ul className="flex items-center justify-end text-sm max-lg:pb-2">
           <li>
             {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
-            authState?.access_token ? (
+              authState?.access_token ? (
               <div>
                 <button
                   onClick={() => router.push("/pricing")}
@@ -85,7 +89,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
 
           <li>
             {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
-            authState?.access_token ? (
+              authState?.access_token ? (
               <div>
                 <button
                   onClick={() => router.push("/pricing")}
@@ -103,19 +107,34 @@ const HomeNav: FC<HomeNavTypes> = () => {
               </div>
             ) : null}
           </li>
+          {!authState &&
+            <li className="max-lg:flex-1 max-lg:hidden mr-2">
 
-          <li className="max-lg:flex-1 max-lg:hidden">
+              <button
+                onClick={onGoSignup}
+                className="py-2 px-6 bg-success-500 text-white"
+              >
+                Signup
+              </button>
+
+            </li>
+          }
+
+
+          <li className="max-lg:flex-1 border-1 border-white	 max-lg:hidden">
             {authState ? (
               <AQAvatar />
             ) : (
               <button
                 onClick={onGoLogin}
-                className="py-2 px-6 bg-success-500 text-white"
+                className="py-2 px-6  border border-[#00e3b4]  text-white"
               >
                 Login
               </button>
             )}
           </li>
+
+
         </ul>
       </div>
     </div>
