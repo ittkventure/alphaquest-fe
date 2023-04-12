@@ -28,6 +28,7 @@ const Header = () => {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
+  }
   const onGoSignup = () => {
     router.push("/sign-up");
   };
@@ -68,7 +69,7 @@ const Header = () => {
             </button>
           </li>
         }
-        
+
         {authState ? (
           <AQAvatar />
         ) : (
