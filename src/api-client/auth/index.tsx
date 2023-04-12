@@ -48,7 +48,7 @@ class ApiAuth extends ApiClientBase {
     const res = await this.instance.post(
       "/api/app/account-extend/confirm-email",
       {
-        token: token.replaceAll(" ", ""),
+        token: token.replaceAll(" ", "+"),
       },
       {
         headers: {

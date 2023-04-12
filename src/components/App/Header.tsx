@@ -28,6 +28,8 @@ const Header = () => {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
+  const onGoSignup = () => {
+    router.push("/sign-up");
   };
 
   return (
@@ -42,25 +44,38 @@ const Header = () => {
       </div>
 
       <div className="flex justify-center items-center">
-        <div className="relative  max-lg:hidden">
+        {/* <div className="relative  max-lg:hidden">
           <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-[11px] left-[5px]" />
 
           <input
             className="w-52 bg-secondary-600 py-2 pl-8"
             placeholder="Search"
           />
-        </div>
+        </div> */}
 
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
         </button>
+
+        {!authState &&
+          <li className="max-lg:flex-1 max-lg:hidden ">
+
+            <button
+              onClick={onGoSignup}
+              className="py-2 px-6 bg-success-500 text-white"
+            >
+              Signup
+            </button>
+          </li>
+        }
+        
         {authState ? (
           <AQAvatar />
         ) : (
           <div className="mx-6">
             <button
               onClick={onGoLogin}
-              className="py-2 px-6 bg-success-500 text-white"
+              className="py-2 px-6  border border-[#00e3b4]  text-white"
             >
               Login
             </button>

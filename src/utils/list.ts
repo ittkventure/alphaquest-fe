@@ -159,7 +159,7 @@ const listRowMock: TableObject[] = [
 const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
   {
     project: "Aptos",
-    found: "2/9/2022 9:36:49.000 PM",
+    found: "Feb 9th 2022",
     dayAfter: "4 days after account created",
     des: "Retroactive up to 50k",
     follow: "380k+",
@@ -168,7 +168,7 @@ const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
   },
   {
     project: "Blur",
-    found: "2022-02-07 02:16:36.027024",
+    found: "Feb 07th 2022",
     dayAfter: "4 days after account created",
     des: "Retroactive up to 1M",
     follow: "240k+",
@@ -177,7 +177,7 @@ const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
   },
   {
     project: "Stargate Finance",
-    found: "2021-11-01 02:00:45.904789",
+    found: "Nov 01st 2021",
     dayAfter: "4 days after account created",
     des: "6x Return",
     follow: "139k+",
@@ -186,7 +186,7 @@ const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
   },
   {
     project: "Stepn",
-    found: "03:17, 01 Thg10 2021",
+    found: "Oct 01st 2021",
     dayAfter: "4 days after account created",
     des: "40x Return",
     follow: "571k+",
@@ -195,7 +195,7 @@ const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
   },
   {
     project: "Lens Protocol",
-    found: "2022-01-22 02:16:31.597150",
+    found: "Jan 22nd 2022",
     dayAfter: "4 days after account created",
     des: "NFT worth $100",
     follow: "296k+",
@@ -204,7 +204,7 @@ const listDiscoverProjects: Array<DiscoverProjectItemTypes> = [
   },
   {
     project: "Conduitxyz",
-    found: "11:05, 2 Thg2 2023",
+    found: "Feb 02nd 2023",
     dayAfter: "4 days after account created",
     des: "Fundraising announcement publish on 28th March 2023",
     follow: "2k+",

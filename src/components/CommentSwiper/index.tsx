@@ -24,8 +24,8 @@ const CommentSwiper = () => {
           content={
             "This has been our secret weapon for identifying early-stage crypto projects since 2021. We’re thrilled to finally release this powerful tool to the public, offering everyone the opportunity to benefit from our in-house expertise and insights."
           }
-          name="Shayne"
-          des="Head of Ventures at TK Ventures"
+          name="Tung Tran"
+          des="Co-founder of TK Ventures"
         />
       </SwiperSlide>
       <SwiperSlide>
@@ -34,8 +34,8 @@ const CommentSwiper = () => {
           content={
             "AlphaQuest is my go-to resource for discovering promising crypto projects in their infancy. Their weekly newsletter keeps me updated and ready to capitalize on greatest alpha. Highly recommended!"
           }
-          name="James R., Degen"
-          des="CEO @ FeedHive"
+          name="James R"
+          des="Crypto Degen"
         />
       </SwiperSlide>
     </Swiper>

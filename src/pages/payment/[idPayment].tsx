@@ -59,29 +59,58 @@ const PaymentProcess: FC<IPaymentProcess> = ({ idPayment }) => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1
-            className={`text-center ${
-              isLoading ? "text-blue-400" : "text-success-500"
-            } font-workSansBold text-3xl`}
+            className={`text-center ${isLoading ? "text-blue-400" : "text-success-500"
+              } font-workSansBold text-3xl`}
           >
             {isLoading
               ? "Payment processing, please wait..."
-              : "Congratulations on becoming a premium member"}
+              : "You're Now a Pro Member! Here's What To Do Next"}
           </h1>
+
+          {!isLoading &&
+            <div className="mt-6">
+
+              <div className="flex  items-center">
+                <div className="mt-2 w-6 flex  items-center bg-success-500 rounded-full">
+                  <p className="text-[#171B28] ml-2"> 1</p>
+                </div>
+                <p className="text-[#bec1c2] mt-2 ml-2 ">Verify your email: We've sent an email to your inbox.</p>
+              </div>
+
+              <div className="flex  items-center my-4">
+                <div className="mt-2 w-6 flex  items-center bg-success-500 rounded-full">
+                  <p className="text-[#171B28] ml-2"> 2</p>
+                </div>
+                <p className="text-[#bec1c2] mt-2 ml-2 "> <a href="https://t.me/+0d8skT2bV1YxNTU1" className=" font-extrabold text-success-500">Click here </a> to join our private telegram channel.</p>
+              </div>
+
+              <div className="flex  items-center">
+                <div className="mt-2 w-6 flex  items-center bg-success-500 rounded-full">
+                  <p className="text-[#171B28] ml-2"> 3</p>
+                </div>
+                <p className="text-[#bec1c2] mt-2 ml-2 "> Start trying our app by clicking the button below.</p>
+              </div>
+
+
+            </div>
+
+
+          }
 
           <div className="flex justify-center mt-7">
             {isLoading ? (
               <Spinner />
             ) : (
-              <CheckBadgeIcon className="h-[100px] w-[100px] text-success-500" />
+              <></>
             )}
           </div>
           {!isLoading ? (
             <a
-              href="/"
+              href="/projects/trending"
               type="button"
               className="w-full border border-primary-500 text-primary-500 hover:border-success-600 hover:text-success-500 flex justify-center items-center py-3 mt-5"
             >
-              Go Home
+              Access Pro Dashboard
             </a>
           ) : null}
         </div>
