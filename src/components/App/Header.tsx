@@ -31,14 +31,14 @@ const Header = () => {
       </div>
 
       <div className="flex justify-center items-center">
-        <div className="relative  max-lg:hidden">
+        {/* <div className="relative  max-lg:hidden">
           <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-[11px] left-[5px]" />
 
           <input
             className="w-52 bg-secondary-600 py-2 pl-8"
             placeholder="Search"
           />
-        </div>
+        </div> */}
 
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
