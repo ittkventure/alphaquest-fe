@@ -85,8 +85,8 @@ export default function Home() {
                 content={
                   "This has been our secret weapon for identifying early-stage crypto projects since 2021. We’re thrilled to finally release this powerful tool to the public, offering everyone the opportunity to benefit from our in-house expertise and insights."
                 }
-                name="Shayne"
-                des="Head of Ventures at TK Ventures"
+                name="Tung Tran"
+                des="Co-founder of TK Ventures"
               />
             </div>
             <div className="w-[650px] max-lg:w-full">
