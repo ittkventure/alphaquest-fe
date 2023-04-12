@@ -1,3 +1,4 @@
+import { apiTwitter } from "@/api-client";
 import {
   DocumentTextIcon,
   HeartIconHome,
@@ -10,11 +11,16 @@ import SubscriptionItem from "@/components/Home/SubscriptionItem";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import { listDiscoverProjects } from "@/utils/list";
+import { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
-export default function Home() {
+interface HomePageType {
+  gemCount?: number;
+}
+
+const Home: NextPage<HomePageType> = ({ gemCount }) => {
   const router = useRouter();
   const { setTypePaymentAction, authState } = useContext(AuthContext);
 
@@ -56,7 +62,7 @@ export default function Home() {
 
         <div>
           <p className="text-sm text-center mt-6 font-workSansLight">
-            +136 hidden gems discovered in the last 30 days
+            +{gemCount ?? "0"} hidden gems discovered in the last 30 days
           </p>
         </div>
 
@@ -212,4 +218,16 @@ export default function Home() {
       </div>
     </HomeLayout>
   );
+};
+
+export default Home;
+
+export async function getServerSideProps() {
+  const getGemCount = await apiTwitter.getGameCount();
+
+  return {
+    props: {
+      gemCount: getGemCount,
+    }, // will be passed to the page component as props
+  };
 }
