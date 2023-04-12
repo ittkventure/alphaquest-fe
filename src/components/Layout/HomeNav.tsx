@@ -1,7 +1,7 @@
 import { UserPayType } from "@/api-client/types/AuthType";
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,7 +13,7 @@ interface HomeNavTypes { }
 const HomeNav: FC<HomeNavTypes> = () => {
   const router = useRouter();
 
-  const { handleLogged, authState, accountExtendDetail } =
+  const { setTypePaymentAction, authState, accountExtendDetail } =
     useContext(AuthContext);
 
   const onGoLogin = () => {
@@ -28,6 +28,16 @@ const HomeNav: FC<HomeNavTypes> = () => {
     router.push("/");
   };
 
+  const onClickPaymentTrial = () => {
+    if (authState) {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/pricing?action=open");
+    } else {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/sign-up");
+    }
+  };
+
   const renderMobile = () => {
     return (
       <div className="hidden max-lg:block">
@@ -37,7 +47,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
               authState?.access_token ? (
               <div>
                 <button
-                  onClick={() => router.push("/pricing")}
+                  onClick={onClickPaymentTrial}
                   className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
                 >
                   <Image
@@ -92,7 +102,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
               authState?.access_token ? (
               <div>
                 <button
-                  onClick={() => router.push("/pricing")}
+                  onClick={onClickPaymentTrial}
                   className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
                 >
                   <Image

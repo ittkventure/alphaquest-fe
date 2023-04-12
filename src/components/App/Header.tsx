@@ -1,6 +1,6 @@
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -13,12 +13,21 @@ const Header = () => {
   const router = useRouter();
   const { tab } = router.query;
 
-  const { authState, accountExtendDetail } = useContext(AuthContext);
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
 
   const onGoLogin = () => {
     router.push("/login");
   };
 
+  const onClickPaymentTrial = () => {
+    if (authState) {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/pricing?action=open");
+    } else {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/sign-up");
+    }
   const onGoSignup = () => {
     router.push("/sign-up");
   };
@@ -76,7 +85,7 @@ const Header = () => {
         {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? null : (
           <div>
             <button
-              onClick={() => router.push("/pricing")}
+              onClick={onClickPaymentTrial}
               className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
             >
               <Image
