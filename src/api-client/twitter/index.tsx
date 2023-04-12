@@ -44,6 +44,16 @@ class ApiTwitter extends ApiClientBase {
     const res = await this.instance.get(`/api/app/twitter-attribute/chain`);
     return res.data;
   }
+
+  /**
+   * getGemCount
+   */
+  public async getGameCount() {
+    const res = await this.instance.get(
+      `/api/app/twitter/gem-count?newest=true`
+    );
+    return res.data;
+  }
 }
 
 export default ApiTwitter;
