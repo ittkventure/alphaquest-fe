@@ -19,7 +19,7 @@ import {
 } from "@/api-client/types/TwitterType";
 import SkeletonLoading from "./Table/SkeletonLoading";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
@@ -36,7 +36,8 @@ const AppContent: FC<AppContentTypes> = ({
 }) => {
   const router = useRouter();
   const { tab } = router.query;
-  const { authState, accountExtendDetail } = useContext(AuthContext);
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -86,6 +87,16 @@ const AppContent: FC<AppContentTypes> = ({
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeFrame, accountExtendDetail, chainSelected, categorySelected, sortBy]);
+
+  const onClickPaymentTrial = () => {
+    if (authState) {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/pricing?action=open");
+    } else {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/sign-up");
+    }
+  };
 
   const fetchData = async (currentTab?: string) => {
     try {
@@ -233,7 +244,7 @@ const AppContent: FC<AppContentTypes> = ({
             <p className="mb-4">Upgrade account to see all</p>
 
             <button
-              onClick={() => router.push("/pricing")}
+              onClick={onClickPaymentTrial}
               className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
             >
               <Image
