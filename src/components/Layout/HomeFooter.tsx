@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 
-interface HomeFooterTypes {}
+interface HomeFooterTypes { }
 
 const HomeFooter: FC<HomeFooterTypes> = () => {
   return (
@@ -19,12 +19,19 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
         </li>
 
         <li>
+          <Link href={"/privacy-policy"}>
+            Privacy policy <span className="mr-1 text-success-500">/</span>
+          </Link>
+        </li>
+
+        <li>
           <Link href={"/terms"}>
             Terms <span className="mr-1 text-success-500">/</span>
           </Link>
         </li>
+
         <li>
-          <Link href={"/privacy-policy"}>Privacy policy</Link>
+          <Link href={"https://t.me/alphaquestio"}>Contact us</Link>
         </li>
       </ul>
     </div>

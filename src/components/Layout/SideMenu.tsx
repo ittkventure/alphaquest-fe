@@ -86,6 +86,10 @@ const SideMenu = () => {
           <li className="mt-2">
             <Link href={"https://twitter.com/alphaquestio"}>Twitter</Link>
           </li>
+
+          <li className="mt-2">
+            <Link href={"https://t.me/alphaquestio"}>Support</Link>
+          </li>
         </ul>
       </div>
     </aside>

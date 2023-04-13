@@ -11,19 +11,19 @@ import { DiscoverProjectItemTypes } from "@/components/Home/DiscoverProjectItem"
 
 const initListSort = [
   {
-    label: "score",
+    label: "Score",
     value: "SCORE",
   },
   {
-    label: "discovered date",
+    label: "Discovered Date",
     value: "DISCOVERED_DATE",
   },
   {
-    label: "twitter follow",
+    label: "Twitter Follow",
     value: "TWITTER_FOLLOWER",
   },
   {
-    label: "twitter create date",
+    label: "Twitter Create Date",
     value: "TWITTER_CREATED_DATE",
   },
 ];
