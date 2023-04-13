@@ -12,7 +12,7 @@ const AQAvatar = () => {
 
   return (
     <Link href={"/account-details"}>
-      <div className="ml-6 max-lg:ml-3 mr-6 flex items-center relative">
+      <div className="ml-6 max-lg:ml-3 mr-6 max-lg:mr-0 flex items-center relative">
         <div
           className={`w-10 h-10 rounded-[50%] border-[1px]  ${
             accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM

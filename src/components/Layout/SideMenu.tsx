@@ -51,10 +51,10 @@ const SideMenu = () => {
   return (
     <aside className="fixed transition-all duration-300 top-0 left-0 z-40 w-64 h-screen border-r border-white border-opacity-20 px-3 py-6 max-lg:hidden">
       <ul className="w-full">
-        <li className="mb-6">
-          <button onClick={onGoHome}>
+        <li className="mb-8">
+          <div>
             <Image src={LogoWithText} width={169} height={40} alt="logo" />
-          </button>
+          </div>
         </li>
 
         {listMenu.map((value, index) => {

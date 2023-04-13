@@ -28,7 +28,7 @@ const Header = () => {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
-  }
+  };
   const onGoSignup = () => {
     router.push("/sign-up");
   };
@@ -53,14 +53,13 @@ const Header = () => {
             placeholder="Search"
           />
         </div> */}
-
+        {/* 
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
-        </button>
+        </button> */}
 
-        {!authState &&
+        {!authState && (
           <li className="max-lg:flex-1 max-lg:hidden ">
-
             <button
               onClick={onGoSignup}
               className="py-2 px-6 bg-success-500 text-white"
@@ -68,12 +67,12 @@ const Header = () => {
               Sign up
             </button>
           </li>
-        }
+        )}
 
         {authState ? (
           <AQAvatar />
         ) : (
-          <div className="mx-6">
+          <div className="mx-6 max-lg:mx-0">
             <button
               onClick={onGoLogin}
               className="py-2 px-6  border border-[#00e3b4]  text-white"
