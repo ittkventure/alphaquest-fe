@@ -71,7 +71,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
           </li> */}
 
           <li className="max-lg:flex-1">{authState ? <AQAvatar /> : null}</li>
-          <li className="">
+          <li className="flex justify-center items-center">
             <button onClick={() => setShowMenu(!showMenu)}>
               {showMenu ? (
                 <XMarkIcon className="h-7 w-7 hover:text-success-500 transition-all duration-300" />
@@ -150,7 +150,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
     <>
       {renderDropMenu()}
 
-      <div className="flex h-24 max-lg:bg-dark-900 justify-between p-6 max-lg:mb-5 z-[100] fixed w-full">
+      <div className="flex h-24 max-lg:bg-dark-900 justify-between items-center p-6 max-lg:mb-5 z-[100] fixed w-full">
         <button onClick={onGoHome} className="cursor-pointer">
           <Image src={LogoWithText} width={169} height={40} alt="logo" />
         </button>
