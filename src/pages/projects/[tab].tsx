@@ -1,4 +1,5 @@
 import ApiTwitter from "@/api-client/twitter";
+import { UserPayType } from "@/api-client/types/AuthType";
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import AppContent from "@/components/App";
 import Header from "@/components/App/Header";
@@ -20,7 +21,11 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
   const apiTwitter = new ApiTwitter();
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["getListTwitter"],
+    queryKey: [
+      "getListTwitter",
+      accountExtendDetail?.currentPlanKey,
+      authState?.access_token,
+    ],
     queryFn: async () =>
       await apiTwitter.getListTwitter(
         {
@@ -31,7 +36,10 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
           newest: newest,
         },
         authState?.access_token ?? "",
-        authState?.access_token ? false : true
+        authState?.access_token &&
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+          ? false
+          : true
       ),
   });
 
