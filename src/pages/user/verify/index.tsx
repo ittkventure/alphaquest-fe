@@ -16,7 +16,7 @@ const Verify = () => {
   const { handleLogged, authState } = useContext(AuthContext);
 
   useEffect(() => {
-    if (vr && authState?.access_token) onConfirmMail();
+    if (vr) onConfirmMail();
   }, [vr, authState?.access_token]);
 
   const onConfirmMail = async () => {
