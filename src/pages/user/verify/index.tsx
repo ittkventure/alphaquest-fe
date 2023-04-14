@@ -48,9 +48,8 @@ const Verify = () => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1
-            className={`text-center ${
-              isLoading ? "text-blue-400" : "text-success-500"
-            } font-workSansBold text-3xl`}
+            className={`text-center ${isLoading ? "text-blue-400" : "text-success-500"
+              } font-workSansBold text-3xl`}
           >
             {isLoading
               ? "Your Account is verifying, please wait..."
@@ -64,7 +63,7 @@ const Verify = () => {
               <CheckBadgeIcon className="h-[100px] w-[100px] text-success-500" />
             )}
           </div>
-          {!isLoading ? (
+          {!isLoading && authState?.access_token && (
             <a
               href="/projects"
               type="button"
@@ -72,7 +71,19 @@ const Verify = () => {
             >
               Go Dashboard
             </a>
-          ) : null}
+          )}
+
+          {!isLoading && (authState == undefined || authState == null) && (
+            <a
+              href="/login"
+              type="button"
+              className="w-full border border-primary-500 text-primary-500 hover:border-success-600 hover:text-success-500 flex justify-center items-center py-3 mt-5"
+            >
+              Login
+            </a>
+          )}
+
+
         </div>
       </div>
     </HomeLayout>
