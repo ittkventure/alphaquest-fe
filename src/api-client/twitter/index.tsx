@@ -77,8 +77,9 @@ class ApiTwitter extends ApiClientBase {
    * putToWatchList
    */
   public async putToWatchList(twitterUserId: string, access_token: string) {
-    const res = await this.instance.get(
+    const res = await this.instance.put(
       `/api/app/watchlist?twitterUserId=${twitterUserId}`,
+      {},
       {
         headers: {
           Authorization: "Bearer " + access_token,

@@ -27,20 +27,33 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
       authState?.access_token,
     ],
     queryFn: async () =>
-      await apiTwitter.getListTwitter(
-        {
-          pageNumber: 1,
-          pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
-          timeFrame: "7D",
-          sortBy: "SCORE",
-          newest: newest,
-        },
-        authState?.access_token ?? "",
-        authState?.access_token &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-          ? false
-          : true
-      ),
+      tab === "watchlist"
+        ? await apiTwitter.getListTwitterWatchList(
+            {
+              pageNumber: 1,
+              pageSize:
+                accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
+              timeFrame: "7D",
+              sortBy: "SCORE",
+              newest: newest,
+            },
+            authState?.access_token ?? ""
+          )
+        : await apiTwitter.getListTwitter(
+            {
+              pageNumber: 1,
+              pageSize:
+                accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
+              timeFrame: "7D",
+              sortBy: "SCORE",
+              newest: newest,
+            },
+            authState?.access_token ?? "",
+            authState?.access_token &&
+              accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+              ? false
+              : true
+          ),
   });
 
   return (
@@ -48,7 +61,10 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
       {isLoading === false ? (
         <AppContent
           listItemsProps={data.items}
-          totalCountProps={data.discoveredProjectCount}
+          totalCountProps={
+            tab === "watchlist" ? data.totalCount : data.discoveredProjectCount
+          }
+          tab={tab}
         />
       ) : (
         <div className="w-full">

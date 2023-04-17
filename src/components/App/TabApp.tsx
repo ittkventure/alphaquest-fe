@@ -1,6 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Tab } from "@headlessui/react";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/contexts/useAuthContext";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 interface TabAppTypes {
   onChangeTab: (tabIndex: number) => void;
@@ -9,6 +11,7 @@ interface TabAppTypes {
 const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
   const router = useRouter();
   const { tab } = router.query;
+  const { accountExtendDetail } = useContext(AuthContext);
 
   const _handleSelectTab = (): number | undefined => {
     switch (tab) {
@@ -40,12 +43,14 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
         >
           Newest
         </Tab>
-        {/* <Tab
-          onClick={() => router.push("/app/watchlist")}
-          className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
-        >
-          Watchlist
-        </Tab> */}
+        {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+          <Tab
+            onClick={() => router.push("/projects/watchlist")}
+            className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
+          >
+            Watchlist
+          </Tab>
+        ) : null}
       </Tab.List>
     </Tab.Group>
   );
