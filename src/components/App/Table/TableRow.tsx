@@ -1,5 +1,6 @@
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import { TwitterIcon } from "@/assets/icons";
+import { HeartIcon } from "@heroicons/react/24/solid";
 import moment from "moment";
 import Image from "next/image";
 import React, { FC } from "react";
@@ -93,9 +94,9 @@ const TableRow: FC<TableRowTypes> = ({ item, index }) => {
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{item.trendingScore}</p>
         </div>
-        {/* <button>
+        <button>
           <HeartIcon className="h-5 w-7" />
-        </button> */}
+        </button>
       </div>
     </div>
   );

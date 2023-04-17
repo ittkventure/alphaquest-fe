@@ -30,6 +30,24 @@ class ApiTwitter extends ApiClientBase {
   }
 
   /**
+   * getListTwitterWatchList
+   */
+  public async getListTwitterWatchList(
+    params: TwitterGetListRequest,
+    access_token: string
+  ): Promise<BaseResponse | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter/watchlist-item?${qs.stringify(params)}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
    * getCategory
    */
   public async getCategory() {
@@ -51,6 +69,21 @@ class ApiTwitter extends ApiClientBase {
   public async getGameCount() {
     const res = await this.instance.get(
       `/api/app/twitter/gem-count?newest=true`
+    );
+    return res.data;
+  }
+
+  /**
+   * putToWatchList
+   */
+  public async putToWatchList(twitterUserId: string, access_token: string) {
+    const res = await this.instance.get(
+      `/api/app/watchlist?twitterUserId=${twitterUserId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
     );
     return res.data;
   }
