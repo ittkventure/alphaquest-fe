@@ -53,4 +53,5 @@ export interface TwitterItem {
   listedCountChange?: any;
   chain?: TwitterChain;
   categories?: Array<TwitterCategory>;
+  inWatchlist?: boolean;
 }

@@ -1,10 +1,12 @@
+import { UserPayType } from "@/api-client/types/AuthType";
 import { NewestIcon, TrendingIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
+import { AuthContext } from "@/contexts/useAuthContext";
 import { FireIcon, HeartIcon, BoltIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 interface MenuItemType {
   key: string;
@@ -16,10 +18,49 @@ interface MenuItemType {
 const SideMenu = () => {
   const router = useRouter();
   const { tab } = router.query;
+  const { authState, accountExtendDetail } = useContext(AuthContext);
 
   const onGoHome = () => {
     router.push("/");
   };
+
+  useEffect(() => {
+    accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+      ? setListMenu([
+          {
+            key: "trending",
+            icon: <FireIcon className="h-5 w-5 mr-2" />,
+            label: "Trending",
+            active: false,
+          },
+          {
+            key: "newest",
+            icon: <BoltIcon className="h-5 w-5 mr-2" />,
+            label: "Newest",
+            active: false,
+          },
+          {
+            key: "watchlist",
+            icon: <HeartIcon className="h-5 w-5 mr-2" />,
+            label: "Watch List",
+            active: false,
+          },
+        ])
+      : setListMenu([
+          {
+            key: "trending",
+            icon: <FireIcon className="h-5 w-5 mr-2" />,
+            label: "Trending",
+            active: false,
+          },
+          {
+            key: "newest",
+            icon: <BoltIcon className="h-5 w-5 mr-2" />,
+            label: "Newest",
+            active: false,
+          },
+        ]);
+  }, [accountExtendDetail]);
 
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
     {
@@ -34,13 +75,6 @@ const SideMenu = () => {
       label: "Newest",
       active: false,
     },
-    // {
-    //   key: "watchlist",
-    //   url: "/app/watchlist",
-    //   icon: <HeartIcon className="h-5 w-5 mr-2" />,
-    //   label: "Watch List",
-    //   active: false,
-    // },
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {

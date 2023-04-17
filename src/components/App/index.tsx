@@ -28,15 +28,15 @@ import { initListSort } from "@/utils/list";
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
-
+  tab?: "watchlist" | "trending" | "newest" | string;
 }
 
 const AppContent: FC<AppContentTypes> = ({
   listItemsProps,
   totalCountProps,
+  tab,
 }) => {
   const router = useRouter();
-  const { tab } = router.query;
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
 
@@ -106,21 +106,37 @@ const AppContent: FC<AppContentTypes> = ({
       setErrorMsg("");
       setPageNumber(1);
       setHasLoadMore(true);
-
-      const data = await apiTwitter.getListTwitter(
-        {
-          pageNumber: 1,
-          pageSize:
-            accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
-          sortBy,
-          timeFrame,
-          newest: tabCheck === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
-        },
-        authState?.access_token ?? "",
-        authState?.access_token ? false : true
-      );
+      let data;
+      if (tabCheck === "watchlist") {
+        data = await apiTwitter.getListTwitterWatchList(
+          {
+            pageNumber: 1,
+            pageSize:
+              accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
+            sortBy,
+            timeFrame,
+            newest: false,
+            categories: categorySelected?.code ? [categorySelected.code] : [],
+            chains: chainSelected?.code ? [chainSelected.code] : [],
+          },
+          authState?.access_token ?? ""
+        );
+      } else {
+        data = await apiTwitter.getListTwitter(
+          {
+            pageNumber: 1,
+            pageSize:
+              accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
+            sortBy,
+            timeFrame,
+            newest: tabCheck === "newest" ? true : false,
+            categories: categorySelected?.code ? [categorySelected.code] : [],
+            chains: chainSelected?.code ? [chainSelected.code] : [],
+          },
+          authState?.access_token ?? "",
+          authState?.access_token ? false : true
+        );
+      }
       setIsLoading(false);
       if (
         data == undefined ||
@@ -135,7 +151,9 @@ const AppContent: FC<AppContentTypes> = ({
       }
       setFirstCalled(true);
       setListItem(data.items);
-      setTotalCount(data?.discoveredProjectCount.toString());
+      tabCheck !== "watchlist"
+        ? setTotalCount(data?.discoveredProjectCount.toString())
+        : setTotalCount(data?.totalCount.toString());
     } catch (error) {
       setTotalCount("0");
       setErrorMsg("Error please try again.");
@@ -148,20 +166,36 @@ const AppContent: FC<AppContentTypes> = ({
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
+      let data: any;
 
-      const data = await apiTwitter.getListTwitter(
-        {
-          pageNumber,
-          pageSize,
-          sortBy,
-          timeFrame,
-          newest: newest === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
-        },
-        authState?.access_token ?? "",
-        authState?.access_token ? false : true
-      );
+      if (newest === "watchlist" || tab === "watchlist") {
+        data = await apiTwitter.getListTwitterWatchList(
+          {
+            pageNumber,
+            pageSize,
+            sortBy,
+            timeFrame,
+            newest: false,
+            categories: categorySelected?.code ? [categorySelected.code] : [],
+            chains: chainSelected?.code ? [chainSelected.code] : [],
+          },
+          authState?.access_token ?? ""
+        );
+      } else {
+        data = await apiTwitter.getListTwitter(
+          {
+            pageNumber,
+            pageSize,
+            sortBy,
+            timeFrame,
+            newest: newest === "newest" ? true : false,
+            categories: categorySelected?.code ? [categorySelected.code] : [],
+            chains: chainSelected?.code ? [chainSelected.code] : [],
+          },
+          authState?.access_token ?? "",
+          authState?.access_token ? false : true
+        );
+      }
       setIsLoadingMore(false);
       if (pageNumber === 1) setListItem([]);
       if (
@@ -221,7 +255,12 @@ const AppContent: FC<AppContentTypes> = ({
     if (isLoading) return null;
     if (listItems.length === 0 && !errorMsg)
       return <p className="text-center">No data.</p>;
-    return <TableContent initListRows={listItems ?? []} />;
+    return (
+      <TableContent
+        initListRows={listItems ?? []}
+        isAnimation={newest === "watchlist" ? true : false}
+      />
+    );
   };
 
   const fetchCategoryAndChain = async (type: "CHAIN" | "CATEGORY") => {
@@ -233,13 +272,50 @@ const AppContent: FC<AppContentTypes> = ({
       }
       const category = await apiTwitter.getCategory();
       setCategory(category);
-    } catch (error) { }
+    } catch (error) {}
+  };
+
+  const renderDes = () => {
+    return newest === "watchlist" && tab === "watchlist" ? (
+      <div className="flex items-center max-xl:flex-col max-lg:mt-2">
+        <div className="flex justify-start">
+          <p>Projects in your watchlist</p>
+        </div>
+      </div>
+    ) : (
+      <div className="flex items-center max-xl:flex-col max-lg:mt-2">
+        <div className="flex justify-start">
+          <p>
+            {totalCount.toLocaleString()} projects discovered during the last
+          </p>
+
+          <MonthSelect
+            onChangeSelect={(month) => {
+              setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+            }}
+          />
+        </div>
+        <div className="flex">
+          <p className="ml-1">sorted by</p>
+          <MonthSelect
+            onChangeSelect={(month) => {
+              setSortBy((month.value as SortByType) ?? "SCORE");
+            }}
+            defaultData={{
+              value: "SCORE",
+              label: "score",
+            }}
+            listData={initListSort as Array<any>}
+          />
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="w-full relative ">
       {accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-        !accountExtendDetail?.currentPlanKey ? (
+      !accountExtendDetail?.currentPlanKey ? (
         <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
           <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
             <p className="mb-4">Upgrade account to see all</p>
@@ -269,33 +345,7 @@ const AppContent: FC<AppContentTypes> = ({
       </div>
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
-          <div className="flex items-center max-xl:flex-col max-lg:mt-2">
-            <div className="flex justify-start">
-              <p>
-                {totalCount.toLocaleString()} projects discovered during the
-                last
-              </p>
-              <MonthSelect
-                onChangeSelect={(month) => {
-                  setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-                }}
-              />
-            </div>
-            <div className="flex">
-              <p className="ml-1">sorted by</p>
-              <MonthSelect
-                onChangeSelect={(month) => {
-                  setSortBy((month.value as SortByType) ?? "SCORE");
-                }}
-                defaultData={{
-                  value: "SCORE",
-                  label: "score",
-                }}
-                listData={initListSort as Array<any>}
-              />
-            </div>
-          </div>
-
+          {renderDes()}
           {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
             <div className="mr-3">
               <SelectCustom
