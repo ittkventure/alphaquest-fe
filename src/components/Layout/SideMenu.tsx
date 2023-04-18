@@ -40,7 +40,7 @@ const SideMenu = () => {
             active: false,
           },
           {
-            key: "watchlist",
+            key: "watchlist/me",
             icon: <HeartIcon className="h-5 w-5 mr-2" />,
             label: "Watch List",
             active: false,
@@ -78,7 +78,10 @@ const SideMenu = () => {
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
-    if (!tab && index === 0) return "bg-success-500";
+    if (!tab && router.pathname === `/projects/${item.key}` && index != 0)
+      return "bg-success-500";
+    if (!tab && index === 0 && router.pathname !== `/projects/watchlist/me`)
+      return "bg-success-500";
     return tab === item.key ? "bg-success-500" : "hover:bg-secondary-600";
   };
 
