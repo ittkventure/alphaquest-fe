@@ -25,13 +25,13 @@ import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 
-interface AppContentTypes {
+interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
   tab?: "watchlist" | "trending" | "newest" | string;
 }
 
-const AppContent: FC<AppContentTypes> = ({
+const Watchlist: FC<WatchlistTypes> = ({
   listItemsProps,
   totalCountProps,
   tab,
@@ -51,7 +51,7 @@ const AppContent: FC<AppContentTypes> = ({
   const observer: React.MutableRefObject<any> = useRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
-  const [totalCount, setTotalCount] = useState<string>(totalCountProps ?? "");
+  const [totalCount, setTotalCount] = useState<string>(totalCountProps ?? "0");
   const [listItems, setListItem] = useState<TwitterItem[]>(
     listItemsProps ?? []
   );
@@ -111,19 +111,18 @@ const AppContent: FC<AppContentTypes> = ({
       setErrorMsg("");
       setPageNumber(1);
       setHasLoadMore(true);
-      const data = await apiTwitter.getListTwitter(
+      const data = await apiTwitter.getListTwitterWatchList(
         {
           pageNumber: 1,
           pageSize:
             accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
           sortBy,
           timeFrame,
-          newest: tabCheck === "newest" ? true : false,
+          newest: false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
         },
-        authState?.access_token ?? "",
-        authState?.access_token ? false : true
+        authState?.access_token ?? ""
       );
 
       setIsLoading(false);
@@ -140,9 +139,7 @@ const AppContent: FC<AppContentTypes> = ({
       }
       setFirstCalled(true);
       setListItem(data.items);
-      tabCheck !== "watchlist"
-        ? setTotalCount(data?.discoveredProjectCount.toString())
-        : setTotalCount(data?.totalCount.toString());
+      setTotalCount(data?.totalCount.toString());
     } catch (error) {
       setTotalCount("0");
       setErrorMsg("Error please try again.");
@@ -155,18 +152,17 @@ const AppContent: FC<AppContentTypes> = ({
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
-      const data = await apiTwitter.getListTwitter(
+      const data = await apiTwitter.getListTwitterWatchList(
         {
           pageNumber,
           pageSize,
           sortBy,
           timeFrame,
-          newest: newest === "newest" ? true : false,
+          newest: false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
         },
-        authState?.access_token ?? "",
-        authState?.access_token ? false : true
+        authState?.access_token ?? ""
       );
 
       setIsLoadingMore(false);
@@ -224,6 +220,11 @@ const AppContent: FC<AppContentTypes> = ({
     [setPageLoadMore]
   );
 
+  const onRefreshTable = (userId: string) => {
+    const tcAfterRemove = Number(totalCount) - 1;
+    setTotalCount(tcAfterRemove.toString());
+  };
+
   const _renderTable = () => {
     if (isLoading) return null;
     if (listItems.length === 0 && !errorMsg)
@@ -231,7 +232,8 @@ const AppContent: FC<AppContentTypes> = ({
     return (
       <TableContent
         initListRows={listItems ?? []}
-        isAnimation={newest === "watchlist" ? true : false}
+        isAnimation={true}
+        onRefreshTable={onRefreshTable}
       />
     );
   };
@@ -252,28 +254,7 @@ const AppContent: FC<AppContentTypes> = ({
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
         <div className="flex justify-start">
-          <p>
-            {totalCount.toLocaleString()} projects discovered during the last
-          </p>
-
-          <MonthSelect
-            onChangeSelect={(month) => {
-              setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-            }}
-          />
-        </div>
-        <div className="flex">
-          <p className="ml-1">sorted by</p>
-          <MonthSelect
-            onChangeSelect={(month) => {
-              setSortBy((month.value as SortByType) ?? "SCORE");
-            }}
-            defaultData={{
-              value: "SCORE",
-              label: "score",
-            }}
-            listData={initListSort as Array<any>}
-          />
+          <p>{totalCount} projects in your watchlist</p>
         </div>
       </div>
     );
@@ -345,4 +326,4 @@ const AppContent: FC<AppContentTypes> = ({
   );
 };
 
-export default AppContent;
+export default Watchlist;

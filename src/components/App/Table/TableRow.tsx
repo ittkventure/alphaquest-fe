@@ -27,6 +27,7 @@ interface TableRowTypes {
   index: number;
   isAnimation?: boolean;
   onReduceCount?: () => void;
+  onRefreshTable?: (userId: string) => void;
 }
 
 const TableRow: FC<TableRowTypes> = ({
@@ -34,6 +35,7 @@ const TableRow: FC<TableRowTypes> = ({
   index,
   isAnimation,
   onReduceCount,
+  onRefreshTable,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { authState, accountExtendDetail } = useContext(AuthContext);
@@ -54,16 +56,8 @@ const TableRow: FC<TableRowTypes> = ({
           itemState.userId,
           authState?.access_token
         );
-        // if (itemState.inWatchlist) {
-        //   toast.success(
-        //     `Remove ${itemState.name} project to your watch list successful`
-        //   );
-        // } else {
-        //   toast.success(
-        //     `Add ${itemState.name} project to your watch list successful`
-        //   );
-        // }
         setItemState({ ...itemState, inWatchlist: !itemState.inWatchlist });
+        onRefreshTable ? onRefreshTable(itemState.userId) : null;
       } else {
         toast.warning("Please login for use this feature");
       }
@@ -112,7 +106,7 @@ const TableRow: FC<TableRowTypes> = ({
   return (
     <div
       className={
-        query.tab === "watchlist"
+        isAnimation
           ? _renderClassNameAnimation()
           : `flex justify-between  overflow-hidden mt-4 h-auto max-lg:pb-4 max-lg:border-b border-b-secondary-600 max-lg:border-b-secondary-600 `
       }

@@ -3,6 +3,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import AppContent from "@/components/App";
 import Header from "@/components/App/Header";
+import Watchlist from "@/components/App/Watchlist";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
@@ -11,47 +12,36 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
-interface Props {
-  tab?: string;
-  newest: boolean;
-}
-
-const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
+const AppPage: NextPage = () => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
   const apiTwitter = new ApiTwitter();
-
+  const router = useRouter();
   const { isLoading, error, data } = useQuery({
     queryKey: [
-      "getListTwitter",
+      "getWatchListTwitter",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
+      router.pathname,
     ],
     queryFn: async () =>
-      await apiTwitter.getListTwitter(
+      await apiTwitter.getListTwitterWatchList(
         {
           pageNumber: 1,
           pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
           timeFrame: "7D",
           sortBy: "SCORE",
-          newest: newest,
+          newest: false,
         },
-        authState?.access_token ?? "",
-        authState?.access_token &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-          ? false
-          : true
+        authState?.access_token ?? ""
       ),
   });
 
   return (
     <AppLayout>
       {isLoading === false ? (
-        <AppContent
+        <Watchlist
           listItemsProps={data.items}
-          totalCountProps={
-            tab === "watchlist" ? data.totalCount : data.discoveredProjectCount
-          }
-          tab={tab}
+          totalCountProps={data.totalCount}
         />
       ) : (
         <div className="w-full">
@@ -72,9 +62,6 @@ export default AppPage;
 
 export async function getServerSideProps({ params }: any) {
   return {
-    props: {
-      tab: params?.tab,
-      newest: params?.tab === "newest" ? true : false,
-    }, // will be passed to the page component as props
+    props: {}, // will be passed to the page component as props
   };
 }

@@ -5,10 +5,14 @@ import TableRow from "./TableRow";
 interface TableContentTypes {
   initListRows: TwitterItem[];
   isAnimation?: boolean;
-  onReduceCount?: () => void;
+  onRefreshTable?: (userId: string) => void;
 }
 
-const TableContent: FC<TableContentTypes> = ({ initListRows, isAnimation }) => {
+const TableContent: FC<TableContentTypes> = ({
+  initListRows,
+  isAnimation,
+  onRefreshTable,
+}) => {
   const [listRows, setListRows] = useState<TwitterItem[]>(initListRows);
 
   useEffect(() => {
@@ -23,7 +27,8 @@ const TableContent: FC<TableContentTypes> = ({ initListRows, isAnimation }) => {
             key={index}
             item={value}
             index={index}
-            isAnimation={false}
+            isAnimation={isAnimation}
+            onRefreshTable={onRefreshTable}
           />
         );
       })}
