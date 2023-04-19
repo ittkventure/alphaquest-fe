@@ -150,6 +150,11 @@ class ApiAuth extends ApiClientBase {
         token: tokenFormat,
         password,
         confirmPassword,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
     return res.data;
