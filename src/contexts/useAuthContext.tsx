@@ -92,6 +92,9 @@ export const useAuthContext = (): IAuthContext => {
   const handleLogOut = () => {
     localStorage.removeItem("AQToken");
     setAuthState(null);
+    setAccountExtendDetail(null);
+    setCanCancel(null);
+    setTypePayment(undefined);
   };
   const setTypePaymentAction = (type?: TypePayment) => {
     setTypePayment(type);
