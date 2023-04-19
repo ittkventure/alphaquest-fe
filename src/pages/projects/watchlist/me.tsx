@@ -24,7 +24,10 @@ const AppPage: NextPage = () => {
       router.pathname,
     ],
     queryFn: async () => {
-      if (accountExtendDetail?.currentPlanKey === UserPayType.FREE)
+      if (
+        accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+        !authState?.access_token
+      )
         return { data: {} };
 
       return await apiTwitter.getListTwitterWatchList(

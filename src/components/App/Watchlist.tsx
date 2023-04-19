@@ -106,7 +106,11 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const fetchData = async (currentTab?: string) => {
     try {
-      if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return;
+      if (
+        accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+        !authState?.access_token
+      )
+        return;
       const tabCheck = currentTab ?? tab;
       setIsLoading(true);
       setErrorMsg("");
@@ -228,7 +232,11 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const _renderTable = () => {
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return "";
+    if (
+      accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+      !authState?.access_token
+    )
+      return "";
     if (isLoading) return null;
     if (listItems.length === 0 && !errorMsg)
       return <p className="text-center">No data.</p>;
@@ -254,7 +262,11 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const renderDes = () => {
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return "";
+    if (
+      accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+      !authState?.access_token
+    )
+      return "";
 
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
@@ -292,7 +304,11 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const _renderUpPro = () => {
-    if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM) return;
+    if (
+      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
+      authState?.access_token
+    )
+      return;
     return (
       <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
         <div className="flex justify-center items-center mb-4">
