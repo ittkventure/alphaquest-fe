@@ -23,8 +23,11 @@ const AppPage: NextPage = () => {
       authState?.access_token,
       router.pathname,
     ],
-    queryFn: async () =>
-      await apiTwitter.getListTwitterWatchList(
+    queryFn: async () => {
+      if (accountExtendDetail?.currentPlanKey === UserPayType.FREE)
+        return { data: {} };
+
+      return await apiTwitter.getListTwitterWatchList(
         {
           pageNumber: 1,
           pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
@@ -33,15 +36,16 @@ const AppPage: NextPage = () => {
           newest: false,
         },
         authState?.access_token ?? ""
-      ),
+      );
+    },
   });
 
   return (
     <AppLayout>
       {isLoading === false ? (
         <Watchlist
-          listItemsProps={data.items}
-          totalCountProps={data.totalCount}
+          listItemsProps={data?.items ?? []}
+          totalCountProps={data?.totalCount ?? 0}
         />
       ) : (
         <div className="w-full">

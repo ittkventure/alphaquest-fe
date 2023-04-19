@@ -44,14 +44,12 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
         >
           Newest
         </Tab>
-        {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-          <Tab
-            onClick={() => router.push("/projects/watchlist/me")}
-            className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
-          >
-            Watchlist
-          </Tab>
-        ) : null}
+        <Tab
+          onClick={() => router.push("/projects/watchlist/me")}
+          className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
+        >
+          Watchlist
+        </Tab>
       </Tab.List>
     </Tab.Group>
   );

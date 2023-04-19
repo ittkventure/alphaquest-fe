@@ -24,44 +24,6 @@ const SideMenu = () => {
     router.push("/projects");
   };
 
-  useEffect(() => {
-    accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-      ? setListMenu([
-        {
-          key: "trending",
-          icon: <FireIcon className="h-5 w-5 mr-2" />,
-          label: "Trending",
-          active: false,
-        },
-        {
-          key: "newest",
-          icon: <BoltIcon className="h-5 w-5 mr-2" />,
-          label: "Newest",
-          active: false,
-        },
-        {
-          key: "watchlist/me",
-          icon: <HeartIcon className="h-5 w-5 mr-2" />,
-          label: "Watchlist",
-          active: false,
-        },
-      ])
-      : setListMenu([
-        {
-          key: "trending",
-          icon: <FireIcon className="h-5 w-5 mr-2" />,
-          label: "Trending",
-          active: false,
-        },
-        {
-          key: "newest",
-          icon: <BoltIcon className="h-5 w-5 mr-2" />,
-          label: "Newest",
-          active: false,
-        },
-      ]);
-  }, [accountExtendDetail]);
-
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
     {
       key: "trending",
@@ -73,6 +35,12 @@ const SideMenu = () => {
       key: "newest",
       icon: <BoltIcon className="h-5 w-5 mr-2" />,
       label: "Newest",
+      active: false,
+    },
+    {
+      key: "watchlist/me",
+      icon: <HeartIcon className="h-5 w-5 mr-2" />,
+      label: "Watchlist",
       active: false,
     },
   ]);
@@ -105,8 +73,9 @@ const SideMenu = () => {
               >
                 <Link
                   href={`/projects/${value.key}`}
-                  className={`flex transition-all duration-300 ${tab === value.key ? "text-dark-900 " : "text-white"
-                    }`}
+                  className={`flex transition-all duration-300 ${
+                    tab === value.key ? "text-dark-900 " : "text-white"
+                  }`}
                 >
                   {value.icon}
                   {value.label}

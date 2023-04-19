@@ -279,30 +279,35 @@ const AppContent: FC<AppContentTypes> = ({
     );
   };
 
+  const renderUpBtn = () => {
+    if (router.pathname === "/projects/watchlist/me") return null;
+    return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+      !accountExtendDetail?.currentPlanKey ? (
+      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+          <p className="mb-4">Upgrade account to see all</p>
+
+          <button
+            onClick={onClickPaymentTrial}
+            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+          >
+            <Image
+              src={CrownIcon}
+              width={17}
+              height={14}
+              alt="crown-icon"
+              className="mr-2"
+            />
+            Upgrade to Pro
+          </button>
+        </div>
+      </div>
+    ) : null;
+  };
+
   return (
     <div className="w-full relative ">
-      {accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !accountExtendDetail?.currentPlanKey ? (
-        <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
-          <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-            <p className="mb-4">Upgrade account to see all</p>
-
-            <button
-              onClick={onClickPaymentTrial}
-              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-            >
-              <Image
-                src={CrownIcon}
-                width={17}
-                height={14}
-                alt="crown-icon"
-                className="mr-2"
-              />
-              Upgrade to Pro
-            </button>
-          </div>
-        </div>
-      ) : null}
+      {renderUpBtn()}
       <div className="p-6">
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
