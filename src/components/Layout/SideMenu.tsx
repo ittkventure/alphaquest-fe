@@ -42,7 +42,7 @@ const SideMenu = () => {
           {
             key: "watchlist/me",
             icon: <HeartIcon className="h-5 w-5 mr-2" />,
-            label: "Watch List",
+            label: "Watchlist",
             active: false,
           },
         ])
