@@ -106,6 +106,7 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const fetchData = async (currentTab?: string) => {
     try {
+      if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return;
       const tabCheck = currentTab ?? tab;
       setIsLoading(true);
       setErrorMsg("");
@@ -149,6 +150,7 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const fetchDataLoadMore = async () => {
     try {
+      if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return;
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
@@ -226,6 +228,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const _renderTable = () => {
+    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return "";
     if (isLoading) return null;
     if (listItems.length === 0 && !errorMsg)
       return <p className="text-center">No data.</p>;
@@ -251,6 +254,8 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const renderDes = () => {
+    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return "";
+
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
         <div className="flex justify-start">
@@ -260,30 +265,63 @@ const Watchlist: FC<WatchlistTypes> = ({
     );
   };
 
+  const renderUpBtn = () => {
+    if (router.pathname === "/projects/watchlist/me") return null;
+    return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+      !accountExtendDetail?.currentPlanKey ? (
+      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+          <p className="mb-4">Upgrade account to see all</p>
+
+          <button
+            onClick={onClickPaymentTrial}
+            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+          >
+            <Image
+              src={CrownIcon}
+              width={17}
+              height={14}
+              alt="crown-icon"
+              className="mr-2"
+            />
+            Upgrade to Pro
+          </button>
+        </div>
+      </div>
+    ) : null;
+  };
+
+  const _renderUpPro = () => {
+    if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM) return;
+    return (
+      <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
+        <div className="flex justify-center items-center mb-4">
+          <div className="mr-2 py-[1px] px-2 border rounded-lg border-yellow-400 text-yellow-400 font-workSansSemiBold">
+            PRO
+          </div>
+          <p className="">member only</p>
+        </div>
+
+        <button
+          onClick={onClickPaymentTrial}
+          className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+        >
+          <Image
+            src={CrownIcon}
+            width={17}
+            height={14}
+            alt="crown-icon"
+            className="mr-2"
+          />
+          Upgrade to Pro
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full relative ">
-      {accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !accountExtendDetail?.currentPlanKey ? (
-        <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
-          <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-            <p className="mb-4">Upgrade account to see all</p>
-
-            <button
-              onClick={onClickPaymentTrial}
-              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-            >
-              <Image
-                src={CrownIcon}
-                width={17}
-                height={14}
-                alt="crown-icon"
-                className="mr-2"
-              />
-              Upgrade to Pro
-            </button>
-          </div>
-        </div>
-      ) : null}
+      {renderUpBtn()}
       <div className="p-6">
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
@@ -291,6 +329,8 @@ const Watchlist: FC<WatchlistTypes> = ({
       <div className="hidden max-lg:block">
         <TabApp onChangeTab={_handleSelectTab} />
       </div>
+      {_renderUpPro()}
+
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
@@ -314,10 +354,22 @@ const Watchlist: FC<WatchlistTypes> = ({
 
         <div className="mt-7 max-lg:mt-9">
           {_renderTable()}
-          {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
-          {isLoading ? <SkeletonLoading numberOfRow={10} /> : null}
-          {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
-          {!isLoadingMore && !errorMsg && !isLoading ? (
+          {errorMsg &&
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+            <p className="mt-10 text-center">{errorMsg}</p>
+          ) : null}
+          {isLoading &&
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+            <SkeletonLoading numberOfRow={10} />
+          ) : null}
+          {isLoadingMore &&
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+            <SkeletonLoading numberOfRow={3} />
+          ) : null}
+          {!isLoadingMore &&
+          !errorMsg &&
+          !isLoading &&
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
           ) : null}
         </div>

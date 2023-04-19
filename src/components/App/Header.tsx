@@ -33,11 +33,16 @@ const Header = () => {
     router.push("/sign-up");
   };
 
+  const renderTitle = () => {
+    if (router.pathname === "/projects/watchlist/me") return "Watchlist";
+    return capitalized(tab ? tab?.toString() : "Trending");
+  };
+
   return (
     <div className="flex justify-between items-center w-full">
       <div>
         <h1 className="font-workSansSemiBold text-[36px] max-lg:hidden">
-          {capitalized(tab ? tab?.toString() : "Trending")}
+          {renderTitle()}
         </h1>
         <div className="hidden max-lg:block">
           <Image src={LogoWithText} width={169} height={40} alt="logo" />
