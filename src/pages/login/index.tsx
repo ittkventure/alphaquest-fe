@@ -99,7 +99,7 @@ const Login = () => {
               <p>Log in</p>
             </button>
 
-            <Link href={"#"}>
+            <Link href={"/forgot-password"}>
               <p className="text-success-500 text-[16px] mt-5">
                 Forgot password?
               </p>
