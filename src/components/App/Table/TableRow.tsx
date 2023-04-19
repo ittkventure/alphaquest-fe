@@ -3,7 +3,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import { TwitterIcon } from "@/assets/icons";
 import Spinner from "@/components/Spinner";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
@@ -38,9 +38,9 @@ const TableRow: FC<TableRowTypes> = ({
   onRefreshTable,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { authState, accountExtendDetail } = useContext(AuthContext);
-  const { query } = useRouter();
-
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
+  const router = useRouter();
   const [itemState, setItemState] = useState(item);
 
   useEffect(() => {
@@ -48,6 +48,16 @@ const TableRow: FC<TableRowTypes> = ({
   }, [item]);
 
   const onAddItemToWatchList = async () => {
+    if (!authState?.access_token) {
+      router.push("/login");
+      return;
+    }
+    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/pricing?action=open");
+
+      return;
+    }
     try {
       setIsLoading(true);
 
@@ -74,7 +84,6 @@ const TableRow: FC<TableRowTypes> = ({
   };
 
   const _renderHeartButton = () => {
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return;
     return (
       <button
         onClick={onAddItemToWatchList}
