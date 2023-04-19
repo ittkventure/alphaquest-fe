@@ -25,7 +25,7 @@ const Login = () => {
   const authApi = new ApiAuth();
 
   useEffect(() => {
-    if (authState) router.back();
+    if (authState) router.push('/projects');
   }, [authState, router]);
 
   const onSubmit = async (data: any) => {
@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <HomeLayout hiddenFooter>
+    <HomeLayout hiddenFooter isApp>
       <div className="w-[100vw] mt-8 flex justify-center items-center relative">
         <Image
           src={BlurBgImg}

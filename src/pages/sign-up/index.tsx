@@ -85,7 +85,7 @@ const SignUp = () => {
   }, [authState?.access_token]);
 
   return (
-    <HomeLayout hiddenFooter>
+    <HomeLayout hiddenFooter isApp>
       <div className="w-[100vw] mt-16 max-md:mt-6 flex justify-center items-center relative">
         <Image
           src={BlurBgImg}
@@ -146,9 +146,8 @@ const SignUp = () => {
             )}
             <button
               type="submit"
-              className={`w-full ${
-                isLoading ? "opacity-70" : "opacity-100"
-              } flex justify-center items-center py-3 mt-5 bg-success-500`}
+              className={`w-full ${isLoading ? "opacity-70" : "opacity-100"
+                } flex justify-center items-center py-3 mt-5 bg-success-500`}
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : null}

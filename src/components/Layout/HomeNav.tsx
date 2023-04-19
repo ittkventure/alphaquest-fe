@@ -9,9 +9,11 @@ import { useRouter } from "next/router";
 import React, { FC, useContext, useState } from "react";
 import AQAvatar from "../AQAvatar";
 
-interface HomeNavTypes {}
+interface HomeNavTypes {
+  isApp?: boolean;
+}
 
-const HomeNav: FC<HomeNavTypes> = () => {
+const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -30,7 +32,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
 
   const onGoHome = () => {
     setShowMenu(false);
-    router.push("/");
+    { isApp ? router.push("/projects") : router.push("/") };
   };
 
   const onClickPaymentTrial = () => {
@@ -88,9 +90,8 @@ const HomeNav: FC<HomeNavTypes> = () => {
   const renderDropMenu = () => {
     return (
       <div
-        className={`w-full transition-all duration-300 z-[1000] bg-dark-900 fixed ${
-          showMenu ? "h-[100vh] top-24 pb-10" : "h-[0px] top-[-100px]"
-        }  hidden max-lg:block  overflow-hidden`}
+        className={`w-full transition-all duration-300 z-[1000] bg-dark-900 fixed ${showMenu ? "h-[100vh] top-24 pb-10" : "h-[0px] top-[-100px]"
+          }  hidden max-lg:block  overflow-hidden`}
       >
         <ul className="flex flex-col items-center text-base mt-3">
           <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
@@ -102,7 +103,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
 
           <li>
             {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
-            authState?.access_token ? (
+              authState?.access_token ? (
               <div>
                 <button
                   onClick={onClickPaymentTrial}
@@ -168,7 +169,7 @@ const HomeNav: FC<HomeNavTypes> = () => {
 
             <li>
               {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
-              authState?.access_token ? (
+                authState?.access_token ? (
                 <div>
                   <button
                     onClick={onClickPaymentTrial}

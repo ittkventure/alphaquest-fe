@@ -202,7 +202,7 @@ const AccountDetails = () => {
   };
 
   return (
-    <HomeLayout>
+    <HomeLayout isApp>
       <div className="mt-6 px-36 max-lg:px-20 max-md:px-6 mb-[150px]">
         <h1 className="font-workSansSemiBold text-[36px]">Account Details</h1>
         {_renderAccountMobile()}

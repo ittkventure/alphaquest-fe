@@ -8,13 +8,16 @@ import React, { FC } from "react";
 interface HomeLayoutTypes {
   children: React.ReactElement;
   hiddenFooter?: boolean;
+  isApp?: boolean;
 }
 
-const HomeLayout: FC<HomeLayoutTypes> = ({ hiddenFooter, children }) => {
+const HomeLayout: FC<HomeLayoutTypes> = ({ hiddenFooter, children, isApp = false }) => {
+
+  console.log('isAppisAppisAppisApp', isApp);
   return (
     <div>
       <SEO />
-      <HomeNav />
+      <HomeNav isApp={isApp} />
       <div className="pt-[100px]">{children}</div>
       {!hiddenFooter ? <HomeFooter /> : null}
     </div>

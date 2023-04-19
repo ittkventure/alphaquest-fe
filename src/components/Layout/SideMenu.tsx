@@ -20,46 +20,46 @@ const SideMenu = () => {
   const { tab } = router.query;
   const { authState, accountExtendDetail } = useContext(AuthContext);
 
-  const onGoHome = () => {
-    router.push("/");
+  const onGoApp = () => {
+    router.push("/projects");
   };
 
   useEffect(() => {
     accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
       ? setListMenu([
-          {
-            key: "trending",
-            icon: <FireIcon className="h-5 w-5 mr-2" />,
-            label: "Trending",
-            active: false,
-          },
-          {
-            key: "newest",
-            icon: <BoltIcon className="h-5 w-5 mr-2" />,
-            label: "Newest",
-            active: false,
-          },
-          {
-            key: "watchlist/me",
-            icon: <HeartIcon className="h-5 w-5 mr-2" />,
-            label: "Watchlist",
-            active: false,
-          },
-        ])
+        {
+          key: "trending",
+          icon: <FireIcon className="h-5 w-5 mr-2" />,
+          label: "Trending",
+          active: false,
+        },
+        {
+          key: "newest",
+          icon: <BoltIcon className="h-5 w-5 mr-2" />,
+          label: "Newest",
+          active: false,
+        },
+        {
+          key: "watchlist/me",
+          icon: <HeartIcon className="h-5 w-5 mr-2" />,
+          label: "Watchlist",
+          active: false,
+        },
+      ])
       : setListMenu([
-          {
-            key: "trending",
-            icon: <FireIcon className="h-5 w-5 mr-2" />,
-            label: "Trending",
-            active: false,
-          },
-          {
-            key: "newest",
-            icon: <BoltIcon className="h-5 w-5 mr-2" />,
-            label: "Newest",
-            active: false,
-          },
-        ]);
+        {
+          key: "trending",
+          icon: <FireIcon className="h-5 w-5 mr-2" />,
+          label: "Trending",
+          active: false,
+        },
+        {
+          key: "newest",
+          icon: <BoltIcon className="h-5 w-5 mr-2" />,
+          label: "Newest",
+          active: false,
+        },
+      ]);
   }, [accountExtendDetail]);
 
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
@@ -89,9 +89,9 @@ const SideMenu = () => {
     <aside className="fixed transition-all duration-300 top-0 left-0 z-40 w-64 h-screen border-r border-white border-opacity-20 px-3 py-6 max-lg:hidden">
       <ul className="w-full">
         <li className="mb-8">
-          <div>
+          <button onClick={onGoApp} className="cursor-pointer">
             <Image src={LogoWithText} width={169} height={40} alt="logo" />
-          </div>
+          </button>
         </li>
 
         {listMenu.map((value, index) => {
@@ -105,9 +105,8 @@ const SideMenu = () => {
               >
                 <Link
                   href={`/projects/${value.key}`}
-                  className={`flex transition-all duration-300 ${
-                    tab === value.key ? "text-dark-900 " : "text-white"
-                  }`}
+                  className={`flex transition-all duration-300 ${tab === value.key ? "text-dark-900 " : "text-white"
+                    }`}
                 >
                   {value.icon}
                   {value.label}
