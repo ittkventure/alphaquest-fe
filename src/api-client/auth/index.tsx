@@ -127,6 +127,33 @@ class ApiAuth extends ApiClientBase {
     );
     return res.data;
   }
+
+  public async resetPassword(email: string): Promise<any> {
+    const res = await this.instance.post(
+      `/api/app/account-extend/reset-password?email=${email}`,
+      {}
+    );
+    return res.data;
+  }
+
+  public async confirmResetPassword(
+    email: string,
+    token: string,
+    password: string,
+    confirmPassword: string
+  ): Promise<any> {
+    const tokenFormat = token.replaceAll(" ", "+");
+    const res = await this.instance.post(
+      `/api/app/account-extend/confirm-reset-password`,
+      {
+        email,
+        token: tokenFormat,
+        password,
+        confirmPassword,
+      }
+    );
+    return res.data;
+  }
 }
 
 export default ApiAuth;
