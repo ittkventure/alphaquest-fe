@@ -299,7 +299,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           <div className="mr-2 py-[1px] px-2 border rounded-lg border-yellow-400 text-yellow-400 font-workSansSemiBold">
             PRO
           </div>
-          <p className="">member only</p>
+          <p className="">Member Only</p>
         </div>
 
         <button
