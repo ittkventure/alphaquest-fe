@@ -173,7 +173,7 @@ const TableRow: FC<TableRowTypes> = ({
             )}
           </div>
           <div>
-            <p className="font-workSansRegular max-lg:text-xs text-sm">
+            <p className="font-workSansRegular max-lg:text-xs text-sm max-lg:w-[50vw]">
               {itemState.description}
             </p>
           </div>
@@ -186,7 +186,7 @@ const TableRow: FC<TableRowTypes> = ({
           </div>
         </div>
       </div>
-      <div className="flex max-lg:flex-col max-lg:justify-between max-lg:py-2 justify-end items-center ">
+      <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{itemState.trendingScore}</p>
         </div>
