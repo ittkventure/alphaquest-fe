@@ -305,8 +305,7 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const _renderUpPro = () => {
     if (
-      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
-      authState?.access_token
+      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
     )
       return;
     return (
