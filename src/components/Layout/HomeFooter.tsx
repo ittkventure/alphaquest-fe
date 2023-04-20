@@ -31,7 +31,19 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
         </li>
 
         <li>
-          <Link href={"https://t.me/alphaquestio"}>Contact us</Link>
+          <Link href={"https://t.me/alphaquestio"}>Contact us <span className="mr-1 text-success-500">/</span></Link>
+        </li>
+        
+        <li>
+          <Link href={"https://coinwire.com/"}>
+            CoinWire <span className="mr-1 text-success-500">/</span>
+          </Link>
+        </li>
+        
+        <li>
+          <Link href={"https://chainplay.gg/"}>
+            Chainplay
+          </Link>
         </li>
       </ul>
     </div>
