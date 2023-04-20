@@ -304,10 +304,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const _renderUpPro = () => {
-    if (
-      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
-      authState?.access_token
-    )
+    if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM)
       return;
     return (
       <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
