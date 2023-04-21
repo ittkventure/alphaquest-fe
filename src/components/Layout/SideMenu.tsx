@@ -38,7 +38,7 @@ const SideMenu = () => {
       active: false,
     },
     {
-      key: "watchlist/me",
+      key: "watchlist",
       icon: <HeartIcon className="h-5 w-5 mr-2" />,
       label: "Watchlist",
       active: false,
@@ -46,9 +46,11 @@ const SideMenu = () => {
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
+    if (router.pathname === `/watchlist/projects` && item.key === "watchlist")
+      return "bg-success-500";
     if (!tab && router.pathname === `/projects/${item.key}` && index != 0)
       return "bg-success-500";
-    if (!tab && index === 0 && router.pathname !== `/projects/watchlist/me`)
+    if (!tab && index === 0 && router.pathname !== `/watchlist/projects`)
       return "bg-success-500";
     return tab === item.key ? "bg-success-500" : "hover:bg-secondary-600";
   };
@@ -72,7 +74,11 @@ const SideMenu = () => {
                 )} w-full`}
               >
                 <Link
-                  href={`/projects/${value.key}`}
+                  href={
+                    value.key === "watchlist"
+                      ? "/watchlist/projects"
+                      : `/projects/${value.key}`
+                  }
                   className={`flex transition-all duration-300 ${
                     tab === value.key ? "text-dark-900 " : "text-white"
                   }`}

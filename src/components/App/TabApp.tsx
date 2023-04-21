@@ -14,7 +14,7 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
   const { accountExtendDetail } = useContext(AuthContext);
 
   const _handleSelectTab = (): number | undefined => {
-    if (router.pathname === "/projects/watchlist/me") return 2;
+    if (router.pathname === "/watchlist/projects") return 2;
     switch (tab) {
       case "trending":
         return 0;
@@ -45,7 +45,7 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
           Newest
         </Tab>
         <Tab
-          onClick={() => router.push("/projects/watchlist/me")}
+          onClick={() => router.push("/watchlist/projects")}
           className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
         >
           Watchlist

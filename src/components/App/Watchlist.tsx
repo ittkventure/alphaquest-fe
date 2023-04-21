@@ -278,7 +278,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const renderUpBtn = () => {
-    if (router.pathname === "/projects/watchlist/me") return null;
+    if (router.pathname === "/watchlist/projects") return null;
     return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
@@ -304,8 +304,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const _renderUpPro = () => {
-    if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM)
-      return;
+    if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM) return;
     return (
       <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
         <div className="flex justify-center items-center mb-4">
