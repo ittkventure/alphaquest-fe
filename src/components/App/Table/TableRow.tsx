@@ -13,6 +13,10 @@ import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
+enum ConstDayAgo {
+  one_day_ago = "1 days ago",
+}
+
 export interface TableObject {
   index: number;
   avatar: string;
@@ -112,6 +116,16 @@ const TableRow: FC<TableRowTypes> = ({
     } max-lg:border-b max-lg:border-b-secondary-600 `;
   };
 
+  const _renderNewTag = () => {
+    if (moment(itemState.discoveredTime).fromNow() === ConstDayAgo.one_day_ago)
+      return (
+        <div className="bg-primary-blue-500 py-[1px] px-1 ml-2 text-xs">
+          <p>New</p>
+        </div>
+      );
+    return;
+  };
+
   return (
     <div
       className={
@@ -147,7 +161,7 @@ const TableRow: FC<TableRowTypes> = ({
         </div>
         <div className="mr-4">
           <div
-            className={`flex ${
+            className={`flex items-center ${
               itemState.name !== "UNKNOWN"
                 ? ""
                 : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
@@ -155,7 +169,7 @@ const TableRow: FC<TableRowTypes> = ({
           >
             {itemState.name !== "UNKNOWN" ? (
               <>
-                <p className="text-success-500 max-lg: text-sm font-workSansSemiBold mr-2">
+                <p className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2">
                   {itemState.name}
                 </p>
                 <div>
@@ -167,12 +181,13 @@ const TableRow: FC<TableRowTypes> = ({
                     <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
                   </a>
                 </div>
+                {_renderNewTag()}
               </>
             ) : (
               <div />
             )}
           </div>
-          <div>
+          <div className="mt-1">
             <p className="font-workSansRegular max-lg:text-xs text-sm max-lg:w-[50vw]">
               {itemState.description}
             </p>
@@ -196,4 +211,4 @@ const TableRow: FC<TableRowTypes> = ({
   );
 };
 
-export default TableRow;
+export default React.memo(TableRow);

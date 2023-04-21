@@ -14,7 +14,11 @@ module.exports = {
         white: "#FAFAFA",
         primary: {
           500: "#E25148",
+          blue: {
+            500: "#345CC1",
+          },
         },
+
         success: {
           600: "#2c9e80",
           500: "#24B592",

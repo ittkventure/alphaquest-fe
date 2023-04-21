@@ -12,11 +12,11 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
   const router = useRouter();
 
   return (
-    <div className="flex justify-center items-center max-lg:flex-col  mt-[102px] w-full px-36 max-lg:px-0 ">
+    <div className="flex justify-center items-center max-lg:flex-col mt-[102px] max-lg:mt-12 w-full px-36 max-lg:px-0 ">
       <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
-        <div className="relative mx-6 w-[576px] max-xl:w-full">
+        <div className="relative mx-6 max-lg:mx-0 w-[576px] max-xl:w-full">
           <div className="rounded-[100%] w-52 h-52 custom-circle-bg absolute top-[-30px] right-[-30px]"></div>
-          <div className="w-full p-10 custom-card-sub backdrop-blur-md">
+          <div className="w-full p-10 max-lg:p-5 custom-card-sub backdrop-blur-md">
             <div className="flex justify-center font-workSansSemiBold items-center border-[0.5px] border-secondary-700 text-success-600 w-[55px] py-[2px] rounded-[20px]">
               <p>FREE</p>
             </div>
@@ -30,14 +30,16 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
             <div className="flex items-center font-workSansLight">
               <CheckIcon className="h-4 w-4 text-success-500" />
-              <p className="ml-2">Access to a limited projects & trends database</p>
+              <p className="ml-2">
+                Access to a limited projects & trends database
+              </p>
             </div>
 
-            <div className="mt-[91px] flex justify-end">
+            <div className="mt-[91px] max-lg:mt-5 max-lg:w-full  max-lg:justify-center flex justify-end">
               <button
                 disabled={isLoading}
                 onClick={() => router.push("/projects/trending")}
-                className={`py-3 px-6 flex items-center bg-primary-500 ${
+                className={`py-3 px-6 flex items-center  bg-primary-500 ${
                   isLoading ? "opacity-40" : ""
                 }`}
               >
@@ -52,9 +54,9 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
           </div>
         </div>
 
-        <div className="relative mx-6 w-[576px] max-xl:w-full max-xl:mt-10 ">
+        <div className="relative mx-6  max-lg:mx-0 w-[576px] max-xl:w-full max-xl:mt-10 ">
           <div className="rounded-[100%] w-52 h-52 custom-circle-bg absolute top-[-30px] right-[-30px]"></div>
-          <div className="w-[100%]   p-10 border-[2px] custom-card-sub-border-linear backdrop-blur-md">
+          <div className="w-[100%] max-lg:p-5  p-10 border-[2px] custom-card-sub-border-linear backdrop-blur-md">
             <div className="flex">
               <div className="flex font-workSansSemiBold justify-center items-center border-[0.5px] border-secondary-700 text-success-600 w-[60px] py-[2px] rounded-[20px]">
                 <p>PRO</p>
@@ -87,7 +89,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
               <p className="ml-2">Weekly Newsletter</p>
             </div>
 
-            <div className="mt-[43px] flex justify-end">
+            <div className="mt-[43px] max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
               <button
                 disabled={isLoading}
                 onClick={() => onPayment(true)}

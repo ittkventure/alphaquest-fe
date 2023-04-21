@@ -27,7 +27,7 @@ const AQDisclosure: FC<IAQDisclosure> = ({
           <p className="text-[40px] mx-4 font-workSansExtraLight text-success-500">
             /
           </p>{" "}
-          <p>{title}</p>
+          <p className="max-lg:text-left max-lg:text-sm">{title}</p>
         </div>
         <div
           className={`transition-all duration-200 ${!open ? "" : "rotate-180"}`}
@@ -37,11 +37,11 @@ const AQDisclosure: FC<IAQDisclosure> = ({
       </div>
 
       <div
-        className={`transition-all w-full duration-500 text-left ml-14 font-workSansLight ${
-          open ? "max-h-max py-4  mb-6" : "h-0 py-0 overflow-hidden"
+        className={`transition-all w-full duration-500 pr-2 text-left ml-14 font-workSansLight ${
+          open ? "max-h-max py-4 max-lg:py-0 mb-6" : "h-0 py-0 overflow-hidden"
         }`}
       >
-        <p className="mt-4 pr-3">{content}</p>
+        <p className="mt-4 pr-3 max-lg:text-sm">{content}</p>
       </div>
     </button>
   );

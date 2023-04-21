@@ -97,8 +97,8 @@ const Subscription = () => {
 
   return (
     <HomeLayout>
-      <div className="max-lg:px-5 flex flex-col items-center overflow-hidden">
-        <div className="flex flex-col items-center justify-center text-[2rem] font-workSansSemiBold ">
+      <div className="max-lg:px-5 flex flex-col items-center overflow-hidden transition-all duration-200">
+        <div className="flex flex-col items-center justify-center text-[2rem] max-lg:text-3xl text-center font-workSansSemiBold ">
           <p>Uncover The Next Big Thing in Crypto Now</p>
         </div>
         <div className="flex justify-center mt-8 font-workSansLight text-center">
@@ -110,20 +110,21 @@ const Subscription = () => {
         </div>
 
         <SubContent isLoading={isLoading} onPayment={getPaymentLink} />
-        <div className="flex items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[33px] px-10 bg-dark-800 mt-11">
+
+        <div className="flex max-lg:flex-col items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[33px] px-10 bg-dark-800 mt-11">
           <div>
-            <p className="font-workSansBold text-2xl">
+            <p className="font-workSansBold text-2xl max-lg:text-center">
               Uncover The Next Big Thing in Crypto Now
             </p>
-            <p className="font-workSansLight mt-2">
+            <p className="font-workSansLight mt-2 max-lg:mt-4 max-lg:text-center">
               Try the Pro Plan for 7 days
             </p>
           </div>
 
-          <div>
+          <div className="max-lg:w-full max-lg:mt-6">
             <button
               onClick={() => getPaymentLink(false)}
-              className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem] flex justify-center items-center"
+              className="px-6 max-lg:text-sm max-lg:w-full py-[10px] bg-success-600 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -136,11 +137,11 @@ const Subscription = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center text-[2rem] font-workSansSemiBold mt-[120px]">
+        <div className="flex max-lg:text-center max-lg:text-2xl max-lg:mt-16 flex-col items-center justify-center text-[2rem] font-workSansSemiBold mt-[120px]">
           <p>Over 100,000+ Investors Use AlphaQuest</p>
         </div>
 
-        <div className="flex items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[120px]  mt-11">
+        <div className="flex items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[120px] max-lg:py-5 mt-11 max-lg:mt-0">
           <CommentSwiper />
         </div>
 
@@ -176,10 +177,10 @@ const Subscription = () => {
           </div>
         </div> */}
 
-        <div className="flex w-full items-center justify-center text-[2rem] font-workSansSemiBold mt-[70px]">
-          <p className="mx-9">Frequently Asked Questions</p>
+        <div className="flex w-full items-center justify-center text-[2rem] font-workSansSemiBold max-lg:text-2xl max-lg:text-center mt-[70px] max-lg:mt-15">
+          <p className="mx-9 max-lg:mx-2">Frequently Asked Questions</p>
         </div>
-        <div className="mt-12 w-[835px] max-xl:w-full max-w-[1350px]">
+        <div className="mt-12 max-lg:mt-3 w-[835px] max-xl:w-full max-w-[1350px]">
           {listSub.map((value, index) => {
             return (
               <AQDisclosure
@@ -192,14 +193,16 @@ const Subscription = () => {
           })}
         </div>
 
-        <div className="flex justify-center items-center mt-[120px] mb-12 h-[400px] w-full relative">
-          <div className="h-[400px] w-full linear-bg-gradient-subscription-2 absolute z-0" />
+        <div className="flex justify-center items-center max-lg:mt-10 mt-[120px] max-lg:mb-0 mb-12 h-[400px] w-full relative">
+          <div className="h-[400px] max-lg:h-[300px] w-full linear-bg-gradient-subscription-2 absolute z-0" />
           <div className="flex flex-col w-full items-center justify-center text-[2rem] font-workSansSemiBold z-50">
-            <p className="mx-9">Need Help Deciding on a Plan?</p>
+            <p className="mx-9 max-lg:mx-2 max-lg:text-center max-lg:text-3xl">
+              Need Help Deciding on a Plan?
+            </p>
             <div className="mt-10">
               <a
                 href="https://t.me/alphaquestio"
-                className="px-6 py-[10px] bg-success-600 font-workSansRegular text-[1.125rem]"
+                className="px-6 py-[13px] bg-success-600 font-workSansRegular text-[1.125rem]"
                 target={"_blank"}
               >
                 Talk to a Specialist
