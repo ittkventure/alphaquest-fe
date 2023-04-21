@@ -11,9 +11,11 @@ interface HomeLayoutTypes {
   isApp?: boolean;
 }
 
-const HomeLayout: FC<HomeLayoutTypes> = ({ hiddenFooter, children, isApp = false }) => {
-
-  console.log('isAppisAppisAppisApp', isApp);
+const HomeLayout: FC<HomeLayoutTypes> = ({
+  hiddenFooter,
+  children,
+  isApp = false,
+}) => {
   return (
     <div>
       <SEO />
