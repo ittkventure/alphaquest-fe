@@ -1,7 +1,5 @@
 import ApiTwitter from "@/api-client/twitter";
 import { UserPayType } from "@/api-client/types/AuthType";
-import { TwitterItem } from "@/api-client/types/TwitterType";
-import AppContent from "@/components/App";
 import Header from "@/components/App/Header";
 import Watchlist from "@/components/App/Watchlist";
 import Spinner from "@/components/Spinner";
@@ -9,7 +7,7 @@ import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useQuery } from "react-query";
 
 const AppPage: NextPage = () => {

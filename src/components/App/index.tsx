@@ -280,7 +280,7 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   const renderUpBtn = () => {
-    if (router.pathname === "/projects/watchlist/me") return null;
+    if (router.pathname === "/watchlist/projects") return null;
     return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">

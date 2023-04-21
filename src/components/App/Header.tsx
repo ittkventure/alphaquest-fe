@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   const renderTitle = () => {
-    if (router.pathname === "/projects/watchlist/me") return "Watchlist";
+    if (router.pathname === "/watchlist/projects") return "Watchlist";
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 

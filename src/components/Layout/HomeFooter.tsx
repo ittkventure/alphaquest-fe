@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 
-interface HomeFooterTypes { }
+interface HomeFooterTypes {}
 
 const HomeFooter: FC<HomeFooterTypes> = () => {
   return (
@@ -11,7 +11,7 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
       <div>
         <Image src={LogoWithText} width={169} height={40} alt="logo" />
       </div>
-      <ul className="flex mt-2">
+      <ul className="flex max-lg:flex-wrap max-lg:justify-center mt-2">
         <li>
           <Link href={"https://twitter.com/alphaquestio"}>
             Twitter <span className="mr-1 text-success-500">/</span>
@@ -31,19 +31,19 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
         </li>
 
         <li>
-          <Link href={"https://t.me/alphaquestio"}>Contact us <span className="mr-1 text-success-500">/</span></Link>
+          <Link href={"https://t.me/alphaquestio"}>
+            Contact us <span className="mr-1 text-success-500">/</span>
+          </Link>
         </li>
-        
+
         <li>
           <Link href={"https://coinwire.com/"}>
             CoinWire <span className="mr-1 text-success-500">/</span>
           </Link>
         </li>
-        
+
         <li>
-          <Link href={"https://chainplay.gg/"}>
-            Chainplay
-          </Link>
+          <Link href={"https://chainplay.gg/"}>Chainplay</Link>
         </li>
       </ul>
     </div>
