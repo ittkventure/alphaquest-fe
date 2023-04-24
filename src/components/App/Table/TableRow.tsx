@@ -117,7 +117,13 @@ const TableRow: FC<TableRowTypes> = ({
   };
 
   const _renderNewTag = () => {
-    if (moment(itemState.discoveredTime).fromNow() === ConstDayAgo.one_day_ago)
+    const currentDate = new Date(itemState.discoveredTime).getTime();
+    const now = Date.now();
+
+    const newCheck = now - currentDate;
+    const checkTimeArrange = 86400000;
+
+    if (newCheck <= checkTimeArrange)
       return (
         <div className="bg-primary-blue-500 py-[1px] px-1 ml-2 text-xs">
           <p>New</p>
