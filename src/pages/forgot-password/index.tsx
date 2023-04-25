@@ -6,6 +6,7 @@ import AQInput from "@/components/AQForm/AQInput";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -24,7 +25,11 @@ const ForgotPassword = () => {
   const authApi = new ApiAuth();
 
   useEffect(() => {
-    if (authState?.access_token) router.push("/account-details");
+    if (authState?.access_token) {
+      mixpanelTrack(event_name_enum.inbound, { url: "/account-details" });
+
+      router.push("/account-details");
+    }
   }, [authState?.access_token]);
 
   useEffect(() => {
@@ -57,7 +62,11 @@ const ForgotPassword = () => {
             appear within a few minutes, check your spam folder.
           </p>
           <button
-            onClick={() => router.push("/login")}
+            onClick={() => {
+              mixpanelTrack(event_name_enum.inbound, { url: "/login" });
+
+              router.push("/login");
+            }}
             type="button"
             className={`w-full flex justify-center items-center py-3 mt-5 bg-success-600 hover:bg-emerald-700`}
           >

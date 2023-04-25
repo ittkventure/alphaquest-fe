@@ -4,6 +4,7 @@ import { TwitterItem } from "@/api-client/types/TwitterType";
 import { TwitterIcon } from "@/assets/icons";
 import Spinner from "@/components/Spinner";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
@@ -53,11 +54,17 @@ const TableRow: FC<TableRowTypes> = ({
 
   const onAddItemToWatchList = async () => {
     if (!authState?.access_token) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/login",
+      });
       router.push("/login");
       return;
     }
     if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
       router.push("/pricing?action=open");
 
       return;
@@ -70,6 +77,9 @@ const TableRow: FC<TableRowTypes> = ({
           itemState.userId,
           authState?.access_token
         );
+        mixpanelTrack(event_name_enum.on_add_watch_list, {
+          on_add_watch_list: `User add the project ${itemState.name} to watchlist`,
+        });
         setItemState({ ...itemState, inWatchlist: !itemState.inWatchlist });
         onRefreshTable ? onRefreshTable(itemState.userId) : null;
       } else {

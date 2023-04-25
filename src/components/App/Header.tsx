@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 const Header = () => {
   const router = useRouter();
@@ -17,19 +18,31 @@ const Header = () => {
     useContext(AuthContext);
 
   const onGoLogin = () => {
+    mixpanelTrack(event_name_enum.inbound, {
+      url: "/login",
+    });
     router.push("/login");
   };
 
   const onClickPaymentTrial = () => {
     if (authState) {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
       router.push("/pricing?action=open");
     } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
   };
   const onGoSignup = () => {
+    mixpanelTrack(event_name_enum.inbound, {
+      url: "/sign-up",
+    });
     router.push("/sign-up");
   };
 

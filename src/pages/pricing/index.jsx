@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 const Subscription = () => {
   const { authState, typePayment, setTypePaymentAction } =
@@ -82,6 +83,8 @@ const Subscription = () => {
               withoutTrial ? TypePayment.PRO : TypePayment.TRIAL
             )
           : null;
+        mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
+
         router.push("/sign-up");
         setIsLoading(false);
       }
@@ -201,6 +204,11 @@ const Subscription = () => {
             </p>
             <div className="mt-10">
               <a
+                onClick={() => {
+                  mixpanelTrack(event_name_enum.outbound, {
+                    url: "https://t.me/alphaquestio",
+                  });
+                }}
                 href="https://t.me/alphaquestio"
                 className="px-6 py-[13px] bg-success-600 font-workSansRegular text-[1.125rem]"
                 target={"_blank"}

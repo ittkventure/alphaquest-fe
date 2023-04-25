@@ -2,6 +2,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { ChestKingIcon, CrownIcon } from "@/assets/icons";
 import { LogoCircle } from "@/assets/images";
 import { AuthContext } from "@/contexts/useAuthContext";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { StarIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +12,12 @@ const AQAvatar = () => {
   const { accountExtendDetail } = useContext(AuthContext);
 
   return (
-    <Link href={"/account-details"}>
+    <Link
+      onClick={() => {
+        mixpanelTrack(event_name_enum.inbound, { url: "/account-details" });
+      }}
+      href={"/account-details"}
+    >
       <div className="ml-6 max-lg:ml-3 mr-6 max-lg:mr-0 flex items-center relative">
         <div
           className={`w-10 h-10 rounded-[50%] border-[1px]  ${

@@ -1,5 +1,6 @@
 import { AuthContext, useAuthContext } from "@/contexts/useAuthContext";
 import "@/styles/globals.css";
+import mixpanelInit from "@/utils/mixpanel";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Slide, ToastContainer } from "react-toastify";
@@ -9,6 +10,7 @@ import "swiper/css";
 import PaddleLoader from "./../components/Payment";
 
 export default function App({ Component, pageProps }: AppProps) {
+  mixpanelInit();
   const {
     authState,
     accountExtendDetail,

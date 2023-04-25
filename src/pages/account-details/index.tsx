@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { Dialog, Transition } from "@headlessui/react";
 import { KeyIcon } from "@heroicons/react/24/outline";
 import ChangePasswordModal from "@/components/AQModal/ChangePasswordModal";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 const AccountDetails = () => {
   const {
@@ -52,6 +53,8 @@ const AccountDetails = () => {
       }
       await apiAuth.verifyEmail(authState?.access_token);
       setIsLoading(false);
+      mixpanelTrack(event_name_enum.inbound, { url: "/mail-sent" });
+
       router.push("/mail-sent");
     } catch (error: any) {
       setIsLoading(false);
@@ -189,6 +192,8 @@ const AccountDetails = () => {
           <button
             onClick={() => {
               handleLogOut();
+              mixpanelTrack(event_name_enum.inbound, { url: "/login" });
+
               router.push("login");
             }}
             className="flex"
@@ -336,6 +341,8 @@ const AccountDetails = () => {
                 className="flex"
                 onClick={() => {
                   handleLogOut();
+                  mixpanelTrack(event_name_enum.inbound, { url: "/login" });
+
                   router.push("login");
                 }}
               >
@@ -422,7 +429,8 @@ const AccountDetails = () => {
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                         You'll no longer have access to new and trending projects when your subscription expires.
+                        You'll no longer have access to new and trending
+                        projects when your subscription expires.
                       </p>
                     </div>
 

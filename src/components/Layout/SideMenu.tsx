@@ -2,6 +2,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { NewestIcon, TrendingIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
 import { AuthContext } from "@/contexts/useAuthContext";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { FireIcon, HeartIcon, BoltIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,6 +22,8 @@ const SideMenu = () => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
 
   const onGoApp = () => {
+    mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
+
     router.push("/projects");
   };
 
@@ -74,6 +77,14 @@ const SideMenu = () => {
                 )} w-full`}
               >
                 <Link
+                  onClick={() => {
+                    mixpanelTrack(event_name_enum.inbound, {
+                      url:
+                        value.key === "watchlist"
+                          ? "/watchlist/projects"
+                          : `/projects/${value.key}`,
+                    });
+                  }}
                   href={
                     value.key === "watchlist"
                       ? "/watchlist/projects"
@@ -95,11 +106,31 @@ const SideMenu = () => {
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">
         <ul>
           <li className="mt-2">
-            <Link href={"https://twitter.com/alphaquestio"}>Twitter</Link>
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.outbound, {
+                  url: "https://twitter.com/alphaquestio",
+                });
+              }}
+              href={"https://twitter.com/alphaquestio"}
+              target="_blank"
+            >
+              Twitter
+            </Link>
           </li>
 
           <li className="mt-2">
-            <Link href={"https://t.me/alphaquestio"}>Support</Link>
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.outbound, {
+                  url: "https://t.me/alphaquestio",
+                });
+              }}
+              href={"https://t.me/alphaquestio"}
+              target="_blank"
+            >
+              Support
+            </Link>
           </li>
         </ul>
       </div>

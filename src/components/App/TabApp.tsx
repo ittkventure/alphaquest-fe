@@ -3,6 +3,7 @@ import { Tab } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 interface TabAppTypes {
   onChangeTab: (tabIndex: number) => void;
@@ -32,6 +33,9 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
       <Tab.List className="flex mb-3">
         <Tab
           onClick={() => {
+            mixpanelTrack(event_name_enum.inbound, {
+              url: "/projects/trending",
+            });
             router.push("/projects/trending");
           }}
           className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
@@ -39,13 +43,23 @@ const TabApp: FC<TabAppTypes> = ({ onChangeTab }) => {
           Trending
         </Tab>
         <Tab
-          onClick={() => router.push("/projects/newest")}
+          onClick={() => {
+            mixpanelTrack(event_name_enum.inbound, {
+              url: "/projects/newest",
+            });
+            router.push("/projects/newest");
+          }}
           className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
         >
           Newest
         </Tab>
         <Tab
-          onClick={() => router.push("/watchlist/projects")}
+          onClick={() => {
+            mixpanelTrack(event_name_enum.inbound, {
+              url: "/watchlist/projects",
+            });
+            router.push("/watchlist/projects");
+          }}
           className="flex-1 h-full py-2 ui-selected:border-b-[3px] ui-selected:border-b-success-500 text-white ui-not-selected:border-b ui-not-selected:border-b-secondary-600"
         >
           Watchlist

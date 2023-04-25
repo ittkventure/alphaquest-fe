@@ -3,6 +3,7 @@ import {
   AccountDetailResponse,
   LoginResponseType,
 } from "@/api-client/types/AuthType";
+import { mixpanelSetUserId } from "@/utils/mixpanel";
 import React, { useEffect, useState } from "react";
 
 export enum TypePayment {
@@ -51,6 +52,8 @@ export const useAuthContext = (): IAuthContext => {
     if (authState?.access_token) {
       getAccountExtendDetails();
       getCanCancel();
+    } else {
+      mixpanelSetUserId("guess");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState?.access_token]);
@@ -79,6 +82,8 @@ export const useAuthContext = (): IAuthContext => {
         authState?.access_token ?? ""
       );
       setAccountExtendDetail(accountEDData);
+      mixpanelSetUserId(accountEDData.username);
+
       return;
     } catch (error) {
       return;
