@@ -24,6 +24,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -96,9 +97,15 @@ const AppContent: FC<AppContentTypes> = ({
 
   const onClickPaymentTrial = () => {
     if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/pricing?action=open");
     } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }

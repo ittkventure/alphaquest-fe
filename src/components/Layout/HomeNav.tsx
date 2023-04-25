@@ -2,6 +2,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,26 +23,38 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
 
   const onGoLogin = () => {
     setShowMenu(false);
+    mixpanelTrack(event_name_enum.inbound, { url: "/login" });
     router.push("/login");
   };
 
   const onGoSignup = () => {
     setShowMenu(false);
+    mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
     router.push("/sign-up");
   };
 
   const onGoHome = () => {
     setShowMenu(false);
-    { isApp ? router.push("/projects") : router.push("/") };
+    {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: isApp ? "/projects" : "/",
+      });
+
+      isApp ? router.push("/projects") : router.push("/");
+    }
   };
 
   const onClickPaymentTrial = () => {
     setShowMenu(false);
 
     if (authState) {
+      mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
+
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/pricing?action=open");
     } else {
+      mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
+
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
@@ -90,20 +103,35 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
   const renderDropMenu = () => {
     return (
       <div
-        className={`w-full transition-all duration-300 z-[1000] bg-dark-900 fixed ${showMenu ? "h-[100vh] top-24 pb-10" : "h-[0px] top-[-100px]"
-          }  hidden max-lg:block  overflow-hidden`}
+        className={`w-full transition-all duration-300 z-[1000] bg-dark-900 fixed ${
+          showMenu ? "h-[100vh] top-24 pb-10" : "h-[0px] top-[-100px]"
+        }  hidden max-lg:block  overflow-hidden`}
       >
         <ul className="flex flex-col items-center text-base mt-3">
           <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
-            <Link href="/projects">Projects</Link>
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
+              }}
+              href="/projects"
+            >
+              Projects
+            </Link>
           </li>
           <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
-            <Link href="/pricing">Pricing</Link>
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
+              }}
+              href="/pricing"
+            >
+              Pricing
+            </Link>
           </li>
 
           <li>
             {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
-              authState?.access_token ? (
+            authState?.access_token ? (
               <div>
                 <button
                   onClick={onClickPaymentTrial}
@@ -161,15 +189,29 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
 
           <ul className="flex items-center max-lg:hidden text-sm mt-3 max-lg:border-b max-lg:border-b-secondary-600 max-lg:pb-2">
             <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300">
-              <Link href="/projects">Projects</Link>
+              <Link
+                onClick={() => {
+                  mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
+                }}
+                href="/projects"
+              >
+                Projects
+              </Link>
             </li>
             <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300">
-              <Link href="/pricing">Pricing</Link>
+              <Link
+                onClick={() => {
+                  mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
+                }}
+                href="/pricing"
+              >
+                Pricing
+              </Link>
             </li>
 
             <li>
               {accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
-                authState?.access_token ? (
+              authState?.access_token ? (
                 <div>
                   <button
                     onClick={onClickPaymentTrial}

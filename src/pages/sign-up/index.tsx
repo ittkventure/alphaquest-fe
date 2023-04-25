@@ -7,6 +7,7 @@ import AQInput from "@/components/AQForm/AQInput";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -64,6 +65,10 @@ const SignUp = () => {
         password: data.password,
         scope: "AlphaQuest",
       });
+      mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
+      mixpanelTrack(event_name_enum.signed_up, {
+        sign_up: "User sign up successful",
+      });
       router.push("/pricing?action=open");
 
       handleLogged(res);
@@ -77,11 +82,17 @@ const SignUp = () => {
   };
 
   const onGoLogin = () => {
+    mixpanelTrack(event_name_enum.inbound, { url: "/login" });
+
     router.push("/login");
   };
 
   useEffect(() => {
-    if (authState?.access_token && !isLoading) router.push("/");
+    if (authState?.access_token && !isLoading) {
+      mixpanelTrack(event_name_enum.inbound, { url: "/" });
+
+      router.push("/");
+    }
   }, [authState?.access_token]);
 
   return (
@@ -97,7 +108,10 @@ const SignUp = () => {
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1 className="font-workSansSemiBold text-[32px]">Sign up</h1>
 
-          <p className="text-sm text-[#9da0a1]">Your Pro subscription is linked with your account. So please sign up and log in before making the payment</p>
+          <p className="text-sm text-[#9da0a1]">
+            Your Pro subscription is linked with your account. So please sign up
+            and log in before making the payment
+          </p>
           <AQForm
             defaultValues={{}}
             onSubmit={onSubmit}
@@ -146,8 +160,9 @@ const SignUp = () => {
             )}
             <button
               type="submit"
-              className={`w-full ${isLoading ? "opacity-70" : "opacity-100"
-                } flex justify-center items-center py-3 mt-5 bg-success-500`}
+              className={`w-full ${
+                isLoading ? "opacity-70" : "opacity-100"
+              } flex justify-center items-center py-3 mt-5 bg-success-500`}
               disabled={isLoading}
             >
               {isLoading ? <Spinner /> : null}

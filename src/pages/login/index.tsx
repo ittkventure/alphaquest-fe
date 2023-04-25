@@ -6,6 +6,7 @@ import AQInput from "@/components/AQForm/AQInput";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -25,7 +26,11 @@ const Login = () => {
   const authApi = new ApiAuth();
 
   useEffect(() => {
-    if (authState) router.push('/projects');
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
+
+      router.push("/projects");
+    }
   }, [authState, router]);
 
   const onSubmit = async (data: any) => {
@@ -37,6 +42,9 @@ const Login = () => {
         username: data.username,
         password: data.password,
         scope: "AlphaQuest",
+      });
+      mixpanelTrack(event_name_enum.sign_in, {
+        sign_in: "User sign in successful",
       });
       handleLogged(res);
       setIsLoading(false);
@@ -50,6 +58,8 @@ const Login = () => {
   };
 
   const onGoSignUp = () => {
+    mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
+
     router.push("/sign-up");
   };
 
@@ -99,7 +109,14 @@ const Login = () => {
               <p>Log in</p>
             </button>
 
-            <Link href={"/forgot-password"}>
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.inbound, {
+                  url: "/forgot-password",
+                });
+              }}
+              href={"/forgot-password"}
+            >
               <p className="text-success-500 text-[16px] mt-5">
                 Forgot password?
               </p>

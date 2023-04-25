@@ -11,6 +11,7 @@ import SubscriptionItem from "@/components/Home/SubscriptionItem";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
 import { listDiscoverProjects } from "@/utils/list";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -27,8 +28,10 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
   const onClickPaymentTrial = () => {
     if (authState) {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
       router.push("/pricing?action=open");
     } else {
+      mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }

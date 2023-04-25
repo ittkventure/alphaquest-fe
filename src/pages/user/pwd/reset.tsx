@@ -1,4 +1,3 @@
-import { apiAuth } from "@/api-client";
 import ApiAuth from "@/api-client/auth";
 import { BlurBgImg } from "@/assets/images";
 import AQForm from "@/components/AQForm";
@@ -6,8 +5,8 @@ import AQInput from "@/components/AQForm/AQInput";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { passwordRegex } from "@/utils/regex";
-import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -78,7 +77,11 @@ const ResetPassword = () => {
         <div className="mt-5">
           <p>You change password successfully, please login</p>
           <button
-            onClick={() => router.push("/login")}
+            onClick={() => {
+              mixpanelTrack(event_name_enum.inbound, { url: "/login" });
+
+              router.push("/login");
+            }}
             type="button"
             className={`w-full flex justify-center items-center py-3 mt-5 bg-success-600 hover:bg-emerald-700`}
           >

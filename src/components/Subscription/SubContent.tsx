@@ -1,3 +1,4 @@
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
@@ -38,7 +39,13 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
             <div className="mt-[91px] max-lg:mt-5 max-lg:w-full  max-lg:justify-center flex justify-end">
               <button
                 disabled={isLoading}
-                onClick={() => router.push("/projects/trending")}
+                onClick={() => {
+                  mixpanelTrack(event_name_enum.inbound, {
+                    url: "/projects/trending",
+                  });
+
+                  router.push("/projects/trending");
+                }}
                 className={`py-3 px-6 flex items-center  bg-primary-500 ${
                   isLoading ? "opacity-40" : ""
                 }`}
