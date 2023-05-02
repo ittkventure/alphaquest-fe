@@ -155,7 +155,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
 
   return (
     <div className="w-full h-full">
-      <div className="flex px-[100px] max-lg:px-[20px] w-full">
+      <div className="flex px-[100px] max-lg:px-[10px] w-full">
         <img
           className="h-20 w-20 rounded-[50%]"
           src={twitterDetail.data?.profileImageUrl}
@@ -193,18 +193,18 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
         </div>
       </div>
 
-      <div className="px-[100px] text-sm max-lg:px-[20px]">
+      <div className="px-[100px] text-sm max-lg:px-[10px]">
         <div className="grid grid-cols-2 gap-6  mt-5">
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Twitter Followers When discovered</p>
-            <p className="text-xl">
+            <p className="text-xl max-lg:text-sm">
               {twitterDetail.data?.twitterFollowersWhenDiscovered}
             </p>
           </div>
 
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Twitter Created Date</p>
-            <p className="text-xl">
+            <p className="text-xl max-lg:text-sm">
               {moment(twitterDetail.data?.twitterCreatedDate).format(
                 "MM/DD/YYYY - hh:mm"
               )}
@@ -213,14 +213,14 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
 
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Current Twitter Followers</p>
-            <p className="text-xl">
+            <p className="text-xl max-lg:text-sm">
               {twitterDetail.data?.currentTwitterFollowers}
             </p>
           </div>
 
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Discovered Date</p>
-            <p className="text-xl">
+            <p className="text-xl max-lg:text-sm">
               {moment(twitterDetail.data?.discoveredDate).format(
                 "MM/DD/YYYY - hh:mm"
               )}
