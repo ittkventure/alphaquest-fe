@@ -5,12 +5,16 @@ import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { FC, useContext } from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
-const Header = () => {
+interface IHeader {
+  title?: string;
+}
+
+const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
   const { tab } = router.query;
 
@@ -47,6 +51,7 @@ const Header = () => {
   };
 
   const renderTitle = () => {
+    if (title) return title;
     if (router.pathname === "/watchlist/projects") return "Watchlist";
     return capitalized(tab ? tab?.toString() : "Trending");
   };
