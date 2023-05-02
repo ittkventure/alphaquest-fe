@@ -33,6 +33,7 @@ interface TableRowTypes {
   isAnimation?: boolean;
   onReduceCount?: () => void;
   onRefreshTable?: (userId: string) => void;
+  onClickAction?: () => void;
 }
 
 const TableRow: FC<TableRowTypes> = ({
@@ -41,6 +42,7 @@ const TableRow: FC<TableRowTypes> = ({
   isAnimation,
   onReduceCount,
   onRefreshTable,
+  onClickAction,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -150,7 +152,16 @@ const TableRow: FC<TableRowTypes> = ({
           : `flex justify-between  overflow-hidden mt-4 h-auto max-lg:pb-4 max-lg:border-b border-b-secondary-600 max-lg:border-b-secondary-600 `
       }
     >
-      <div className="flex items-center">
+      <div
+        className="flex items-center cursor-pointer"
+        onClick={
+          onClickAction
+            ? () => {
+                onClickAction();
+              }
+            : () => {}
+        }
+      >
         <div className="mr-4">
           <p>{index + 1}</p>
         </div>

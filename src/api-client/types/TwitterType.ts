@@ -55,3 +55,46 @@ export interface TwitterItem {
   categories?: Array<TwitterCategory>;
   inWatchlist?: boolean;
 }
+
+export interface FollowerItemResponse {
+  items: FollowerItem[];
+  totalCount: number;
+}
+
+export interface FollowerItem {
+  userId: string;
+  profileImageUrl: string;
+  name: string;
+  username: string;
+  followerCountAtTime: number;
+  followingDate: string;
+  tags?: string[];
+}
+
+export interface FollowerRequest {
+  pageNumber: number;
+  pageSize: number;
+}
+
+export interface Category {
+  code: string;
+  name: string;
+}
+export interface TwitterDetails {
+  name: string;
+  profileImageUrl: string;
+  description: string;
+  userId: string;
+  categories: Category[];
+  trendingScore: number;
+  twitterFollowersWhenDiscovered: number;
+  currentTwitterFollowers: number;
+  twitterCreatedDate: string;
+  discoveredDate: string;
+  inWatchlist: boolean;
+}
+
+export interface ChartData {
+  dataTime: string;
+  data: number;
+}
