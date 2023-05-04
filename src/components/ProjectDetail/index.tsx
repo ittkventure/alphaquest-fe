@@ -229,6 +229,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
         </div>
 
         {/* Chart */}
+        {/* 
         <h3 className="text-lg font-workSansSemiBold mt-14">
           Twitter Followers and Score Chart
         </h3>
@@ -256,6 +257,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
             )}
           </div>
         </div>
+        */}
 
         <h3 className="text-lg font-workSansSemiBold mt-14">
           Latest Followers
