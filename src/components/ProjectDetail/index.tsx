@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
+import { TwitterIcon } from "@/assets/icons";
+import Image from "next/image";
 
 interface IProjectDetail {
   userId?: string;
@@ -164,9 +166,19 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
           <div className="flex justify-between w-full">
             <div className="w-full">
               <div className="flex w-full justify-between">
-                <p className="text-xl font-workSansSemiBold text-success-500">
-                  {twitterDetail.data?.name}
-                </p>
+                <div className="flex items-center">
+                  <p className="text-xl font-workSansSemiBold text-success-500">
+                    {twitterDetail.data?.name}
+                  </p>
+                  <a
+                    className="ml-2"
+                    href={twitterDetail.data?.twitterUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
+                  </a>
+                </div>
                 <div className="ml-20 max-lg:ml-[20px]">
                   <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
                     <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
@@ -229,6 +241,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
         </div>
 
         {/* Chart */}
+        {/* 
         <h3 className="text-lg font-workSansSemiBold mt-14">
           Twitter Followers and Score Chart
         </h3>
@@ -256,6 +269,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
             )}
           </div>
         </div>
+        */}
 
         <h3 className="text-lg font-workSansSemiBold mt-14">
           Latest Followers
