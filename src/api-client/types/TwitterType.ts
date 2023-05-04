@@ -92,6 +92,7 @@ export interface TwitterDetails {
   twitterCreatedDate: string;
   discoveredDate: string;
   inWatchlist: boolean;
+  twitterUrl: string;
 }
 
 export interface ChartData {
