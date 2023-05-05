@@ -1,4 +1,11 @@
-import React, { FC, useContext, useState } from "react";
+import React, {
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -27,23 +34,77 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
     useContext(AuthContext);
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState<any>({
+    items: [],
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
-  const { isLoading, data } = useQuery({
-    queryKey: [
-      "getListTwitter",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getListFollower(
+  const intObserver = useRef();
+  const lastFollowerRef = useCallback(
+    (_item: any) => {
+      if (isLoading) return;
+
+      let action = intObserver.current as any;
+      if (intObserver.current) action.disconnect();
+
+      action = new IntersectionObserver((_item) => {
+        if (hasNextPage) {
+          console.log("we are near");
+          setPage((prev) => prev + 1);
+        }
+      }, {});
+    },
+    [isLoading, hasNextPage]
+  );
+
+  useEffect(() => {
+    if (
+      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM &&
+      authState?.access_token &&
+      !hasNextPage
+    )
+      fetchData();
+  }, [
+    accountExtendDetail?.currentPlanKey,
+    authState?.access_token,
+    userId,
+    hasNextPage,
+    page,
+  ]);
+
+  useEffect(() => {
+    const followerList = document.getElementById("follower-list");
+    console.log(followerList?.offsetHeight);
+  }, [isLoading]);
+
+  const handleScroll = (_e: React.UIEvent<HTMLDivElement, UIEvent>) => {};
+
+  const fetchData = async () => {
+    setIsLoading(true);
+
+    try {
+      const getData = await apiTwitter.getListFollower(
         userId as any,
         {
-          pageNumber: 1,
+          pageNumber: page,
           pageSize: 20,
         },
         authState?.access_token ?? ""
-      ),
-  });
+      );
+      setData((_prevItems: any) => {
+        return { ...getData, items: [..._prevItems.items, ...getData.items] };
+      });
+      setPage((prevPage) => prevPage + 1);
+      console.log(getData.items.length);
+
+      setHasNextPage(getData.items.length === 0 ? true : false);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const twitterDetail = useQuery<TwitterDetails>({
     queryKey: [
@@ -275,15 +336,16 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
           Latest Followers
         </h3>
         <div className="mt-5 ">
-          {data ? (
-            <TableCommon
-              columns={followers ?? []}
-              data={data?.items ?? []}
-              onChangePage={function (pageNumber: number): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
-          ) : null}
+          <TableCommon
+            columns={followers ?? []}
+            data={data?.items ?? []}
+            onChangePage={function (_pageNumber: number): void {
+              throw new Error("Function not implemented.");
+            }}
+            onScroll={handleScroll}
+            ref={lastFollowerRef}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </div>
