@@ -15,12 +15,14 @@ interface IProjectDetailModal {
   isOpen: boolean;
   userId: string;
   closeModal: () => void;
+  onChangeHeart?: () => void;
 }
 
 const ProjectDetailModal: FC<IProjectDetailModal> = ({
   isOpen,
   closeModal,
   userId,
+  onChangeHeart,
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -34,7 +36,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black bg-opacity-70" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -48,20 +50,26 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-6xl transform overflow-hidden rounded-ms bg-dark-800 p-6 text-left align-middle shadow-xl transition-all pt-10 relative">
+              <Dialog.Panel className="w-full h-[95vh] max-w-6xl transform overflow-y-scroll rounded-ms bg-dark-800 p-6 text-left align-middle shadow-xl transition-all pt-10 relative">
                 {userId ? (
-                  <ProjectDetail userId={userId} />
+                  <ProjectDetail
+                    onChangeHeart={onChangeHeart}
+                    userId={userId}
+                  />
                 ) : (
                   <div className="w-full flex justify-center items-center">
                     <Spinner />
                   </div>
                 )}
-
-                <button onClick={closeModal}>
-                  <XMarkIcon className="h-7 w-7 absolute top-4 right-4 hover:text-success-500 duration-300 transition-all" />
-                </button>
               </Dialog.Panel>
             </Transition.Child>
+
+            <button
+              className="h-10 w-10 border-[2px] rounded-[50%] absolute top-6 right-6 flex justify-center items-center hover:text-success-500 hover:border-success-500 duration-100 transition-all"
+              onClick={closeModal}
+            >
+              <XMarkIcon className="h-7 w-7" />
+            </button>
           </div>
         </div>
       </Dialog>

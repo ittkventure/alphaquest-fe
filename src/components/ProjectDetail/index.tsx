@@ -26,9 +26,10 @@ import Image from "next/image";
 
 interface IProjectDetail {
   userId?: string;
+  onChangeHeart?: () => void;
 }
 
-const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
+const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   if (!userId) return <div />;
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
@@ -171,8 +172,11 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
       if (authState?.access_token) {
         await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
-          on_add_watch_list: `User add the project ${data.name} to watchlist`,
+          on_add_watch_list: `User add the project ${
+            twitterDetail.data?.name ?? "project"
+          } to watchlist`,
         });
+        onChangeHeart ? onChangeHeart() : null;
       } else {
         toast.warning("Please login for use this feature");
       }
@@ -183,6 +187,13 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
   };
 
   const _renderHeartButton = () => {
+    if (twitterDetail.isLoading)
+      return (
+        <Spinner
+          customClassName="ml-0 mr-0 w-[14px] h-[14px]"
+          strokeWidth="1"
+        />
+      );
     return (
       <button
         onClick={onAddItemToWatchList}
@@ -194,7 +205,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId }) => {
             customClassName="ml-0 mr-0 w-[14px] h-[14px]"
             strokeWidth="1"
           />
-        ) : data?.inWatchlist ? (
+        ) : twitterDetail.data?.inWatchlist ? (
           <HeartIconSolid className="h-5 w-7 text-primary-500 transition-all duration-300" />
         ) : (
           <HeartIcon className="h-5 w-7 hover:text-success-500 transition-all duration-300" />
