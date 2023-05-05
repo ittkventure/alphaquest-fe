@@ -266,7 +266,12 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
                 <p className="text-sm ">
                   {twitterDetail.data && twitterDetail.data?.categories
                     ? twitterDetail.data?.categories?.map(
-                        (value) => `${value},`
+                        (value, index) =>
+                          `${value.name}${
+                            index === twitterDetail?.data?.categories.length - 1
+                              ? ""
+                              : ","
+                          }`
                       )
                     : null}
                 </p>
