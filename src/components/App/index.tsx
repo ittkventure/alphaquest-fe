@@ -232,13 +232,13 @@ const AppContent: FC<AppContentTypes> = ({
   );
 
   const _renderTable = () => {
-    if (isLoading) return null;
-    if (listItems.length === 0 && !errorMsg)
-      return <p className="text-center">No data.</p>;
     return (
       <TableContent
         initListRows={listItems ?? []}
         isAnimation={newest === "watchlist" ? true : false}
+        onRefreshTable={() => {
+          fetchData();
+        }}
       />
     );
   };

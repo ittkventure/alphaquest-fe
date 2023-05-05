@@ -6,7 +6,7 @@ import TableRow from "./TableRow";
 interface TableContentTypes {
   initListRows: TwitterItem[];
   isAnimation?: boolean;
-  onRefreshTable?: (userId: string) => void;
+  onRefreshTable?: () => void;
 }
 
 const TableContent: FC<TableContentTypes> = ({
@@ -31,7 +31,6 @@ const TableContent: FC<TableContentTypes> = ({
             item={value}
             index={index}
             isAnimation={isAnimation}
-            onRefreshTable={onRefreshTable}
             onClickAction={() => {
               setUserId(value.userId);
               setIsOpen(true);
@@ -46,6 +45,7 @@ const TableContent: FC<TableContentTypes> = ({
           setIsOpen(false);
         }}
         userId={userId}
+        onChangeHeart={onRefreshTable}
       />
     </div>
   );

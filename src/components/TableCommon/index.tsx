@@ -38,7 +38,7 @@ const TableCustom: FC<ITableCustom> = ({
                 className="w-full divide-y divide-gray-200 divide-opacity-5 bg-[#171B28]"
                 {...getTableProps()}
               >
-                <thead className="bg-[#1F2536]">
+                <thead className="bg-[#1F2536] sticky top-0">
                   {
                     // Loop over the header rows
                     headerGroups.map(
