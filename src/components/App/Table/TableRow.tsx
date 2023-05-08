@@ -157,12 +157,7 @@ const TableRow: FC<TableRowTypes> = ({
         onClick={
           onClickAction
             ? () => {
-                if (
-                  authState?.access_token &&
-                  accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                ) {
-                  onClickAction();
-                }
+                onClickAction();
               }
             : () => {}
         }
