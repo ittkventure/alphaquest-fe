@@ -348,21 +348,25 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         </div>
         */}
 
-        <h3 className="text-lg font-workSansSemiBold mt-14">
-          Latest Followers
-        </h3>
-        <div className="mt-5 ">
-          <TableCommon
-            columns={followers ?? []}
-            data={data?.items ?? []}
-            onChangePage={function (_pageNumber: number): void {
-              throw new Error("Function not implemented.");
-            }}
-            onScroll={handleScroll}
-            ref={lastFollowerRef}
-            isLoading={isLoading}
-          />
-        </div>
+        {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+          <>
+            <h3 className="text-lg font-workSansSemiBold mt-14">
+              Latest Followers
+            </h3>
+            <div className="mt-5 ">
+              <TableCommon
+                columns={followers ?? []}
+                data={data?.items ?? []}
+                onChangePage={function (_pageNumber: number): void {
+                  throw new Error("Function not implemented.");
+                }}
+                onScroll={handleScroll}
+                ref={lastFollowerRef}
+                isLoading={isLoading}
+              />
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );
