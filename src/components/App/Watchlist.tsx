@@ -251,7 +251,7 @@ const Watchlist: FC<WatchlistTypes> = ({
       <TableContent
         initListRows={listItems ?? []}
         isAnimation={true}
-        onRefreshTable={onRefreshTable}
+        // onRefreshTable={onRefreshTable}
       />
     );
   };
