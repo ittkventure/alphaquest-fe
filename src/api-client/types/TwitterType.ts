@@ -69,6 +69,7 @@ export interface FollowerItem {
   followerCountAtTime: number;
   followingDate: string;
   tags?: string[];
+  twitterUrl: string;
 }
 
 export interface FollowerRequest {

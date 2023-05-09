@@ -363,7 +363,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
           <>
             <h3 className="text-lg font-workSansSemiBold mt-14">
-              Latest Followers
+              Earliest Alpha Hunter
             </h3>
             <div className="mt-5 ">
               <TableCommon
