@@ -18,6 +18,7 @@ import TickIcon from "./tick-icon.svg";
 import UserIcon from "./user-icon.svg";
 import GiftIcon from "./gift-icon.svg";
 import LogoutIcon from "./logout-icon.svg";
+import TwitterBlueIcon from "./twitter-blue-icon.svg";
 
 export {
   QuoteIcon,
@@ -39,4 +40,5 @@ export {
   HeartIconHome,
   NotificationCircleIconHome,
   ChestKingIcon,
+  TwitterBlueIcon,
 };

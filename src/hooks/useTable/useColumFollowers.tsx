@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import { CellProps, Column } from "react-table";
 import { FollowerItem } from "@/api-client/types/TwitterType";
 import Image from "next/image";
+import { TwitterBlueIcon } from "@/assets/icons";
 
 const useColumFollowers = () => {
   const followers: Column<FollowerItem>[] = useMemo(
@@ -10,23 +11,35 @@ const useColumFollowers = () => {
       {
         Header: "Key Profile",
         accessor: "profileImageUrl",
-        Cell: ({ value }: CellProps<FollowerItem>) => {
+        Cell: ({ value, row }: CellProps<FollowerItem>) => {
           return (
-            <div className="h-10 w-10 rounded-[50%] overflow-hidden">
-              <img
-                src={value}
-                width={40}
-                height={40}
-                alt="avt"
-                className="object-cover"
-              />
+            <div className="flex items-center">
+              <div className="h-10 w-10 rounded-[50%] overflow-hidden">
+                <img
+                  src={value}
+                  width={40}
+                  height={40}
+                  alt="avt"
+                  className="object-cover"
+                />
+              </div>
+              <div className="ml-2 ">
+                <div className="flex">
+                  <Image
+                    src={TwitterBlueIcon}
+                    width={15}
+                    height={15}
+                    alt="twitter icon"
+                  />
+                  <p className="ml-1 text-xs text-gray-500">
+                    {row.original.username}
+                  </p>
+                </div>
+                <p className="ml-1 mt-1 text-[16px]">{row.original.name}</p>
+              </div>
             </div>
           );
         },
-      },
-      {
-        Header: "Username",
-        accessor: "username",
       },
       {
         Header: "Followers at time",
@@ -36,7 +49,7 @@ const useColumFollowers = () => {
         Header: "Following Date",
         accessor: "followingDate",
         Cell: ({ value }: CellProps<FollowerItem>) => (
-          <p>{moment(value).format("YYYY-MM-DD")}</p>
+          <p>{moment(value).format("YYYY-MM-DD, hh:mm")}</p>
         ),
       },
       {
