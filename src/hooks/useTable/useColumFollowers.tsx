@@ -38,7 +38,7 @@ const useColumFollowers = () => {
         },
       },
       {
-        Header: "Following Date",
+        Header: "FOLLOWERS AT TIME",
         accessor: "followerCountAtTime",
       },
       {
