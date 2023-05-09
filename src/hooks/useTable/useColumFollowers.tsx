@@ -9,28 +9,24 @@ const useColumFollowers = () => {
   const followers: Column<FollowerItem>[] = useMemo(
     () => [
       {
-        Header: "Key Profile",
+        Header: "Accounts",
         accessor: "profileImageUrl",
         Cell: ({ value, row }: CellProps<FollowerItem>) => {
           return (
             <div className="flex items-center">
               <div className="h-10 w-10 rounded-[50%] overflow-hidden">
-                <img
-                  src={value}
-                  width={40}
-                  height={40}
-                  alt="avt"
-                  className="object-cover"
-                />
+                <img src={value} alt="avt" className="object-contain" />
               </div>
               <div className="ml-2 ">
                 <div className="flex">
-                  <Image
-                    src={TwitterBlueIcon}
-                    width={15}
-                    height={15}
-                    alt="twitter icon"
-                  />
+                  <a href={row.original.twitterUrl} target="_blank">
+                    <Image
+                      src={TwitterBlueIcon}
+                      width={15}
+                      height={15}
+                      alt="twitter icon"
+                    />
+                  </a>
                   <p className="ml-1 text-xs text-gray-500">
                     {row.original.username}
                   </p>
@@ -42,7 +38,7 @@ const useColumFollowers = () => {
         },
       },
       {
-        Header: "Followers at time",
+        Header: "Following Date",
         accessor: "followerCountAtTime",
       },
       {
@@ -60,7 +56,7 @@ const useColumFollowers = () => {
             return (
               <div className="flex">
                 <p className="px-2 py-[2px] bg-white bg-opacity-10 flex justify-center items-center mr-1">
-                  No tags
+                  Coming Soon
                 </p>
               </div>
             );
