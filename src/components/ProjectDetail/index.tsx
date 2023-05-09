@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
-import { TwitterIcon } from "@/assets/icons";
+import { CrownIcon, TwitterIcon } from "@/assets/icons";
 import Image from "next/image";
 
 interface IProjectDetail {
@@ -82,6 +82,11 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
 
   const handleScroll = (_e: React.UIEvent<HTMLDivElement, UIEvent>) => {};
 
+  const randomNumber = () => {
+    const val = Math.floor(1000 + Math.random() * 9000);
+    return val;
+  };
+
   const fetchData = async () => {
     setIsLoading(true);
 
@@ -98,8 +103,6 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         return { ...getData, items: [..._prevItems.items, ...getData.items] };
       });
       setPage((prevPage) => prevPage + 1);
-      console.log(getData.items.length);
-
       setHasNextPage(getData.items.length === 0 ? true : false);
     } catch (error) {
     } finally {
@@ -214,6 +217,22 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
     );
   };
 
+  const onClickPaymentTrial = () => {
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing?action=open",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/pricing?action=open");
+    } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/sign-up");
+    }
+  };
+
   const _renderNewTag = () => {
     return (
       <>
@@ -263,18 +282,11 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
               <p className="text-sm mt-3">{twitterDetail.data?.description}</p>
 
               <div className="flex mt-3">
-                <p className="text-sm ">
-                  {twitterDetail.data && twitterDetail.data?.categories
-                    ? twitterDetail.data?.categories?.map(
-                        (value, index) =>
-                          `${value.name}${
-                            index === twitterDetail?.data?.categories.length - 1
-                              ? ""
-                              : ","
-                          }`
-                      )
-                    : null}
-                </p>
+                {twitterDetail.data && twitterDetail.data?.categories
+                  ? twitterDetail.data?.categories?.map((value, index) => (
+                      <p className="text-sm border px-2 mr-2">{value.name}</p>
+                    ))
+                  : null}
                 {/* {_renderNewTag()} */}
               </div>
             </div>
@@ -366,7 +378,27 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
               />
             </div>
           </>
-        ) : null}
+        ) : (
+          <div className=" w-full h-[300px] max-lg:pl-0">
+            <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+              <p className="mb-4">Upgrade account to see all</p>
+
+              <button
+                onClick={onClickPaymentTrial}
+                className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+              >
+                <Image
+                  src={CrownIcon}
+                  width={17}
+                  height={14}
+                  alt="crown-icon"
+                  className="mr-2"
+                />
+                Upgrade to Pro
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

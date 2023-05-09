@@ -157,7 +157,7 @@ const TableRow: FC<TableRowTypes> = ({
         onClick={
           onClickAction
             ? () => {
-                onClickAction();
+                if (itemState.name !== "UNKNOWN") onClickAction();
               }
             : () => {}
         }
