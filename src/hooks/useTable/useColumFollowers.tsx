@@ -28,7 +28,7 @@ const useColumFollowers = () => {
                     />
                   </a>
                   <p className="ml-1 text-xs text-gray-500">
-                    {row.original.username}
+                    @{row.original.username}
                   </p>
                 </div>
                 <p className="ml-1 mt-1 text-[16px]">{row.original.name}</p>
@@ -40,6 +40,9 @@ const useColumFollowers = () => {
       {
         Header: "FOLLOWERS AT TIME",
         accessor: "followerCountAtTime",
+        Cell: ({ value }: CellProps<FollowerItem>) => (
+          <p>{value === 0 ? "N/A" : value}</p>
+        ),
       },
       {
         Header: "Following Date",

@@ -1,7 +1,8 @@
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import Spinner from "./../Spinner";
 import TableFooter, { PaginationInfo } from "./TableFooter";
 import React, { FC } from "react";
-import { Column, useTable } from "react-table";
+import { Column, useSortBy, useTable } from "react-table";
 
 interface ITableCustom
   extends React.DetailedHTMLProps<
@@ -14,6 +15,7 @@ interface ITableCustom
   paginationInfo?: PaginationInfo;
   onChangePage: (pageNumber: number) => void;
   refLast?: any;
+  isHiddenTBody?: boolean;
 }
 
 const TableCustom: FC<ITableCustom> = ({
@@ -23,10 +25,17 @@ const TableCustom: FC<ITableCustom> = ({
   paginationInfo,
   onChangePage,
   refLast,
+  isHiddenTBody,
   ...rest
 }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: data || [] });
+    useTable(
+      {
+        columns,
+        data: data || [],
+      },
+      useSortBy
+    );
 
   return (
     <div className="w-full h-full">
@@ -54,15 +63,28 @@ const TableCustom: FC<ITableCustom> = ({
                               return (
                                 // Apply the header cell props
                                 <th
-                                  {...column.getHeaderProps()}
+                                  {...column.getHeaderProps(
+                                    column.render("Header") ===
+                                      "Following Date" &&
+                                      column.getSortByToggleProps()
+                                  )}
                                   className={`${
                                     column.columns ? "text-center" : "text-left"
                                   } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
                                 >
-                                  {
-                                    // Render the header
-                                    column.render("Header")
-                                  }
+                                  <div className="flex items-center">
+                                    {
+                                      // Render the header
+                                      column.render("Header")
+                                    }
+                                    {column.render("Header") ===
+                                      "Following Date" &&
+                                      (column.isSortedDesc ? (
+                                        <ChevronDownIcon className="h-5 w-5 ml-1" />
+                                      ) : (
+                                        <ChevronUpIcon className="h-5 w-5 ml-1" />
+                                      ))}
+                                  </div>
                                 </th>
                               );
                             })
@@ -72,21 +94,47 @@ const TableCustom: FC<ITableCustom> = ({
                     )
                   }
                 </thead>
-                <tbody
-                  className="divide-y divide-gray-200 divide-opacity-5  bg-[#171B28]"
-                  {...getTableBodyProps()}
-                >
-                  {
-                    // Loop over the table rows
-                    rows.map((row: any, index: number) => {
-                      // Prepare the row for display
-                      prepareRow(row);
-                      if (rows.length === index + 1)
+                {isHiddenTBody ? null : (
+                  <tbody
+                    className="divide-y divide-gray-200 divide-opacity-5  bg-[#171B28]"
+                    {...getTableBodyProps()}
+                  >
+                    {
+                      // Loop over the table rows
+                      rows.map((row: any, index: number) => {
+                        // Prepare the row for display
+                        prepareRow(row);
+                        if (rows.length === index + 1)
+                          return (
+                            <tr
+                              {...row.getRowProps()}
+                              className="hover:bg-opacity-10"
+                              ref={refLast}
+                            >
+                              {
+                                // Loop over the rows cells
+                                row.cells.map((cell: any) => {
+                                  // Apply the cell props
+                                  return (
+                                    <td
+                                      {...cell.getCellProps()}
+                                      className="max-w-xs break-all px-6 py-4 text-sm text-white"
+                                    >
+                                      {
+                                        // Render the cell contents
+                                        cell.render("Cell")
+                                      }
+                                    </td>
+                                  );
+                                })
+                              }
+                            </tr>
+                          );
                         return (
+                          // Apply the row props
                           <tr
                             {...row.getRowProps()}
                             className="hover:bg-opacity-10"
-                            ref={refLast}
                           >
                             {
                               // Loop over the rows cells
@@ -107,42 +155,19 @@ const TableCustom: FC<ITableCustom> = ({
                             }
                           </tr>
                         );
-                      return (
-                        // Apply the row props
-                        <tr
-                          {...row.getRowProps()}
-                          className="hover:bg-opacity-10"
-                        >
-                          {
-                            // Loop over the rows cells
-                            row.cells.map((cell: any) => {
-                              // Apply the cell props
-                              return (
-                                <td
-                                  {...cell.getCellProps()}
-                                  className="max-w-xs break-all px-6 py-4 text-sm text-white"
-                                >
-                                  {
-                                    // Render the cell contents
-                                    cell.render("Cell")
-                                  }
-                                </td>
-                              );
-                            })
-                          }
-                        </tr>
-                      );
-                    })
-                  }
-                </tbody>
+                      })
+                    }
+                  </tbody>
+                )}
               </table>
-              {isLoading && (
-                <div className="m-auto my-10 flex w-full justify-center align-middle">
-                  <Spinner />
-                </div>
-              )}
+              {isLoading &&
+                (isHiddenTBody ? null : (
+                  <div className="m-auto my-10 flex w-full justify-center align-middle">
+                    <Spinner />
+                  </div>
+                ))}
               {data === null && <div className="h-36 w-full" />}
-              {data && !data.length && (
+              {data && !data.length && isHiddenTBody ? null : (
                 <div className="w-full">
                   <div className="my-20 text-center text-lg"></div>
                 </div>
