@@ -247,7 +247,13 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div
+      className={`w-full h-full ${
+        accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+          ? ""
+          : "overflow-hidden"
+      }`}
+    >
       <div className="flex px-[100px] max-lg:px-[10px] w-full">
         <img
           className="h-20 w-20 rounded-[50%]"
@@ -307,7 +313,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
             <p>Twitter Created Date</p>
             <p className="text-xl max-lg:text-sm">
               {moment(twitterDetail.data?.twitterCreatedDate).format(
-                "MM/DD/YYYY - hh:mm"
+                "MM/DD/YYYY - HH:mm"
               )}
             </p>
           </div>
@@ -323,7 +329,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
             <p>Discovered Date</p>
             <p className="text-xl max-lg:text-sm">
               {moment(twitterDetail.data?.discoveredDate).format(
-                "MM/DD/YYYY - hh:mm"
+                "MM/DD/YYYY - HH:mm"
               )}
             </p>
           </div>
@@ -359,47 +365,50 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
           </div>
         </div>
         */}
-
-        {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-          <>
-            <h3 className="text-lg font-workSansSemiBold mt-14">
-              Earliest Alpha Hunter
-            </h3>
-            <div className="mt-5 ">
-              <TableCommon
-                columns={followers ?? []}
-                data={data?.items ?? []}
-                onChangePage={function (_pageNumber: number): void {
-                  throw new Error("Function not implemented.");
-                }}
-                onScroll={handleScroll}
-                ref={lastFollowerRef}
-                isLoading={isLoading}
-              />
-            </div>
-          </>
-        ) : (
-          <div className=" w-full h-[300px] max-lg:pl-0">
-            <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-              <p className="mb-4">Upgrade account to see all</p>
-
-              <button
-                onClick={onClickPaymentTrial}
-                className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-              >
-                <Image
-                  src={CrownIcon}
-                  width={17}
-                  height={14}
-                  alt="crown-icon"
-                  className="mr-2"
-                />
-                Upgrade to Pro
-              </button>
-            </div>
-          </div>
-        )}
+        <h3 className="text-lg font-workSansSemiBold mt-14">
+          Earliest Alpha Hunter
+        </h3>
+        <div className="mt-5 ">
+          <TableCommon
+            columns={followers ?? []}
+            data={data?.items ?? []}
+            onChangePage={function (_pageNumber: number): void {
+              throw new Error("Function not implemented.");
+            }}
+            onScroll={handleScroll}
+            ref={lastFollowerRef}
+            isLoading={isLoading}
+            isHiddenTBody={
+              accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                ? false
+                : true
+            }
+          />
+        </div>
       </div>
+      {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+        <></>
+      ) : (
+        <div className=" w-full h-[400px] max-lg:pl-0 ">
+          <div className="w-full h-[400px] flex flex-col justify-center items-center z-10 bg-linear-backdrop">
+            <p className="mb-4">Upgrade account to see all</p>
+
+            <button
+              onClick={onClickPaymentTrial}
+              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+            >
+              <Image
+                src={CrownIcon}
+                width={17}
+                height={14}
+                alt="crown-icon"
+                className="mr-2"
+              />
+              Upgrade to Pro
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
