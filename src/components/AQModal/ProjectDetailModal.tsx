@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { FC, Fragment, useContext, useState } from "react";
+import React, { FC, Fragment, useContext, useEffect, useState } from "react";
 import AQForm from "../AQForm";
 import Spinner from "../Spinner";
 import * as yup from "yup";
@@ -10,6 +10,7 @@ import { apiAuth } from "@/api-client";
 import { AuthContext } from "@/contexts/useAuthContext";
 import ProjectDetail from "../ProjectDetail";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 interface IProjectDetailModal {
   isOpen: boolean;
@@ -24,6 +25,16 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
   userId,
   onChangeHeart,
 }) => {
+  useEffect(() => {
+    if (isOpen) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/",
+        type: "open-modal",
+        name: "project-detail",
+      });
+    }
+  }, [isOpen]);
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-[9999]" onClose={closeModal}>

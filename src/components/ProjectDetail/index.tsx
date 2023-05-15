@@ -365,9 +365,15 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
           </div>
         </div>
         */}
-        <h3 className="text-lg font-workSansSemiBold mt-14">
-          Earliest Alpha Hunter
-        </h3>
+        <div className="flex items-center mt-14 ">
+          <h3 className="text-lg font-workSansSemiBold  mr-3">
+            Earliest Alpha Hunter
+          </h3>
+
+          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+            BETA
+          </div>
+        </div>
         <div className="mt-5 ">
           <TableCommon
             columns={followers ?? []}
