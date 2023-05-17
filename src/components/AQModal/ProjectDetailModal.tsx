@@ -27,7 +27,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
 }) => {
   useEffect(() => {
     if (isOpen) {
-      mixpanelTrack(event_name_enum.inbound, {
+      mixpanelTrack(event_name_enum.open_project_detail, {
         url: "/",
         type: "open-modal",
         name: "project-detail",

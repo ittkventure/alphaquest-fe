@@ -6,6 +6,7 @@ export enum event_name_enum {
   signed_up = "Signed Up",
   sign_in = "Signed In",
   on_add_watch_list = "On add watchlist",
+  open_project_detail = "open_project_detail",
 }
 
 // Replace YOUR_TOKEN with your Project Token
