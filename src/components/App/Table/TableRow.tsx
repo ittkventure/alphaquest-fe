@@ -163,7 +163,7 @@ const TableRow: FC<TableRowTypes> = ({
         }
       >
         <div className="mr-4">
-          <p>{index + 1}</p>
+          <p className="text-right w-6">{index + 1}</p>
         </div>
         <div className="mr-4">
           <div

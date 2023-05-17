@@ -132,6 +132,19 @@ const SideMenu = () => {
               Support
             </Link>
           </li>
+          <li className="mt-2">
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.outbound, {
+                  url: "https://discord.gg/EsMqKqjKB2",
+                });
+              }}
+              href={"https://discord.gg/EsMqKqjKB2"}
+              target="_blank"
+            >
+              Discord
+            </Link>
+          </li>
         </ul>
       </div>
     </aside>

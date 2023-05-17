@@ -26,6 +26,19 @@ const HomeFooter: FC<HomeFooterTypes> = () => {
             Twitter <span className="mr-1 text-success-500">/</span>
           </Link>
         </li>
+        <li>
+          <Link
+            onClick={() => {
+              mixpanelTrack(event_name_enum.outbound, {
+                url: "https://discord.com/invite/EsMqKqjKB2",
+              });
+            }}
+            href={"https://discord.com/invite/EsMqKqjKB2"}
+            target="_blank"
+          >
+            Discord <span className="mr-1 text-success-500">/</span>
+          </Link>
+        </li>
 
         <li>
           <Link
