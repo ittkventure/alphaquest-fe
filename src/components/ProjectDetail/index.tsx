@@ -267,14 +267,21 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
                   <p className="text-xl font-workSansSemiBold text-success-500">
                     {twitterDetail.data?.name}
                   </p>
-                  <a
+                  <button
                     className="ml-2"
-                    href={twitterDetail.data?.twitterUrl}
-                    target="_blank"
-                    rel="noreferrer"
+                    onClick={() => {
+                      mixpanelTrack(event_name_enum.outbound, {
+                        url: twitterDetail.data?.twitterUrl,
+                        message: "Link to twitter at project page",
+                      });
+                      window.open(
+                        twitterDetail.data?.twitterUrl ?? "#",
+                        "_blank"
+                      );
+                    }}
                   >
                     <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
-                  </a>
+                  </button>
                 </div>
                 <div className="ml-20 max-lg:ml-[20px]">
                   <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
