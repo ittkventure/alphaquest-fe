@@ -14,10 +14,6 @@ import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-enum ConstDayAgo {
-  one_day_ago = "1 days ago",
-}
-
 export interface TableObject {
   index: number;
   avatar: string;
@@ -200,13 +196,17 @@ const TableRow: FC<TableRowTypes> = ({
                   {itemState.name}
                 </p>
                 <div>
-                  <a
-                    href={itemState.twitterUrl}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    onClick={() => {
+                      mixpanelTrack(event_name_enum.outbound, {
+                        url: itemState.twitterUrl,
+                        message: "Link to twitter at project page",
+                      });
+                      window.open(itemState.twitterUrl, "_blank");
+                    }}
                   >
                     <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
-                  </a>
+                  </button>
                 </div>
                 {_renderNewTag()}
               </>

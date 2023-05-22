@@ -265,6 +265,13 @@ const AppContent: FC<AppContentTypes> = ({
 
           <MonthSelect
             onChangeSelect={(month) => {
+              mixpanelTrack(event_name_enum.on_filter_project, {
+                url: router.pathname,
+                value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                message:
+                  "projects discovered during the last " +
+                    (month.value as TimeFrameTypes) ?? "ALL",
+              });
               setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
             }}
           />
@@ -273,6 +280,11 @@ const AppContent: FC<AppContentTypes> = ({
           <p className="ml-1">sorted by</p>
           <MonthSelect
             onChangeSelect={(month) => {
+              mixpanelTrack(event_name_enum.on_filter_project, {
+                url: router.pathname,
+                value_search: (month.value as SortByType) ?? "ALL",
+                message: "sorted by" + (month.value as SortByType) ?? "ALL",
+              });
               setSortBy((month.value as SortByType) ?? "SCORE");
             }}
             defaultData={{
