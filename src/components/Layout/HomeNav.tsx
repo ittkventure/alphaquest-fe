@@ -46,7 +46,9 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
 
   const onClickPaymentTrial = () => {
     setShowMenu(false);
-
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
     if (authState) {
       mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
 

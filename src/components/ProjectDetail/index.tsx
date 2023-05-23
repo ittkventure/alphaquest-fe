@@ -218,6 +218,9 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   };
 
   const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
     if (authState) {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing?action=open",

@@ -48,6 +48,9 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
+  const [sortByLabel, setSortByLabel] = useState<string>("score");
+  const [timeLabel, setTimeLabel] = useState<string>("7D");
+
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -96,6 +99,9 @@ const AppContent: FC<AppContentTypes> = ({
   }, [timeFrame, accountExtendDetail, chainSelected, categorySelected, sortBy]);
 
   const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
     if (authState) {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
@@ -273,6 +279,11 @@ const AppContent: FC<AppContentTypes> = ({
                     (month.value as TimeFrameTypes) ?? "ALL",
               });
               setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+              setTimeLabel(month.label ?? "ALL");
+            }}
+            defaultData={{
+              value: timeFrame,
+              label: timeLabel,
             }}
           />
         </div>
@@ -280,16 +291,17 @@ const AppContent: FC<AppContentTypes> = ({
           <p className="ml-1">sorted by</p>
           <MonthSelect
             onChangeSelect={(month) => {
-              mixpanelTrack(event_name_enum.on_filter_project, {
+              mixpanelTrack(event_name_enum.on_sort_project, {
                 url: router.pathname,
-                value_search: (month.value as SortByType) ?? "ALL",
-                message: "sorted by" + (month.value as SortByType) ?? "ALL",
+                value_sort: (month.value as SortByType) ?? "SCORE",
+                message: "sorted by" + (month.value as SortByType) ?? "SCORE",
               });
               setSortBy((month.value as SortByType) ?? "SCORE");
+              setSortByLabel(month.label ?? "SCORE");
             }}
             defaultData={{
-              value: "SCORE",
-              label: "score",
+              value: sortBy,
+              label: sortByLabel,
             }}
             listData={initListSort as Array<any>}
           />

@@ -29,6 +29,9 @@ const Header: FC<IHeader> = ({ title }) => {
   };
 
   const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
     if (authState) {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       mixpanelTrack(event_name_enum.inbound, {
