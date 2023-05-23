@@ -4,6 +4,8 @@ import { CellProps, Column } from "react-table";
 import { FollowerItem } from "@/api-client/types/TwitterType";
 import Image from "next/image";
 import { TwitterBlueIcon } from "@/assets/icons";
+import Link from "next/link";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 const useColumFollowers = () => {
   const followers: Column<FollowerItem>[] = useMemo(
@@ -19,14 +21,23 @@ const useColumFollowers = () => {
               </div>
               <div className="ml-2 ">
                 <div className="flex">
-                  <a href={row.original.twitterUrl} target="_blank">
+                  <Link
+                    onClick={() => {
+                      mixpanelTrack(event_name_enum.outbound, {
+                        url: row.original.twitterUrl,
+                        message: "Link to twitter at project detail page",
+                      });
+                    }}
+                    href={row.original.twitterUrl}
+                    target="_blank"
+                  >
                     <Image
                       src={TwitterBlueIcon}
                       width={15}
                       height={15}
                       alt="twitter icon"
                     />
-                  </a>
+                  </Link>
                   <p className="ml-1 text-xs text-gray-500">
                     @{row.original.username}
                   </p>
