@@ -29,8 +29,13 @@ const MonthSelect: FC<MonthSelectTypes> = ({
   );
 
   useEffect(() => {
-    onChangeSelect(selectedValue);
-  }, [onChangeSelect, selectedValue]);
+    setSelectedValue(
+      defaultData ?? {
+        label: "7d",
+        value: "7D",
+      }
+    );
+  }, [defaultData]);
 
   return (
     <div>
@@ -60,8 +65,8 @@ const MonthSelect: FC<MonthSelectTypes> = ({
                 isShowMenu ? "" : "hidden"
               } ${selectedValue.value === value.value ? "bg-success-500" : ""}`}
               onClick={() => {
-                setSelectedValue(value as MothType);
                 setIsShowMenu(false);
+                onChangeSelect(value as MothType);
               }}
             >
               {value.label}
@@ -73,4 +78,4 @@ const MonthSelect: FC<MonthSelectTypes> = ({
   );
 };
 
-export default MonthSelect;
+export default React.memo(MonthSelect);
