@@ -192,6 +192,7 @@ const AppContent: FC<AppContentTypes> = ({
           newest: newest === "newest" ? true : false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
