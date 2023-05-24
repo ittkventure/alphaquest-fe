@@ -349,7 +349,7 @@ const AppContent: FC<AppContentTypes> = ({
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
-          {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
+          <div className="flex max-lg:items-center justify-between max-lg:mt-5">
             <div className="mr-3">
               <SelectCustom
                 placeholder="Chain - All"
@@ -364,7 +364,7 @@ const AppContent: FC<AppContentTypes> = ({
                 onChangeSelected={(item) => setCategorySelected(item)}
               />
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div className="mt-7 max-lg:mt-9">
