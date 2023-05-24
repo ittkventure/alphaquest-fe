@@ -13,6 +13,7 @@ export interface TwitterGetListRequest {
   newest: boolean;
   chains?: Array<string>;
   categories?: Array<string>;
+  searchText?: string;
 }
 
 export interface TwitterChain {
