@@ -1,4 +1,3 @@
-import { AuthContext, useAuthContext } from "@/contexts/useAuthContext";
 import "@/styles/globals.css";
 import mixpanelInit from "@/utils/mixpanel";
 import type { AppProps } from "next/app";
@@ -8,35 +7,13 @@ const queryClient = new QueryClient();
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import PaddleLoader from "./../components/Payment";
+import ContextConsumer from "@/contexts";
 
 export default function App({ Component, pageProps }: AppProps) {
   mixpanelInit();
-  const {
-    authState,
-    accountExtendDetail,
-    handleLogOut,
-    handleLogged,
-    getAccountExtendDetails,
-    canCancel,
-    getCanCancel,
-    typePayment,
-    setTypePaymentAction,
-  } = useAuthContext();
 
   return (
-    <AuthContext.Provider
-      value={{
-        authState,
-        accountExtendDetail,
-        handleLogOut,
-        handleLogged,
-        getAccountExtendDetails,
-        canCancel,
-        getCanCancel,
-        typePayment,
-        setTypePaymentAction,
-      }}
-    >
+    <ContextConsumer>
       <PaddleLoader />
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
@@ -49,6 +26,6 @@ export default function App({ Component, pageProps }: AppProps) {
           transition={Slide}
         />
       </QueryClientProvider>
-    </AuthContext.Provider>
+    </ContextConsumer>
   );
 }

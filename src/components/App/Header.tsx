@@ -9,6 +9,7 @@ import React, { FC, useContext } from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { SearchContext } from "@/contexts/useSearchContext";
 
 interface IHeader {
   title?: string;
@@ -17,7 +18,7 @@ interface IHeader {
 const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
   const { tab } = router.query;
-
+  const { setKeyword } = useContext(SearchContext);
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
 
@@ -70,29 +71,34 @@ const Header: FC<IHeader> = ({ title }) => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center">
-        {/* <div className="relative  max-lg:hidden">
+      <div className="flex justify-center items-center ">
+        <div className="relative  max-lg:hidden mr-6">
           <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-[11px] left-[5px]" />
 
           <input
             className="w-52 bg-secondary-600 py-2 pl-8"
             placeholder="Search"
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                setKeyword(event.currentTarget.value ?? "");
+              }
+            }}
           />
-        </div> */}
+        </div>
         {/* 
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
         </button> */}
 
         {!authState && (
-          <li className="max-lg:flex-1 max-lg:hidden ">
+          <div className="max-lg:flex-1 max-lg:hidden">
             <button
               onClick={onGoSignup}
               className="py-2 px-6 bg-success-500 text-white"
             >
               Sign up
             </button>
-          </li>
+          </div>
         )}
 
         {authState ? (

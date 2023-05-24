@@ -25,6 +25,7 @@ import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { SearchContext } from "@/contexts/useSearchContext";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -66,6 +67,8 @@ const AppContent: FC<AppContentTypes> = ({
   const [chainSelected, setChainSelected] = useState<OptionType>();
   const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
+  const { keyword } = useContext(SearchContext);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   useEffect(() => {
     setFirstCalled(true);
@@ -82,6 +85,14 @@ const AppContent: FC<AppContentTypes> = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
+
+  useEffect(() => {
+    console.log();
+
+    setIsSearchLoading(true);
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [keyword]);
 
   useEffect(() => {
     if (
@@ -134,6 +145,7 @@ const AppContent: FC<AppContentTypes> = ({
           newest: tabCheck === "newest" ? true : false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -156,10 +168,13 @@ const AppContent: FC<AppContentTypes> = ({
       tabCheck !== "watchlist"
         ? setTotalCount(data?.discoveredProjectCount.toString())
         : setTotalCount(data?.totalCount.toString());
+
+      setIsSearchLoading(false);
     } catch (error) {
       setTotalCount("0");
       setErrorMsg("Error please try again.");
       setIsLoading(false);
+      setIsSearchLoading(false);
     }
   };
 
@@ -368,9 +383,11 @@ const AppContent: FC<AppContentTypes> = ({
         </div>
 
         <div className="mt-7 max-lg:mt-9">
-          {_renderTable()}
+          {isSearchLoading ? null : _renderTable()}
           {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
-          {isLoading ? <SkeletonLoading numberOfRow={10} /> : null}
+          {isLoading || isSearchLoading ? (
+            <SkeletonLoading numberOfRow={10} />
+          ) : null}
           {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
           {!isLoadingMore && !errorMsg && !isLoading ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
