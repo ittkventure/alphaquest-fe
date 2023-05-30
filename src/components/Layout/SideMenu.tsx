@@ -19,7 +19,6 @@ interface MenuItemType {
 const SideMenu = () => {
   const router = useRouter();
   const { tab } = router.query;
-  const { authState, accountExtendDetail } = useContext(AuthContext);
 
   const onGoApp = () => {
     mixpanelTrack(event_name_enum.inbound, { url: "/projects" });

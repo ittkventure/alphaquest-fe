@@ -42,7 +42,7 @@ const TableCustom: FC<ITableCustom> = ({
       <div className=" flex flex-auto flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="max-h-[744px] overflow-y-scroll shadow " {...rest}>
+            <div className="max-h-[600px] overflow-y-scroll shadow " {...rest}>
               <table
                 className="w-full divide-y divide-gray-200 divide-opacity-5 bg-[#171B28]"
                 {...getTableProps()}
@@ -167,17 +167,17 @@ const TableCustom: FC<ITableCustom> = ({
                   </div>
                 ))}
               {data === null && <div className="h-36 w-full" />}
-              {data && !data.length && isHiddenTBody ? null : (
-                <div className="w-full">
-                  <div className="my-20 text-center text-lg"></div>
-                </div>
-              )}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* <TableFooter paginationInfo={paginationInfo} onChange={onChangePage} /> */}
+        {paginationInfo && (
+          <TableFooter
+            paginationInfo={paginationInfo}
+            onChange={onChangePage}
+          />
+        )}
+      </div>
     </div>
   );
 };

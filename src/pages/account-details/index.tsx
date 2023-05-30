@@ -15,34 +15,19 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState, Fragment } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { Dialog, Transition } from "@headlessui/react";
-import { KeyIcon } from "@heroicons/react/24/outline";
 import ChangePasswordModal from "@/components/AQModal/ChangePasswordModal";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import FeedbackModal from "@/components/AQModal/FeedbackModal";
 
 const AccountDetails = () => {
-  const {
-    handleLogOut,
-    authState,
-    accountExtendDetail,
-    canCancel,
-    getAccountExtendDetails,
-    getCanCancel,
-  } = useContext(AuthContext);
+  const { handleLogOut, authState, accountExtendDetail, canCancel } =
+    useContext(AuthContext);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [isOpenChangePassword, setIsOpenChangePassword] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
+  const [isOpenFeedbackModal, setIsOpenFeedbackModal] = useState(false);
 
   const onSendVerifyMail = async () => {
     setIsLoading(true);
@@ -62,31 +47,6 @@ const AccountDetails = () => {
         `${error?.response?.data?.error?.message ?? error?.message}`,
         {}
       );
-    }
-  };
-
-  const onCancelSub = async () => {
-    setIsLoading(true);
-    try {
-      if (authState?.access_token) {
-        await apiPayment.cancelPayment(authState?.access_token);
-        await getAccountExtendDetails();
-        await getCanCancel();
-
-        closeModal();
-        toast.success("Cancel successful");
-      } else {
-        toast.error("Error when cancel please try again");
-      }
-
-      setIsLoading(false);
-    } catch (error: any) {
-      if (error?.response?.data?.error?.message) {
-        toast.error(error?.response?.data?.error?.message);
-      } else {
-        toast.error("Error when payment, please try again!");
-      }
-      setIsLoading(false);
     }
   };
 
@@ -121,7 +81,7 @@ const AccountDetails = () => {
               </div>
               {canCancel ? (
                 <button
-                  onClick={openModal}
+                  onClick={() => setIsOpenFeedbackModal(true)}
                   className="text-primary-500 font-workSansLight ml-2"
                 >
                   Cancel
@@ -262,7 +222,7 @@ const AccountDetails = () => {
                   {accountExtendDetail?.currentPlanKey ===
                     UserPayType.PREMIUM && canCancel ? (
                     <button
-                      onClick={openModal}
+                      onClick={() => setIsOpenFeedbackModal(true)}
                       className="text-primary-500 font-workSansLight ml-2"
                     >
                       Cancel
@@ -370,7 +330,10 @@ const AccountDetails = () => {
               </p>
             </Link>
 
-            <div className="mt-10 flex">
+            <div
+              onClick={() => setIsOpenFeedbackModal(true)}
+              className="mt-10 flex"
+            >
               <p>Coming soon</p>
             </div>
             {/* <div className="bg-secondary-300 flex max-lg:flex-col mt-6  py-1 justify-between">
@@ -395,74 +358,14 @@ const AccountDetails = () => {
           </div>
         </div>
 
-        <Transition appear show={isOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={closeModal}>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-dark-800 p-6 text-left align-middle shadow-xl transition-all">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-lg font-medium leading-6 text-primary-500"
-                    >
-                      Are you sure you want to unsubscribe?
-                    </Dialog.Title>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        You'll no longer have access to new and trending
-                        projects when your subscription expires.
-                      </p>
-                    </div>
-
-                    <div className="mt-4 flex justify-end">
-                      <button
-                        type="button"
-                        className="inline-flex justify-center items-center rounded-md border border-transparent bg-primary-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={closeModal}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? <Spinner /> : <p>No</p>}
-                      </button>
-
-                      <button
-                        type="button"
-                        className="inline-flex ml-3 justify-center items-center rounded-md border border-transparent  px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={onCancelSub}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? <Spinner /> : <p>Yes, sure</p>}
-                      </button>
-                    </div>
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition>
-
         <ChangePasswordModal
           isOpen={isOpenChangePassword}
           closeModal={() => setIsOpenChangePassword(false)}
+        />
+
+        <FeedbackModal
+          isOpen={isOpenFeedbackModal}
+          closeModal={() => setIsOpenFeedbackModal(false)}
         />
       </div>
     </HomeLayout>
