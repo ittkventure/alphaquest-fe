@@ -26,14 +26,14 @@ const HelpStep = () => {
       </div>
       <div className="mt-6">
         <div className="grid grid-cols-2 gap-6">
-          <Link href={"#"}>
+          <Link href={"https://t.me/alphaquestio"} target="_blank">
             <div className="flex items-center py-[19px] px-5 border border-[#38405B] hover:border-success-500">
               <Image src={TeleIcon} width={32} height={26.38} alt="icon" />
               <p className="ml-5">Telegram</p>
             </div>
           </Link>
 
-          <Link href={"#"}>
+          <Link href={"https://discord.com/invite/EsMqKqjKB2"} target="_blank">
             <div className="flex items-center py-[19px] px-5 border border-[#38405B] hover:border-success-500">
               <Image src={DiscordIcon} width={32} height={26.38} alt="icon" />
               <p className="ml-5">Discord</p>
@@ -41,7 +41,7 @@ const HelpStep = () => {
           </Link>
         </div>
         <div className="mt-6">
-          <Link href={"#"}>
+          <Link href={"mailto:support@alphaquest.io"}>
             <div className="flex items-center py-[19px] px-5 border border-[#38405B] hover:border-success-500">
               <Image src={MailIcon} width={32} height={26.38} alt="icon" />
               <p className="ml-5">

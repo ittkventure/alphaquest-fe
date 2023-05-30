@@ -11,7 +11,8 @@ import Image from "next/image";
 import React, { useContext, useState } from "react";
 
 const SelectFeedback = () => {
-  const { nextStep, setMessageStep2, setStepType } = useContext(CancelContext);
+  const { nextStep, setMessageStep2, setStepType, messageStep2 } =
+    useContext(CancelContext);
 
   const listSelectFeedback = [
     {
@@ -102,23 +103,27 @@ const SelectFeedback = () => {
           ))}
         </div>
 
-        <div className="mt-6">
-          <p>Could you tell us more?</p>
-          <textarea
-            className="border border-[#38405B] bg-transparent w-full mt-[12px] h-[84px] py-[12px] px-4"
-            placeholder="We read every answer"
-            onChange={(e) => setMessageStep2(e.target.value)}
-          />
-        </div>
+        {selectId === 4 && (
+          <div className="mt-6">
+            <p>Could you tell us more?</p>
+            <textarea
+              className="border border-[#38405B] bg-transparent w-full mt-[12px] h-[84px] py-[12px] px-4"
+              placeholder="We read every answer"
+              onChange={(e) => setMessageStep2(e.target.value)}
+            />
+          </div>
+        )}
 
         <div className="mt-6 flex justify-end">
           <button
             onClick={() => {
               if (selectId === -1) return;
+              if (selectId === 4 && !messageStep2) return;
+
               listSelectFeedback[selectId].onClick();
             }}
             className={`flex ${
-              selectId === -1
+              selectId === -1 || (selectId === 4 && !messageStep2)
                 ? "bg-gray-700 bg-opacity-25 text-gray-400"
                 : "bg-success-500 hover:bg-success-600 text-white"
             } p-3 `}

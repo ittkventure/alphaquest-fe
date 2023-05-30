@@ -331,7 +331,7 @@ const AccountDetails = () => {
             </Link>
 
             <div
-              onClick={() => setIsOpenFeedbackModal(true)}
+              // onClick={() => setIsOpenFeedbackModal(true)}
               className="mt-10 flex"
             >
               <p>Coming soon</p>

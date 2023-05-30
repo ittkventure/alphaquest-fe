@@ -76,6 +76,7 @@ export interface FollowerItem {
 export interface FollowerRequest {
   pageNumber: number;
   pageSize: number;
+  desc?: boolean;
 }
 
 export interface Category {

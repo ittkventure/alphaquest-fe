@@ -28,15 +28,17 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const [isDescSorted, setIsDescSorted] = useState(false);
 
   const listAlphaHunter = useQuery(
-    ["fetchListAlphaHunter", userId, page],
+    ["fetchListAlphaHunter", userId, page, isDescSorted],
     async () =>
       await apiTwitter.getListFollower(
         userId as any,
         {
           pageNumber: page,
           pageSize: 20,
+          desc: isDescSorted,
         },
         authState?.access_token ?? ""
       )
@@ -372,6 +374,11 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
                 : 0,
               totalElements: listAlphaHunter?.data?.totalCount ?? 0,
             }}
+            onSort={(isSortedDesc) => {
+              if (isSortedDesc === undefined) return;
+              setIsDescSorted(isSortedDesc);
+            }}
+            isSortedDesc={isDescSorted}
           />
         </div>
       </div>
