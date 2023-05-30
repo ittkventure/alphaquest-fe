@@ -4,7 +4,8 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
 
 const WriteFeedback = () => {
-  const { nextStep, backStep, setMessageStep3 } = useContext(CancelContext);
+  const { nextStep, backStep, setMessageStep3, messageStep3, stepType } =
+    useContext(CancelContext);
 
   return (
     <>
@@ -12,7 +13,11 @@ const WriteFeedback = () => {
         as="h3"
         className="text-3xl font-workSansBold leading-6 mt-7  flex items-center"
       >
-        <p className="">What could we have done better?</p>
+        {stepType === "MISSING_FEATURES" ? (
+          <p className="">What feature are you looking for?</p>
+        ) : (
+          <p className="">What could we have done better?</p>
+        )}
       </Dialog.Title>
       <div className="mt-6">
         <p className="text-[16px] leading-5 text-white">
@@ -36,8 +41,17 @@ const WriteFeedback = () => {
             <p className="ml-3">Back</p>
           </button>
           <button
+            disabled={
+              messageStep3 === "" ||
+              messageStep3 === undefined ||
+              messageStep3 === null
+            }
             onClick={() => nextStep(4)}
-            className="flex bg-success-500 p-3 text-white hover:bg-success-600"
+            className={`flex  ${
+              messageStep3
+                ? "bg-success-500 hover:bg-success-600 text-white"
+                : "bg-gray-400 bg-opacity-25 text-gray-400"
+            } p-3  `}
           >
             <p className="mr-3">Next</p>
             <ArrowRightIcon className="w-6" />

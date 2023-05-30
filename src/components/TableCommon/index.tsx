@@ -2,7 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import Spinner from "./../Spinner";
 import TableFooter, { PaginationInfo } from "./TableFooter";
 import React, { FC } from "react";
-import { Column, useSortBy, useTable } from "react-table";
+import { Column, useTable } from "react-table";
 
 interface ITableCustom
   extends React.DetailedHTMLProps<
@@ -16,6 +16,8 @@ interface ITableCustom
   onChangePage: (pageNumber: number) => void;
   refLast?: any;
   isHiddenTBody?: boolean;
+  onSort?: (isSortedDesc: boolean) => void;
+  isSortedDesc?: boolean;
 }
 
 const TableCustom: FC<ITableCustom> = ({
@@ -26,16 +28,15 @@ const TableCustom: FC<ITableCustom> = ({
   onChangePage,
   refLast,
   isHiddenTBody,
+  onSort,
+  isSortedDesc,
   ...rest
 }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: data || [],
-      },
-      useSortBy
-    );
+    useTable({
+      columns,
+      data: data || [],
+    });
 
   return (
     <div className="w-full h-full">
@@ -63,23 +64,31 @@ const TableCustom: FC<ITableCustom> = ({
                               return (
                                 // Apply the header cell props
                                 <th
-                                  {...column.getHeaderProps(
-                                    column.render("Header") ===
-                                      "Following Date" &&
-                                      column.getSortByToggleProps()
-                                  )}
+                                  {...column.getHeaderProps()}
                                   className={`${
                                     column.columns ? "text-center" : "text-left"
                                   } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
                                 >
-                                  <div className="flex items-center">
+                                  <div
+                                    onClick={() => {
+                                      if (
+                                        column.render("Header") ===
+                                        "Following Date"
+                                      ) {
+                                        console.log(column.render("Header"));
+
+                                        onSort && onSort(!isSortedDesc);
+                                      }
+                                    }}
+                                    className="flex items-center cursor-pointer"
+                                  >
                                     {
                                       // Render the header
                                       column.render("Header")
                                     }
                                     {column.render("Header") ===
                                       "Following Date" &&
-                                      (column.isSortedDesc ? (
+                                      (isSortedDesc ? (
                                         <ChevronDownIcon className="h-5 w-5 ml-1" />
                                       ) : (
                                         <ChevronUpIcon className="h-5 w-5 ml-1" />

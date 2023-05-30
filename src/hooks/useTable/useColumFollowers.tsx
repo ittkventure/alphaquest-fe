@@ -59,7 +59,7 @@ const useColumFollowers = () => {
         Header: "Following Date",
         accessor: "followingDate",
         Cell: ({ value }: CellProps<FollowerItem>) => (
-          <p>{moment(value).format("MM/DD/YYYY, hh:mm")}</p>
+          <p>{moment(value).format("MM/DD/YYYY, HH:mm")}</p>
         ),
       },
       {

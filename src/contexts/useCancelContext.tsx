@@ -51,6 +51,7 @@ export const useCancelContext = (): ICancelContext => {
   const backStep = () => {
     setPrevStep(prevStep - 1);
     setStep(prevStep);
+    setMessageStep2("");
   };
 
   const resetStep = () => {
