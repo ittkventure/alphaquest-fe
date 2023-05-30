@@ -16,6 +16,8 @@ import ConduitLogo from "./conduit-logo.png";
 import LensLogo from "./lens-logo.jpg";
 import StepnLogo from "./stepn-logo.png";
 import StargateLogo from "./stargate-logo.jpg";
+import PhaoImg from "./phao-img.png";
+import PrayImg from "./pray-img.png";
 
 export {
   ChartImg,
@@ -36,4 +38,6 @@ export {
   LensLogo,
   StepnLogo,
   StargateLogo,
+  PhaoImg,
+  PrayImg,
 };

@@ -43,19 +43,9 @@ const Pagination: FC<PaginationProps> = ({
 
   return (
     <div
-      className="flex items-center space-x-0.5 font-medium"
+      className="flex items-center space-x-0.5 font-medium "
       aria-label="Pagination"
     >
-      <button
-        disabled={currentPage === 1}
-        onClick={onPreviousClick}
-        className={`w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#edf2f7] dark:hover:bg-trueGray-800 ${
-          currentPage === 1 ? "hidden" : ""
-        }`}
-      >
-        <ChevronLeftIcon className="w-4 h-4" />
-      </button>
-
       {paginationRange.map((pageNumber, idx) =>
         pageNumber === DOTS ? (
           <div
@@ -67,10 +57,10 @@ const Pagination: FC<PaginationProps> = ({
         ) : (
           <button
             key={idx}
-            className={`w-8 h-8 flex items-center justify-center rounded-lg ${
+            className={`w-8 h-8 flex items-center justify-center  ${
               currentPage === Number(pageNumber)
-                ? "bg-secondary-500 text-white"
-                : "hover:bg-[#edf2f7]"
+                ? "bg-success-500 text-white"
+                : "hover:bg-success-600"
             }`}
             onClick={() => onPageChange(Number(pageNumber))}
           >
@@ -80,13 +70,22 @@ const Pagination: FC<PaginationProps> = ({
       )}
 
       <button
-        disabled={currentPage === lastPage}
-        onClick={onNextClick}
-        className={`w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#edf2f7] ${
-          currentPage === lastPage ? "hidden" : ""
+        disabled={currentPage === 1}
+        onClick={onPreviousClick}
+        className={`w-8 h-8 flex items-center justify-center border border-[#38405B] hover:bg-success-500 dark:hover:bg-[#38405B] ${
+          currentPage !== 1 ? "text-white" : ""
         }`}
       >
-        <ChevronRightIcon className="w-4 h-4" />
+        <ChevronLeftIcon className="w-4 h-4" />
+      </button>
+      <button
+        disabled={currentPage === lastPage}
+        onClick={onNextClick}
+        className={`w-8 h-8 flex items-center justify-center border border-[#38405B] hover:bg-success-500 ${
+          currentPage !== lastPage ? "text-white" : ""
+        } dark:hover:bg-[#38405B]`}
+      >
+        <ChevronRightIcon className="w-4 h-4 " />
       </button>
     </div>
   );

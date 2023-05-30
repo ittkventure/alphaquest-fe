@@ -28,11 +28,18 @@ class ApiPayment extends ApiClientBase {
    * cancelPayment
    */
   public async cancelPayment(
-    access_token: string
+    access_token: string,
+    reasonType: string,
+    reasonText?: string,
+    feedback?: string
   ): Promise<BaseResponse | any> {
     const res = await this.instance.post(
       "/api/app/payment/cancel-subcription",
-      {},
+      {
+        reasonType,
+        reasonText,
+        feedback,
+      },
       {
         headers: {
           Authorization: "Bearer " + access_token,

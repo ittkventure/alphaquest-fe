@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { FC, useContext, useState } from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -16,7 +9,6 @@ import TableCommon from "../TableCommon";
 import useColumFollowers from "@/hooks/useTable/useColumFollowers";
 import { ChartData, TwitterDetails } from "@/api-client/types/TwitterType";
 import moment from "moment";
-import LineChart from "../Chart";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
@@ -36,79 +28,19 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [data, setData] = useState<any>({
-    items: [],
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasNextPage, setHasNextPage] = useState(false);
 
-  const intObserver = useRef();
-  const lastFollowerRef = useCallback(
-    (_item: any) => {
-      if (isLoading) return;
-
-      let action = intObserver.current as any;
-      if (intObserver.current) action.disconnect();
-
-      action = new IntersectionObserver((_item) => {
-        if (hasNextPage) {
-          console.log("we are near");
-          setPage((prev) => prev + 1);
-        }
-      }, {});
-    },
-    [isLoading, hasNextPage]
-  );
-
-  useEffect(() => {
-    if (
-      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM &&
-      authState?.access_token &&
-      !hasNextPage
-    )
-      fetchData();
-  }, [
-    accountExtendDetail?.currentPlanKey,
-    authState?.access_token,
-    userId,
-    hasNextPage,
-    page,
-  ]);
-
-  useEffect(() => {
-    const followerList = document.getElementById("follower-list");
-    console.log(followerList?.offsetHeight);
-  }, [isLoading]);
-
-  const handleScroll = (_e: React.UIEvent<HTMLDivElement, UIEvent>) => {};
-
-  const randomNumber = () => {
-    const val = Math.floor(1000 + Math.random() * 9000);
-    return val;
-  };
-
-  const fetchData = async () => {
-    setIsLoading(true);
-
-    try {
-      const getData = await apiTwitter.getListFollower(
+  const listAlphaHunter = useQuery(
+    ["fetchListAlphaHunter", userId, page],
+    async () =>
+      await apiTwitter.getListFollower(
         userId as any,
         {
           pageNumber: page,
           pageSize: 20,
         },
         authState?.access_token ?? ""
-      );
-      setData((_prevItems: any) => {
-        return { ...getData, items: [..._prevItems.items, ...getData.items] };
-      });
-      setPage((prevPage) => prevPage + 1);
-      setHasNextPage(getData.items.length === 0 ? true : false);
-    } catch (error) {
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      )
+  );
 
   const twitterDetail = useQuery<TwitterDetails>({
     queryKey: [
@@ -258,90 +190,124 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       }`}
     >
       <div className="flex px-[100px] max-lg:px-[10px] w-full">
-        <img
-          className="h-20 w-20 rounded-[50%]"
-          src={twitterDetail.data?.profileImageUrl}
-        />
-        <div className="ml-5 w-full">
-          <div className="flex justify-between w-full">
-            <div className="w-full">
-              <div className="flex w-full justify-between">
-                <div className="flex items-center">
-                  <p className="text-xl font-workSansSemiBold text-success-500">
-                    {twitterDetail.data?.name}
-                  </p>
-                  <button
-                    className="ml-2"
-                    onClick={() => {
-                      mixpanelTrack(event_name_enum.outbound, {
-                        url: twitterDetail.data?.twitterUrl,
-                        message: "Link to twitter at project page",
-                      });
-                      window.open(
-                        twitterDetail.data?.twitterUrl ?? "#",
-                        "_blank"
-                      );
-                    }}
-                  >
-                    <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
-                  </button>
-                </div>
-                <div className="ml-20 max-lg:ml-[20px]">
-                  <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
-                    <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
-                      <p>+{twitterDetail.data?.trendingScore}</p>
+        {twitterDetail.isLoading || twitterDetail.isFetching ? (
+          <div className="w-full flex justify-center items-center py-14">
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            <img
+              className="h-20 w-20 rounded-[50%]"
+              src={twitterDetail.data?.profileImageUrl}
+            />
+            <div className="ml-5 w-full">
+              <div className="flex justify-between w-full">
+                <div className="w-full">
+                  <div className="flex w-full justify-between">
+                    <div className="flex items-center">
+                      <p className="text-xl font-workSansSemiBold text-success-500">
+                        {twitterDetail.data?.name}
+                      </p>
+                      <button
+                        className="ml-2"
+                        onClick={() => {
+                          mixpanelTrack(event_name_enum.outbound, {
+                            url: twitterDetail.data?.twitterUrl,
+                            message: "Link to twitter at project page",
+                          });
+                          window.open(
+                            twitterDetail.data?.twitterUrl ?? "#",
+                            "_blank"
+                          );
+                        }}
+                      >
+                        <Image
+                          src={TwitterIcon}
+                          width={16}
+                          height={13}
+                          alt="t-i"
+                        />
+                      </button>
                     </div>
-                    <div>{_renderHeartButton()}</div>
+                    <div className="ml-20 max-lg:ml-[20px]">
+                      <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
+                        <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
+                          <p>+{twitterDetail.data?.trendingScore}</p>
+                        </div>
+                        <div>{_renderHeartButton()}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm mt-3">
+                    {twitterDetail.data?.description}
+                  </p>
+
+                  <div className="flex mt-3">
+                    {twitterDetail.data && twitterDetail.data?.categories
+                      ? twitterDetail.data?.categories?.map((value, index) => (
+                          <p className="text-sm border px-2 mr-2">
+                            {value.name}
+                          </p>
+                        ))
+                      : null}
+                    {/* {_renderNewTag()} */}
                   </div>
                 </div>
               </div>
-              <p className="text-sm mt-3">{twitterDetail.data?.description}</p>
-
-              <div className="flex mt-3">
-                {twitterDetail.data && twitterDetail.data?.categories
-                  ? twitterDetail.data?.categories?.map((value, index) => (
-                      <p className="text-sm border px-2 mr-2">{value.name}</p>
-                    ))
-                  : null}
-                {/* {_renderNewTag()} */}
-              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
 
       <div className="px-[100px] text-sm max-lg:px-[10px]">
         <div className="grid grid-cols-2 gap-6  mt-5">
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Twitter Followers When discovered</p>
-            <p className="text-xl max-lg:text-sm">
-              {twitterDetail.data?.twitterFollowersWhenDiscovered}
-            </p>
+            {twitterDetail.isLoading || twitterDetail.isFetching ? (
+              <Spinner customClassName="my-1" />
+            ) : (
+              <p className="text-xl max-lg:text-sm">
+                {twitterDetail.data?.twitterFollowersWhenDiscovered}
+              </p>
+            )}
           </div>
 
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Twitter Created Date</p>
-            <p className="text-xl max-lg:text-sm">
-              {moment(twitterDetail.data?.twitterCreatedDate).format(
-                "MM/DD/YYYY - HH:mm"
-              )}
-            </p>
+
+            {twitterDetail.isLoading || twitterDetail.isFetching ? (
+              <Spinner customClassName="my-1" />
+            ) : (
+              <p className="text-xl max-lg:text-sm">
+                {moment(twitterDetail.data?.twitterCreatedDate).format(
+                  "MM/DD/YYYY - HH:mm"
+                )}
+              </p>
+            )}
           </div>
 
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Current Twitter Followers</p>
-            <p className="text-xl max-lg:text-sm">
-              {twitterDetail.data?.currentTwitterFollowers}
-            </p>
+            {twitterDetail.isLoading || twitterDetail.isFetching ? (
+              <Spinner customClassName="my-1" />
+            ) : (
+              <p className="text-xl max-lg:text-sm">
+                {twitterDetail.data?.currentTwitterFollowers}
+              </p>
+            )}
           </div>
 
           <div className="border border-white rounded-lg border-opacity-10 p-4">
             <p>Discovered Date</p>
-            <p className="text-xl max-lg:text-sm">
-              {moment(twitterDetail.data?.discoveredDate).format(
-                "MM/DD/YYYY - HH:mm"
-              )}
-            </p>
+            {twitterDetail.isLoading || twitterDetail.isFetching ? (
+              <Spinner customClassName="my-1" />
+            ) : (
+              <p className="text-xl max-lg:text-sm">
+                {moment(twitterDetail.data?.discoveredDate).format(
+                  "MM/DD/YYYY - HH:mm"
+                )}
+              </p>
+            )}
           </div>
         </div>
 
@@ -387,18 +353,25 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         <div className="mt-5 ">
           <TableCommon
             columns={followers ?? []}
-            data={data?.items ?? []}
+            data={listAlphaHunter.data?.items ?? []}
             onChangePage={function (_pageNumber: number): void {
-              throw new Error("Function not implemented.");
+              setPage(_pageNumber);
             }}
-            onScroll={handleScroll}
-            ref={lastFollowerRef}
-            isLoading={isLoading}
+            isLoading={listAlphaHunter.isLoading}
             isHiddenTBody={
               accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
                 ? false
                 : true
             }
+            paginationInfo={{
+              currentPage: page,
+              pageNumber: page,
+              pageSize: 20,
+              totalPages: listAlphaHunter?.data?.totalCount
+                ? Math.ceil(listAlphaHunter?.data?.totalCount / 20)
+                : 0,
+              totalElements: listAlphaHunter?.data?.totalCount ?? 0,
+            }}
           />
         </div>
       </div>

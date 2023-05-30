@@ -19,6 +19,11 @@ import UserIcon from "./user-icon.svg";
 import GiftIcon from "./gift-icon.svg";
 import LogoutIcon from "./logout-icon.svg";
 import TwitterBlueIcon from "./twitter-blue-icon.svg";
+import CodeFBIcon from "./code-fb-icon.svg";
+import DiscordIcon from "./discord-icon.svg";
+import MailIcon from "./mail-icon.svg";
+import TeleIcon from "./tele-icon.svg";
+import TickCircle from "./tick-circle.svg";
 
 export {
   QuoteIcon,
@@ -41,4 +46,9 @@ export {
   NotificationCircleIconHome,
   ChestKingIcon,
   TwitterBlueIcon,
+  CodeFBIcon,
+  DiscordIcon,
+  MailIcon,
+  TeleIcon,
+  TickCircle,
 };

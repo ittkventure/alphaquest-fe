@@ -24,23 +24,23 @@ const TableFooter = ({ paginationInfo, onChange }: Props) => {
   };
 
   return (
-    <div className="pt-5 flex flex-col md:flex-row justify-between items-center text-slate-500 dark:text-trueGray-500 text-sm">
+    <div className="pt-5 mb-20 flex flex-col md:flex-row justify-end items-center text-sm">
       <div>
-        <p className="my-5 md:my-0">
-          showing{" "}
+        <p className="my-5 md:my-0 mr-4">
+          Showing rows{" "}
           {Math.min(
             paginationInfo.currentPage * pageSize - pageSize + 1,
             paginationInfo.totalElements || 0
           )}{" "}
-          -{" "}
+          to{" "}
           {Math.min(
             paginationInfo.currentPage * pageSize,
             paginationInfo.totalElements || 0
           )}{" "}
-          out of {paginationInfo.totalElements}
+          of {paginationInfo.totalElements}
         </p>
       </div>
-      <div className="order-first md:order-none">
+      <div className="order-first md:order-none ">
         <Pagination
           totalItems={paginationInfo.totalElements || 0}
           itemsPerPage={pageSize}
