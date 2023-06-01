@@ -2,6 +2,7 @@ import { TwitterItem } from "@/api-client/types/TwitterType";
 import ProjectDetailModal from "@/components/AQModal/ProjectDetailModal";
 import React, { FC, useEffect, useState } from "react";
 import TableRow from "./TableRow";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 interface TableContentTypes {
   initListRows: TwitterItem[];
@@ -33,6 +34,9 @@ const TableContent: FC<TableContentTypes> = ({
             isAnimation={isAnimation}
             onClickAction={() => {
               setUserId(value.userId);
+              mixpanelTrack(event_name_enum.on_open_project_detail, {
+                projectName: value.name,
+              });
               setIsOpen(true);
             }}
           />

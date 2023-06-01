@@ -18,7 +18,7 @@ interface IHeader {
 const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
   const { tab } = router.query;
-  const { setKeyword } = useContext(SearchContext);
+  const { setKeyword, keyword } = useContext(SearchContext);
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
 
@@ -57,6 +57,8 @@ const Header: FC<IHeader> = ({ title }) => {
   const renderTitle = () => {
     if (title) return title;
     if (router.pathname === "/watchlist/projects") return "Watchlist";
+    if (router.pathname.indexOf("/search/keyword") !== -1) return "Search";
+
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
@@ -85,8 +87,9 @@ const Header: FC<IHeader> = ({ title }) => {
             className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm"
             placeholder="Search"
             onKeyPress={(event) => {
-              if (event.key === "Enter") {
+              if (event.key === "Enter" && event.currentTarget.value) {
                 setKeyword(event.currentTarget.value ?? "");
+                router.push("/search/keyword/" + event.currentTarget.value);
               }
             }}
           />

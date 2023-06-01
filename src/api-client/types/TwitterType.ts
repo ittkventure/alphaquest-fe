@@ -8,9 +8,9 @@ export type SortByType =
 export interface TwitterGetListRequest {
   pageNumber: number;
   pageSize: number;
-  timeFrame: TimeFrameTypes;
-  sortBy: SortByType;
-  newest: boolean;
+  timeFrame?: TimeFrameTypes;
+  sortBy?: SortByType;
+  newest?: boolean;
   chains?: Array<string>;
   categories?: Array<string>;
   searchText?: string;

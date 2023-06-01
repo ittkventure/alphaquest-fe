@@ -10,6 +10,8 @@ export enum event_name_enum {
   on_filter_project = "On filter project",
   on_sort_project = "On sort project",
   upgrade_to_pro = "Upgrade to pro",
+  on_search_keyword = "On project search",
+  on_open_project_detail = "On click project",
 }
 
 // Replace YOUR_TOKEN with your Project Token
