@@ -1,7 +1,5 @@
-import { CrownIcon } from "@/assets/icons";
 import SideMenu from "@/components/Layout/SideMenu";
 import SEO from "@/components/SEO";
-import Image from "next/image";
 import React, { FC } from "react";
 
 interface AppLayoutTypes {

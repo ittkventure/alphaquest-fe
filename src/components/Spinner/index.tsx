@@ -20,7 +20,7 @@ const Spinner: FC<ISpinner> = ({ customClassName, strokeWidth }) => {
           cy="12"
           r="10"
           stroke="currentColor"
-          stroke-width={strokeWidth ?? "4"}
+          strokeWidth={strokeWidth ?? "4"}
         ></circle>
         <path
           className="opacity-60 text-success-500"

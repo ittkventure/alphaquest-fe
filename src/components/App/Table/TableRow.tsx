@@ -36,7 +36,6 @@ const TableRow: FC<TableRowTypes> = ({
   item,
   index,
   isAnimation,
-  onReduceCount,
   onRefreshTable,
   onClickAction,
 }) => {

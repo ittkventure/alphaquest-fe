@@ -31,12 +31,14 @@ interface AppContentTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
   tab?: "watchlist" | "trending" | "newest" | string;
+  keywordProps?: string;
 }
 
 const AppContent: FC<AppContentTypes> = ({
   listItemsProps,
   totalCountProps,
   tab,
+  keywordProps,
 }) => {
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -49,8 +51,6 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
-  const [sortByLabel, setSortByLabel] = useState<string>("score");
-  const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
@@ -67,7 +67,7 @@ const AppContent: FC<AppContentTypes> = ({
   const [chainSelected, setChainSelected] = useState<OptionType>();
   const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
-  const { keyword } = useContext(SearchContext);
+  const { keyword, setKeyword } = useContext(SearchContext);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   useEffect(() => {
@@ -85,6 +85,18 @@ const AppContent: FC<AppContentTypes> = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
+
+  useEffect(() => {
+    if (keyword) fetchData();
+  }, [keyword]);
+
+  useEffect(() => {
+    if (keyword || keywordProps)
+      mixpanelTrack(event_name_enum.on_search_keyword, {
+        url: router.pathname,
+        value_search: keyword ?? keywordProps,
+      });
+  }, [keyword, keywordProps]);
 
   useEffect(() => {
     if (
@@ -132,11 +144,7 @@ const AppContent: FC<AppContentTypes> = ({
           pageNumber: 1,
           pageSize:
             accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
-          sortBy,
-          timeFrame,
-          newest: tabCheck === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword ?? keywordProps,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -178,11 +186,7 @@ const AppContent: FC<AppContentTypes> = ({
         {
           pageNumber,
           pageSize,
-          sortBy,
-          timeFrame,
-          newest: newest === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword ?? keywordProps,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -270,48 +274,10 @@ const AppContent: FC<AppContentTypes> = ({
   const renderDes = () => {
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
-        <div className="flex justify-start">
-          <p>
-            {totalCount.toLocaleString()} projects discovered during the last
-          </p>
-
-          <MonthSelect
-            onChangeSelect={(month) => {
-              mixpanelTrack(event_name_enum.on_filter_project, {
-                url: router.pathname,
-                value_search: (month.value as TimeFrameTypes) ?? "ALL",
-                message:
-                  "projects discovered during the last " +
-                    (month.value as TimeFrameTypes) ?? "ALL",
-              });
-              setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-              setTimeLabel(month.label ?? "ALL");
-            }}
-            defaultData={{
-              value: timeFrame,
-              label: timeLabel,
-            }}
-          />
-        </div>
-        <div className="flex">
-          <p className="ml-1">sorted by</p>
-          <MonthSelect
-            onChangeSelect={(month) => {
-              mixpanelTrack(event_name_enum.on_sort_project, {
-                url: router.pathname,
-                value_sort: (month.value as SortByType) ?? "SCORE",
-                message: "sorted by" + (month.value as SortByType) ?? "SCORE",
-              });
-              setSortBy((month.value as SortByType) ?? "SCORE");
-              setSortByLabel(month.label ?? "SCORE");
-            }}
-            defaultData={{
-              value: sortBy,
-              label: sortByLabel,
-            }}
-            listData={initListSort as Array<any>}
-          />
-        </div>
+        <p>
+          We Found {totalCount.toLocaleString()} Results With "
+          {keywordProps ?? keyword}"
+        </p>
       </div>
     );
   };
@@ -355,22 +321,6 @@ const AppContent: FC<AppContentTypes> = ({
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
-          <div className="flex max-lg:items-center justify-between max-lg:mt-5">
-            <div className="mr-3">
-              <SelectCustom
-                placeholder="Chain - All"
-                initList={chains}
-                onChangeSelected={(item) => setChainSelected(item)}
-              />
-            </div>
-            <div>
-              <SelectCustom
-                placeholder="Category - All"
-                initList={category}
-                onChangeSelected={(item) => setCategorySelected(item)}
-              />
-            </div>
-          </div>
         </div>
 
         <div className="mt-7 max-lg:mt-9">

@@ -1,13 +1,10 @@
-import { UserPayType } from "@/api-client/types/AuthType";
-import { NewestIcon, TrendingIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
-import { AuthContext } from "@/contexts/useAuthContext";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { FireIcon, HeartIcon, BoltIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 interface MenuItemType {
   key: string;
