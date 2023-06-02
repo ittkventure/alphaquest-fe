@@ -68,12 +68,12 @@ const AppPage: NextPage<IAppPage> = ({ keyword }) => {
 
 export default AppPage;
 
-export async function getServerSideProps({ params }: any) {
-  const { keyword } = params; // params.keyword
+export async function getServerSideProps(context: any) {
+  const { keyword } = context.query; // params.keyword
 
   return {
     props: {
-      keyword,
+      keyword: keyword ?? "",
     }, // will be passed to the page component as props
   };
 }

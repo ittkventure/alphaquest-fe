@@ -41,109 +41,97 @@ const TableCustom: FC<ITableCustom> = ({
   return (
     <div className="w-full h-full">
       <div className=" flex flex-auto flex-col">
-        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="max-h-[600px] overflow-y-scroll shadow " {...rest}>
-              <table
-                className="w-full divide-y divide-gray-200 divide-opacity-5 bg-[#171B28]"
-                {...getTableProps()}
-              >
-                <thead className="bg-[#1F2536] sticky top-0">
-                  {
-                    // Loop over the header rows
-                    headerGroups.map(
-                      (headerGroup: {
-                        getHeaderGroupProps: any;
-                        headers: any[];
-                      }) => (
-                        // Apply the header row props
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                          {
-                            // Loop over the headers in each row
-                            headerGroup.headers.map((column) => {
-                              return (
-                                // Apply the header cell props
-                                <th
-                                  {...column.getHeaderProps()}
-                                  className={`${
-                                    column.columns ? "text-center" : "text-left"
-                                  } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
-                                >
-                                  <div
-                                    onClick={() => {
-                                      if (
-                                        column.render("Header") ===
-                                        "Following Date"
-                                      ) {
-                                        console.log(column.render("Header"));
-
-                                        onSort && onSort(!isSortedDesc);
-                                      }
-                                    }}
-                                    className="flex items-center cursor-pointer"
-                                  >
-                                    {
-                                      // Render the header
-                                      column.render("Header")
+        <div className="-my-2 sm:-mx-6 lg:-mx-8">
+          <div className=" shadow relative w-full  overflow-x-scroll" {...rest}>
+            <table
+              className="divide-y divide-gray-200 divide-opacity-5 bg-[#171B28] max-h-[800px] h-[800px] w-full min-w-[400px] "
+              {...getTableProps()}
+            >
+              <thead className="bg-[#1F2536] sticky top-0">
+                {
+                  // Loop over the header rows
+                  headerGroups.map(
+                    (headerGroup: {
+                      getHeaderGroupProps: any;
+                      headers: any[];
+                    }) => (
+                      // Apply the header row props
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {
+                          // Loop over the headers in each row
+                          headerGroup.headers.map((column) => {
+                            return (
+                              // Apply the header cell props
+                              <th
+                                {...column.getHeaderProps()}
+                                className={`${
+                                  column.columns ? "text-center" : "text-left"
+                                } ${
+                                  column.render("Header") === "Accounts"
+                                    ? "sticky z-10 top-0 left-[-5px] bg-[#1F2536]"
+                                    : ""
+                                } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
+                              >
+                                <div
+                                  onClick={() => {
+                                    if (
+                                      column.render("Header") ===
+                                      "Following Date"
+                                    ) {
+                                      onSort && onSort(!isSortedDesc);
                                     }
-                                    {column.render("Header") ===
-                                      "Following Date" &&
-                                      (isSortedDesc ? (
-                                        <ChevronDownIcon className="h-5 w-5 ml-1" />
-                                      ) : (
-                                        <ChevronUpIcon className="h-5 w-5 ml-1" />
-                                      ))}
-                                  </div>
-                                </th>
-                              );
-                            })
-                          }
-                        </tr>
-                      )
+                                  }}
+                                  className={`flex items-center cursor-pointer ${
+                                    column.render("Header") === "Accounts"
+                                      ? "max-lg:min-w-[200px] sticky  z-10 top-0 left-[-5px]"
+                                      : ""
+                                  } ${
+                                    column.render("Header") === "Tags"
+                                      ? "max-lg:min-w-[200px]"
+                                      : ""
+                                  } ${
+                                    column.render("Header") === "Following Date"
+                                      ? "max-lg:min-w-[200px]"
+                                      : ""
+                                  }`}
+                                >
+                                  {
+                                    // Render the header
+                                    column.render("Header")
+                                  }
+                                  {column.render("Header") ===
+                                    "Following Date" &&
+                                    (isSortedDesc ? (
+                                      <ChevronDownIcon className="h-5 w-5 ml-1" />
+                                    ) : (
+                                      <ChevronUpIcon className="h-5 w-5 ml-1" />
+                                    ))}
+                                </div>
+                              </th>
+                            );
+                          })
+                        }
+                      </tr>
                     )
-                  }
-                </thead>
-                {isHiddenTBody ? null : (
-                  <tbody
-                    className="divide-y divide-gray-200 divide-opacity-5  bg-[#171B28]"
-                    {...getTableBodyProps()}
-                  >
-                    {
-                      // Loop over the table rows
-                      rows.map((row: any, index: number) => {
-                        // Prepare the row for display
-                        prepareRow(row);
-                        if (rows.length === index + 1)
-                          return (
-                            <tr
-                              {...row.getRowProps()}
-                              className="hover:bg-opacity-10"
-                              ref={refLast}
-                            >
-                              {
-                                // Loop over the rows cells
-                                row.cells.map((cell: any) => {
-                                  // Apply the cell props
-                                  return (
-                                    <td
-                                      {...cell.getCellProps()}
-                                      className="max-w-xs break-all px-6 py-4 text-sm text-white"
-                                    >
-                                      {
-                                        // Render the cell contents
-                                        cell.render("Cell")
-                                      }
-                                    </td>
-                                  );
-                                })
-                              }
-                            </tr>
-                          );
+                  )
+                }
+              </thead>
+              {isHiddenTBody ? null : (
+                <tbody
+                  className="divide-y divide-gray-200 divide-opacity-5  bg-[#171B28]"
+                  {...getTableBodyProps()}
+                >
+                  {
+                    // Loop over the table rows
+                    rows.map((row: any, index: number) => {
+                      // Prepare the row for display
+                      prepareRow(row);
+                      if (rows.length === index + 1)
                         return (
-                          // Apply the row props
                           <tr
                             {...row.getRowProps()}
                             className="hover:bg-opacity-10"
+                            ref={refLast}
                           >
                             {
                               // Loop over the rows cells
@@ -152,7 +140,11 @@ const TableCustom: FC<ITableCustom> = ({
                                 return (
                                   <td
                                     {...cell.getCellProps()}
-                                    className="max-w-xs break-all px-6 py-4 text-sm text-white"
+                                    className={`${
+                                      cell.column?.Header === "Accounts"
+                                        ? "sticky  z-10 left-[-5px] bg-dark-800"
+                                        : ""
+                                    } max-w-xs break-all px-6 py-4 text-sm text-white`}
                                   >
                                     {
                                       // Render the cell contents
@@ -164,29 +156,54 @@ const TableCustom: FC<ITableCustom> = ({
                             }
                           </tr>
                         );
-                      })
-                    }
-                  </tbody>
-                )}
-              </table>
-              {isLoading &&
-                (isHiddenTBody ? null : (
-                  <div className="m-auto my-10 flex w-full justify-center align-middle">
-                    <Spinner />
-                  </div>
-                ))}
-              {data === null && <div className="h-36 w-full" />}
-            </div>
+                      return (
+                        // Apply the row props
+                        <tr
+                          {...row.getRowProps()}
+                          className="hover:bg-opacity-10"
+                        >
+                          {
+                            // Loop over the rows cells
+                            row.cells.map((cell: any) => {
+                              // Apply the cell props
+                              return (
+                                <td
+                                  {...cell.getCellProps()}
+                                  className={`${
+                                    cell.column?.Header === "Accounts"
+                                      ? "sticky  z-10 left-[-5px] bg-dark-800"
+                                      : ""
+                                  } max-w-xs break-all px-6 py-4 text-sm text-white`}
+                                >
+                                  {
+                                    // Render the cell contents
+                                    cell.render("Cell")
+                                  }
+                                </td>
+                              );
+                            })
+                          }
+                        </tr>
+                      );
+                    })
+                  }
+                </tbody>
+              )}
+            </table>
+            {isLoading &&
+              (isHiddenTBody ? null : (
+                <div className="m-auto my-10 flex w-full justify-center align-middle">
+                  <Spinner />
+                </div>
+              ))}
+            {data === null && <div className="h-36 w-full" />}
           </div>
         </div>
-
-        {paginationInfo && (
-          <TableFooter
-            paginationInfo={paginationInfo}
-            onChange={onChangePage}
-          />
-        )}
       </div>
+
+      {paginationInfo && (
+        <TableFooter paginationInfo={paginationInfo} onChange={onChangePage} />
+      )}
     </div>
   );
 };

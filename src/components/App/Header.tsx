@@ -57,7 +57,7 @@ const Header: FC<IHeader> = ({ title }) => {
   const renderTitle = () => {
     if (title) return title;
     if (router.pathname === "/watchlist/projects") return "Watchlist";
-    if (router.pathname.indexOf("/search/keyword") !== -1) return "Search";
+    if (router.pathname.indexOf("/search") !== -1) return "Search";
 
     return capitalized(tab ? tab?.toString() : "Trending");
   };
@@ -89,7 +89,7 @@ const Header: FC<IHeader> = ({ title }) => {
             onKeyPress={(event) => {
               if (event.key === "Enter" && event.currentTarget.value) {
                 setKeyword(event.currentTarget.value ?? "");
-                router.push("/search/keyword/" + event.currentTarget.value);
+                router.push("/search?keyword=" + event.currentTarget.value);
               }
             }}
           />

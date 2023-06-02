@@ -144,7 +144,7 @@ const AppContent: FC<AppContentTypes> = ({
           pageNumber: 1,
           pageSize:
             accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
-          searchText: keyword ?? keywordProps,
+          searchText: keyword && keyword !== "" ? keyword : keywordProps,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -186,7 +186,7 @@ const AppContent: FC<AppContentTypes> = ({
         {
           pageNumber,
           pageSize,
-          searchText: keyword ?? keywordProps,
+          searchText: keyword && keyword !== "" ? keyword : keywordProps,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
