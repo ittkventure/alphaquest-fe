@@ -37,7 +37,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         userId as any,
         {
           pageNumber: page,
-          pageSize: 20,
+          pageSize: 10,
           desc: isDescSorted,
         },
         authState?.access_token ?? ""
@@ -185,7 +185,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
 
   return (
     <div
-      className={`w-full h-full ${
+      className={`w-full h-full overflow-x-hidden ${
         accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
           ? ""
           : "overflow-hidden"
@@ -368,7 +368,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
             paginationInfo={{
               currentPage: page,
               pageNumber: page,
-              pageSize: 20,
+              pageSize: 10,
               totalPages: listAlphaHunter?.data?.totalCount
                 ? Math.ceil(listAlphaHunter?.data?.totalCount / 20)
                 : 0,

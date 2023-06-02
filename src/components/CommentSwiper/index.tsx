@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import CommentItem from "../Home/CommentItem";
 
 const CommentSwiper = () => {
-  const { isMd, isSm, isXl, isXxl } = useResponsive();
+  const { isMd, isSm } = useResponsive();
   const _slidesPerViewValue = () => {
     if (isSm) return 1;
     if (isMd) return 2;
