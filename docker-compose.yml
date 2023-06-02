@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+
+  alphaquest-fe:
+    image: alphaquest-fe
+    container_name: alphaquest-fe
+    ports:
+      - 3000:3000    
+    restart: always
+
+
