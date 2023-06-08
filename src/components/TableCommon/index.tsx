@@ -1,8 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import Spinner from "./../Spinner";
 import TableFooter, { PaginationInfo } from "./TableFooter";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Column, useTable } from "react-table";
+import { AuthContext } from "@/contexts/useAuthContext";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 interface ITableCustom
   extends React.DetailedHTMLProps<
@@ -37,14 +39,28 @@ const TableCustom: FC<ITableCustom> = ({
       columns,
       data: data || [],
     });
-
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
   return (
     <div className="w-full h-full">
       <div className=" flex flex-auto flex-col">
         <div className="-my-2 sm:-mx-6 lg:-mx-8">
-          <div className=" shadow relative w-full  overflow-x-scroll" {...rest}>
+          <div
+            className={`shadow relative w-full  ${
+              authState?.access_token &&
+              accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                ? "overflow-x-scroll"
+                : ""
+            }`}
+            {...rest}
+          >
             <table
-              className="divide-y divide-gray-200 divide-opacity-5 bg-[#171B28] max-h-[800px] h-[800px] w-full min-w-[400px] "
+              className={`divide-y divide-gray-200 divide-opacity-5 bg-[#171B28] ${
+                authState?.access_token &&
+                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                  ? "max-h-[800px] h-[800px]"
+                  : ""
+              } w-full min-w-[400px] `}
               {...getTableProps()}
             >
               <thead className="bg-[#1F2536] sticky top-0">
@@ -201,9 +217,14 @@ const TableCustom: FC<ITableCustom> = ({
         </div>
       </div>
 
-      {paginationInfo && (
-        <TableFooter paginationInfo={paginationInfo} onChange={onChangePage} />
-      )}
+      {paginationInfo &&
+        (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM &&
+        authState?.access_token ? (
+          <TableFooter
+            paginationInfo={paginationInfo}
+            onChange={onChangePage}
+          />
+        ) : null)}
     </div>
   );
 };

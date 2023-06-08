@@ -385,7 +385,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
         <></>
       ) : (
-        <div className=" w-full h-[400px] max-lg:pl-0 ">
+        <div className="absolute bottom-0 w-full h-[400px] max-lg:pl-0 ">
           <div className="w-full h-[400px] flex flex-col justify-center items-center z-10 bg-linear-backdrop">
             <p className="mb-4">Upgrade account to see all</p>
 
