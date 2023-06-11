@@ -3,66 +3,65 @@
 @tailwind utilities;
 
 @layer base {
-    @font-face {
-        font-family: 'WorkSans-ExtraLight';
-        src: url('/fonts/WorkSans-ExtraLight.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-ExtraLight";
+    src: url("/fonts/WorkSans-ExtraLight.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-Light';
-        src: url('/fonts/WorkSans-Light.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-Light";
+    src: url("/fonts/WorkSans-Light.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-Thin';
-        src: url('/fonts/WorkSans-Thin.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-Thin";
+    src: url("/fonts/WorkSans-Thin.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-Regular';
-        src: url('/fonts/WorkSans-Regular.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-Regular";
+    src: url("/fonts/WorkSans-Regular.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-Medium';
-        src: url('/fonts/WorkSans-Medium.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-Medium";
+    src: url("/fonts/WorkSans-Medium.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-SemiBold';
-        src: url('/fonts/WorkSans-SemiBold.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-SemiBold";
+    src: url("/fonts/WorkSans-SemiBold.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-Bold';
-        src: url('/fonts/WorkSans-Bold.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-Bold";
+    src: url("/fonts/WorkSans-Bold.ttf");
+  }
 
-    @font-face {
-        font-family: 'WorkSans-Black';
-        src: url('/fonts/WorkSans-Black.ttf');
-    }
+  @font-face {
+    font-family: "WorkSans-Black";
+    src: url("/fonts/WorkSans-Black.ttf");
+  }
 }
 
 body,
 html {
-    background: #11141E;
-    color: #FAFAFA;
-    font-family: WorkSans-Regular;
+  background: #11141e;
+  color: #fafafa;
+  font-family: WorkSans-Regular;
 }
 
 .linear-bg-gradient-home {
-    background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24B592 63.3%);
+  background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24b592 63.3%);
 }
 
 .linear-bg-gradient-subscription {
-    background: linear-gradient(180deg, #191E2D 0%, rgba(25, 30, 45, 0) 100%);
+  background: linear-gradient(180deg, #191e2d 0%, rgba(25, 30, 45, 0) 100%);
 }
 
 .linear-bg-gradient-subscription-2 {
-    background: linear-gradient(266.9deg, #24B592 0%, #E25148 100%);
-    opacity: 0.15;
-
+  background: linear-gradient(266.9deg, #24b592 0%, #e25148 100%);
+  opacity: 0.15;
 }
 
 /* Change Autocomplete styles in Chrome*/
@@ -75,64 +74,80 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-    border: 1px solid "#38405B";
-    -webkit-text-fill-color: white;
-    -webkit-box-shadow: none;
-    transition: background-color 5000s ease-in-out 0s;
+  border: 1px solid "#38405B";
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: none;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* width */
 ::-webkit-scrollbar {
-    width: 2px;
+  width: 2px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #2f3138;
+  background: #2f3138;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #888;
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
 
 .custom-circle-linear-btn {
-    background: linear-gradient(245.26deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(17px);
-    /* Note: backdrop-filter has minimal browser support */
+  background: linear-gradient(
+    245.26deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(17px);
+  /* Note: backdrop-filter has minimal browser support */
 }
 
 .custom-border-linear {
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right bottom, #24B592, #E25148);
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right bottom, #24b592, #e25148);
 }
 
 .custom-card-sub {
-    background: linear-gradient(245.26deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(17px);
+  background: linear-gradient(
+    245.26deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(17px);
 }
 
 .custom-card-sub-border-linear {
-    border-image-slice: 1;
-    border-image-source: linear-gradient(to right bottom,  #E25148,#24B592);
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right bottom, #e25148, #24b592);
 }
 
 .custom-circle-bg {
-    background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24B592 63.3%);
-    opacity: 0.4;
+  background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24b592 63.3%);
+  opacity: 0.4;
 }
 
 .bg-linear-backdrop {
-    background: linear-gradient(180deg, rgba(17, 20, 30, 0) 0%, #11141E 69.93%);
+  background: linear-gradient(180deg, rgba(17, 20, 30, 0) 0%, #11141e 69.93%);
 }
 
 .filter-backdrop-custom {
-    filter: drop-shadow(0px 15px 15px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0px 15px 15px rgba(0, 0, 0, 0.2));
+}
+
+.recharts-layer.recharts-pie,
+.recharts-pie-sector:focus {
+  outline: none !important;
+  outline-color: none;
+  outline-style: none;
+  outline-width: none;
 }

@@ -80,11 +80,11 @@ const Header: FC<IHeader> = ({ title }) => {
       </div>
 
       <div className="flex justify-center items-center ">
-        <div className="relative mr-6  max-lg:mr-0">
+        <div className="relative mr-6  max-lg:mr-2 ml-4">
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[11px] left-[5px]" />
 
           <input
-            className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm"
+            className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "
             placeholder="Search"
             onKeyPress={(event) => {
               if (event.key === "Enter" && event.currentTarget.value) {
