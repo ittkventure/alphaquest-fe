@@ -34,7 +34,6 @@ const useColumTwitterChangeLogs = () => {
           );
         },
       },
-
       {
         Header: "Data Time",
         accessor: "dataTime",

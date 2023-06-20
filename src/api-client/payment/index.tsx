@@ -1,5 +1,6 @@
 import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
+import { TwitterItem } from "../types/TwitterType";
 
 class ApiPayment extends ApiClientBase {
   constructor() {
@@ -12,7 +13,7 @@ class ApiPayment extends ApiClientBase {
   public async getLinkPayment(
     access_token: string,
     withoutTrial: boolean
-  ): Promise<BaseResponse | any> {
+  ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
       `/api/app/payment/pay-link?withoutTrial=${withoutTrial}`,
       {
@@ -32,7 +33,7 @@ class ApiPayment extends ApiClientBase {
     reasonType: string,
     reasonText?: string,
     feedback?: string
-  ): Promise<BaseResponse | any> {
+  ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.post(
       "/api/app/payment/cancel-subcription",
       {
@@ -55,7 +56,7 @@ class ApiPayment extends ApiClientBase {
   public async checkPaymentOrderStatus(
     idOrder: string,
     access_token: string
-  ): Promise<BaseResponse | any> {
+  ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.post(
       `/api/app/payment/${idOrder}/check-order-payment-status`,
       {},
