@@ -105,7 +105,9 @@ export interface ChartData {
 
 export interface ChangeLogs {
   dataTime: string;
-  dataType: string;
-  originalData: string;
+  message: string;
   newValue: string;
+  originalData: string;
+  dataType: string;
+  profileImageUrl?: string;
 }

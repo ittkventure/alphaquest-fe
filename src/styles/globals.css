@@ -154,4 +154,12 @@ select:-webkit-autofill:focus {
 
 .a-custom a {
   color: #8592e8;
+  transition: all;
+  transition-duration: 0.2s;
+}
+
+.a-custom a:hover {
+  color: #4a5fe4;
+  transition: all;
+  transition-duration: 0.2s;
 }
