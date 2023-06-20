@@ -1,10 +1,12 @@
 import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
 import {
+  ChangeLogs,
   ChartData,
   FollowerRequest,
   TwitterDetails,
   TwitterGetListRequest,
+  TwitterItem,
 } from "../types/TwitterType";
 import qs from "qs";
 
@@ -20,7 +22,7 @@ class ApiTwitter extends ApiClientBase {
     params: TwitterGetListRequest,
     access_token: string,
     is_guest?: boolean
-  ): Promise<BaseResponse | any> {
+  ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
       !is_guest
         ? `/api/app/twitter?${qs.stringify(params)}`
@@ -40,7 +42,7 @@ class ApiTwitter extends ApiClientBase {
   public async getListTwitterWatchList(
     params: TwitterGetListRequest,
     access_token: string
-  ): Promise<BaseResponse | any> {
+  ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
       `/api/app/twitter/watchlist-item?${qs.stringify(params)}`,
       {
@@ -116,9 +118,28 @@ class ApiTwitter extends ApiClientBase {
     userId: string,
     params: FollowerRequest,
     access_token: string
-  ): Promise<BaseResponse | any> {
+  ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
       `/api/app/twitter/lastest-followers/${userId}?${qs.stringify(params)}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getChangeLogUser
+   */
+  public async getChangeLogUser(
+    userId: string,
+    params: FollowerRequest,
+    access_token: string
+  ): Promise<BaseResponse<ChangeLogs> | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter/user-change-log/${userId}?${qs.stringify(params)}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,

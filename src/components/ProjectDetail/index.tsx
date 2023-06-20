@@ -15,6 +15,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
 import { CrownIcon, TwitterIcon } from "@/assets/icons";
 import Image from "next/image";
+import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 
 interface IProjectDetail {
   userId?: string;
@@ -28,7 +29,10 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
+
   const [isDescSorted, setIsDescSorted] = useState(false);
+  const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
 
   const listAlphaHunter = useQuery(
     ["fetchListAlphaHunter", userId, page, isDescSorted],
@@ -43,6 +47,27 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         authState?.access_token ?? ""
       )
   );
+
+  const listUserChangeLog = useQuery(
+    [
+      "fetchListUserChangeLog",
+      userId,
+      pageUserChangeLog,
+      isDescSortedChangeLog,
+    ],
+    async () =>
+      await apiTwitter.getChangeLogUser(
+        userId as any,
+        {
+          pageNumber: pageUserChangeLog,
+          pageSize: 10,
+          desc: isDescSortedChangeLog,
+        },
+        authState?.access_token ?? ""
+      )
+  );
+
+  console.log(listUserChangeLog.data, "listUserChangeLog");
 
   const twitterDetail = useQuery<TwitterDetails>({
     queryKey: [
@@ -85,6 +110,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   });
 
   const { followers } = useColumFollowers();
+  const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {
     if (!authState?.access_token) {
@@ -344,7 +370,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         </div>
         */}
         <div className="flex items-center mt-14 ">
-          <h3 className="text-lg font-workSansSemiBold  mr-3">
+          <h3 className="text-lg font-workSansSemiBold mr-3">
             Earliest Alpha Hunter
           </h3>
 
@@ -352,7 +378,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
             BETA
           </div>
         </div>
-        <div className="mt-5 ">
+        <div className="mt-5 mx-8">
           <TableCommon
             columns={followers ?? []}
             data={listAlphaHunter.data?.items ?? []}
@@ -381,7 +407,49 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
             isSortedDesc={isDescSorted}
           />
         </div>
+
+        <div className="flex items-center mt-14 ">
+          <h3 className="text-lg font-workSansSemiBold mr-3">
+            Twitter changelogs
+          </h3>
+
+          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+            BETA
+          </div>
+        </div>
+
+        <div className="mt-5 mx-8">
+          <TableCommon
+            columns={changeLogs ?? []}
+            data={listUserChangeLog?.data?.items ?? []}
+            onChangePage={function (_pageNumber: number): void {
+              setPageUserChangeLog(_pageNumber);
+            }}
+            isLoading={listUserChangeLog.isLoading}
+            isHiddenTBody={
+              accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                ? false
+                : true
+            }
+            paginationInfo={{
+              currentPage: pageUserChangeLog,
+              pageNumber: pageUserChangeLog,
+              pageSize: 10,
+              totalPages: listUserChangeLog?.data?.totalCount
+                ? Math.ceil(listUserChangeLog?.data?.totalCount / 20)
+                : 0,
+              totalElements: listUserChangeLog?.data?.totalCount ?? 0,
+            }}
+            onSort={(isSortedDesc) => {
+              if (isSortedDesc === undefined) return;
+              setIsDescSortedChangeLog(isSortedDesc);
+            }}
+            isSortedDesc={isDescSortedChangeLog}
+            isShowHeader={false}
+          />
+        </div>
       </div>
+
       {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
         <></>
       ) : (

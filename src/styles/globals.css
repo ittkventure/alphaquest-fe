@@ -151,3 +151,7 @@ select:-webkit-autofill:focus {
   outline-style: none;
   outline-width: none;
 }
+
+.a-custom a {
+  color: #8592e8;
+}

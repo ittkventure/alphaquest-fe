@@ -20,6 +20,7 @@ interface ITableCustom
   isHiddenTBody?: boolean;
   onSort?: (isSortedDesc: boolean) => void;
   isSortedDesc?: boolean;
+  isShowHeader?: boolean;
 }
 
 const TableCustom: FC<ITableCustom> = ({
@@ -32,6 +33,7 @@ const TableCustom: FC<ITableCustom> = ({
   isHiddenTBody,
   onSort,
   isSortedDesc,
+  isShowHeader,
   ...rest
 }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -58,80 +60,83 @@ const TableCustom: FC<ITableCustom> = ({
               className={`divide-y divide-gray-200 divide-opacity-5 bg-[#171B28] ${
                 authState?.access_token &&
                 accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                  ? "max-h-[800px] h-[800px]"
+                  ? "max-h-[800px] h-fit"
                   : ""
               } w-full min-w-[400px] `}
               {...getTableProps()}
             >
-              <thead className="bg-[#1F2536] sticky top-0">
-                {
-                  // Loop over the header rows
-                  headerGroups.map(
-                    (headerGroup: {
-                      getHeaderGroupProps: any;
-                      headers: any[];
-                    }) => (
-                      // Apply the header row props
-                      <tr {...headerGroup.getHeaderGroupProps()}>
-                        {
-                          // Loop over the headers in each row
-                          headerGroup.headers.map((column) => {
-                            return (
-                              // Apply the header cell props
-                              <th
-                                {...column.getHeaderProps()}
-                                className={`${
-                                  column.columns ? "text-center" : "text-left"
-                                } ${
-                                  column.render("Header") === "Accounts"
-                                    ? "sticky z-10 top-0 left-[-5px] bg-[#1F2536]"
-                                    : ""
-                                } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
-                              >
-                                <div
-                                  onClick={() => {
-                                    if (
+              {isShowHeader && (
+                <thead className="bg-[#1F2536] sticky top-0">
+                  {
+                    // Loop over the header rows
+                    headerGroups.map(
+                      (headerGroup: {
+                        getHeaderGroupProps: any;
+                        headers: any[];
+                      }) => (
+                        // Apply the header row props
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                          {
+                            // Loop over the headers in each row
+                            headerGroup.headers.map((column) => {
+                              return (
+                                // Apply the header cell props
+                                <th
+                                  {...column.getHeaderProps()}
+                                  className={`${
+                                    column.columns ? "text-center" : "text-left"
+                                  } ${
+                                    column.render("Header") === "Accounts"
+                                      ? "sticky z-10 top-0 left-[-5px] bg-[#1F2536]"
+                                      : ""
+                                  } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
+                                >
+                                  <div
+                                    onClick={() => {
+                                      if (
+                                        column.render("Header") ===
+                                        "Following Date"
+                                      ) {
+                                        onSort && onSort(!isSortedDesc);
+                                      }
+                                    }}
+                                    className={`flex items-center cursor-pointer ${
+                                      column.render("Header") === "Accounts"
+                                        ? "max-lg:min-w-[200px] sticky  z-10 top-0 left-[-5px]"
+                                        : ""
+                                    } ${
+                                      column.render("Header") === "Tags"
+                                        ? "max-lg:min-w-[200px]"
+                                        : ""
+                                    } ${
                                       column.render("Header") ===
                                       "Following Date"
-                                    ) {
-                                      onSort && onSort(!isSortedDesc);
+                                        ? "max-lg:min-w-[200px]"
+                                        : ""
+                                    }`}
+                                  >
+                                    {
+                                      // Render the header
+                                      column.render("Header")
                                     }
-                                  }}
-                                  className={`flex items-center cursor-pointer ${
-                                    column.render("Header") === "Accounts"
-                                      ? "max-lg:min-w-[200px] sticky  z-10 top-0 left-[-5px]"
-                                      : ""
-                                  } ${
-                                    column.render("Header") === "Tags"
-                                      ? "max-lg:min-w-[200px]"
-                                      : ""
-                                  } ${
-                                    column.render("Header") === "Following Date"
-                                      ? "max-lg:min-w-[200px]"
-                                      : ""
-                                  }`}
-                                >
-                                  {
-                                    // Render the header
-                                    column.render("Header")
-                                  }
-                                  {column.render("Header") ===
-                                    "Following Date" &&
-                                    (isSortedDesc ? (
-                                      <ChevronDownIcon className="h-5 w-5 ml-1" />
-                                    ) : (
-                                      <ChevronUpIcon className="h-5 w-5 ml-1" />
-                                    ))}
-                                </div>
-                              </th>
-                            );
-                          })
-                        }
-                      </tr>
+                                    {column.render("Header") ===
+                                      "Following Date" &&
+                                      (isSortedDesc ? (
+                                        <ChevronDownIcon className="h-5 w-5 ml-1" />
+                                      ) : (
+                                        <ChevronUpIcon className="h-5 w-5 ml-1" />
+                                      ))}
+                                  </div>
+                                </th>
+                              );
+                            })
+                          }
+                        </tr>
+                      )
                     )
-                  )
-                }
-              </thead>
+                  }
+                </thead>
+              )}
               {isHiddenTBody ? null : (
                 <tbody
                   className="divide-y divide-gray-200 divide-opacity-5  bg-[#171B28]"
@@ -160,7 +165,7 @@ const TableCustom: FC<ITableCustom> = ({
                                       cell.column?.Header === "Accounts"
                                         ? "sticky  z-10 left-[-5px] bg-dark-800"
                                         : ""
-                                    } max-w-xs break-all px-6 py-4 text-sm text-white`}
+                                    } max-w-xs break-all py-4 text-sm text-white`}
                                   >
                                     {
                                       // Render the cell contents
@@ -189,7 +194,7 @@ const TableCustom: FC<ITableCustom> = ({
                                     cell.column?.Header === "Accounts"
                                       ? "sticky  z-10 left-[-5px] bg-dark-800"
                                       : ""
-                                  } max-w-xs break-all px-6 py-4 text-sm text-white`}
+                                  } max-w-xs break-all py-4 text-sm text-white`}
                                 >
                                   {
                                     // Render the cell contents

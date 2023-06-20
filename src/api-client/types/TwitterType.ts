@@ -102,3 +102,10 @@ export interface ChartData {
   dataTime: string;
   data: number;
 }
+
+export interface ChangeLogs {
+  dataTime: string;
+  dataType: string;
+  originalData: string;
+  newValue: string;
+}
