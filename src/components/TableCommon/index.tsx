@@ -33,7 +33,7 @@ const TableCustom: FC<ITableCustom> = ({
   isHiddenTBody,
   onSort,
   isSortedDesc,
-  isShowHeader,
+  isShowHeader = true,
   ...rest
 }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
