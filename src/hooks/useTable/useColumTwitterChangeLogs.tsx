@@ -11,15 +11,15 @@ const useColumTwitterChangeLogs = () => {
     () => [
       {
         Header: "New Value",
-        accessor: "newValue",
-        Cell: ({ value }: CellProps<ChangeLogs>) => {
+        accessor: "message",
+        Cell: ({ value, row }: CellProps<ChangeLogs>) => {
           return (
             <div className="flex items-center">
               <div
                 className={`w-10 h-10 min-w-fit min-h-fit rounded-[50%] border-[1px]  border-yellow-400 overflow-hidden relative`}
               >
-                <Image
-                  src={LogoCircle}
+                <img
+                  src={row.original.profileImageUrl}
                   width={40}
                   height={40}
                   alt="avt"
