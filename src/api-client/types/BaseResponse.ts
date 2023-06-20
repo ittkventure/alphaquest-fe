@@ -1,6 +1,4 @@
-import { TwitterItem } from "./TwitterType";
-
-export interface BaseResponse {
-  items: TwitterItem[];
+export interface BaseResponse<T> {
+  items: T[];
   totalCount: number;
 }
