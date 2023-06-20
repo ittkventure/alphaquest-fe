@@ -3,11 +3,18 @@ import mixpanelInit from "@/utils/mixpanel";
 import type { AppProps } from "next/app";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Slide, ToastContainer } from "react-toastify";
-const queryClient = new QueryClient();
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
 import PaddleLoader from "./../components/Payment";
 import ContextConsumer from "@/contexts";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // default: true
+    },
+  },
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   mixpanelInit();
