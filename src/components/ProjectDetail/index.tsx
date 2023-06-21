@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, memo, useContext, useState } from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -7,11 +7,7 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
 import TableCommon from "../TableCommon";
 import useColumFollowers from "@/hooks/useTable/useColumFollowers";
-import {
-  ChangeLogs,
-  ChartData,
-  TwitterDetails,
-} from "@/api-client/types/TwitterType";
+import { ChangeLogs, TwitterDetails } from "@/api-client/types/TwitterType";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
@@ -39,7 +35,13 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
 
   const listAlphaHunter = useQuery(
-    ["fetchListAlphaHunter", userId, page, isDescSorted],
+    [
+      "fetchListAlphaHunter",
+      userId,
+      page,
+      isDescSorted,
+      authState?.access_token,
+    ],
     async () =>
       await apiTwitter.getListFollower(
         userId as any,
@@ -58,6 +60,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       userId,
       pageUserChangeLog,
       isDescSortedChangeLog,
+      authState?.access_token,
     ],
     async () =>
       await apiTwitter.getChangeLogUser(
@@ -92,31 +95,31 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       ),
   });
 
-  const twitterChartScore = useQuery<ChartData[]>({
-    queryKey: [
-      "getTwitterChartScore",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getScoreChartData(
-        userId as any,
-        authState?.access_token ?? ""
-      ),
-  });
+  // const twitterChartScore = useQuery<ChartData[]>({
+  //   queryKey: [
+  //     "getTwitterChartScore",
+  //     accountExtendDetail?.currentPlanKey,
+  //     authState?.access_token,
+  //   ],
+  //   queryFn: async () =>
+  //     await apiTwitter.getScoreChartData(
+  //       userId as any,
+  //       authState?.access_token ?? ""
+  //     ),
+  // });
 
-  const twitterChartFollower = useQuery<ChartData[]>({
-    queryKey: [
-      "getFollowerChartScore",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getFollowerChartData(
-        userId as any,
-        authState?.access_token ?? ""
-      ),
-  });
+  // const twitterChartFollower = useQuery<ChartData[]>({
+  //   queryKey: [
+  //     "getFollowerChartScore",
+  //     accountExtendDetail?.currentPlanKey,
+  //     authState?.access_token,
+  //   ],
+  //   queryFn: async () =>
+  //     await apiTwitter.getFollowerChartData(
+  //       userId as any,
+  //       authState?.access_token ?? ""
+  //     ),
+  // });
 
   const { followers } = useColumFollowers();
   const { changeLogs } = useColumTwitterChangeLogs();
@@ -282,7 +285,10 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
                   <div className="flex mt-3">
                     {twitterDetail.data && twitterDetail.data?.categories
                       ? twitterDetail.data?.categories?.map((value, index) => (
-                          <p className="text-sm border px-2 mr-2">
+                          <p
+                            key={index.toString()}
+                            className="text-sm border px-2 mr-2"
+                          >
                             {value.name}
                           </p>
                         ))
@@ -395,11 +401,6 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
               setPage(_pageNumber);
             }}
             isLoading={listAlphaHunter.isLoading}
-            isHiddenTBody={
-              accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                ? false
-                : true
-            }
             paginationInfo={{
               currentPage: page,
               pageNumber: page,
@@ -438,11 +439,6 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
                 setPageUserChangeLog(_pageNumber);
               }}
               isLoading={listUserChangeLog.isLoading}
-              isHiddenTBody={
-                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                  ? false
-                  : true
-              }
               paginationInfo={{
                 currentPage: pageUserChangeLog,
                 pageNumber: pageUserChangeLog,
@@ -466,8 +462,8 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
         <></>
       ) : (
-        <div className="absolute bottom-0 w-full h-[400px] max-lg:pl-0 ">
-          <div className="w-full h-[400px] flex flex-col justify-center items-center z-10 bg-linear-backdrop">
+        <div className="absolute bottom-0 w-full h-[200px] max-lg:pl-0 ">
+          <div className="w-full h-[200px] flex flex-col justify-center items-center z-10 bg-linear-backdrop">
             <p className="mb-4">Upgrade account to see all</p>
 
             <button
@@ -490,4 +486,4 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   );
 };
 
-export default ProjectDetail;
+export default memo(ProjectDetail);

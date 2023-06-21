@@ -1,12 +1,13 @@
 import moment from "moment";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { CellProps, Column } from "react-table";
 import { ChangeLogs } from "@/api-client/types/TwitterType";
-import Image from "next/image";
-import { LogoCircle } from "@/assets/images";
 import { addLinksToText } from "@/utils/regex";
+import { AuthContext } from "@/contexts/useAuthContext";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 const useColumTwitterChangeLogs = () => {
+  const { accountExtendDetail } = useContext(AuthContext);
   const changeLogs: Column<ChangeLogs>[] = useMemo(
     () => [
       {
@@ -16,20 +17,34 @@ const useColumTwitterChangeLogs = () => {
           return (
             <div className="flex items-center">
               <div
-                className={`w-10 h-10 min-w-fit min-h-fit rounded-[50%] border-[1px]  border-yellow-400 overflow-hidden relative`}
+                className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-[50%] border-[1px]   overflow-hidden relative ${
+                  accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM
+                    ? "bg-secondary-600 animate-pulse border-secondary-500"
+                    : "border-yellow-400"
+                }`}
               >
-                <img
-                  src={row.original.profileImageUrl}
-                  width={40}
-                  height={40}
-                  alt="avt"
-                  className="object-cover z-10"
-                />
+                {accountExtendDetail?.currentPlanKey ===
+                  UserPayType.PREMIUM && (
+                  <img
+                    src={row.original.profileImageUrl}
+                    width={40}
+                    height={40}
+                    alt="avt"
+                    className="object-cover z-10"
+                  />
+                )}
               </div>
-              <div
-                className="ml-3 text-[16px] a-custom"
-                dangerouslySetInnerHTML={{ __html: addLinksToText(value) }}
-              />
+              <p className="ml-3 text-sm">
+                {value}{" "}
+                {accountExtendDetail?.currentPlanKey === UserPayType.FREE && (
+                  <span>
+                    <i>
+                      (This section is exclusively revealed to our Pro members.
+                      Upgrade your membership to get instant access!)
+                    </i>
+                  </span>
+                )}
+              </p>
             </div>
           );
         },

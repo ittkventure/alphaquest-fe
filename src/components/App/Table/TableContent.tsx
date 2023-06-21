@@ -1,6 +1,6 @@
 import { TwitterItem } from "@/api-client/types/TwitterType";
 import ProjectDetailModal from "@/components/AQModal/ProjectDetailModal";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, memo, useEffect, useState } from "react";
 import TableRow from "./TableRow";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
@@ -18,6 +18,7 @@ const TableContent: FC<TableContentTypes> = ({
   const [listRows, setListRows] = useState<TwitterItem[]>(initListRows);
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
+  console.log("render Table");
 
   useEffect(() => {
     setListRows(initListRows);
@@ -55,4 +56,4 @@ const TableContent: FC<TableContentTypes> = ({
   );
 };
 
-export default TableContent;
+export default memo(TableContent);

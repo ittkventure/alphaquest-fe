@@ -1,14 +1,12 @@
 import ApiTwitter from "@/api-client/twitter";
 import { UserPayType } from "@/api-client/types/AuthType";
-import { TwitterItem } from "@/api-client/types/TwitterType";
 import AppContent from "@/components/App";
 import Header from "@/components/App/Header";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useQuery } from "react-query";
 
 interface Props {
@@ -20,7 +18,7 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
   const apiTwitter = new ApiTwitter();
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: [
       "getListTwitter",
       accountExtendDetail?.currentPlanKey,

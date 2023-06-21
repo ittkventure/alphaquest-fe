@@ -67,7 +67,6 @@ const AppContent: FC<AppContentTypes> = ({
   const [chainSelected, setChainSelected] = useState<OptionType>();
   const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
-  const { keyword } = useContext(SearchContext);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   useEffect(() => {
@@ -380,7 +379,10 @@ const AppContent: FC<AppContentTypes> = ({
             <SkeletonLoading numberOfRow={10} />
           ) : null}
           {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
-          {!isLoadingMore && !errorMsg && !isLoading ? (
+          {!isLoadingMore &&
+          !errorMsg &&
+          !isLoading &&
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
           ) : null}
         </div>
