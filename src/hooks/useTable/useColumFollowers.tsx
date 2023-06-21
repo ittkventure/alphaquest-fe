@@ -1,13 +1,17 @@
 import moment from "moment";
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import { CellProps, Column } from "react-table";
 import { FollowerItem } from "@/api-client/types/TwitterType";
 import Image from "next/image";
 import { TwitterBlueIcon } from "@/assets/icons";
 import Link from "next/link";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { AuthContext } from "@/contexts/useAuthContext";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 const useColumFollowers = () => {
+  const { accountExtendDetail } = useContext(AuthContext);
+
   const followers: Column<FollowerItem>[] = useMemo(
     () => [
       {
@@ -16,33 +20,49 @@ const useColumFollowers = () => {
         Cell: ({ value, row }: CellProps<FollowerItem>) => {
           return (
             <div className="flex items-center">
-              <div className="h-10 w-10 rounded-[50%] overflow-hidden">
-                <img src={value} alt="avt" className="object-contain" />
+              <div
+                className={`h-10 w-10 rounded-[50%] overflow-hidden ${
+                  accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
+                  "bg-secondary-600 animate-pulse border-secondary-500 border"
+                }`}
+              >
+                {accountExtendDetail?.currentPlanKey ===
+                  UserPayType.PREMIUM && (
+                  <img src={value} alt="avt" className="object-contain" />
+                )}
               </div>
               <div className="ml-2 ">
-                <div className="flex">
-                  <Link
-                    onClick={() => {
-                      mixpanelTrack(event_name_enum.outbound, {
-                        url: row.original.twitterUrl,
-                        message: "Link to twitter at project detail page",
-                      });
-                    }}
-                    href={row.original.twitterUrl}
-                    target="_blank"
-                  >
-                    <Image
-                      src={TwitterBlueIcon}
-                      width={15}
-                      height={15}
-                      alt="twitter icon"
-                    />
-                  </Link>
-                  <p className="ml-1 text-xs text-gray-500">
-                    @{row.original.username}
-                  </p>
-                </div>
-                <p className="ml-1 mt-1 text-[16px]">{row.original.name}</p>
+                {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+                  <div className="flex">
+                    <Link
+                      onClick={() => {
+                        mixpanelTrack(event_name_enum.outbound, {
+                          url: row.original.twitterUrl,
+                          message: "Link to twitter at project detail page",
+                        });
+                      }}
+                      href={row.original.twitterUrl}
+                      target="_blank"
+                    >
+                      <Image
+                        src={TwitterBlueIcon}
+                        width={15}
+                        height={15}
+                        alt="twitter icon"
+                      />
+                    </Link>
+                    <p className="ml-1 text-xs text-gray-500">
+                      @{row.original.username}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="w-20 h-3 rounded-2xl bg-secondary-500 animate-pulse" />
+                )}
+                {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+                  <p className="ml-1 mt-1 text-[16px]">{row.original.name}</p>
+                ) : (
+                  <div className="w-40 h-4 mt-1  rounded-2xl bg-secondary-500 animate-pulse" />
+                )}
               </div>
             </div>
           );

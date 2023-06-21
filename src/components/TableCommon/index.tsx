@@ -163,7 +163,9 @@ const TableCustom: FC<ITableCustom> = ({
                                     {...cell.getCellProps()}
                                     className={`${
                                       cell.column?.Header === "Accounts"
-                                        ? "sticky  z-10 left-[-5px] bg-dark-800"
+                                        ? `sticky ${
+                                            isShowHeader && "px-6"
+                                          } z-10 left-[-5px] bg-dark-800`
                                         : ""
                                     } max-w-xs break-all py-4 text-sm text-white`}
                                   >
@@ -192,7 +194,9 @@ const TableCustom: FC<ITableCustom> = ({
                                   {...cell.getCellProps()}
                                   className={`${
                                     cell.column?.Header === "Accounts"
-                                      ? "sticky  z-10 left-[-5px] bg-dark-800"
+                                      ? `sticky ${
+                                          isShowHeader && "px-6"
+                                        } z-10 left-[-5px] bg-dark-800`
                                       : ""
                                   } max-w-xs break-all py-4 text-sm text-white`}
                                 >

@@ -1,13 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { FC, Fragment, useContext, useEffect, useState } from "react";
-import AQForm from "../AQForm";
+import React, { FC, Fragment, memo, useEffect } from "react";
 import Spinner from "../Spinner";
-import * as yup from "yup";
-import { passwordRegex } from "@/utils/regex";
-import { toast } from "react-toastify";
-import AQInput from "../AQForm/AQInput";
-import { apiAuth } from "@/api-client";
-import { AuthContext } from "@/contexts/useAuthContext";
 import ProjectDetail from "../ProjectDetail";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
@@ -88,4 +81,4 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
   );
 };
 
-export default ProjectDetailModal;
+export default memo(ProjectDetailModal);
