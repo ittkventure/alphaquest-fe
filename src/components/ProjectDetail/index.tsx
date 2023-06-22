@@ -222,13 +222,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   };
 
   return (
-    <div
-      className={`w-full h-full overflow-x-hidden ${
-        accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-          ? ""
-          : "overflow-hidden"
-      }`}
-    >
+    <div className={`w-full h-full overflow-x-hidden`}>
       <div className="flex px-[100px] max-lg:px-[10px] w-full">
         {twitterDetail.isLoading || twitterDetail.isFetching ? (
           <div className="w-full flex justify-center items-center py-14">
@@ -388,10 +382,6 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
           <h3 className="text-lg font-workSansSemiBold mr-3">
             Earliest Alpha Hunter
           </h3>
-
-          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
-            BETA
-          </div>
         </div>
         <div className="mt-5 mx-8">
           <TableCommon
@@ -459,11 +449,15 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         )}
       </div>
 
+      {accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM ? (
+        <div className="h-20" />
+      ) : null}
+
       {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
         <></>
       ) : (
         <div className="absolute bottom-0 w-full h-[200px] max-lg:pl-0 ">
-          <div className="w-full h-[200px] flex flex-col justify-center items-center z-10 bg-linear-backdrop">
+          <div className="w-full h-[200px] flex flex-col justify-center items-center z-10">
             <p className="mb-4">Upgrade account to see all</p>
 
             <button

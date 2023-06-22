@@ -37,6 +37,7 @@ const AppPage: NextPage<IAppPage> = ({ keyword }) => {
           pageNumber: 1,
           pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
           searchText: keyword,
+          timeFrame: "7D",
         },
         authState?.access_token ?? ""
       );

@@ -145,6 +145,7 @@ const AppContent: FC<AppContentTypes> = ({
           pageSize:
             accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
           searchText: keyword && keyword !== "" ? keyword : keywordProps,
+          timeFrame: "7D",
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -187,6 +188,7 @@ const AppContent: FC<AppContentTypes> = ({
           pageNumber,
           pageSize,
           searchText: keyword && keyword !== "" ? keyword : keywordProps,
+          timeFrame: "7D",
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -251,7 +253,6 @@ const AppContent: FC<AppContentTypes> = ({
     return (
       <TableContent
         initListRows={listItems ?? []}
-        isAnimation={newest === "watchlist" ? true : false}
         onRefreshTable={() => {
           fetchData();
         }}

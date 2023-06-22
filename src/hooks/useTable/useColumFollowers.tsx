@@ -22,7 +22,7 @@ const useColumFollowers = () => {
             <div className="flex items-center">
               <div
                 className={`h-10 w-10 rounded-[50%] overflow-hidden ${
-                  accountExtendDetail?.currentPlanKey === UserPayType.FREE &&
+                  accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM &&
                   "bg-secondary-600 animate-pulse border-secondary-500 border"
                 }`}
               >
@@ -56,12 +56,12 @@ const useColumFollowers = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="w-20 h-3 rounded-2xl bg-secondary-500 animate-pulse" />
+                  <div className="w-20 h-3 rounded-2xl bg-secondary-600 animate-pulse" />
                 )}
                 {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
                   <p className="ml-1 mt-1 text-[16px]">{row.original.name}</p>
                 ) : (
-                  <div className="w-40 h-4 mt-1  rounded-2xl bg-secondary-500 animate-pulse" />
+                  <div className="w-40 h-4 mt-1  rounded-2xl bg-secondary-600 animate-pulse" />
                 )}
               </div>
             </div>
