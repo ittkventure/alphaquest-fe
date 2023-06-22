@@ -36,7 +36,8 @@ const useColumTwitterChangeLogs = () => {
               </div>
               <p className="ml-3 text-sm">
                 {value}{" "}
-                {accountExtendDetail?.currentPlanKey === UserPayType.FREE && (
+                {accountExtendDetail?.currentPlanKey !==
+                  UserPayType.PREMIUM && (
                   <span>
                     <i>
                       (This section is exclusively revealed to our Pro members.
