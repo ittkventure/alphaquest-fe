@@ -17,22 +17,15 @@ const useColumTwitterChangeLogs = () => {
           return (
             <div className="flex items-center">
               <div
-                className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-[50%] border-[1px]   overflow-hidden relative ${
-                  accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM
-                    ? "bg-secondary-600 animate-pulse border-secondary-500"
-                    : "border-yellow-400"
-                }`}
+                className={`w-10 h-10 min-w-[40px] min-h-[40px] rounded-[50%] border-[1px]   overflow-hidden relative border-yellow-400`}
               >
-                {accountExtendDetail?.currentPlanKey ===
-                  UserPayType.PREMIUM && (
-                  <img
-                    src={row.original.profileImageUrl}
-                    width={40}
-                    height={40}
-                    alt="avt"
-                    className="object-cover z-10"
-                  />
-                )}
+                <img
+                  src={row.original.profileImageUrl}
+                  width={40}
+                  height={40}
+                  alt="avt"
+                  className="object-cover z-10"
+                />
               </div>
               <p className="ml-3 text-sm">
                 {value}{" "}
