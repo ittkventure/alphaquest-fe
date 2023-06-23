@@ -66,7 +66,7 @@ const TableCustom: FC<ITableCustom> = ({
               {...getTableProps()}
             >
               {isShowHeader && (
-                <thead className="bg-[#1F2536] sticky top-0">
+                <thead className="bg-[#1F2536] sticky ">
                   {
                     // Loop over the header rows
                     headerGroups.map(

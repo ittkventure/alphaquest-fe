@@ -61,7 +61,7 @@ const useColumFollowers = () => {
                 {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
                   <p className="ml-1 mt-1 text-[16px]">{row.original.name}</p>
                 ) : (
-                  <div className="w-40 h-4 mt-1  rounded-2xl bg-secondary-600 animate-pulse" />
+                  <div className="w-40 h-3 mt-1  rounded-2xl bg-secondary-600 animate-pulse" />
                 )}
               </div>
             </div>
@@ -71,9 +71,12 @@ const useColumFollowers = () => {
       {
         Header: "FOLLOWERS AT TIME",
         accessor: "followerCountAtTime",
-        Cell: ({ value }: CellProps<FollowerItem>) => (
-          <p>{value === 0 ? "N/A" : value}</p>
-        ),
+        Cell: ({ value }: CellProps<FollowerItem>) =>
+          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+            <p>{value === 0 ? "N/A" : value}</p>
+          ) : (
+            <div className="w-20 h-3 mt-1 rounded-2xl bg-secondary-600 animate-pulse" />
+          ),
       },
       {
         Header: "Following Date",
