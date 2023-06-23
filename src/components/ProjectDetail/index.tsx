@@ -408,19 +408,17 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
           />
         </div>
 
-        {listChangeLog.length > 0 && (
-          <div className="flex items-center mt-14 ">
-            <h3 className="text-lg font-workSansSemiBold mr-3">
-              Twitter changelogs
-            </h3>
+        <div className="flex items-center mt-14 ">
+          <h3 className="text-lg font-workSansSemiBold mr-3">
+            Twitter changelogs
+          </h3>
 
-            <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
-              BETA
-            </div>
+          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+            BETA
           </div>
-        )}
+        </div>
 
-        {listChangeLog.length > 0 && (
+        {listChangeLog.length > 0 ? (
           <div className="mt-5 mx-8">
             <TableCommon
               columns={changeLogs ?? []}
@@ -445,6 +443,17 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
               isSortedDesc={isDescSortedChangeLog}
               isShowHeader={false}
             />
+          </div>
+        ) : !listUserChangeLog.isLoading ? (
+          <div className="w-full flex justify-start items-center mb-20 mt-4">
+            <p className="text-secondary-400">
+              This section is exclusively revealed to our Pro members. Upgrade
+              your membership to get instant access!
+            </p>
+          </div>
+        ) : (
+          <div className="w-full flex justify-center items-center">
+            <Spinner />
           </div>
         )}
       </div>
