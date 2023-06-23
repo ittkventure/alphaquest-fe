@@ -359,14 +359,28 @@ const AppContent: FC<AppContentTypes> = ({
               <SelectCustom
                 placeholder="Chain - All"
                 initList={chains}
-                onChangeSelected={(item) => setChainSelected(item)}
+                onChangeSelected={(item) => {
+                  mixpanelTrack(event_name_enum.on_filter_chain, {
+                    url: router.pathname,
+                    code: item?.code,
+                    name: item?.name,
+                  });
+                  setChainSelected(item);
+                }}
               />
             </div>
             <div>
               <SelectCustom
                 placeholder="Category - All"
                 initList={category}
-                onChangeSelected={(item) => setCategorySelected(item)}
+                onChangeSelected={(item) => {
+                  mixpanelTrack(event_name_enum.on_filter_category, {
+                    url: router.pathname,
+                    code: item?.code,
+                    name: item?.name,
+                  });
+                  setCategorySelected(item);
+                }}
               />
             </div>
           </div>

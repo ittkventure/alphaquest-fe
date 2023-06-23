@@ -8,6 +8,8 @@ export enum event_name_enum {
   on_add_watch_list = "On add watchlist",
   open_project_detail = "open_project_detail",
   on_filter_project = "On filter project",
+  on_filter_category = "On filter category",
+  on_filter_chain = "On filter chain",
   on_sort_project = "On sort project",
   upgrade_to_pro = "Upgrade to pro",
   on_search_keyword = "On project search",
