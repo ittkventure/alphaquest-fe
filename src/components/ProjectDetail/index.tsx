@@ -450,14 +450,14 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       </div>
 
       {accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM ? (
-        <div className="h-20" />
+        <div className="h-32" />
       ) : null}
 
       {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
         <></>
       ) : (
-        <div className="absolute bottom-0 w-full h-[200px] max-lg:pl-0 ">
-          <div className="w-full h-[200px] flex flex-col justify-center items-center z-10">
+        <div className="absolute bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]">
+          <div className="w-full h-[200px] flex flex-col justify-center items-center bg-linear-backdrop">
             <p className="mb-4">Upgrade account to see all</p>
 
             <button
