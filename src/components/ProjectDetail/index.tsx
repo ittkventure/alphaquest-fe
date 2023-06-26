@@ -447,8 +447,9 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         ) : !listUserChangeLog.isLoading ? (
           <div className="w-full flex justify-start items-center mb-20 mt-4">
             <p className="text-secondary-400">
-              This section is exclusively revealed to our Pro members. Upgrade
-              your membership to get instant access!
+              {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                ? "This Twitter account has not made any changes yet"
+                : "This section is exclusively revealed to our Pro members. Upgrade your membership to get instant access!"}
             </p>
           </div>
         ) : (
