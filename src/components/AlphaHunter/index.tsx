@@ -1,18 +1,20 @@
 import React, { FC, useContext, useState } from "react";
-import Spinner from "../Spinner";
-import { ClockIcon, HeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
 import useColumFollowers from "@/hooks/useTable/useColumFollowers";
-import { ChartData, TwitterDetails } from "@/api-client/types/TwitterType";
+import {
+  AlphaHunterDetail,
+  ChartData,
+  TwitterDetails,
+} from "@/api-client/types/TwitterType";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
 import AlphaCard from "./AlphaCard";
 import AlphaProfileCard from "./AlphaProfileCard";
+import Spinner from "../Spinner";
 
 interface IAlphaHunter {
   userId?: string;
@@ -26,12 +28,15 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [isDescSorted, setIsDescSorted] = useState(false);
+  const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
 
-  const listAlphaHunter = useQuery(
-    ["fetchListAlphaHunter", userId, page, isDescSorted],
+  const [isDescSorted, setIsDescSorted] = useState(false);
+  const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
+
+  const listEarlyFollower = useQuery(
+    ["getListEarlyAlphaHunterFollower", userId, page, isDescSorted],
     async () =>
-      await apiTwitter.getListFollower(
+      await apiTwitter.getListEarlyAlphaHunterFollower(
         userId as any,
         {
           pageNumber: page,
@@ -42,41 +47,51 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       )
   );
 
-  const twitterDetail = useQuery<TwitterDetails>({
+  const listLastFollower = useQuery(
+    ["getListEarlyAlphaHunterFollower", userId, page, isDescSorted],
+    async () =>
+      await apiTwitter.getListLastAlphaHunterFollower(
+        userId as any,
+        {
+          pageNumber: page,
+          pageSize: 10,
+          desc: isDescSorted,
+        },
+        authState?.access_token ?? ""
+      )
+  );
+
+  const listAlphaHunterChangeLog = useQuery(
+    [
+      "fetchListAlphaHunterChangeLog",
+      userId,
+      pageUserChangeLog,
+      isDescSortedChangeLog,
+      authState?.access_token,
+    ],
+    async () =>
+      await apiTwitter.getAlphaHunterChangeLogUser(
+        userId as any,
+        {
+          pageNumber: pageUserChangeLog,
+          pageSize: 10,
+          desc: isDescSortedChangeLog,
+        },
+        authState?.access_token ?? ""
+      )
+  );
+
+  console.log(listAlphaHunterChangeLog.data, "listAlphaHunterChangeLog");
+
+  const alphaHunterDetail = useQuery<AlphaHunterDetail>({
     queryKey: [
-      "getTwitterDetails",
+      "getAlphaHunterDetails",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
       isLoadingHeart,
     ],
     queryFn: async () =>
-      await apiTwitter.getTwitterDetails(
-        userId as any,
-        authState?.access_token ?? ""
-      ),
-  });
-
-  const twitterChartScore = useQuery<ChartData[]>({
-    queryKey: [
-      "getTwitterChartScore",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getScoreChartData(
-        userId as any,
-        authState?.access_token ?? ""
-      ),
-  });
-
-  const twitterChartFollower = useQuery<ChartData[]>({
-    queryKey: [
-      "getFollowerChartScore",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getFollowerChartData(
+      await apiTwitter.getAlphaHunterDetails(
         userId as any,
         authState?.access_token ?? ""
       ),
@@ -108,7 +123,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
-            twitterDetail.data?.name ?? "project"
+            alphaHunterDetail.data?.name ?? "project"
           } to watchlist`,
         });
         onChangeHeart ? onChangeHeart() : null;
@@ -143,24 +158,30 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
       <div>
-        <AlphaProfileCard />
+        {alphaHunterDetail?.isLoading ? (
+          <div className="flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <AlphaProfileCard item={alphaHunterDetail?.data} />
+        )}
       </div>
 
-      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
+      {/* <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
         <AlphaCard />
         <AlphaCard />
-      </div>
+      </div> */}
 
       <div className="px-[100px] text-sm max-lg:px-[10px]">
-        {/* <div className="flex items-center mt-14 ">
+        <div className="flex items-center mt-14 ">
           <h3 className="text-lg font-workSansSemiBold  mr-3">
-            Earliest Alpha Hunter
+            Earliest Discovery
           </h3>
 
-          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+          {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
             BETA
-          </div>
-        </div> */}
+          </div> */}
+        </div>
         <div className="mt-5 ">
           {/* <TableCommon
             columns={followers ?? []}

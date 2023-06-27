@@ -1,8 +1,10 @@
 import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
 import {
+  AlphaHunterDetail,
   ChangeLogs,
   ChartData,
+  EarlyFollowItem,
   FollowerRequest,
   TwitterDetails,
   TwitterGetListRequest,
@@ -112,6 +114,24 @@ class ApiTwitter extends ApiClientBase {
   }
 
   /**
+   * getAlphaHunterDetails
+   */
+  public async getAlphaHunterDetails(
+    userId: string,
+    access_token: string
+  ): Promise<AlphaHunterDetail | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter-alpha-hunter/by-id/${userId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
    * getListFollower
    */
   public async getListFollower(
@@ -121,6 +141,48 @@ class ApiTwitter extends ApiClientBase {
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
       `/api/app/twitter/lastest-followers/${userId}?${qs.stringify(params)}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getListEarlyAlphaHunterFollower
+   */
+  public async getListEarlyAlphaHunterFollower(
+    userId: string,
+    params: FollowerRequest,
+    access_token: string
+  ): Promise<BaseResponse<EarlyFollowItem> | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter-alpha-hunter/earliest-discovery/${userId}?${qs.stringify(
+        params
+      )}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getListLastAlphaHunterFollower
+   */
+  public async getListLastAlphaHunterFollower(
+    userId: string,
+    params: FollowerRequest,
+    access_token: string
+  ): Promise<BaseResponse<EarlyFollowItem> | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter-alpha-hunter/lastest-discovery/${userId}?${qs.stringify(
+        params
+      )}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
@@ -149,6 +211,26 @@ class ApiTwitter extends ApiClientBase {
     return res.data;
   }
 
+  /**
+   * getAlphaHunterChangeLogUser
+   */
+  public async getAlphaHunterChangeLogUser(
+    userId: string,
+    params: FollowerRequest,
+    access_token: string
+  ): Promise<BaseResponse<ChangeLogs> | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter-alpha-hunter/user-change-log/${userId}?${qs.stringify(
+        params
+      )}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
   /**
    * getScoreChartData
    */
