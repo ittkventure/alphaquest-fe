@@ -62,7 +62,7 @@ const renderActiveShape = (props: {
         textAnchor="middle"
         r="0"
       >
-        <div className="w-full flex justify-center h-full bg-black z-[-20]">
+        <div className="w-full flex justify-center h-full z-[-20]">
           <p className=" text-center w-[100px] text-sm">{payload.name}</p>
         </div>
       </foreignObject>

@@ -90,9 +90,9 @@ const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
         Cell: ({ value, row }: CellProps<FollowerItem>) =>
           accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
             value ? (
-              <p>{value === 0 ? "N/A" : value}</p>
+              <p className="text-center">{value === 0 ? "N/A" : value}</p>
             ) : (
-              <p>
+              <p className="text-center">
                 {row.original.followersAtTime === 0
                   ? "N/A"
                   : row.original.followersAtTime}
@@ -106,7 +106,7 @@ const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
         Header: "Following Date",
         accessor: "followingDate",
         Cell: ({ value }: CellProps<FollowerItem>) => (
-          <p>{moment(value).format("MM/DD/YYYY, HH:mm")}</p>
+          <p className="pl-10">{moment(value).format("MM/DD/YYYY, HH:mm")}</p>
         ),
       },
       {
