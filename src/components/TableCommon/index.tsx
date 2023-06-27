@@ -21,6 +21,7 @@ interface ITableCustom
   onSort?: (isSortedDesc: boolean) => void;
   isSortedDesc?: boolean;
   isShowHeader?: boolean;
+  isPaddingX?: boolean;
 }
 
 const TableCustom: FC<ITableCustom> = ({
@@ -34,6 +35,7 @@ const TableCustom: FC<ITableCustom> = ({
   onSort,
   isSortedDesc,
   isShowHeader = true,
+  isPaddingX = false,
   ...rest
 }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -139,7 +141,7 @@ const TableCustom: FC<ITableCustom> = ({
               )}
               {isHiddenTBody ? null : (
                 <tbody
-                  className="divide-y divide-gray-200 divide-opacity-5  bg-[#171B28]"
+                  className="divide-y divide-gray-200 divide-opacity-5 bg-[#171B28]"
                   {...getTableBodyProps()}
                 >
                   {
@@ -167,6 +169,8 @@ const TableCustom: FC<ITableCustom> = ({
                                             isShowHeader && "px-6"
                                           } z-10 left-[-5px] bg-dark-800`
                                         : ""
+                                    } ${
+                                      isPaddingX ? "px-5" : ""
                                     } max-w-xs break-all py-4 text-sm text-white`}
                                   >
                                     {
@@ -198,6 +202,8 @@ const TableCustom: FC<ITableCustom> = ({
                                           isShowHeader && "px-6"
                                         } z-10 left-[-5px] bg-dark-800`
                                       : ""
+                                  } ${
+                                    isPaddingX ? "px-5" : ""
                                   } max-w-xs break-all py-4 text-sm text-white`}
                                 >
                                   {

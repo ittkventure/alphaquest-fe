@@ -330,6 +330,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
                 }}
                 isSortedDesc={isDescSortedChangeLog}
                 isShowHeader={false}
+                isPaddingX
               />
             </div>
           ) : !listAlphaHunterChangeLog.isLoading ? (
