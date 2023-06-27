@@ -71,9 +71,17 @@ const useColumFollowers = () => {
       {
         Header: "FOLLOWERS AT TIME",
         accessor: "followerCountAtTime",
-        Cell: ({ value }: CellProps<FollowerItem>) =>
+        Cell: ({ value, row }: CellProps<FollowerItem>) =>
           accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <p>{value === 0 ? "N/A" : value}</p>
+            value ? (
+              <p>{value === 0 ? "N/A" : value}</p>
+            ) : (
+              <p>
+                {row.original.followersAtTime === 0
+                  ? "N/A"
+                  : row.original.followersAtTime}
+              </p>
+            )
           ) : (
             <div className="w-20 h-3 mt-1 rounded-2xl bg-secondary-600 animate-pulse" />
           ),
@@ -112,7 +120,7 @@ const useColumFollowers = () => {
         },
       },
     ],
-    []
+    [accountExtendDetail]
   );
 
   return {
