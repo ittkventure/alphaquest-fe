@@ -8,7 +8,12 @@ export interface IPieData {
   value: number;
 }
 interface IAssetPieChartProps {
-  data: IPieData[];
+  data:
+    | {
+        data: IPieData[];
+        sum: number;
+      }
+    | any;
 }
 const renderActiveShape = (props: {
   cx: number;
@@ -81,9 +86,7 @@ const renderActiveShape = (props: {
     </g>
   );
 };
-export const AssetPieChart: React.FC<IAssetPieChartProps> = ({
-  data = mockAssetDistributionData,
-}) => {
+export const AssetPieChart: React.FC<IAssetPieChartProps> = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
@@ -94,7 +97,7 @@ export const AssetPieChart: React.FC<IAssetPieChartProps> = ({
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
-          data={data}
+          data={data.data}
           innerRadius={75}
           outerRadius={100}
           dataKey="value"
@@ -102,12 +105,8 @@ export const AssetPieChart: React.FC<IAssetPieChartProps> = ({
           startAngle={360}
           endAngle={0}
         >
-          {data.map((_entry, index) => (
-            <Cell
-              stroke="none"
-              key={`cell-${index}`}
-              fill={PaletteList[index] || PaletteList[0]}
-            />
+          {data.data?.map((_entry: any, index: string | number) => (
+            <Cell stroke="none" key={`cell-${index}`} fill={_entry.color} />
           ))}
         </Pie>
       </PieChart>

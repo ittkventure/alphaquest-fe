@@ -170,6 +170,22 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
     }
   };
 
+  const formatDataChart = (data: Object) => {
+    const result = [];
+
+    for (const [key, value] of Object.entries(data)) {
+      const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+      result.push({
+        name: key,
+        value: value,
+        color: "#" + randomColor,
+      });
+    }
+
+    return result;
+  };
+
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
       <div>
@@ -182,10 +198,18 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         )}
       </div>
 
-      {/* <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
-        <AlphaCard />
-        <AlphaCard />
-      </div> */}
+      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
+        <AlphaCard
+          items={formatDataChart(
+            alphaHunterDetail?.data?.domByBlockchain ?? {}
+          )}
+          label="Alpha by Blockchain"
+        />
+        <AlphaCard
+          items={formatDataChart(alphaHunterDetail?.data?.domByCategory ?? {})}
+          label="Alpha by Category"
+        />
+      </div>
 
       <div className="px-[100px] text-sm max-lg:px-[10px]">
         <div>
