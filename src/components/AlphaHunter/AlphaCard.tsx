@@ -1,18 +1,29 @@
-import React from "react";
+import React, { FC } from "react";
 import PieChartCard from "./PieChartCard";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { mockAssetDistributionData } from "@/utils/mock";
 import { PaletteList } from "@/utils/config";
 
-const AlphaCard = () => {
+interface IItems {
+  name: string;
+  value: string;
+  color: string;
+}
+
+interface IAlphaCard {
+  items?: IItems[] | any[];
+  label: string;
+}
+
+const AlphaCard: FC<IAlphaCard> = ({ items, label }) => {
   const renderDesktop = () => {
     return (
       <div className="w-full bg-dark-800 p-6 max-[718px]:hidden">
-        <p className="text-[18px] leading-5">Alpha by Blockchain</p>
+        <p className="text-[18px] leading-5">{label}</p>
 
         <div className="grid grid-cols-2 gap-4 mt-6">
           <div className="mt-10">
-            {mockAssetDistributionData.map((item, index) => {
+            {items?.map((item, index) => {
               return (
                 <div
                   key={index.toString()}
@@ -20,7 +31,7 @@ const AlphaCard = () => {
                 >
                   <div className="flex items-center">
                     <div
-                      style={{ backgroundColor: PaletteList[index] }}
+                      style={{ backgroundColor: item.color }}
                       className="w-3 h-3 rounded-[50%] mr-3"
                     />
                     <p className="text-sm">{item.name}</p>
@@ -30,7 +41,7 @@ const AlphaCard = () => {
               );
             })}
           </div>
-          <PieChartCard />
+          <PieChartCard items={items} />
         </div>
 
         <div className="mt-7 flex justify-end items-center">
@@ -53,7 +64,7 @@ const AlphaCard = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-4 mt-6">
-          <PieChartCard />
+          <PieChartCard items={items} />
 
           <div className="mt-10">
             {mockAssetDistributionData.map((item, index) => {
