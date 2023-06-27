@@ -54,7 +54,7 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item }) => {
           className="h-20 w-20 rounded-[50%] min-h-fit min-w-fit"
           src={item?.profileImageUrl}
         />
-        {_renderHeartButtonMobile()}
+        {/* {_renderHeartButtonMobile()} */}
       </div>
       <div className="ml-5 max-[718px]:ml-0 max-[718px]:mt-4 w-full">
         <div className="flex justify-between w-full">
@@ -75,7 +75,7 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item }) => {
               </div>
               <div className="ml-20 max-lg:ml-[20px]">
                 <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
-                  <div>{_renderHeartButton()}</div>
+                  {/* <div>{_renderHeartButton()}</div> */}
                 </div>
               </div>
             </div>

@@ -219,6 +219,8 @@ class ApiTwitter extends ApiClientBase {
     params: FollowerRequest,
     access_token: string
   ): Promise<BaseResponse<ChangeLogs> | any> {
+    console.log(access_token, "access_token");
+
     const res = await this.instance.get(
       `/api/app/twitter-alpha-hunter/user-change-log/${userId}?${qs.stringify(
         params
