@@ -309,7 +309,17 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
             <div className="mt-5 mx-8">
               <TableCommon
                 columns={changeLogs ?? []}
-                data={listAlphaHunterChangeLog.data?.items}
+                data={
+                  listAlphaHunterChangeLog.data?.items
+                    ? listAlphaHunterChangeLog.data?.items.map((item: any) => {
+                        return {
+                          ...item,
+                          profileImageUrl:
+                            listAlphaHunterChangeLog.data.profileImageUrl,
+                        };
+                      })
+                    : []
+                }
                 onChangePage={function (_pageNumber: number): void {
                   setPageUserChangeLog(_pageNumber);
                 }}
