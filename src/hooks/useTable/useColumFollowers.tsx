@@ -8,10 +8,15 @@ import Link from "next/link";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
+import { useRouter } from "next/router";
 
-const useColumFollowers = () => {
+interface IAlphaHunterFollowers {
+  isLinkToAlphaHunter?: boolean;
+}
+
+const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
   const { accountExtendDetail } = useContext(AuthContext);
-
+  const router = useRouter();
   const followers: Column<FollowerItem>[] = useMemo(
     () => [
       {
@@ -19,7 +24,13 @@ const useColumFollowers = () => {
         accessor: "profileImageUrl",
         Cell: ({ value, row }: CellProps<FollowerItem>) => {
           return (
-            <div className="flex items-center">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => {
+                if (isLinkToAlphaHunter)
+                  router.push(`/alpha-hunter/${row.original.userId}`);
+              }}
+            >
               <div
                 className={`h-10 w-10 rounded-[50%] overflow-hidden ${
                   accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM &&

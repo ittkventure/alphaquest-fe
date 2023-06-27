@@ -1,10 +1,7 @@
-import {
-  AlphaHunterDetail,
-  TwitterDetails,
-} from "@/api-client/types/TwitterType";
+import { AlphaHunterDetail } from "@/api-client/types/TwitterType";
 import { TwitterIcon } from "@/assets/icons";
-import { HeartIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 
@@ -14,21 +11,6 @@ interface IAlphaProfileCard {
 
 const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item }) => {
   const router = useRouter();
-  const _renderHeartButton = () => {
-    return (
-      <button className="max-lg:mt-2 flex justify-center items-center w-7 max-[718px]:hidden">
-        <HeartIcon className="h-5 w-7 hover:text-success-500 transition-all duration-300" />
-      </button>
-    );
-  };
-
-  const _renderHeartButtonMobile = () => {
-    return (
-      <button className="max-lg:mt-2  justify-center items-center w-7 max-[718px]:flex hidden">
-        <HeartIcon className="h-5 w-7 hover:text-success-500 transition-all duration-300" />
-      </button>
-    );
-  };
 
   const _renderNewTag = () => {
     return (
@@ -64,14 +46,9 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item }) => {
                 <p className="text-xl font-workSansSemiBold text-success-500">
                   {item?.name}
                 </p>
-                <button
-                  className="ml-2"
-                  onClick={() => {
-                    router.push(item?.twitterUrl ?? "#");
-                  }}
-                >
+                <Link href={item?.twitterUrl ?? ""} target="_blank">
                   <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
-                </button>
+                </Link>
               </div>
               <div className="ml-20 max-lg:ml-[20px]">
                 <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">

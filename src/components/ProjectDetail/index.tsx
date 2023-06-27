@@ -121,7 +121,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   //     ),
   // });
 
-  const { followers } = useColumFollowers();
+  const { followers } = useColumFollowers({ isLinkToAlphaHunter: true });
   const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {

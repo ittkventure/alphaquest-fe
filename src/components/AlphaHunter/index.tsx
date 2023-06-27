@@ -111,7 +111,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       ),
   });
 
-  const { followers } = useColumFollowers();
+  const { followers } = useColumFollowers({ isLinkToAlphaHunter: false });
   const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {

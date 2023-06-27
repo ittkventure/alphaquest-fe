@@ -14,6 +14,7 @@ export enum event_name_enum {
   upgrade_to_pro = "Upgrade to pro",
   on_search_keyword = "On project search",
   on_open_project_detail = "On click project",
+  on_open_alpha_hunter = "On alpha hunter",
 }
 
 // Replace YOUR_TOKEN with your Project Token
