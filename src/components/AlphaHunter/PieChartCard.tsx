@@ -24,7 +24,6 @@ const PieChartCard: FC<IPieChartCard> = ({ items }) => {
         color: item.color,
       };
     });
-    console.log({ data, sum }, "asdasd");
 
     return { data, sum };
   };
