@@ -52,17 +52,20 @@ const renderActiveShape = (props: {
       >
         {payload.value}%
       </text>
-      <text
-        style={{ outline: "none" }}
-        fontSize={"14px"}
-        x={cx}
+
+      <foreignObject
+        x={0}
         y={cy + 10}
         dy={8}
+        width="100%"
+        height="50"
         textAnchor="middle"
-        fill="white"
+        r="0"
       >
-        {payload.name}
-      </text>
+        <div className="w-full flex justify-center h-full bg-black z-[-20]">
+          <p className=" text-center w-[100px] text-sm">{payload.name}</p>
+        </div>
+      </foreignObject>
       <Sector
         style={{ outline: "none" }}
         cx={cx}
@@ -72,6 +75,7 @@ const renderActiveShape = (props: {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        r="20"
       />
       <Sector
         style={{ outline: "none" }}
@@ -82,6 +86,7 @@ const renderActiveShape = (props: {
         innerRadius={outerRadius + 3}
         outerRadius={outerRadius + 6}
         fill={fill}
+        r="20"
       />
     </g>
   );
