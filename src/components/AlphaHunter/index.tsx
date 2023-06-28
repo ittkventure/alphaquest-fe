@@ -59,7 +59,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
 
   const listLastFollower = useQuery(
     [
-      "getListEarlyAlphaHunterFollower",
+      "getListLastAlphaHunterFollower",
       userId,
       pageLast,
       isDescSortedLast,

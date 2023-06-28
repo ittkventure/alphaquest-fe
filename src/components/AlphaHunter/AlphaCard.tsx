@@ -18,33 +18,34 @@ interface IAlphaCard {
 const AlphaCard: FC<IAlphaCard> = ({ items, label }) => {
   const renderDesktop = () => {
     return (
-      <div className="w-full bg-dark-800 p-6 max-[718px]:hidden">
-        <p className="text-[18px] leading-5">{label}</p>
+      <div className="w-full bg-dark-800 p-6 max-[718px]:hidden flex flex-col justify-between">
+        <div>
+          <p className="text-[18px] leading-5">{label}</p>
 
-        <div className="grid grid-cols-2 gap-4 mt-6">
-          <div className="mt-10">
-            {items?.map((item, index) => {
-              return (
-                <div
-                  key={index.toString()}
-                  className="flex items-center justify-between mb-4"
-                >
-                  <div className="flex items-center">
-                    <div
-                      style={{ backgroundColor: item.color }}
-                      className="w-3 h-3 rounded-[50%] mr-3"
-                    />
-                    <p className="text-sm">{item.name}</p>
+          <div className="grid grid-cols-2 gap-4 mt-2">
+            <div className="mt-10">
+              {items?.map((item, index) => {
+                return (
+                  <div
+                    key={index.toString()}
+                    className="flex items-center justify-between mb-4"
+                  >
+                    <div className="flex items-center">
+                      <div
+                        style={{ backgroundColor: PaletteList[index] }}
+                        className="w-3 h-3 rounded-[50%] mr-3"
+                      />
+                      <p className="text-sm">{item.name}</p>
+                    </div>
+                    <p className="text-sm">{item.value}</p>
                   </div>
-                  <p className="text-sm">{item.value}</p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+            <PieChartCard items={items} />
           </div>
-          <PieChartCard items={items} />
         </div>
-
-        <div className="mt-7 flex justify-end items-center">
+        <div className="mt-7 flex justify-end items-center h-auto ">
           <ClockIcon className="h-3 w-3 text-gray-500 mr-[6px]" />
           <p className="text-sm text-gray-500">4 min ago</p>
         </div>

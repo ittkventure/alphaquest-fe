@@ -180,7 +180,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<EarlyFollowItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter-alpha-hunter/lastest-discovery/${userId}?${qs.stringify(
+      `/api/app/twitter-alpha-hunter/lastest-following/${userId}?${qs.stringify(
         params
       )}`,
       {

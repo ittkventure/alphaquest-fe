@@ -110,8 +110,12 @@ export const AssetPieChart: React.FC<IAssetPieChartProps> = ({ data }) => {
           startAngle={360}
           endAngle={0}
         >
-          {data.data?.map((_entry: any, index: string | number) => (
-            <Cell stroke="none" key={`cell-${index}`} fill={_entry.color} />
+          {data.data?.map((_entry: any, index: number) => (
+            <Cell
+              stroke="none"
+              key={`cell-${index}`}
+              fill={PaletteList[index]}
+            />
           ))}
         </Pie>
       </PieChart>
