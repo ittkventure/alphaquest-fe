@@ -16,7 +16,6 @@ interface IAlphaHunterFollowers {
 
 const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
   const { accountExtendDetail } = useContext(AuthContext);
-  const router = useRouter();
   const followers: Column<FollowerItem>[] = useMemo(
     () => [
       {
@@ -136,7 +135,7 @@ const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
         },
       },
     ],
-    [accountExtendDetail]
+    [accountExtendDetail, accountExtendDetail?.currentPlanKey]
   );
 
   return {
