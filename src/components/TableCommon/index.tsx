@@ -45,10 +45,15 @@ const TableCustom: FC<ITableCustom> = ({
     });
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+  const isShowAll = !isLoading && data.length >= 10;
 
   return (
     <div className="w-full">
-      <div className=" flex flex-col justify-start  h-[800px] bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8">
+      <div
+        className={`flex flex-col justify-start  ${
+          isShowAll ? "h-[800px]" : "h-fit"
+        } bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8`}
+      >
         <div className="">
           <div
             className={`shadow relative w-full  ${
