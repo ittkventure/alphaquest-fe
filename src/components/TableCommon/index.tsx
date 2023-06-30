@@ -45,15 +45,18 @@ const TableCustom: FC<ITableCustom> = ({
     });
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+
+  console.log(data, "data haha");
+
   return (
-    <div className="w-full h-full">
-      <div className=" flex flex-auto flex-col">
-        <div className="-my-2 sm:-mx-6 lg:-mx-8">
+    <div className="w-full">
+      <div className=" flex flex-col justify-start  h-[800px] bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8">
+        <div className="">
           <div
             className={`shadow relative w-full  ${
               authState?.access_token &&
               accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                ? "overflow-x-scroll"
+                ? "overflow-x-scroll no-scrollbar"
                 : ""
             }`}
             {...rest}
@@ -62,8 +65,8 @@ const TableCustom: FC<ITableCustom> = ({
               className={`divide-y divide-gray-200 divide-opacity-5 bg-[#171B28] ${
                 authState?.access_token &&
                 accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                  ? "max-h-[800px] h-fit"
-                  : ""
+                  ? "max-h-fit h-fit"
+                  : "max-h-fit h-fit"
               } w-full min-w-[400px] `}
               {...getTableProps()}
             >
@@ -141,7 +144,7 @@ const TableCustom: FC<ITableCustom> = ({
               )}
               {isHiddenTBody ? null : (
                 <tbody
-                  className="divide-y divide-gray-200 divide-opacity-5 bg-[#171B28]"
+                  className="divide-y divide-gray-200 divide-opacity-5 bg-[#171B28] h-fit min-h-fit max-h-fit"
                   {...getTableBodyProps()}
                 >
                   {
@@ -153,7 +156,7 @@ const TableCustom: FC<ITableCustom> = ({
                         return (
                           <tr
                             {...row.getRowProps()}
-                            className="hover:bg-opacity-10"
+                            className="hover:bg-opacity-10 h-[60px] max-h-[60px] min-h-[60px]"
                             ref={refLast}
                           >
                             {
@@ -187,7 +190,7 @@ const TableCustom: FC<ITableCustom> = ({
                         // Apply the row props
                         <tr
                           {...row.getRowProps()}
-                          className="hover:bg-opacity-10"
+                          className="hover:bg-opacity-10 h-[60px] max-h-[60px] min-h-[60px]"
                         >
                           {
                             // Loop over the rows cells
@@ -223,7 +226,7 @@ const TableCustom: FC<ITableCustom> = ({
             </table>
             {isLoading &&
               (isHiddenTBody ? null : (
-                <div className="m-auto my-10 flex w-full justify-center align-middle">
+                <div className="m-auto my-10 flex w-full justify-center items-center bg-[#171B28] h-[800px]">
                   <Spinner />
                 </div>
               ))}

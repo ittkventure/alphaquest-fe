@@ -54,7 +54,7 @@ const useColumTwitterChangeLogs = () => {
         ),
       },
     ],
-    []
+    [accountExtendDetail, accountExtendDetail?.currentPlanKey]
   );
 
   return {
