@@ -51,7 +51,6 @@ const ResetPassword = () => {
         data.password,
         data.confirmPassword
       );
-      console.log(res);
       if (!res.succeeded) {
         setIsLoading(false);
         toast.error(
