@@ -46,8 +46,6 @@ const TableCustom: FC<ITableCustom> = ({
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
 
-  console.log(data, "data haha");
-
   return (
     <div className="w-full">
       <div className=" flex flex-col justify-start  h-[800px] bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8">

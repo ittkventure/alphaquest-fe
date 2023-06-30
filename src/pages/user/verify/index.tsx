@@ -22,7 +22,6 @@ const Verify = () => {
   const onConfirmMail = async () => {
     try {
       setIsLoading(true);
-      console.log(vr);
       await apiAuth.confirmEmail(
         vr ? vr.toString() : "",
         authState?.access_token ?? ""
@@ -48,8 +47,9 @@ const Verify = () => {
         />
         <div className="w-[520px] bg-dark-800 max-md:bg-transparent max-md:p-6 max-lg:p-8 p-10 z-[100]">
           <h1
-            className={`text-center ${isLoading ? "text-blue-400" : "text-success-500"
-              } font-workSansBold text-3xl`}
+            className={`text-center ${
+              isLoading ? "text-blue-400" : "text-success-500"
+            } font-workSansBold text-3xl`}
           >
             {isLoading
               ? "Your Account is verifying, please wait..."
@@ -82,8 +82,6 @@ const Verify = () => {
               Login
             </a>
           )}
-
-
         </div>
       </div>
     </HomeLayout>

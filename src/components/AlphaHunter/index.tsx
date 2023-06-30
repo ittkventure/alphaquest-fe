@@ -190,7 +190,6 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
 
     return result;
   };
-  console.log("render", listEarlyFollower.data.items);
 
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
