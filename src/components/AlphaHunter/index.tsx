@@ -3,11 +3,7 @@ import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
 import useColumFollowers from "@/hooks/useTable/useColumFollowers";
-import {
-  AlphaHunterDetail,
-  ChartData,
-  TwitterDetails,
-} from "@/api-client/types/TwitterType";
+import { AlphaHunterDetail } from "@/api-client/types/TwitterType";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
@@ -54,7 +50,10 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           desc: isDescSorted,
         },
         authState?.access_token ?? ""
-      )
+      ),
+    {
+      keepPreviousData: false,
+    }
   );
 
   const listLastFollower = useQuery(
@@ -74,7 +73,10 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           desc: isDescSortedLast,
         },
         authState?.access_token ?? ""
-      )
+      ),
+    {
+      keepPreviousData: false,
+    }
   );
 
   const listAlphaHunterChangeLog = useQuery(
@@ -94,7 +96,10 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           desc: isDescSortedChangeLog,
         },
         authState?.access_token ?? ""
-      )
+      ),
+    {
+      keepPreviousData: false,
+    }
   );
 
   const alphaHunterDetail = useQuery<AlphaHunterDetail>({
@@ -102,7 +107,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       "getAlphaHunterDetails",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
-      isLoadingHeart,
+      router.pathname,
     ],
     queryFn: async () =>
       await apiTwitter.getAlphaHunterDetails(
@@ -185,17 +190,17 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
 
     return result;
   };
+  console.log("render", listEarlyFollower.data.items);
 
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
       <div>
-        {alphaHunterDetail?.isLoading ? (
-          <div className="flex justify-center items-center">
-            <Spinner />
-          </div>
-        ) : (
-          <AlphaProfileCard item={alphaHunterDetail?.data} />
-        )}
+        <AlphaProfileCard
+          item={alphaHunterDetail?.data}
+          isLoading={
+            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+          }
+        />
       </div>
 
       <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
@@ -204,10 +209,16 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
             alphaHunterDetail?.data?.domByBlockchain ?? {}
           )}
           label="Alpha by Blockchain"
+          isLoading={
+            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+          }
         />
         <AlphaCard
           items={formatDataChart(alphaHunterDetail?.data?.domByCategory ?? {})}
           label="Alpha by Category"
+          isLoading={
+            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+          }
         />
       </div>
 
@@ -230,11 +241,6 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
                 setPage(_pageNumber);
               }}
               isLoading={listEarlyFollower.isLoading}
-              isHiddenTBody={
-                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                  ? false
-                  : true
-              }
               paginationInfo={{
                 currentPage: page,
                 pageNumber: page,
@@ -271,11 +277,6 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
                 setPageLast(_pageNumber);
               }}
               isLoading={listLastFollower.isLoading}
-              isHiddenTBody={
-                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                  ? false
-                  : true
-              }
               paginationInfo={{
                 currentPage: pageLast,
                 pageNumber: pageLast,

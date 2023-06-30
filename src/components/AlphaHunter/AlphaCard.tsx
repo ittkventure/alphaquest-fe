@@ -3,6 +3,7 @@ import PieChartCard from "./PieChartCard";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { mockAssetDistributionData } from "@/utils/mock";
 import { PaletteList } from "@/utils/config";
+import Spinner from "../Spinner";
 
 interface IItems {
   name: string;
@@ -13,9 +14,10 @@ interface IItems {
 interface IAlphaCard {
   items?: IItems[] | any[];
   label: string;
+  isLoading?: boolean;
 }
 
-const AlphaCard: FC<IAlphaCard> = ({ items, label }) => {
+const AlphaCard: FC<IAlphaCard> = ({ items, label, isLoading }) => {
   const renderDesktop = () => {
     return (
       <div className="w-full bg-dark-800 p-6 max-[718px]:hidden flex flex-col justify-between">
@@ -24,25 +26,27 @@ const AlphaCard: FC<IAlphaCard> = ({ items, label }) => {
 
           <div className="grid grid-cols-2 gap-4 mt-2">
             <div className="mt-10">
-              {items?.map((item, index) => {
-                return (
-                  <div
-                    key={index.toString()}
-                    className="flex items-center justify-between mb-4"
-                  >
-                    <div className="flex items-center">
-                      <div
-                        style={{ backgroundColor: PaletteList[index] }}
-                        className="w-3 h-3 rounded-[50%] mr-3"
-                      />
-                      <p className="text-sm">{item.name}</p>
+              {!isLoading &&
+                items?.map((item, index) => {
+                  return (
+                    <div
+                      key={index.toString()}
+                      className="flex items-center justify-between mb-4"
+                    >
+                      <div className="flex items-center">
+                        <div
+                          style={{ backgroundColor: PaletteList[index] }}
+                          className="w-3 h-3 rounded-[50%] mr-3"
+                        />
+                        <p className="text-sm">{item.name}</p>
+                      </div>
+                      <p className="text-sm">{item.value}</p>
                     </div>
-                    <p className="text-sm">{item.value}</p>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
-            <PieChartCard items={items} />
+
+            {isLoading ? <Spinner /> : <PieChartCard items={items} />}
           </div>
         </div>
         <div className="mt-7 flex justify-end items-center h-auto ">
