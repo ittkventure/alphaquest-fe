@@ -103,7 +103,9 @@ const TableCustom: FC<ITableCustom> = ({
                                     onClick={() => {
                                       if (
                                         column.render("Header") ===
-                                        "Following Date"
+                                          "Following Date" ||
+                                        column.render("Header") ===
+                                          "Following Time"
                                       ) {
                                         onSort && onSort(!isSortedDesc);
                                       }
@@ -118,7 +120,9 @@ const TableCustom: FC<ITableCustom> = ({
                                         : ""
                                     } ${
                                       column.render("Header") ===
-                                      "Following Date"
+                                        "Following Date" ||
+                                      column.render("Header") ===
+                                        "Following Time"
                                         ? "max-lg:min-w-[200px]"
                                         : ""
                                     }`}
@@ -127,8 +131,10 @@ const TableCustom: FC<ITableCustom> = ({
                                       // Render the header
                                       column.render("Header")
                                     }
-                                    {column.render("Header") ===
-                                      "Following Date" &&
+                                    {(column.render("Header") ===
+                                      "Following Date" ||
+                                      column.render("Header") ===
+                                        "Following Time") &&
                                       (isSortedDesc ? (
                                         <ChevronDownIcon className="h-5 w-5 ml-1" />
                                       ) : (

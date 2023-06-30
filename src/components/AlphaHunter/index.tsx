@@ -13,6 +13,7 @@ import AlphaProfileCard from "./AlphaProfileCard";
 import Spinner from "../Spinner";
 import TableCommon from "../TableCommon";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
+import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
 
 interface IAlphaHunter {
   userId?: string;
@@ -116,7 +117,9 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       ),
   });
 
-  const { followers } = useColumFollowers({ isLinkToAlphaHunter: false });
+  const { followersAlphaHunter } = useColumFollowersAlphaHunter({
+    isLinkToAlphaHunter: false,
+  });
   const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {
@@ -234,7 +237,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
           <div className="mt-5 mx-8">
             <TableCommon
-              columns={followers ?? []}
+              columns={followersAlphaHunter ?? []}
               data={listEarlyFollower.data?.items ?? []}
               onChangePage={function (_pageNumber: number): void {
                 setPage(_pageNumber);
@@ -270,7 +273,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
           <div className="mt-5 mx-8">
             <TableCommon
-              columns={followers ?? []}
+              columns={followersAlphaHunter ?? []}
               data={listLastFollower.data?.items ?? []}
               onChangePage={function (_pageNumber: number): void {
                 setPageLast(_pageNumber);
