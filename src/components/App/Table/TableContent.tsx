@@ -21,6 +21,7 @@ const TableContent: FC<TableContentTypes> = ({
 
   useEffect(() => {
     setListRows(initListRows);
+    console.log(initListRows, "initListRows");
   }, [initListRows]);
 
   return (

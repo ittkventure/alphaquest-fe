@@ -20,7 +20,7 @@ interface IAlphaCard {
 const AlphaCard: FC<IAlphaCard> = ({ items, label, isLoading }) => {
   const renderDesktop = () => {
     return (
-      <div className="w-full bg-dark-800 p-6 max-[718px]:hidden flex flex-col justify-between">
+      <div className="w-full bg-dark-800 p-6 max-xl:hidden flex flex-col justify-between">
         <div>
           <p className="text-[18px] leading-5">{label}</p>
 
@@ -59,7 +59,7 @@ const AlphaCard: FC<IAlphaCard> = ({ items, label, isLoading }) => {
 
   const renderMobile = () => {
     return (
-      <div className="w-full bg-dark-800 p-6 hidden max-[718px]:block">
+      <div className="w-full bg-dark-800 p-6 hidden max-xl:block">
         <div className="flex justify-between">
           <p className="text-[18px] leading-5">Alpha by Blockchain</p>
           <div className="flex items-center">
