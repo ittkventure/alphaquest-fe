@@ -205,7 +205,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         />
       </div>
 
-      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
+      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
         <AlphaCard
           items={formatDataChart(
             alphaHunterDetail?.data?.domByBlockchain ?? {}
