@@ -121,7 +121,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<AlphaHunterDetail | any> {
     const res = await this.instance.get(
-      `/api/app/twitter-alpha-hunter/by-id/${userId}`,
+      `/api/app/twitter-alpha-hunter/by-username?username=${userId}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
@@ -159,7 +159,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<EarlyFollowItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter-alpha-hunter/earliest-discovery/${userId}?${qs.stringify(
+      `/api/app/twitter-alpha-hunter/earliest-discovery-by-username?username=${userId}&${qs.stringify(
         params
       )}`,
       {
@@ -180,7 +180,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<EarlyFollowItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter-alpha-hunter/lastest-following/${userId}?${qs.stringify(
+      `/api/app/twitter-alpha-hunter/lastest-following-by-username?username=${userId}&${qs.stringify(
         params
       )}`,
       {
@@ -220,7 +220,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<ChangeLogs> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter-alpha-hunter/user-change-log/${userId}?${qs.stringify(
+      `/api/app/twitter-alpha-hunter/user-change-log-by-username?username=${userId}&${qs.stringify(
         params
       )}`,
       {

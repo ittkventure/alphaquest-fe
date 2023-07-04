@@ -23,8 +23,8 @@ const useColumFollowersAlphaHunter = ({
         Header: "Accounts",
         accessor: "profileImageUrl",
         Cell: ({ value, row }: CellProps<FollowerItem>) => {
-          return isLinkToAlphaHunter && row.original.userId !== "UNKNOWN" ? (
-            <Link href={`/alpha-hunter/${row.original.userId}`}>
+          return isLinkToAlphaHunter && row.original.username !== "UNKNOWN" ? (
+            <Link href={`/alpha-hunter/${row.original.username}`}>
               <div className="flex items-center cursor-pointer">
                 <div
                   className={`h-10 w-10 rounded-[50%] overflow-hidden ${
