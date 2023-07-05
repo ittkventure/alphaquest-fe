@@ -52,7 +52,7 @@ const TableCustom: FC<ITableCustom> = ({
       <div
         className={`flex flex-col justify-start  ${
           isShowAll ? "h-[800px]" : "h-fit"
-        } bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8`}
+        } bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8 `}
       >
         <div className="">
           <div
