@@ -21,7 +21,7 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
           return (
             <div
               key={index}
-              className="border border-white text-white py-[1px] px-1 text-xs"
+              className="border border-white text-white py-[1px] px-1 text-xs mx-1"
             >
               <p>{value}</p>
             </div>
