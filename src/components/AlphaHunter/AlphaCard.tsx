@@ -20,7 +20,7 @@ interface IAlphaCard {
 const AlphaCard: FC<IAlphaCard> = ({ items, label, isLoading }) => {
   const renderDesktop = () => {
     return (
-      <div className="w-full bg-dark-800 p-6 max-xl:hidden flex flex-col justify-between">
+      <div className="w-full bg-dark-800 p-6 max-xl:hidden  flex flex-col justify-between">
         <div>
           <p className="text-[18px] leading-5">{label}</p>
 
