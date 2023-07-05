@@ -33,7 +33,7 @@ const TableContent: FC<TableContentTypes> = ({
             index={index}
             isAnimation={isAnimation}
             onClickAction={() => {
-              setUserId(value.userId);
+              setUserId(value.username);
               mixpanelTrack(event_name_enum.on_open_project_detail, {
                 projectName: value.name,
               });

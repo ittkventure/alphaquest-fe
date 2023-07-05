@@ -30,7 +30,7 @@ const PieChartCard: FC<IPieChartCard> = ({ items }) => {
 
   return (
     <div className="w-full h-full flex justify-end max-xl:justify-center items-start">
-      <div className="relative h-56 w-56">
+      <div className="relative h-56 w-56 max-[928px]:h-40 max-[928px]:w-40">
         <AssetPieChart data={handleProcessData()} />
       </div>
     </div>

@@ -20,9 +20,16 @@ import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLog
 interface IProjectDetail {
   userId?: string;
   onChangeHeart?: () => void;
+  isPaddingX?: boolean;
+  isPage?: boolean;
 }
 
-const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
+const ProjectDetail: FC<IProjectDetail> = ({
+  userId,
+  onChangeHeart,
+  isPaddingX,
+  isPage,
+}) => {
   if (!userId) return <div />;
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
@@ -145,7 +152,10 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       setIsLoadingHeart(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
+        await apiTwitter.putToWatchList(
+          twitterDetail.data?.userId ?? "",
+          authState?.access_token
+        );
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             twitterDetail.data?.name ?? "project"
@@ -442,6 +452,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
               }}
               isSortedDesc={isDescSortedChangeLog}
               isShowHeader={false}
+              isPaddingX={isPaddingX}
             />
           </div>
         ) : !listUserChangeLog.isLoading ? (
@@ -463,10 +474,14 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         <div className="h-32" />
       ) : null}
 
-      {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+      {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM || isPage ? (
         <></>
       ) : (
-        <div className="absolute bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]">
+        <div
+          className={`${
+            isPage ? "fixed" : "absolute"
+          } bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]`}
+        >
           <div className="w-full h-[200px] flex flex-col justify-center items-center bg-linear-backdrop">
             <p className="mb-4">Upgrade account to see all</p>
 

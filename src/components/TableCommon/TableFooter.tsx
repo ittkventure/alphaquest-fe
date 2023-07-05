@@ -24,9 +24,13 @@ const TableFooter = ({ paginationInfo, onChange }: Props) => {
   };
 
   return (
-    <div className="pt-5 mb-20 flex flex-col md:flex-row justify-end items-center text-sm">
+    <div
+      className={`pt-5 mb-20 flex flex-col md:flex-row md:mt-5 justify-end items-center text-sm ${
+        totalPages > 1 ? " mt-20" : " mt-0"
+      }`}
+    >
       <div>
-        <p className="my-5 md:my-0 mr-4">
+        <p className={`my-5 md:my-0 ${totalPages > 1 ? "mr-4" : "mr-0"}`}>
           Showing rows{" "}
           {Math.min(
             paginationInfo.currentPage * pageSize - pageSize + 1,
@@ -40,14 +44,16 @@ const TableFooter = ({ paginationInfo, onChange }: Props) => {
           of {paginationInfo.totalElements}
         </p>
       </div>
-      <div className="order-first md:order-none ">
-        <Pagination
-          totalItems={paginationInfo.totalElements || 0}
-          itemsPerPage={pageSize}
-          currentPage={paginationInfo.currentPage}
-          onPageChange={onChange}
-        />
-      </div>
+      {totalPages > 1 && (
+        <div className="order-first md:order-none ">
+          <Pagination
+            totalItems={paginationInfo.totalElements || 0}
+            itemsPerPage={pageSize}
+            currentPage={paginationInfo.currentPage}
+            onPageChange={onChange}
+          />
+        </div>
+      )}
     </div>
   );
 };
