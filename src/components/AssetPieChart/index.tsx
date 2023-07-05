@@ -1,5 +1,4 @@
 import { PaletteList } from "@/utils/config";
-import { mockAssetDistributionData } from "@/utils/mock";
 import React, { useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
 

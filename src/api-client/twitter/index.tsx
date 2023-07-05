@@ -105,11 +105,14 @@ class ApiTwitter extends ApiClientBase {
     userId: string,
     access_token: string
   ): Promise<TwitterDetails | any> {
-    const res = await this.instance.get(`/api/app/twitter/detail/${userId}`, {
-      headers: {
-        Authorization: "Bearer " + access_token,
-      },
-    });
+    const res = await this.instance.get(
+      `/api/app/twitter/detail-by-username?username=${userId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
     return res.data;
   }
 
@@ -140,7 +143,9 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/lastest-followers/${userId}?${qs.stringify(params)}`,
+      `/api/app/twitter/lastest-followers-by-username?username=${userId}&${qs.stringify(
+        params
+      )}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
@@ -201,7 +206,9 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<ChangeLogs> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/user-change-log/${userId}?${qs.stringify(params)}`,
+      `/api/app/twitter/user-change-log-by-username?username=${userId}&${qs.stringify(
+        params
+      )}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,

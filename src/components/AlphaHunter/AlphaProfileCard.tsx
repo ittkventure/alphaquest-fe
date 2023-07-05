@@ -21,7 +21,7 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
           return (
             <div
               key={index}
-              className="border border-white text-white py-[1px] px-1 text-xs mx-1"
+              className="border border-white text-white py-[1px] px-1 text-xs mr-2"
             >
               <p>{value}</p>
             </div>
@@ -32,7 +32,7 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
   };
 
   return (
-    <div className="flex max-[718px]:flex-col px-[100px] max-lg:px-[10px] w-full">
+    <div className="flex max-[718px]:flex-col px-[100px] max-[1450px]:px-4 w-full">
       <div className="flex justify-between items-start">
         {isLoading ? (
           <div className="h-20 w-20 rounded-[50%] min-h-fit min-w-fit animate-pulse bg-gray-800" />
