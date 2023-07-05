@@ -13,9 +13,11 @@ interface IAlphaHunterFollowers {
   isLinkToAlphaHunter?: boolean;
 }
 
-const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
+const useColumFollowersAlphaHunter = ({
+  isLinkToAlphaHunter,
+}: IAlphaHunterFollowers) => {
   const { accountExtendDetail } = useContext(AuthContext);
-  const followers: Column<FollowerItem>[] = useMemo(
+  const followersAlphaHunter: Column<FollowerItem>[] = useMemo(
     () => [
       {
         Header: "Accounts",
@@ -138,8 +140,8 @@ const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
           ),
       },
       {
-        Header: "Following Date",
-        accessor: "followingDate",
+        Header: "Following Time",
+        accessor: "followingTime",
         Cell: ({ value }: CellProps<FollowerItem>) => (
           <p className="pl-10">{moment(value).format("MM/DD/YYYY, HH:mm")}</p>
         ),
@@ -168,8 +170,8 @@ const useColumFollowers = ({ isLinkToAlphaHunter }: IAlphaHunterFollowers) => {
   );
 
   return {
-    followers,
+    followersAlphaHunter,
   };
 };
 
-export default useColumFollowers;
+export default useColumFollowersAlphaHunter;

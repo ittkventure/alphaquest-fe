@@ -2,7 +2,6 @@ import moment from "moment";
 import React, { useContext, useMemo } from "react";
 import { CellProps, Column } from "react-table";
 import { ChangeLogs } from "@/api-client/types/TwitterType";
-import { addLinksToText } from "@/utils/regex";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 
@@ -55,7 +54,7 @@ const useColumTwitterChangeLogs = () => {
         ),
       },
     ],
-    []
+    [accountExtendDetail, accountExtendDetail?.currentPlanKey]
   );
 
   return {

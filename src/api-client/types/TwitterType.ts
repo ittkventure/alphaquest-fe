@@ -71,6 +71,8 @@ export interface FollowerItem {
   followingDate: string;
   tags?: string[];
   twitterUrl: string;
+  followersAtTime?: number;
+  followingTime?: string;
 }
 
 export interface FollowerRequest {
@@ -110,4 +112,41 @@ export interface ChangeLogs {
   originalData: string;
   dataType: string;
   profileImageUrl?: string;
+}
+
+export interface AlphaHunterDetail {
+  userId: string;
+  name: string;
+  username: string;
+  description: string;
+  profileImageUrl: string;
+  twitterUrl: string;
+  followerCount: number;
+  alphaFollowingCount: number;
+  tags: string[];
+  domByBlockchain: DomByBlockchain;
+  domByCategory: DomByCategory;
+}
+
+export interface DomByBlockchain {
+  additionalProp1: number;
+  additionalProp2: number;
+  additionalProp3: number;
+}
+
+export interface DomByCategory {
+  additionalProp1: number;
+  additionalProp2: number;
+  additionalProp3: number;
+}
+
+export interface EarlyFollowItem {
+  userId: string;
+  name: string;
+  username: string;
+  twitterUrl: string;
+  profileImageUrl: string;
+  followersAtTime: number;
+  followingTime: string;
+  tags: string[];
 }

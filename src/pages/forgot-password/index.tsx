@@ -38,8 +38,6 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      console.log(data);
-
       setIsLoading(true);
       let res = await authApi.resetPassword(data.email);
       setIsLoading(false);

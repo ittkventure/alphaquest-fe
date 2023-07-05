@@ -18,7 +18,6 @@ const TableContent: FC<TableContentTypes> = ({
   const [listRows, setListRows] = useState<TwitterItem[]>(initListRows);
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
-  console.log("render Table");
 
   useEffect(() => {
     setListRows(initListRows);

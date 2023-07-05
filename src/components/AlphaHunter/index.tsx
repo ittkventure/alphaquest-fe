@@ -1,18 +1,19 @@
 import React, { FC, useContext, useState } from "react";
-import Spinner from "../Spinner";
-import { ClockIcon, HeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
 import useColumFollowers from "@/hooks/useTable/useColumFollowers";
-import { ChartData, TwitterDetails } from "@/api-client/types/TwitterType";
+import { AlphaHunterDetail } from "@/api-client/types/TwitterType";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
 import AlphaCard from "./AlphaCard";
 import AlphaProfileCard from "./AlphaProfileCard";
+import Spinner from "../Spinner";
+import TableCommon from "../TableCommon";
+import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
+import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
 
 interface IAlphaHunter {
   userId?: string;
@@ -26,12 +27,23 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [isDescSorted, setIsDescSorted] = useState(false);
+  const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
+  const [pageLast, setPageLast] = useState(1);
 
-  const listAlphaHunter = useQuery(
-    ["fetchListAlphaHunter", userId, page, isDescSorted],
+  const [isDescSorted, setIsDescSorted] = useState(false);
+  const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
+  const [isDescSortedLast, setIsDescSortedLast] = useState(false);
+
+  const listEarlyFollower = useQuery(
+    [
+      "getListEarlyAlphaHunterFollower",
+      userId,
+      page,
+      isDescSorted,
+      authState?.access_token,
+    ],
     async () =>
-      await apiTwitter.getListFollower(
+      await apiTwitter.getListEarlyAlphaHunterFollower(
         userId as any,
         {
           pageNumber: page,
@@ -39,50 +51,76 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           desc: isDescSorted,
         },
         authState?.access_token ?? ""
-      )
+      ),
+    {
+      keepPreviousData: false,
+    }
   );
 
-  const twitterDetail = useQuery<TwitterDetails>({
+  const listLastFollower = useQuery(
+    [
+      "getListLastAlphaHunterFollower",
+      userId,
+      pageLast,
+      isDescSortedLast,
+      authState?.access_token,
+    ],
+    async () =>
+      await apiTwitter.getListLastAlphaHunterFollower(
+        userId as any,
+        {
+          pageNumber: pageLast,
+          pageSize: 10,
+          desc: isDescSortedLast,
+        },
+        authState?.access_token ?? ""
+      ),
+    {
+      keepPreviousData: false,
+    }
+  );
+
+  const listAlphaHunterChangeLog = useQuery(
+    [
+      "fetchListAlphaHunterChangeLog",
+      userId,
+      pageUserChangeLog,
+      isDescSortedChangeLog,
+      authState?.access_token,
+    ],
+    async () =>
+      await apiTwitter.getAlphaHunterChangeLogUser(
+        userId as any,
+        {
+          pageNumber: pageUserChangeLog,
+          pageSize: 10,
+          desc: isDescSortedChangeLog,
+        },
+        authState?.access_token ?? ""
+      ),
+    {
+      keepPreviousData: false,
+    }
+  );
+
+  const alphaHunterDetail = useQuery<AlphaHunterDetail>({
     queryKey: [
-      "getTwitterDetails",
+      "getAlphaHunterDetails",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
-      isLoadingHeart,
+      router.pathname,
     ],
     queryFn: async () =>
-      await apiTwitter.getTwitterDetails(
+      await apiTwitter.getAlphaHunterDetails(
         userId as any,
         authState?.access_token ?? ""
       ),
   });
 
-  const twitterChartScore = useQuery<ChartData[]>({
-    queryKey: [
-      "getTwitterChartScore",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getScoreChartData(
-        userId as any,
-        authState?.access_token ?? ""
-      ),
+  const { followersAlphaHunter } = useColumFollowersAlphaHunter({
+    isLinkToAlphaHunter: false,
   });
-
-  const twitterChartFollower = useQuery<ChartData[]>({
-    queryKey: [
-      "getFollowerChartScore",
-      accountExtendDetail?.currentPlanKey,
-      authState?.access_token,
-    ],
-    queryFn: async () =>
-      await apiTwitter.getFollowerChartData(
-        userId as any,
-        authState?.access_token ?? ""
-      ),
-  });
-
-  const { followers } = useColumFollowers();
+  const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {
     if (!authState?.access_token) {
@@ -108,7 +146,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
-            twitterDetail.data?.name ?? "project"
+            alphaHunterDetail.data?.name ?? "project"
           } to watchlist`,
         });
         onChangeHeart ? onChangeHeart() : null;
@@ -140,55 +178,187 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
     }
   };
 
+  const formatDataChart = (data: Object) => {
+    const result = [];
+
+    for (const [key, value] of Object.entries(data)) {
+      const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+      result.push({
+        name: key,
+        value: value,
+        color: "#" + randomColor,
+      });
+    }
+
+    return result;
+  };
+
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
       <div>
-        <AlphaProfileCard />
+        <AlphaProfileCard
+          item={alphaHunterDetail?.data}
+          isLoading={
+            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+          }
+        />
       </div>
 
-      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-[1452px]:grid-cols-1">
-        <AlphaCard />
-        <AlphaCard />
+      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
+        <AlphaCard
+          items={formatDataChart(
+            alphaHunterDetail?.data?.domByBlockchain ?? {}
+          )}
+          label="Alpha by Blockchain"
+          isLoading={
+            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+          }
+        />
+        <AlphaCard
+          items={formatDataChart(alphaHunterDetail?.data?.domByCategory ?? {})}
+          label="Alpha by Category"
+          isLoading={
+            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+          }
+        />
       </div>
 
       <div className="px-[100px] text-sm max-lg:px-[10px]">
-        {/* <div className="flex items-center mt-14 ">
-          <h3 className="text-lg font-workSansSemiBold  mr-3">
-            Earliest Alpha Hunter
-          </h3>
+        <div>
+          <div className="flex items-center mt-14 ">
+            <h3 className="text-lg font-workSansSemiBold  mr-3">
+              Earliest Discovery
+            </h3>
 
-          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+            {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
             BETA
+          </div> */}
           </div>
-        </div> */}
-        <div className="mt-5 ">
-          {/* <TableCommon
-            columns={followers ?? []}
-            data={listAlphaHunter.data?.items ?? []}
-            onChangePage={function (_pageNumber: number): void {
-              setPage(_pageNumber);
-            }}
-            isLoading={listAlphaHunter.isLoading}
-            isHiddenTBody={
-              accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                ? false
-                : true
-            }
-            paginationInfo={{
-              currentPage: page,
-              pageNumber: page,
-              pageSize: 10,
-              totalPages: listAlphaHunter?.data?.totalCount
-                ? Math.ceil(listAlphaHunter?.data?.totalCount / 20)
-                : 0,
-              totalElements: listAlphaHunter?.data?.totalCount ?? 0,
-            }}
-            onSort={(isSortedDesc) => {
-              if (isSortedDesc === undefined) return;
-              setIsDescSorted(isSortedDesc);
-            }}
-            isSortedDesc={isDescSorted}
-          /> */}
+          <div className="mt-5 mx-8">
+            <TableCommon
+              columns={followersAlphaHunter ?? []}
+              data={listEarlyFollower.data?.items ?? []}
+              onChangePage={function (_pageNumber: number): void {
+                setPage(_pageNumber);
+              }}
+              isLoading={listEarlyFollower.isLoading}
+              paginationInfo={{
+                currentPage: page,
+                pageNumber: page,
+                pageSize: 10,
+                totalPages: listEarlyFollower?.data?.totalCount
+                  ? Math.ceil(listEarlyFollower?.data?.totalCount / 20)
+                  : 0,
+                totalElements: listEarlyFollower?.data?.totalCount ?? 0,
+              }}
+              onSort={(isSortedDesc) => {
+                if (isSortedDesc === undefined) return;
+                setIsDescSorted(isSortedDesc);
+              }}
+              isSortedDesc={isDescSorted}
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center mt-14 ">
+            <h3 className="text-lg font-workSansSemiBold  mr-3">
+              Latest Following
+            </h3>
+
+            {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+            BETA
+          </div> */}
+          </div>
+          <div className="mt-5 mx-8">
+            <TableCommon
+              columns={followersAlphaHunter ?? []}
+              data={listLastFollower.data?.items ?? []}
+              onChangePage={function (_pageNumber: number): void {
+                setPageLast(_pageNumber);
+              }}
+              isLoading={listLastFollower.isLoading}
+              paginationInfo={{
+                currentPage: pageLast,
+                pageNumber: pageLast,
+                pageSize: 10,
+                totalPages: listLastFollower?.data?.totalCount
+                  ? Math.ceil(listLastFollower?.data?.totalCount / 20)
+                  : 0,
+                totalElements: listLastFollower?.data?.totalCount ?? 0,
+              }}
+              onSort={(isSortedDesc) => {
+                if (isSortedDesc === undefined) return;
+                setIsDescSortedLast(isSortedDesc);
+              }}
+              isSortedDesc={isDescSortedLast}
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className="flex items-center mt-14 ">
+            <h3 className="text-lg font-workSansSemiBold mr-3">
+              Twitter changelogs
+            </h3>
+
+            {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+              BETA
+            </div> */}
+          </div>
+
+          {listAlphaHunterChangeLog.data?.items?.length > 0 ? (
+            <div className="mt-5 mx-8">
+              <TableCommon
+                columns={changeLogs ?? []}
+                data={
+                  listAlphaHunterChangeLog.data?.items
+                    ? listAlphaHunterChangeLog.data?.items.map((item: any) => {
+                        return {
+                          ...item,
+                          profileImageUrl:
+                            listAlphaHunterChangeLog.data.profileImageUrl,
+                        };
+                      })
+                    : []
+                }
+                onChangePage={function (_pageNumber: number): void {
+                  setPageUserChangeLog(_pageNumber);
+                }}
+                isLoading={listAlphaHunterChangeLog.isLoading}
+                paginationInfo={{
+                  currentPage: pageUserChangeLog,
+                  pageNumber: pageUserChangeLog,
+                  pageSize: 10,
+                  totalPages: listAlphaHunterChangeLog?.data?.totalCount
+                    ? Math.ceil(listAlphaHunterChangeLog?.data?.totalCount / 20)
+                    : 0,
+                  totalElements:
+                    listAlphaHunterChangeLog?.data?.totalCount ?? 0,
+                }}
+                onSort={(isSortedDesc) => {
+                  if (isSortedDesc === undefined) return;
+                  setIsDescSortedChangeLog(isSortedDesc);
+                }}
+                isSortedDesc={isDescSortedChangeLog}
+                isShowHeader={false}
+                isPaddingX
+              />
+            </div>
+          ) : !listAlphaHunterChangeLog.isLoading ? (
+            <div className="w-full flex justify-start items-center mb-20 mt-4">
+              <p className="text-secondary-400">
+                {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                  ? "This Twitter account has not made any changes yet"
+                  : "This section is exclusively revealed to our Pro members. Upgrade your membership to get instant access!"}
+              </p>
+            </div>
+          ) : (
+            <div className="w-full flex justify-center items-center">
+              <Spinner />
+            </div>
+          )}
         </div>
       </div>
     </div>

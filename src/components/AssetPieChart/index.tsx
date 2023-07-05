@@ -8,7 +8,12 @@ export interface IPieData {
   value: number;
 }
 interface IAssetPieChartProps {
-  data: IPieData[];
+  data:
+    | {
+        data: IPieData[];
+        sum: number;
+      }
+    | any;
 }
 const renderActiveShape = (props: {
   cx: number;
@@ -47,17 +52,20 @@ const renderActiveShape = (props: {
       >
         {payload.value}%
       </text>
-      <text
-        style={{ outline: "none" }}
-        fontSize={"14px"}
-        x={cx}
+
+      <foreignObject
+        x={0}
         y={cy + 10}
         dy={8}
+        width="100%"
+        height="50"
         textAnchor="middle"
-        fill="white"
+        r="0"
       >
-        {payload.name}
-      </text>
+        <div className="w-full flex justify-center h-full z-[-20]">
+          <p className=" text-center w-[100px] text-sm">{payload.name}</p>
+        </div>
+      </foreignObject>
       <Sector
         style={{ outline: "none" }}
         cx={cx}
@@ -67,6 +75,7 @@ const renderActiveShape = (props: {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        r="20"
       />
       <Sector
         style={{ outline: "none" }}
@@ -77,13 +86,12 @@ const renderActiveShape = (props: {
         innerRadius={outerRadius + 3}
         outerRadius={outerRadius + 6}
         fill={fill}
+        r="20"
       />
     </g>
   );
 };
-export const AssetPieChart: React.FC<IAssetPieChartProps> = ({
-  data = mockAssetDistributionData,
-}) => {
+export const AssetPieChart: React.FC<IAssetPieChartProps> = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
@@ -94,7 +102,7 @@ export const AssetPieChart: React.FC<IAssetPieChartProps> = ({
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
-          data={data}
+          data={data.data}
           innerRadius={75}
           outerRadius={100}
           dataKey="value"
@@ -102,11 +110,11 @@ export const AssetPieChart: React.FC<IAssetPieChartProps> = ({
           startAngle={360}
           endAngle={0}
         >
-          {data.map((_entry, index) => (
+          {data.data?.map((_entry: any, index: number) => (
             <Cell
               stroke="none"
               key={`cell-${index}`}
-              fill={PaletteList[index] || PaletteList[0]}
+              fill={PaletteList[index]}
             />
           ))}
         </Pie>
