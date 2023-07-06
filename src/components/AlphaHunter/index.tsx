@@ -235,7 +235,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
             BETA
           </div> */}
           </div>
-          <div className="mt-5 mx-8">
+          <div className="mt-5 mx-8 max-[1450px]:mx-0">
             <TableCommon
               columns={followersAlphaHunter ?? []}
               data={listEarlyFollower.data?.items ?? []}
@@ -271,7 +271,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
             BETA
           </div> */}
           </div>
-          <div className="mt-5 mx-8">
+          <div className="mt-5 mx-8 max-[1450px]:mx-0">
             <TableCommon
               columns={followersAlphaHunter ?? []}
               data={listLastFollower.data?.items ?? []}
@@ -309,7 +309,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
 
           {listAlphaHunterChangeLog.data?.items?.length > 0 ? (
-            <div className="mt-5 mx-8">
+            <div className="mt-5 mx-8 max-[1450px]:mx-0">
               <TableCommon
                 columns={changeLogs ?? []}
                 data={

@@ -1,4 +1,4 @@
-import React, { FC, memo, useContext, useState } from "react";
+import React, { FC, memo, useContext, useEffect, useState } from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -37,9 +37,9 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
-
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
+  const [isInWatchList, setIsInWatchList] = useState<boolean>(false);
 
   const listAlphaHunter = useQuery(
     [
@@ -93,7 +93,6 @@ const ProjectDetail: FC<IProjectDetail> = ({
       "getTwitterDetails",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
-      isLoadingHeart,
     ],
     queryFn: async () =>
       await apiTwitter.getTwitterDetails(
@@ -101,6 +100,11 @@ const ProjectDetail: FC<IProjectDetail> = ({
         authState?.access_token ?? ""
       ),
   });
+
+  useEffect(() => {
+    if (twitterDetail.data?.inWatchlist !== undefined)
+      setIsInWatchList(twitterDetail.data?.inWatchlist);
+  }, [twitterDetail.data?.inWatchlist]);
 
   // const twitterChartScore = useQuery<ChartData[]>({
   //   queryKey: [
@@ -162,6 +166,8 @@ const ProjectDetail: FC<IProjectDetail> = ({
           } to watchlist`,
         });
         onChangeHeart ? onChangeHeart() : null;
+
+        setIsInWatchList(!isInWatchList);
       } else {
         toast.warning("Please login for use this feature");
       }
@@ -190,7 +196,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
             customClassName="ml-0 mr-0 w-[14px] h-[14px]"
             strokeWidth="1"
           />
-        ) : twitterDetail.data?.inWatchlist ? (
+        ) : isInWatchList ? (
           <HeartIconSolid className="h-5 w-7 text-primary-500 transition-all duration-300" />
         ) : (
           <HeartIcon className="h-5 w-7 hover:text-success-500 transition-all duration-300" />
