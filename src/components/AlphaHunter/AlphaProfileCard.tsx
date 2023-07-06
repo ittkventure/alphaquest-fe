@@ -32,79 +32,80 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
   };
 
   return (
-    <div className="flex max-[718px]:flex-col px-[100px] max-[1450px]:px-4 w-full">
-      <div className="flex justify-between items-start">
-        {isLoading ? (
-          <div className="h-20 w-20 rounded-[50%] min-h-fit min-w-fit animate-pulse bg-gray-800" />
-        ) : (
-          <img
-            className="h-20 w-20 rounded-[50%] min-h-fit min-w-fit"
-            src={item?.profileImageUrl}
-          />
-        )}
-        {/* {_renderHeartButtonMobile()} */}
-      </div>
-      <div className="ml-5 max-[718px]:ml-0 max-[718px]:mt-4 w-full">
-        <div className="flex justify-between w-full">
-          <div className="w-full">
-            <div className="flex w-full justify-between">
-              <div className="flex items-center">
-                {isLoading ? (
-                  <>
-                    <div className="h-5 w-48 rounded-3xl animate-pulse bg-gray-800" />
-                  </>
-                ) : (
-                  <>
-                    <p className="text-xl font-workSansSemiBold text-success-500 mr-2">
-                      {item?.name}
-                    </p>
-                    <Link href={item?.twitterUrl ?? ""} target="_blank">
-                      <Image
-                        src={TwitterIcon}
-                        width={16}
-                        height={13}
-                        alt="t-i"
-                      />
-                    </Link>
-                  </>
-                )}
-              </div>
-              <div className="ml-20 max-lg:ml-[20px]">
-                <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
-                  {/* <div>{_renderHeartButton()}</div> */}
+    <div>
+      <div className="flex max-[718px]:flex-col px-[100px] max-[1450px]:px-4 w-full">
+        <div className="flex justify-between items-start">
+          {isLoading ? (
+            <div className="h-20 w-20 rounded-[50%] min-h-fit min-w-fit animate-pulse bg-gray-800" />
+          ) : (
+            <img
+              className="h-20 w-20 rounded-[50%] min-h-fit min-w-fit"
+              src={item?.profileImageUrl}
+            />
+          )}
+          {/* {_renderHeartButtonMobile()} */}
+        </div>
+        <div className="ml-5 max-[718px]:ml-0 max-[718px]:mt-4 w-full">
+          <div className="flex justify-between w-full">
+            <div className="w-full">
+              <div className="flex w-full justify-between">
+                <div className="flex items-center">
+                  {isLoading ? (
+                    <>
+                      <div className="h-5 w-48 rounded-3xl animate-pulse bg-gray-800" />
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xl font-workSansSemiBold text-success-500 mr-2">
+                        {item?.name}
+                      </p>
+                      <Link href={item?.twitterUrl ?? ""} target="_blank">
+                        <Image
+                          src={TwitterIcon}
+                          width={16}
+                          height={13}
+                          alt="t-i"
+                        />
+                      </Link>
+                    </>
+                  )}
+                </div>
+                <div className="ml-20 max-lg:ml-[20px]">
+                  <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
+                    {/* <div>{_renderHeartButton()}</div> */}
+                  </div>
                 </div>
               </div>
-            </div>
-            <p className="text-sm mt-3">{item?.description}</p>
+              <p className="text-sm mt-3">{item?.description}</p>
 
-            {_renderNewTag()}
+              {_renderNewTag()}
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-6  mt-5">
-          <div className="border border-white border-opacity-10 p-4">
-            <p>Current Twitter Followers</p>
+      </div>
 
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <p className="text-xl max-lg:text-sm">
-                {item?.followerCount ?? 0}
-              </p>
-            )}
-          </div>
+      <div className="grid grid-cols-2 gap-6  mt-5 px-[100px] max-[1450px]:px-4 w-full">
+        <div className="border border-white border-opacity-10 p-4 rounded-lg">
+          <p>Current Twitter Followers</p>
 
-          <div className="border border-white border-opacity-10 p-4">
-            <p>Total Alpha Following</p>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <p className="text-xl max-lg:text-sm">{item?.followerCount ?? 0}</p>
+          )}
+        </div>
 
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <p className="text-xl max-lg:text-sm">
-                {" "}
-                {item?.alphaFollowingCount ?? 0}
-              </p>
-            )}
-          </div>
+        <div className="border border-white border-opacity-10 p-4 rounded-lg">
+          <p>Total Alpha Following</p>
+
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <p className="text-xl max-lg:text-sm">
+              {" "}
+              {item?.alphaFollowingCount ?? 0}
+            </p>
+          )}
         </div>
       </div>
     </div>
