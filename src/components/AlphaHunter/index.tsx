@@ -205,7 +205,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         />
       </div>
 
-      <div className="px-[100px] max-[1024px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
+      <div className="px-[100px] max-[1450px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
         <AlphaCard
           items={formatDataChart(
             alphaHunterDetail?.data?.domByBlockchain ?? {}
@@ -224,7 +224,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         />
       </div>
 
-      <div className="px-[100px] text-sm max-lg:px-[10px]">
+      <div className="px-[100px] max-[1450px]:px-4 text-sm max-lg:px-[10px]">
         <div>
           <div className="flex items-center mt-14 ">
             <h3 className="text-lg font-workSansSemiBold  mr-3">
@@ -235,7 +235,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
             BETA
           </div> */}
           </div>
-          <div className="mt-5 mx-8">
+          <div className="mt-5 mx-8 max-[1450px]:mx-0">
             <TableCommon
               columns={followersAlphaHunter ?? []}
               data={listEarlyFollower.data?.items ?? []}
@@ -271,7 +271,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
             BETA
           </div> */}
           </div>
-          <div className="mt-5 mx-8">
+          <div className="mt-5 mx-8 max-[1450px]:mx-0">
             <TableCommon
               columns={followersAlphaHunter ?? []}
               data={listLastFollower.data?.items ?? []}
@@ -309,7 +309,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
 
           {listAlphaHunterChangeLog.data?.items?.length > 0 ? (
-            <div className="mt-5 mx-8">
+            <div className="mt-5 mx-8 max-[1450px]:mx-0">
               <TableCommon
                 columns={changeLogs ?? []}
                 data={

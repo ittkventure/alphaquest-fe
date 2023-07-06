@@ -1,4 +1,4 @@
-import React, { FC, memo, useContext, useState } from "react";
+import React, { FC, memo, useContext, useEffect, useState } from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -20,9 +20,16 @@ import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLog
 interface IProjectDetail {
   userId?: string;
   onChangeHeart?: () => void;
+  isPaddingX?: boolean;
+  isPage?: boolean;
 }
 
-const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
+const ProjectDetail: FC<IProjectDetail> = ({
+  userId,
+  onChangeHeart,
+  isPaddingX,
+  isPage,
+}) => {
   if (!userId) return <div />;
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
@@ -30,9 +37,9 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
-
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
+  const [isInWatchList, setIsInWatchList] = useState<boolean>(false);
 
   const listAlphaHunter = useQuery(
     [
@@ -86,7 +93,6 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       "getTwitterDetails",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
-      isLoadingHeart,
     ],
     queryFn: async () =>
       await apiTwitter.getTwitterDetails(
@@ -94,6 +100,11 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         authState?.access_token ?? ""
       ),
   });
+
+  useEffect(() => {
+    if (twitterDetail.data?.inWatchlist !== undefined)
+      setIsInWatchList(twitterDetail.data?.inWatchlist);
+  }, [twitterDetail.data?.inWatchlist]);
 
   // const twitterChartScore = useQuery<ChartData[]>({
   //   queryKey: [
@@ -145,13 +156,18 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
       setIsLoadingHeart(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
+        await apiTwitter.putToWatchList(
+          twitterDetail.data?.userId ?? "",
+          authState?.access_token
+        );
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             twitterDetail.data?.name ?? "project"
           } to watchlist`,
         });
         onChangeHeart ? onChangeHeart() : null;
+
+        setIsInWatchList(!isInWatchList);
       } else {
         toast.warning("Please login for use this feature");
       }
@@ -180,7 +196,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
             customClassName="ml-0 mr-0 w-[14px] h-[14px]"
             strokeWidth="1"
           />
-        ) : twitterDetail.data?.inWatchlist ? (
+        ) : isInWatchList ? (
           <HeartIconSolid className="h-5 w-7 text-primary-500 transition-all duration-300" />
         ) : (
           <HeartIcon className="h-5 w-7 hover:text-success-500 transition-all duration-300" />
@@ -442,6 +458,7 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
               }}
               isSortedDesc={isDescSortedChangeLog}
               isShowHeader={false}
+              isPaddingX={isPaddingX}
             />
           </div>
         ) : !listUserChangeLog.isLoading ? (
@@ -463,10 +480,14 @@ const ProjectDetail: FC<IProjectDetail> = ({ userId, onChangeHeart }) => {
         <div className="h-32" />
       ) : null}
 
-      {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+      {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM || isPage ? (
         <></>
       ) : (
-        <div className="absolute bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]">
+        <div
+          className={`${
+            isPage ? "fixed" : "absolute"
+          } bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]`}
+        >
           <div className="w-full h-[200px] flex flex-col justify-center items-center bg-linear-backdrop">
             <p className="mb-4">Upgrade account to see all</p>
 
