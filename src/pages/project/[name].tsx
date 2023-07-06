@@ -13,8 +13,7 @@ interface Props {
 }
 
 const ProjectPage: FC<Props> = ({ nameProject }) => {
-  const { authState, accountExtendDetail, setTypePaymentAction } =
-    useContext(AuthContext);
+  const { accountExtendDetail } = useContext(AuthContext);
   return (
     <AppLayout>
       <div className="w-full">
