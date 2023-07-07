@@ -17,15 +17,6 @@ const SelectFeedback = () => {
   const listSelectFeedback = [
     {
       id: 0,
-      stepType: "COST",
-      label: "Cost",
-      icon: (color: string) => <DollarIcon color={color} />,
-      onClick: () => {
-        nextStep(3);
-      },
-    },
-    {
-      id: 1,
       stepType: "MISSING_FEATURES",
       label: "Missing features",
       icon: (color: string) => <MissingIcon color={color} />,
@@ -33,6 +24,16 @@ const SelectFeedback = () => {
         nextStep(3);
       },
     },
+    {
+      id: 1,
+      stepType: "COST",
+      label: "Cost",
+      icon: (color: string) => <DollarIcon color={color} />,
+      onClick: () => {
+        nextStep(3);
+      },
+    },
+
     {
       id: 2,
       stepType: "TECHNICAL_ISSUES",
