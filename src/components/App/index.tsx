@@ -31,12 +31,16 @@ interface AppContentTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
   tab?: "watchlist" | "trending" | "newest" | string;
+  chainsParams?: string[];
+  categoryParams?: string[];
 }
 
 const AppContent: FC<AppContentTypes> = ({
   listItemsProps,
   totalCountProps,
   tab,
+  chainsParams,
+  categoryParams,
 }) => {
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -134,8 +138,11 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
+          categories:
+            categoryParams ??
+            (categorySelected?.code ? [categorySelected.code] : []),
+          chains:
+            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -180,8 +187,11 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: newest === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
+          categories:
+            categoryParams ??
+            (categorySelected?.code ? [categorySelected.code] : []),
+          chains:
+            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -354,7 +364,7 @@ const AppContent: FC<AppContentTypes> = ({
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
-          <div className="flex max-lg:items-center justify-between max-lg:mt-5">
+          {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
             <div className="mr-3">
               <SelectCustom
                 placeholder="Chain - All"
@@ -383,12 +393,16 @@ const AppContent: FC<AppContentTypes> = ({
                 }}
               />
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-7 max-lg:mt-9">
           {isSearchLoading ? null : _renderTable()}
-          {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
+          {errorMsg ? (
+            <div className="h-[60vh] flex justify-center items-start">
+              <p className="mt-10 text-center">{errorMsg}</p>
+            </div>
+          ) : null}
           {isLoading || isSearchLoading ? (
             <SkeletonLoading numberOfRow={10} />
           ) : null}
