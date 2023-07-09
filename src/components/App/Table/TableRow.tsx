@@ -10,6 +10,7 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -91,7 +92,21 @@ const TableRow: FC<TableRowTypes> = ({
   const _renderCategories = () => {
     if (!itemState.categories) return "";
     if (itemState.categories.length === 0) return "";
-    return itemState.categories.map((value) => ` · ${value.name}`);
+    return itemState.categories.map((value) => (
+      <a
+        href={`/category/${value.name}`}
+        onClick={() => {
+          mixpanelTrack(event_name_enum.on_filter_category, {
+            url: router.pathname,
+            name: value.name,
+          });
+        }}
+      >
+        <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 mr-1">
+          {` · ${value.name}`}
+        </p>
+      </a>
+    ));
   };
 
   const _renderHeartButton = () => {
@@ -147,20 +162,20 @@ const TableRow: FC<TableRowTypes> = ({
           : `flex justify-between  overflow-hidden mt-4 h-auto max-lg:pb-4 max-lg:border-b border-b-secondary-600 max-lg:border-b-secondary-600 `
       }
     >
-      <div
-        className="flex items-center cursor-pointer"
-        onClick={
-          onClickAction
-            ? () => {
-                if (itemState.name !== "UNKNOWN") onClickAction();
-              }
-            : () => {}
-        }
-      >
+      <div className="flex items-center cursor-pointer">
         <div className="mr-4">
           <p className="text-right w-6">{index + 1}</p>
         </div>
-        <div className="mr-4">
+        <div
+          className="mr-4"
+          onClick={
+            onClickAction
+              ? () => {
+                  if (itemState.name !== "UNKNOWN") onClickAction();
+                }
+              : () => {}
+          }
+        >
           <div
             className={`w-10 h-10 rounded-[50%]  ${
               itemState.profileImageUrl === "UNKNOWN"
@@ -188,6 +203,13 @@ const TableRow: FC<TableRowTypes> = ({
                 ? ""
                 : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
             }`}
+            onClick={
+              onClickAction
+                ? () => {
+                    if (itemState.name !== "UNKNOWN") onClickAction();
+                  }
+                : () => {}
+            }
           >
             {itemState.name !== "UNKNOWN" ? (
               <>
@@ -213,21 +235,60 @@ const TableRow: FC<TableRowTypes> = ({
               <div />
             )}
           </div>
-          <div className="mt-1">
+          <div
+            className="mt-1"
+            onClick={
+              onClickAction
+                ? () => {
+                    if (itemState.name !== "UNKNOWN") onClickAction();
+                  }
+                : () => {}
+            }
+          >
             <p className="font-workSansRegular max-lg:text-xs text-sm max-lg:w-[50vw]">
               {itemState.description}
             </p>
           </div>
-          <div>
-            <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500">
+          <div className="flex">
+            <p
+              onClick={
+                onClickAction
+                  ? () => {
+                      if (itemState.name !== "UNKNOWN") onClickAction();
+                    }
+                  : () => {}
+              }
+              className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 z-50 mr-1"
+            >
               {moment(itemState.discoveredTime).fromNow()}
-              {itemState.chain ? ` · ${itemState.chain.name}` : ""}
-              {_renderCategories()}
             </p>
+            <a
+              href={`/chain/${itemState.chain?.name}`}
+              onClick={() => {
+                mixpanelTrack(event_name_enum.on_filter_chain, {
+                  url: router.pathname,
+                  name: itemState.chain?.name,
+                });
+              }}
+            >
+              <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 z-50 mr-1 ">
+                {itemState.chain ? ` · ${itemState.chain.name} ${" "}` : ""}
+              </p>
+            </a>
+            {_renderCategories()}
           </div>
         </div>
       </div>
-      <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
+      <div
+        className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center "
+        onClick={
+          onClickAction
+            ? () => {
+                if (itemState.name !== "UNKNOWN") onClickAction();
+              }
+            : () => {}
+        }
+      >
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{itemState.trendingScore}</p>
         </div>
