@@ -12,11 +12,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 interface Props {
-  listItems?: TwitterItem[];
-  totalCount?: string;
+  chainQuery?: string;
+  categoryQuery?: string;
 }
 
-const AppPage: NextPage<Props> = () => {
+const AppPage: NextPage<Props> = ({ chainQuery, categoryQuery }) => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
   const apiTwitter = new ApiTwitter();
 
@@ -49,6 +49,8 @@ const AppPage: NextPage<Props> = () => {
         <AppContent
           listItemsProps={data.items}
           totalCountProps={data.discoveredProjectCount}
+          chainQuery={chainQuery}
+          categoryQuery={categoryQuery}
         />
       ) : (
         <div className="w-full">
@@ -67,8 +69,11 @@ const AppPage: NextPage<Props> = () => {
 
 export default AppPage;
 
-export async function getServerSideProps({ params }: any) {
+export async function getServerSideProps({ params, query }: any) {
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      chainQuery: query?.chain ?? null,
+      categoryQuery: query?.category ?? null,
+    }, // will be passed to the page component as props
   };
 }
