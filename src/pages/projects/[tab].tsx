@@ -12,9 +12,16 @@ import { useQuery } from "react-query";
 interface Props {
   tab?: string;
   newest: boolean;
+  chainQuery?: string;
+  categoryQuery?: string;
 }
 
-const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
+const AppPage: NextPage<Props> = ({
+  tab,
+  newest,
+  chainQuery,
+  categoryQuery,
+}: Props) => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
   const apiTwitter = new ApiTwitter();
 
@@ -32,6 +39,8 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
           timeFrame: "7D",
           sortBy: "SCORE",
           newest: newest,
+          chains: chainQuery ? [chainQuery] : [],
+          categories: categoryQuery ? [categoryQuery] : [],
         },
         authState?.access_token ?? "",
         authState?.access_token &&
@@ -50,6 +59,8 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
             tab === "watchlist" ? data.totalCount : data.discoveredProjectCount
           }
           tab={tab}
+          chainQuery={chainQuery}
+          categoryQuery={categoryQuery}
         />
       ) : (
         <div className="w-full">
@@ -68,11 +79,13 @@ const AppPage: NextPage<Props> = ({ tab, newest }: Props) => {
 
 export default AppPage;
 
-export async function getServerSideProps({ params }: any) {
+export async function getServerSideProps({ params, query }: any) {
   return {
     props: {
       tab: params?.tab,
       newest: params?.tab === "newest" ? true : false,
+      chainQuery: query?.chain ?? null,
+      categoryQuery: query?.category ?? null,
     }, // will be passed to the page component as props
   };
 }
