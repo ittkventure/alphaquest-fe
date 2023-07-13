@@ -34,6 +34,8 @@ const AppPage: NextPage<Props> = ({ chainQuery, categoryQuery }) => {
           timeFrame: "7D",
           sortBy: "SCORE",
           newest: false,
+          chains: chainQuery ? [chainQuery] : [],
+          categories: categoryQuery ? [categoryQuery] : [],
         },
         authState?.access_token ?? "",
         authState?.access_token &&
