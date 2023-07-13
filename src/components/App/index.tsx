@@ -34,7 +34,6 @@ interface AppContentTypes {
   categoryParams?: string[];
   chainQuery?: string;
   categoryQuery?: string;
-  typeUrl?: "projects" | "trending" | "newest";
 }
 
 const AppContent: FC<AppContentTypes> = ({
@@ -45,7 +44,6 @@ const AppContent: FC<AppContentTypes> = ({
   categoryParams,
   chainQuery,
   categoryQuery,
-  typeUrl,
 }) => {
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -148,6 +146,20 @@ const AppContent: FC<AppContentTypes> = ({
       setPageNumber(1);
       setHasLoadMore(true);
 
+      let categoryCheck = [];
+      let chainCheck = [];
+
+      if (categoryQuery) categoryCheck = [categoryQuery];
+      else
+        categoryCheck =
+          categoryParams ??
+          (categorySelected?.code ? [categorySelected.code] : []);
+
+      if (categoryQuery) chainCheck = [categoryQuery];
+      else
+        chainCheck =
+          chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []);
+
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber: 1,
@@ -156,11 +168,8 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
-          categories:
-            categoryParams ??
-            (categorySelected?.code ? [categorySelected.code] : []),
-          chains:
-            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
+          categories: categoryCheck,
+          chains: chainCheck,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -198,6 +207,21 @@ const AppContent: FC<AppContentTypes> = ({
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
+
+      let categoryCheck = [];
+      let chainCheck = [];
+
+      if (categoryQuery) categoryCheck = [categoryQuery];
+      else
+        categoryCheck =
+          categoryParams ??
+          (categorySelected?.code ? [categorySelected.code] : []);
+
+      if (categoryQuery) chainCheck = [categoryQuery];
+      else
+        chainCheck =
+          chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []);
+
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber,
@@ -205,11 +229,8 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: newest === "newest" ? true : false,
-          categories:
-            categoryParams ??
-            (categorySelected?.code ? [categorySelected.code] : []),
-          chains:
-            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
+          categories: categoryCheck,
+          chains: chainCheck,
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -397,7 +418,11 @@ const AppContent: FC<AppContentTypes> = ({
                     setChainSelected(item);
                     let query = "";
                     if (!item?.code) {
-                      query = "";
+                      if (categoryQuery) {
+                        query = `?category=${categoryQuery}`;
+                      } else {
+                        query = "";
+                      }
                     } else if (categorySelected?.code) {
                       query = `?category=${categorySelected?.code}&chain=${item?.code}`;
                     } else {
@@ -421,7 +446,11 @@ const AppContent: FC<AppContentTypes> = ({
                     setCategorySelected(item);
                     let query = "";
                     if (!item?.code) {
-                      query = "";
+                      if (chainQuery) {
+                        query = `?chain=${chainQuery}`;
+                      } else {
+                        query = "";
+                      }
                     } else if (chainSelected?.code) {
                       query = `?category=${item?.code}&chain=${chainSelected?.code}`;
                     } else {
