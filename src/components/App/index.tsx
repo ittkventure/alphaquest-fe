@@ -146,20 +146,6 @@ const AppContent: FC<AppContentTypes> = ({
       setPageNumber(1);
       setHasLoadMore(true);
 
-      let categoryCheck = [];
-      let chainCheck = [];
-
-      if (categoryQuery) categoryCheck = [categoryQuery];
-      else
-        categoryCheck =
-          categoryParams ??
-          (categorySelected?.code ? [categorySelected.code] : []);
-
-      if (categoryQuery) chainCheck = [categoryQuery];
-      else
-        chainCheck =
-          chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []);
-
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber: 1,
@@ -168,8 +154,11 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
-          categories: categoryCheck,
-          chains: chainCheck,
+          categories:
+            categoryParams ??
+            (categorySelected?.code ? [categorySelected.code] : []),
+          chains:
+            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -208,20 +197,6 @@ const AppContent: FC<AppContentTypes> = ({
       setIsLoadingMore(true);
       setErrorMsg("");
 
-      let categoryCheck = [];
-      let chainCheck = [];
-
-      if (categoryQuery) categoryCheck = [categoryQuery];
-      else
-        categoryCheck =
-          categoryParams ??
-          (categorySelected?.code ? [categorySelected.code] : []);
-
-      if (categoryQuery) chainCheck = [categoryQuery];
-      else
-        chainCheck =
-          chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []);
-
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber,
@@ -229,8 +204,11 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: newest === "newest" ? true : false,
-          categories: categoryCheck,
-          chains: chainCheck,
+          categories:
+            categoryParams ??
+            (categorySelected?.code ? [categorySelected.code] : []),
+          chains:
+            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
