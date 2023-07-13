@@ -395,19 +395,15 @@ const AppContent: FC<AppContentTypes> = ({
                       name: item?.name,
                     });
                     setChainSelected(item);
-                    let query = {};
-                    if (categorySelected?.code) {
-                      query = {
-                        chain: item?.code,
-                        category: categorySelected.code,
-                      };
+                    let query = "";
+                    if (!item?.code) {
+                      query = "";
+                    } else if (categorySelected?.code) {
+                      query = `?category=${categorySelected?.code}&chain=${item?.code}`;
                     } else {
-                      query = { chain: item?.code };
+                      query = `?chain=${item?.code}`;
                     }
-                    router.push({
-                      pathname: `/projects/${tab ?? ""}`,
-                      query,
-                    });
+                    router.push(`/projects/${tab ?? ""}${query}`);
                   }}
                   selectedValue={chainSelected}
                 />
@@ -423,20 +419,16 @@ const AppContent: FC<AppContentTypes> = ({
                       name: item?.name,
                     });
                     setCategorySelected(item);
-                    let query = {};
-                    if (chainSelected?.code) {
-                      query = {
-                        category: item?.code,
-                        chain: chainSelected?.code,
-                      };
+                    let query = "";
+                    if (!item?.code) {
+                      query = "";
+                    } else if (chainSelected?.code) {
+                      query = `?category=${item?.code}&chain=${chainSelected?.code}`;
                     } else {
-                      query = { category: item?.code };
+                      query = `?category=${item?.code}`;
                     }
 
-                    router.push({
-                      pathname: `/projects/${tab ?? ""}`,
-                      query,
-                    });
+                    router.push(`/projects/${tab ?? ""}${query}`);
                   }}
                   selectedValue={categorySelected}
                 />
