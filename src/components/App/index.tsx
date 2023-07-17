@@ -88,11 +88,25 @@ const AppContent: FC<AppContentTypes> = ({
     fetchCategoryAndChain("CATEGORY");
   }, []);
 
+  const { category: categoryQueryPath, chain: chainQueryPath } = router.query;
+
   useEffect(() => {
     if (categoryQuery)
-      setCategorySelected({ name: categoryQuery, code: categoryQuery });
+      setCategorySelected({
+        name: categoryQueryPath?.toString() ?? categoryQuery,
+        code: categoryQuery,
+      });
+    else {
+    }
+
     if (chainQuery) setChainSelected({ name: chainQuery, code: chainQuery });
   }, [categoryQuery, chainQuery]);
+
+  useEffect(() => {
+    if (!categoryQueryPath)
+      setCategorySelected({ name: "Category - All", code: "" });
+    if (!chainQueryPath) setChainSelected({ name: "Chain - All", code: "" });
+  }, [categoryQueryPath, chainQueryPath]);
 
   useEffect(() => {
     if (firstCalled) fetchData();
