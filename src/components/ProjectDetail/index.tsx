@@ -348,7 +348,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="#6B7280"
-                                className="w-6 h-6 mt-1 hover:stroke-slate-200"
+                                className="w-6 h-6 mt-[6px] hover:stroke-slate-200"
                               >
                                 <path
                                   strokeLinecap="round"
