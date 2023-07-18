@@ -50,7 +50,6 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
   const [isInWatchList, setIsInWatchList] = useState<boolean>(false);
-  const shareUrl = `https://alphaquest.io${router.asPath}`;
 
   const listAlphaHunter = useQuery(
     [
@@ -71,6 +70,8 @@ const ProjectDetail: FC<IProjectDetail> = ({
         authState?.access_token ?? ""
       )
   );
+
+  const shareUrl = `https://alphaquest.io/project/${userId}`;
 
   const listUserChangeLog = useQuery(
     [
