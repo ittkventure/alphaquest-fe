@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
           theme="dark"
           hideProgressBar
           autoClose={1000}
-          style={{ color: "#E25148" }}
+          style={{ color: "#E25148", zIndex: 999999 }}
           transition={Slide}
         />
       </QueryClientProvider>

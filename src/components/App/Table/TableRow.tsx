@@ -13,8 +13,6 @@ import {
   LinkTreeIcon,
   MediumIcon,
   OpenSeaIcon,
-  TeleIcon,
-  UnknowIcon,
   WebIcon,
   TelegramIcon,
 } from "@/assets/icons";
@@ -56,7 +54,7 @@ export const listUrl = [
   },
   {
     key: "Other",
-    icon: UnknowIcon,
+    icon: WebIcon,
   },
   {
     key: "Website",
