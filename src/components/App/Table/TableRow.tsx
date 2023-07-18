@@ -7,13 +7,62 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import {
+  DexToolIcon,
+  DiscordIcon,
+  LinkTreeIcon,
+  MediumIcon,
+  OpenSeaIcon,
+  TeleIcon,
+  UnknowIcon,
+  WebIcon,
+  TelegramIcon,
+} from "@/assets/icons";
 
 import moment from "moment";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
+export const listUrl = [
+  {
+    key: "Telegram",
+    icon: TelegramIcon,
+  },
+  {
+    key: "Twitter",
+    icon: TwitterIcon,
+  },
+  {
+    key: "Medium",
+    icon: MediumIcon,
+  },
+  {
+    key: "Discord",
+    icon: DiscordIcon,
+  },
+  {
+    key: "DexTool",
+    icon: DexToolIcon,
+  },
+  {
+    key: "OpenSea",
+    icon: OpenSeaIcon,
+  },
+  {
+    key: "LinkTree",
+    icon: LinkTreeIcon,
+  },
+  {
+    key: "Other",
+    icon: UnknowIcon,
+  },
+  {
+    key: "Website",
+    icon: WebIcon,
+  },
+];
 
 export interface TableObject {
   index: number;
@@ -204,20 +253,22 @@ const TableRow: FC<TableRowTypes> = ({
                 ? ""
                 : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
             }`}
-            onClick={
-              onClickAction
-                ? () => {
-                    if (itemState.name !== "UNKNOWN") onClickAction();
-                  }
-                : () => {}
-            }
           >
             {itemState.name !== "UNKNOWN" ? (
               <>
-                <p className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2">
+                <p
+                  onClick={
+                    onClickAction
+                      ? () => {
+                          if (itemState.name !== "UNKNOWN") onClickAction();
+                        }
+                      : () => {}
+                  }
+                  className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2"
+                >
                   {itemState.name}
                 </p>
-                <div>
+                <div className="flex">
                   <button
                     onClick={() => {
                       mixpanelTrack(event_name_enum.outbound, {
@@ -229,6 +280,32 @@ const TableRow: FC<TableRowTypes> = ({
                   >
                     <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
                   </button>
+
+                  {itemState?.urls?.map((value, index) => {
+                    const url = listUrl.find(
+                      (item) => item.key === value.type
+                    ) ?? { icon: WebIcon, key: "#" };
+                    return (
+                      <button
+                        key={value.type + index}
+                        onClick={() => {
+                          mixpanelTrack(event_name_enum.outbound, {
+                            url: value.url,
+                            message: `Link to ${url.key} at project page`,
+                          });
+                          window.open(value.url, "_blank");
+                        }}
+                        className="ml-2"
+                      >
+                        <Image
+                          src={url.icon as any}
+                          width={16}
+                          height={13}
+                          alt="t-i"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
                 {_renderNewTag()}
               </>
