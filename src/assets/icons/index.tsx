@@ -25,6 +25,15 @@ import MailIcon from "./mail-icon.svg";
 import TeleIcon from "./tele-icon.svg";
 import TickCircle from "./tick-circle.svg";
 
+import DexToolIcon from "./dex-tool-icon.svg";
+import GithubIcon from "./github-icon.svg";
+import LinkTreeIcon from "./linktree-icon.svg";
+import MediumIcon from "./medium-icon.svg";
+import OpenSeaIcon from "./opensea-icon.svg";
+import WebIcon from "./web-icon.svg";
+import UnknowIcon from "./unknow-icon.svg";
+import TelegramIcon from "./telegram-icon.svg";
+
 export {
   QuoteIcon,
   DocumentTextIcon,
@@ -51,4 +60,12 @@ export {
   MailIcon,
   TeleIcon,
   TickCircle,
+  DexToolIcon,
+  GithubIcon,
+  LinkTreeIcon,
+  MediumIcon,
+  OpenSeaIcon,
+  WebIcon,
+  UnknowIcon,
+  TelegramIcon,
 };

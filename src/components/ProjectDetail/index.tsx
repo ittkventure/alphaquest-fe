@@ -13,9 +13,10 @@ import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
-import { CrownIcon, TwitterIcon } from "@/assets/icons";
+import { CrownIcon, TwitterIcon, WebIcon } from "@/assets/icons";
 import Image from "next/image";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
+import { listUrl } from "../App/Table/TableRow";
 
 interface IProjectDetail {
   userId?: string;
@@ -278,6 +279,31 @@ const ProjectDetail: FC<IProjectDetail> = ({
                           alt="t-i"
                         />
                       </button>
+                      {twitterDetail.data?.urls?.map((value, index) => {
+                        const url = listUrl.find(
+                          (item) => item.key === value.type
+                        ) ?? { icon: WebIcon, key: "#" };
+                        return (
+                          <button
+                            key={value.type + index}
+                            onClick={() => {
+                              mixpanelTrack(event_name_enum.outbound, {
+                                url: value.url,
+                                message: `Link to ${url.key} at project page`,
+                              });
+                              window.open(value.url, "_blank");
+                            }}
+                            className="ml-2"
+                          >
+                            <Image
+                              src={url.icon as any}
+                              width={16}
+                              height={13}
+                              alt="t-i"
+                            />
+                          </button>
+                        );
+                      })}
                     </div>
                     <div className="ml-20 max-lg:ml-[20px]">
                       <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">

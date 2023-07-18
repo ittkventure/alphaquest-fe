@@ -55,6 +55,12 @@ export interface TwitterItem {
   chain?: TwitterChain;
   categories?: Array<TwitterCategory>;
   inWatchlist?: boolean;
+  urls: URLS[];
+}
+
+export interface URLS {
+  type: string;
+  url: string;
 }
 
 export interface FollowerItemResponse {
@@ -98,6 +104,7 @@ export interface TwitterDetails {
   discoveredDate: string;
   inWatchlist: boolean;
   twitterUrl: string;
+  urls: URLS[];
 }
 
 export interface ChartData {
