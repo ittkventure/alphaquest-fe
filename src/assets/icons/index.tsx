@@ -33,6 +33,7 @@ import OpenSeaIcon from "./opensea-icon.svg";
 import WebIcon from "./web-icon.svg";
 import UnknowIcon from "./unknow-icon.svg";
 import TelegramIcon from "./telegram-icon.svg";
+import CopyShareIcon from "./copy-share.svg";
 
 export {
   QuoteIcon,
@@ -68,4 +69,5 @@ export {
   WebIcon,
   UnknowIcon,
   TelegramIcon,
+  CopyShareIcon,
 };

@@ -2,7 +2,6 @@ import React, { FC, useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
-import useColumFollowers from "@/hooks/useTable/useColumFollowers";
 import { AlphaHunterDetail } from "@/api-client/types/TwitterType";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
