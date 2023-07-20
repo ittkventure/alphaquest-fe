@@ -79,6 +79,13 @@ export interface FollowerItem {
   twitterUrl: string;
   followersAtTime?: number;
   followingTime?: string;
+  attributes?: AttributesType[];
+}
+
+export interface AttributesType {
+  code: string;
+  name: string;
+  type: "CHAIN" | "CATEGORY";
 }
 
 export interface FollowerRequest {
@@ -133,6 +140,7 @@ export interface AlphaHunterDetail {
   tags: string[];
   domByBlockchain: DomByBlockchain;
   domByCategory: DomByCategory;
+  attributes: AttributesType[];
 }
 
 export interface DomByBlockchain {

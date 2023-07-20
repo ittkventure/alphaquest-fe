@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import Spinner from "../Spinner";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 
 interface IAlphaProfileCard {
   item?: AlphaHunterDetail;
@@ -17,14 +18,34 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
   const _renderNewTag = () => {
     return (
       <div className="flex mt-3">
-        {item?.tags?.map((value, index) => {
+        {item?.attributes?.map((value, index) => {
           return (
-            <div
-              key={index}
-              className="border border-white text-white py-[1px] px-1 text-xs mr-2"
+            <a
+              href={
+                value.type === "CHAIN"
+                  ? `/projects?chain=${value?.code}`
+                  : `/projects?category=${value?.code}`
+              }
+              onClick={() => {
+                mixpanelTrack(
+                  value.type === "CHAIN"
+                    ? event_name_enum.on_filter_chain
+                    : event_name_enum.on_filter_category,
+                  {
+                    url: router.pathname,
+                    name: value?.name,
+                    code: value?.code,
+                  }
+                );
+              }}
             >
-              <p>{value}</p>
-            </div>
+              <div
+                key={index}
+                className="border border-white text-white py-[1px] px-1 text-xs mr-2"
+              >
+                <p>{value.name}</p>
+              </div>
+            </a>
           );
         })}
       </div>

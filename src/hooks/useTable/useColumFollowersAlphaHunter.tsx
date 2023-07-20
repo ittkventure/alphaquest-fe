@@ -1,13 +1,14 @@
 import moment from "moment";
 import React, { useContext, useMemo } from "react";
 import { CellProps, Column } from "react-table";
-import { FollowerItem } from "@/api-client/types/TwitterType";
+import { AttributesType, FollowerItem } from "@/api-client/types/TwitterType";
 import Image from "next/image";
 import { TwitterBlueIcon } from "@/assets/icons";
 import Link from "next/link";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
+import { useRouter } from "next/router";
 
 interface IAlphaHunterFollowers {
   isLinkToAlphaHunter?: boolean;
@@ -17,6 +18,8 @@ const useColumFollowersAlphaHunter = ({
   isLinkToAlphaHunter,
 }: IAlphaHunterFollowers) => {
   const { accountExtendDetail } = useContext(AuthContext);
+  const router = useRouter();
+
   const followersAlphaHunter: Column<FollowerItem>[] = useMemo(
     () => [
       {
@@ -153,18 +156,38 @@ const useColumFollowersAlphaHunter = ({
       },
       {
         Header: "Tags",
-        accessor: "tags",
+        accessor: "attributes",
         Cell: ({ value }: CellProps<FollowerItem>) => {
           if (!value) return <div className="flex"></div>;
           return (
             <div className="flex">
-              {value.map((value: any, index: number) => (
-                <p
-                  key={index.toString()}
-                  className="px-2 py-[2px] bg-white bg-opacity-10 flex justify-center items-center mr-1"
+              {value.map((value: AttributesType, index: number) => (
+                <a
+                  href={
+                    value.type === "CHAIN"
+                      ? `/projects?chain=${value?.code}`
+                      : `/projects?category=${value?.code}`
+                  }
+                  onClick={() => {
+                    mixpanelTrack(
+                      value.type === "CHAIN"
+                        ? event_name_enum.on_filter_chain
+                        : event_name_enum.on_filter_category,
+                      {
+                        url: router.pathname,
+                        name: value?.name,
+                        code: value?.code,
+                      }
+                    );
+                  }}
                 >
-                  {value}
-                </p>
+                  <p
+                    key={index.toString()}
+                    className="px-2 py-[2px] bg-white bg-opacity-10 flex justify-center items-center mr-1"
+                  >
+                    {value.name}
+                  </p>
+                </a>
               ))}
             </div>
           );
