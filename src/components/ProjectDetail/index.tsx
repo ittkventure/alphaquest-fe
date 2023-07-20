@@ -370,12 +370,26 @@ const ProjectDetail: FC<IProjectDetail> = ({
                   <div className="flex mt-3">
                     {twitterDetail.data && twitterDetail.data?.categories
                       ? twitterDetail.data?.categories?.map((value, index) => (
-                          <p
-                            key={index.toString()}
-                            className="text-sm border px-2 mr-2"
+                          <a
+                            href={`/projects?category=${value?.code}`}
+                            onClick={() => {
+                              mixpanelTrack(
+                                event_name_enum.on_filter_category,
+                                {
+                                  url: router.pathname,
+                                  name: value?.name,
+                                  code: value?.code,
+                                }
+                              );
+                            }}
                           >
-                            {value.name}
-                          </p>
+                            <p
+                              key={index.toString()}
+                              className="text-sm border px-2 mr-2"
+                            >
+                              {value.name}
+                            </p>
+                          </a>
                         ))
                       : null}
                     {/* {_renderNewTag()} */}
