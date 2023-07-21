@@ -5,27 +5,18 @@ import Header from "@/components/App/Header";
 import Spinner from "@/components/Spinner";
 import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
-import { NextPage } from "next";
-import React, { useContext } from "react";
+import React, { FC, useContext } from "react";
 import { useQuery } from "react-query";
 
 interface Props {
-  tab?: string;
-  newest: boolean;
-  chainQuery?: string;
-  categoryQuery?: string;
+  name?: string;
 }
 
-const AppPage: NextPage<Props> = ({
-  tab,
-  newest,
-  chainQuery,
-  categoryQuery,
-}: Props) => {
+const ChainPage: FC<Props> = ({ name }) => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
   const apiTwitter = new ApiTwitter();
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, error, data } = useQuery({
     queryKey: [
       "getListTwitter",
       accountExtendDetail?.currentPlanKey,
@@ -38,9 +29,8 @@ const AppPage: NextPage<Props> = ({
           pageSize: accountExtendDetail?.currentPlanKey === "FREE" ? 10 : 20,
           timeFrame: "7D",
           sortBy: "SCORE",
-          newest: newest,
-          chains: chainQuery ? [chainQuery] : [],
-          categories: categoryQuery ? [categoryQuery] : [],
+          newest: false,
+          chains: [name ?? ""],
         },
         authState?.access_token ?? "",
         authState?.access_token &&
@@ -55,12 +45,8 @@ const AppPage: NextPage<Props> = ({
       {isLoading === false ? (
         <AppContent
           listItemsProps={data.items}
-          totalCountProps={
-            tab === "watchlist" ? data.totalCount : data.discoveredProjectCount
-          }
-          tab={tab}
-          chainQuery={chainQuery}
-          categoryQuery={categoryQuery}
+          totalCountProps={data.discoveredProjectCount}
+          chainsParams={[name ?? ""]}
         />
       ) : (
         <div className="w-full">
@@ -77,15 +63,18 @@ const AppPage: NextPage<Props> = ({
   );
 };
 
-export default AppPage;
+export default ChainPage;
 
-export async function getServerSideProps({ params, query }: any) {
+export async function getServerSideProps({ params }: any) {
+  const { name } = params;
+
+  if (!name) {
+    return "404";
+  }
+
   return {
     props: {
-      tab: params?.tab,
-      newest: params?.tab === "newest" ? true : false,
-      chainQuery: query?.chain ?? null,
-      categoryQuery: query?.category ?? null,
+      name,
     }, // will be passed to the page component as props
   };
 }

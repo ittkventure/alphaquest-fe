@@ -58,6 +58,9 @@ const Header: FC<IHeader> = ({ title }) => {
     if (router.pathname === "/watchlist/projects") return "Watchlist";
     if (router.pathname.indexOf("/search") !== -1) return "Search";
     if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunter";
+    if (router.pathname.indexOf("/chain") !== -1) return "Chain";
+    if (router.pathname.indexOf("/category") !== -1) return "Category";
+
     if (title) return title;
 
     return capitalized(tab ? tab?.toString() : "Trending");

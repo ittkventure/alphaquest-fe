@@ -7,12 +7,60 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import {
+  DexToolIcon,
+  DiscordIcon,
+  LinkTreeIcon,
+  MediumIcon,
+  OpenSeaIcon,
+  WebIcon,
+  TelegramIcon,
+} from "@/assets/icons";
 
 import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
+export const listUrl = [
+  {
+    key: "Telegram",
+    icon: TelegramIcon,
+  },
+  {
+    key: "Twitter",
+    icon: TwitterIcon,
+  },
+  {
+    key: "Medium",
+    icon: MediumIcon,
+  },
+  {
+    key: "Discord",
+    icon: DiscordIcon,
+  },
+  {
+    key: "DexTool",
+    icon: DexToolIcon,
+  },
+  {
+    key: "OpenSea",
+    icon: OpenSeaIcon,
+  },
+  {
+    key: "LinkTree",
+    icon: LinkTreeIcon,
+  },
+  {
+    key: "Other",
+    icon: WebIcon,
+  },
+  {
+    key: "Website",
+    icon: WebIcon,
+  },
+];
 
 export interface TableObject {
   index: number;
@@ -91,7 +139,22 @@ const TableRow: FC<TableRowTypes> = ({
   const _renderCategories = () => {
     if (!itemState.categories) return "";
     if (itemState.categories.length === 0) return "";
-    return itemState.categories.map((value) => ` · ${value.name}`);
+    return itemState.categories.map((value) => (
+      <a
+        href={`/projects?category=${value.code}`}
+        onClick={() => {
+          mixpanelTrack(event_name_enum.on_filter_category, {
+            url: router.pathname,
+            name: value.name,
+            code: value.code,
+          });
+        }}
+      >
+        <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 mr-1">
+          {` · ${value.name}`}
+        </p>
+      </a>
+    ));
   };
 
   const _renderHeartButton = () => {
@@ -147,20 +210,20 @@ const TableRow: FC<TableRowTypes> = ({
           : `flex justify-between  overflow-hidden mt-4 h-auto max-lg:pb-4 max-lg:border-b border-b-secondary-600 max-lg:border-b-secondary-600 `
       }
     >
-      <div
-        className="flex items-center cursor-pointer"
-        onClick={
-          onClickAction
-            ? () => {
-                if (itemState.name !== "UNKNOWN") onClickAction();
-              }
-            : () => {}
-        }
-      >
+      <div className="flex items-center cursor-pointer">
         <div className="mr-4">
           <p className="text-right w-6">{index + 1}</p>
         </div>
-        <div className="mr-4">
+        <div
+          className="mr-4"
+          onClick={
+            onClickAction
+              ? () => {
+                  if (itemState.name !== "UNKNOWN") onClickAction();
+                }
+              : () => {}
+          }
+        >
           <div
             className={`w-10 h-10 rounded-[50%]  ${
               itemState.profileImageUrl === "UNKNOWN"
@@ -191,10 +254,19 @@ const TableRow: FC<TableRowTypes> = ({
           >
             {itemState.name !== "UNKNOWN" ? (
               <>
-                <p className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2">
+                <p
+                  onClick={
+                    onClickAction
+                      ? () => {
+                          if (itemState.name !== "UNKNOWN") onClickAction();
+                        }
+                      : () => {}
+                  }
+                  className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2"
+                >
                   {itemState.name}
                 </p>
-                <div>
+                <div className="flex">
                   <button
                     onClick={() => {
                       mixpanelTrack(event_name_enum.outbound, {
@@ -206,6 +278,32 @@ const TableRow: FC<TableRowTypes> = ({
                   >
                     <Image src={TwitterIcon} width={16} height={13} alt="t-i" />
                   </button>
+
+                  {itemState?.urls?.map((value, index) => {
+                    const url = listUrl.find(
+                      (item) => item.key === value.type
+                    ) ?? { icon: WebIcon, key: "#" };
+                    return (
+                      <button
+                        key={value.type + index}
+                        onClick={() => {
+                          mixpanelTrack(event_name_enum.outbound, {
+                            url: value.url,
+                            message: `Link to ${url.key} at project page`,
+                          });
+                          window.open(value.url, "_blank");
+                        }}
+                        className="ml-2"
+                      >
+                        <Image
+                          src={url.icon as any}
+                          width={16}
+                          height={13}
+                          alt="t-i"
+                        />
+                      </button>
+                    );
+                  })}
                 </div>
                 {_renderNewTag()}
               </>
@@ -213,21 +311,61 @@ const TableRow: FC<TableRowTypes> = ({
               <div />
             )}
           </div>
-          <div className="mt-1">
+          <div
+            className="mt-1"
+            onClick={
+              onClickAction
+                ? () => {
+                    if (itemState.name !== "UNKNOWN") onClickAction();
+                  }
+                : () => {}
+            }
+          >
             <p className="font-workSansRegular max-lg:text-xs text-sm max-lg:w-[50vw]">
               {itemState.description}
             </p>
           </div>
-          <div>
-            <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500">
+          <div className="flex">
+            <p
+              onClick={
+                onClickAction
+                  ? () => {
+                      if (itemState.name !== "UNKNOWN") onClickAction();
+                    }
+                  : () => {}
+              }
+              className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 z-50 mr-1"
+            >
               {moment(itemState.discoveredTime).fromNow()}
-              {itemState.chain ? ` · ${itemState.chain.name}` : ""}
-              {_renderCategories()}
             </p>
+            <a
+              href={`/projects?chain=${itemState.chain?.code}`}
+              onClick={() => {
+                mixpanelTrack(event_name_enum.on_filter_chain, {
+                  url: router.pathname,
+                  name: itemState.chain?.name,
+                  code: itemState.chain?.code,
+                });
+              }}
+            >
+              <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 z-50 mr-1 ">
+                {itemState.chain ? ` · ${itemState.chain.name} ${" "}` : ""}
+              </p>
+            </a>
+            {_renderCategories()}
           </div>
         </div>
       </div>
-      <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
+      <div
+        className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center "
+        onClick={
+          onClickAction
+            ? () => {
+                if (itemState.name !== "UNKNOWN") onClickAction();
+              }
+            : () => {}
+        }
+      >
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{itemState.trendingScore}</p>
         </div>

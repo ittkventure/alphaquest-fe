@@ -55,6 +55,12 @@ export interface TwitterItem {
   chain?: TwitterChain;
   categories?: Array<TwitterCategory>;
   inWatchlist?: boolean;
+  urls: URLS[];
+}
+
+export interface URLS {
+  type: string;
+  url: string;
 }
 
 export interface FollowerItemResponse {
@@ -73,6 +79,13 @@ export interface FollowerItem {
   twitterUrl: string;
   followersAtTime?: number;
   followingTime?: string;
+  attributes?: AttributesType[];
+}
+
+export interface AttributesType {
+  code: string;
+  name: string;
+  type: "CHAIN" | "CATEGORY";
 }
 
 export interface FollowerRequest {
@@ -90,7 +103,8 @@ export interface TwitterDetails {
   profileImageUrl: string;
   description: string;
   userId: string;
-  categories: Category[];
+  categories: AttributesType[];
+  chains: AttributesType[];
   trendingScore: number;
   twitterFollowersWhenDiscovered: number;
   currentTwitterFollowers: number;
@@ -98,6 +112,7 @@ export interface TwitterDetails {
   discoveredDate: string;
   inWatchlist: boolean;
   twitterUrl: string;
+  urls: URLS[];
 }
 
 export interface ChartData {
@@ -126,6 +141,7 @@ export interface AlphaHunterDetail {
   tags: string[];
   domByBlockchain: DomByBlockchain;
   domByCategory: DomByCategory;
+  attributes: AttributesType[];
 }
 
 export interface DomByBlockchain {

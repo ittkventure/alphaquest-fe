@@ -19,8 +19,6 @@ const SideMenu = () => {
 
   const onGoApp = () => {
     mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
-
-    router.push("/projects");
   };
 
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
@@ -59,7 +57,9 @@ const SideMenu = () => {
       <ul className="w-full">
         <li className="mb-8">
           <button onClick={onGoApp} className="cursor-pointer">
-            <Image src={LogoWithText} width={169} height={40} alt="logo" />
+            <a href="/projects">
+              <Image src={LogoWithText} width={169} height={40} alt="logo" />
+            </a>
           </button>
         </li>
 

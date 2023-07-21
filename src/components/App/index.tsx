@@ -25,18 +25,25 @@ import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
-import { SearchContext } from "@/contexts/useSearchContext";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
   tab?: "watchlist" | "trending" | "newest" | string;
+  chainsParams?: string[];
+  categoryParams?: string[];
+  chainQuery?: string;
+  categoryQuery?: string;
 }
 
 const AppContent: FC<AppContentTypes> = ({
   listItemsProps,
   totalCountProps,
   tab,
+  chainsParams,
+  categoryParams,
+  chainQuery,
+  categoryQuery,
 }) => {
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -64,8 +71,14 @@ const AppContent: FC<AppContentTypes> = ({
   const [firstCalled, setFirstCalled] = useState(false);
   const [chains, setChains] = useState<Array<OptionType>>([]);
   const [category, setCategory] = useState<Array<OptionType>>([]);
-  const [chainSelected, setChainSelected] = useState<OptionType>();
-  const [categorySelected, setCategorySelected] = useState<OptionType>();
+  const [chainSelected, setChainSelected] = useState<OptionType>({
+    code: chainQuery ?? "",
+    name: chainQuery ?? "Chain - All",
+  });
+  const [categorySelected, setCategorySelected] = useState<OptionType>({
+    code: categoryQuery ?? "",
+    name: categoryQuery ?? "Category - All",
+  });
   const apiTwitter = new ApiTwitter();
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
@@ -74,6 +87,26 @@ const AppContent: FC<AppContentTypes> = ({
     fetchCategoryAndChain("CHAIN");
     fetchCategoryAndChain("CATEGORY");
   }, []);
+
+  const { category: categoryQueryPath, chain: chainQueryPath } = router.query;
+
+  useEffect(() => {
+    if (categoryQuery)
+      setCategorySelected({
+        name: categoryQueryPath?.toString() ?? categoryQuery,
+        code: categoryQuery,
+      });
+    else {
+    }
+
+    if (chainQuery) setChainSelected({ name: chainQuery, code: chainQuery });
+  }, [categoryQuery, chainQuery]);
+
+  useEffect(() => {
+    if (!categoryQueryPath)
+      setCategorySelected({ name: "Category - All", code: "" });
+    if (!chainQueryPath) setChainSelected({ name: "Chain - All", code: "" });
+  }, [categoryQueryPath, chainQueryPath]);
 
   useEffect(() => {
     if (firstCalled) fetchData();
@@ -126,6 +159,7 @@ const AppContent: FC<AppContentTypes> = ({
       setErrorMsg("");
       setPageNumber(1);
       setHasLoadMore(true);
+
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber: 1,
@@ -134,8 +168,11 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
+          categories:
+            categoryParams ??
+            (categorySelected?.code ? [categorySelected.code] : []),
+          chains:
+            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -173,6 +210,7 @@ const AppContent: FC<AppContentTypes> = ({
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
+
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber,
@@ -180,8 +218,11 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: newest === "newest" ? true : false,
-          categories: categorySelected?.code ? [categorySelected.code] : [],
-          chains: chainSelected?.code ? [chainSelected.code] : [],
+          categories:
+            categoryParams ??
+            (categorySelected?.code ? [categorySelected.code] : []),
+          chains:
+            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -354,41 +395,76 @@ const AppContent: FC<AppContentTypes> = ({
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
-          <div className="flex max-lg:items-center justify-between max-lg:mt-5">
-            <div className="mr-3">
-              <SelectCustom
-                placeholder="Chain - All"
-                initList={chains}
-                onChangeSelected={(item) => {
-                  mixpanelTrack(event_name_enum.on_filter_chain, {
-                    url: router.pathname,
-                    code: item?.code,
-                    name: item?.name,
-                  });
-                  setChainSelected(item);
-                }}
-              />
+          {!chainsParams && !categoryParams && (
+            <div className="flex max-lg:items-center justify-between max-lg:mt-5">
+              <div className="mr-3">
+                <SelectCustom
+                  placeholder="Chain - All"
+                  initList={chains}
+                  onChangeSelected={(item: any) => {
+                    mixpanelTrack(event_name_enum.on_filter_chain, {
+                      url: router.pathname,
+                      code: item?.code,
+                      name: item?.name,
+                    });
+                    setChainSelected(item);
+                    let query = "";
+                    if (!item?.code) {
+                      if (categoryQuery) {
+                        query = `?category=${categoryQuery}`;
+                      } else {
+                        query = "";
+                      }
+                    } else if (categorySelected?.code) {
+                      query = `?category=${categorySelected?.code}&chain=${item?.code}`;
+                    } else {
+                      query = `?chain=${item?.code}`;
+                    }
+                    router.push(`/projects/${tab ?? ""}${query}`);
+                  }}
+                  selectedValue={chainSelected}
+                />
+              </div>
+              <div>
+                <SelectCustom
+                  placeholder="Category - All"
+                  initList={category}
+                  onChangeSelected={(item: any) => {
+                    mixpanelTrack(event_name_enum.on_filter_category, {
+                      url: router.pathname,
+                      code: item?.code,
+                      name: item?.name,
+                    });
+                    setCategorySelected(item);
+                    let query = "";
+                    if (!item?.code) {
+                      if (chainQuery) {
+                        query = `?chain=${chainQuery}`;
+                      } else {
+                        query = "";
+                      }
+                    } else if (chainSelected?.code) {
+                      query = `?category=${item?.code}&chain=${chainSelected?.code}`;
+                    } else {
+                      query = `?category=${item?.code}`;
+                    }
+
+                    router.push(`/projects/${tab ?? ""}${query}`);
+                  }}
+                  selectedValue={categorySelected}
+                />
+              </div>
             </div>
-            <div>
-              <SelectCustom
-                placeholder="Category - All"
-                initList={category}
-                onChangeSelected={(item) => {
-                  mixpanelTrack(event_name_enum.on_filter_category, {
-                    url: router.pathname,
-                    code: item?.code,
-                    name: item?.name,
-                  });
-                  setCategorySelected(item);
-                }}
-              />
-            </div>
-          </div>
+          )}
         </div>
 
         <div className="mt-7 max-lg:mt-9">
           {isSearchLoading ? null : _renderTable()}
-          {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
+          {errorMsg ? (
+            <div className="h-[60vh] flex justify-center items-start">
+              <p className="mt-10 text-center">{errorMsg}</p>
+            </div>
+          ) : null}
           {isLoading || isSearchLoading ? (
             <SkeletonLoading numberOfRow={10} />
           ) : null}
