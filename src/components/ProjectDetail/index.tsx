@@ -334,10 +334,16 @@ const ProjectDetail: FC<IProjectDetail> = ({
                         ? twitterDetail.data?.categories?.map(
                             (value, index) => (
                               <a
-                                href={`/projects?category=${value?.code}`}
+                                href={
+                                  value.type === "CHAIN"
+                                    ? `/projects?chain=${value?.code}`
+                                    : `/projects?category=${value?.code}`
+                                }
                                 onClick={() => {
                                   mixpanelTrack(
-                                    event_name_enum.on_filter_category,
+                                    value.type === "CHAIN"
+                                      ? event_name_enum.on_filter_chain
+                                      : event_name_enum.on_filter_category,
                                     {
                                       url: router.pathname,
                                       name: value?.name,

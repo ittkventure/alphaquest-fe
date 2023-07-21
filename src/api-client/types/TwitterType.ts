@@ -103,7 +103,7 @@ export interface TwitterDetails {
   profileImageUrl: string;
   description: string;
   userId: string;
-  categories: Category[];
+  categories: AttributesType[];
   trendingScore: number;
   twitterFollowersWhenDiscovered: number;
   currentTwitterFollowers: number;
