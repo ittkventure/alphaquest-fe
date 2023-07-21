@@ -334,16 +334,10 @@ const ProjectDetail: FC<IProjectDetail> = ({
                         ? twitterDetail.data?.categories?.map(
                             (value, index) => (
                               <a
-                                href={
-                                  value.type === "CHAIN"
-                                    ? `/projects?chain=${value?.code}`
-                                    : `/projects?category=${value?.code}`
-                                }
+                                href={`/projects?category=${value?.code}`}
                                 onClick={() => {
                                   mixpanelTrack(
-                                    value.type === "CHAIN"
-                                      ? event_name_enum.on_filter_chain
-                                      : event_name_enum.on_filter_category,
+                                    event_name_enum.on_filter_category,
                                     {
                                       url: router.pathname,
                                       name: value?.name,
@@ -361,6 +355,28 @@ const ProjectDetail: FC<IProjectDetail> = ({
                               </a>
                             )
                           )
+                        : null}
+
+                      {twitterDetail.data && twitterDetail.data?.chains
+                        ? twitterDetail.data?.chains?.map((value, index) => (
+                            <a
+                              href={`/projects?chain=${value?.code}`}
+                              onClick={() => {
+                                mixpanelTrack(event_name_enum.on_filter_chain, {
+                                  url: router.pathname,
+                                  name: value?.name,
+                                  code: value?.code,
+                                });
+                              }}
+                            >
+                              <p
+                                key={index.toString()}
+                                className="text-sm border px-2 mr-2"
+                              >
+                                {value.name}
+                              </p>
+                            </a>
+                          ))
                         : null}
                     </div>
 

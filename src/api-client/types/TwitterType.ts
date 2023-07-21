@@ -104,6 +104,7 @@ export interface TwitterDetails {
   description: string;
   userId: string;
   categories: AttributesType[];
+  chains: AttributesType[];
   trendingScore: number;
   twitterFollowersWhenDiscovered: number;
   currentTwitterFollowers: number;
