@@ -70,106 +70,106 @@ const useColumAlphaLike = ({
       {
         Header: "No Project",
         accessor: "profileImageUrl",
-        Cell: ({ value, row }: CellProps<TwitterAlphaLike>) => {
-          return (
-            isLinkToAlphaHunter && (
-              <Link href={`/project/${row.original.username}`}>
-                <div className="flex items-center cursor-pointer">
-                  <div className="mr-4">
-                    <p className="text-right w-6">{row.index + 1}</p>
-                  </div>
-                  <div className="mr-4">
-                    <div
-                      className={`w-10 h-10 rounded-[50%]  ${
-                        row.original.profileImageUrl === "UNKNOWN"
-                          ? "animate-pulse"
-                          : "border border-white"
-                      } bg-secondary-600 overflow-hidden relative`}
-                    >
-                      {row.original.profileImageUrl === "UNKNOWN" ? (
-                        <div> </div>
-                      ) : (
-                        <Image
-                          src={row.original.profileImageUrl}
-                          width={40}
-                          height={40}
-                          alt="avt"
-                          className="object-cover"
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="mr-4">
-                    <div
-                      className={`flex items-center ${
-                        row.original.name !== "UNKNOWN"
-                          ? ""
-                          : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
-                      }`}
-                    >
-                      {row.original.name !== "UNKNOWN" ? (
-                        <>
-                          <p className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2">
-                            {row.original.name}
-                          </p>
-                          <div className="flex">
-                            <button
-                              onClick={() => {
-                                mixpanelTrack(event_name_enum.outbound, {
-                                  url: row.original.twitterUrl,
-                                  message: "Link to twitter at project page",
-                                });
-                                window.open(row.original.twitterUrl, "_blank");
-                              }}
-                            >
-                              <Image
-                                src={TwitterIcon as any}
-                                width={16}
-                                height={13}
-                                alt="t-i"
-                              />
-                            </button>
-
-                            {row.original?.urls?.map((value, index) => {
-                              const url = listUrl.find(
-                                (item) => item.key === value.type
-                              ) ?? { icon: WebIcon, key: "#" };
-                              return (
-                                <button
-                                  key={value.type + index}
-                                  onClick={() => {
-                                    mixpanelTrack(event_name_enum.outbound, {
-                                      url: value.url,
-                                      message: `Link to ${url.key} at project page`,
-                                    });
-                                    window.open(value.url, "_blank");
-                                  }}
-                                  className="ml-2"
-                                >
-                                  <Image
-                                    src={url.icon as any}
-                                    width={16}
-                                    height={13}
-                                    alt="t-i"
-                                  />
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </>
-                      ) : (
-                        <div />
-                      )}
-                    </div>
-                    <div className="mt-1">
-                      <p className="font-workSansRegular max-lg:text-xs text-sm max-lg:w-[50vw]">
-                        {row.original.description}
-                      </p>
-                    </div>
+        Cell: ({ row }: CellProps<TwitterAlphaLike>) => {
+          return isLinkToAlphaHunter ? (
+            <Link href={`/project/${row.original.username}`}>
+              <div className="flex items-center cursor-pointer">
+                <div className="mr-4">
+                  <p className="text-right w-6">{row.index + 1}</p>
+                </div>
+                <div className="mr-4">
+                  <div
+                    className={`w-10 h-10 rounded-[50%]  ${
+                      row.original?.profileImageUrl === "UNKNOWN"
+                        ? "animate-pulse"
+                        : "border border-white"
+                    } bg-secondary-600 overflow-hidden relative`}
+                  >
+                    {row.original.profileImageUrl === "UNKNOWN" ? (
+                      <div> </div>
+                    ) : (
+                      <Image
+                        src={row.original.profileImageUrl}
+                        width={40}
+                        height={40}
+                        alt="avt"
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                 </div>
-              </Link>
-            )
+                <div className="mr-4">
+                  <div
+                    className={`flex items-center ${
+                      row.original.name !== "UNKNOWN"
+                        ? ""
+                        : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
+                    }`}
+                  >
+                    {row.original.name !== "UNKNOWN" ? (
+                      <>
+                        <p className="text-success-500 max-lg:text-sm font-workSansSemiBold mr-2">
+                          {row.original.name}
+                        </p>
+                        <div className="flex">
+                          <button
+                            onClick={() => {
+                              mixpanelTrack(event_name_enum.outbound, {
+                                url: row.original.twitterUrl,
+                                message: "Link to twitter at project page",
+                              });
+                              window.open(row.original.twitterUrl, "_blank");
+                            }}
+                          >
+                            <Image
+                              src={TwitterIcon as any}
+                              width={16}
+                              height={13}
+                              alt="t-i"
+                            />
+                          </button>
+
+                          {row.original?.urls?.map((value, index) => {
+                            const url = listUrl.find(
+                              (item) => item.key === value.type
+                            ) ?? { icon: WebIcon, key: "#" };
+                            return (
+                              <button
+                                key={value.type + index}
+                                onClick={() => {
+                                  mixpanelTrack(event_name_enum.outbound, {
+                                    url: value.url,
+                                    message: `Link to ${url.key} at project page`,
+                                  });
+                                  window.open(value.url, "_blank");
+                                }}
+                                className="ml-2"
+                              >
+                                <Image
+                                  src={url.icon as any}
+                                  width={16}
+                                  height={13}
+                                  alt="t-i"
+                                />
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <div />
+                    )}
+                  </div>
+                  <div className="mt-1">
+                    <p className="font-workSansRegular max-lg:text-xs text-sm max-lg:w-[50vw]">
+                      {row.original.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div />
           );
         },
       },
