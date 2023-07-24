@@ -6,6 +6,7 @@ import {
   ChartData,
   EarlyFollowItem,
   FollowerRequest,
+  TwitterAlphaLike,
   TwitterDetails,
   TwitterGetListRequest,
   TwitterItem,
@@ -265,6 +266,27 @@ class ApiTwitter extends ApiClientBase {
   ): Promise<ChartData[] | any> {
     const res = await this.instance.get(
       `/api/app/twitter/followers-chart-data/${userId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getListTwitterAlphaLike
+   */
+  public async getListTwitterAlphaLike(
+    userId: string,
+    params: FollowerRequest,
+    access_token: string
+  ): Promise<BaseResponse<TwitterAlphaLike[]> | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter/alpha-like-by-username?username=${userId}&${qs.stringify(
+        params
+      )}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,

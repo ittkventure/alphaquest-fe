@@ -51,7 +51,7 @@ const TableCustom: FC<ITableCustom> = ({
     <div className="w-full">
       <div
         className={`flex flex-col justify-start  ${
-          isShowAll ? "h-[800px]" : "h-fit"
+          isShowAll ? "h-[950px]" : "h-fit"
         } bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8 `}
       >
         <div className="">
@@ -93,7 +93,7 @@ const TableCustom: FC<ITableCustom> = ({
                                   {...column.getHeaderProps()}
                                   className={`${
                                     column.columns ? "text-center" : "text-left"
-                                  } ${
+                                  }  ${
                                     column.render("Header") === "Accounts"
                                       ? "sticky z-10 top-0 left-[-5px] bg-[#1F2536]"
                                       : ""
@@ -111,6 +111,11 @@ const TableCustom: FC<ITableCustom> = ({
                                       }
                                     }}
                                     className={`flex items-center cursor-pointer ${
+                                      column.render("Header") ===
+                                      "# of Mutual Alpha Hunters Following"
+                                        ? "!justify-end"
+                                        : ""
+                                    } ${
                                       column.render("Header") === "Accounts"
                                         ? "max-lg:min-w-[200px] sticky  z-10 top-0 left-[-5px]"
                                         : ""
@@ -183,7 +188,7 @@ const TableCustom: FC<ITableCustom> = ({
                                         : ""
                                     } ${
                                       isPaddingX ? "px-5" : ""
-                                    } max-w-xs break-all py-4 text-sm text-white`}
+                                    }  break-all py-4 text-sm text-white`}
                                   >
                                     {
                                       // Render the cell contents
@@ -216,7 +221,7 @@ const TableCustom: FC<ITableCustom> = ({
                                       : ""
                                   } ${
                                     isPaddingX ? "px-5" : ""
-                                  } max-w-xs break-all py-4 text-sm text-white`}
+                                  }  break-all py-4 text-sm text-white`}
                                 >
                                   {
                                     // Render the cell contents
@@ -235,7 +240,7 @@ const TableCustom: FC<ITableCustom> = ({
             </table>
             {isLoading &&
               (isHiddenTBody ? null : (
-                <div className="m-auto my-10 flex w-full justify-center items-center bg-[#171B28] h-[800px]">
+                <div className="m-auto my-10 flex w-full justify-center items-center bg-[#171B28] h-[950px]">
                   <Spinner />
                 </div>
               ))}
