@@ -166,3 +166,20 @@ export interface EarlyFollowItem {
   followingTime: string;
   tags: string[];
 }
+
+export interface TwitterAlphaLike {
+  name: string;
+  username: string;
+  userId: string;
+  description: string;
+  twitterUrl: string;
+  profileImageUrl: string;
+  inWatchlist: boolean;
+  mutualAlphaHunterFollowingCount: number;
+  urls: Url[];
+}
+
+export interface Url {
+  type: string;
+  url: string;
+}
