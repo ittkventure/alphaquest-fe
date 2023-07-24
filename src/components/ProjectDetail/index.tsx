@@ -616,7 +616,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
 
         <div className="flex items-center mt-14 ">
           <h3 className="text-lg font-workSansSemiBold mr-3">
-            More Alpha like Monad
+            More Alpha like {twitterDetail.data?.name}
           </h3>
           <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
             BETA
