@@ -22,6 +22,7 @@ interface ITableCustom
   isSortedDesc?: boolean;
   isShowHeader?: boolean;
   isPaddingX?: boolean;
+  isHeightMore?: boolean;
 }
 
 const TableCustom: FC<ITableCustom> = ({
@@ -36,6 +37,7 @@ const TableCustom: FC<ITableCustom> = ({
   isSortedDesc,
   isShowHeader = true,
   isPaddingX = false,
+  isHeightMore = false,
   ...rest
 }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -51,7 +53,7 @@ const TableCustom: FC<ITableCustom> = ({
     <div className="w-full">
       <div
         className={`flex flex-col justify-start  ${
-          isShowAll ? "h-[950px]" : "h-fit"
+          isShowAll ? (isHeightMore ? "h-[950px]" : "h-[800px]") : "h-fit"
         } bg-[#171B28] -my-2 sm:-mx-6 lg:-mx-8 `}
       >
         <div className="">
@@ -240,7 +242,11 @@ const TableCustom: FC<ITableCustom> = ({
             </table>
             {isLoading &&
               (isHiddenTBody ? null : (
-                <div className="m-auto my-10 flex w-full justify-center items-center bg-[#171B28] h-[950px]">
+                <div
+                  className={`m-auto my-10 flex w-full justify-center items-center bg-[#171B28] ${
+                    isHeightMore ? "h-[950px]" : "h-[800px]"
+                  }`}
+                >
                   <Spinner />
                 </div>
               ))}
