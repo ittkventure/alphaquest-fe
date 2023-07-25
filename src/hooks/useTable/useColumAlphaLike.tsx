@@ -68,7 +68,7 @@ const useColumAlphaLike = ({
   const twitterAlphaLikeColumn: Column<TwitterAlphaLike>[] = useMemo(
     () => [
       {
-        Header: "No Project",
+        Header: "Project",
         accessor: "profileImageUrl",
         Cell: ({ row }: CellProps<TwitterAlphaLike>) => {
           return isLinkToAlphaHunter ? (

@@ -644,6 +644,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
               setIsDescSorted(isSortedDesc);
             }}
             isSortedDesc={isDescSorted}
+            isHeightMore={true}
           />
         </div>
       </div>
