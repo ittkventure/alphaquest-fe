@@ -75,9 +75,6 @@ const useColumAlphaLike = ({
             <Link href={`/project/${row.original.username}`}>
               <div className="flex items-center cursor-pointer">
                 <div className="mr-4">
-                  <p className="text-right w-6">{row.index + 1}</p>
-                </div>
-                <div className="mr-4">
                   <div
                     className={`w-10 h-10 rounded-[50%]  ${
                       row.original?.profileImageUrl === "UNKNOWN"
