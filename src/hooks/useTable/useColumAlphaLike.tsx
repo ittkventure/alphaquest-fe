@@ -174,7 +174,7 @@ const useColumAlphaLike = ({
         Header: "# of Mutual Alpha Hunters Following",
         accessor: "mutualAlphaHunterFollowingCount",
         Cell: ({ value }: CellProps<TwitterAlphaLike>) => (
-          <p className="text-end mr-10">{value === 0 ? "N/A" : value}</p>
+          <p className="text-center">{value === 0 ? "N/A" : value}</p>
         ),
       },
       {
