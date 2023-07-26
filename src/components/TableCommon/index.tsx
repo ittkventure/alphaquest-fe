@@ -94,7 +94,9 @@ const TableCustom: FC<ITableCustom> = ({
                                 <th
                                   {...column.getHeaderProps()}
                                   className={`${
-                                    column.columns ? "text-center" : "text-left"
+                                    column.columns
+                                      ? "text-center"
+                                      : "text-center"
                                   }  ${
                                     column.render("Header") === "Accounts"
                                       ? "sticky z-10 top-0 left-[-5px] bg-[#1F2536]"
