@@ -25,6 +25,7 @@ import {
   TwitterIcon as TwitterIconShare,
   TwitterShareButton,
 } from "react-share";
+import useColumAlphaLike from "@/hooks/useTable/useColumAlphaLike";
 
 interface IProjectDetail {
   userId?: string;
@@ -49,6 +50,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
   const [isInWatchList, setIsInWatchList] = useState<boolean>(false);
+  const [pageAlphaLike, setPageAlphaLike] = useState(1);
 
   const listAlphaHunter = useQuery(
     [
@@ -69,6 +71,28 @@ const ProjectDetail: FC<IProjectDetail> = ({
         authState?.access_token ?? ""
       )
   );
+
+  const listTwitterProjectLike = useQuery(
+    [
+      "fetchListTwitterProjectLike",
+      userId,
+      pageAlphaLike,
+      false,
+      authState?.access_token,
+    ],
+    async () =>
+      await apiTwitter.getListTwitterAlphaLike(
+        userId as any,
+        {
+          pageNumber: pageAlphaLike,
+          pageSize: 10,
+          desc: false,
+        },
+        authState?.access_token ?? ""
+      )
+  );
+
+  console.log(listTwitterProjectLike.data, "listTwitterProjectLike");
 
   const shareUrl = `https://alphaquest.io/project/${userId}`;
 
@@ -145,6 +169,10 @@ const ProjectDetail: FC<IProjectDetail> = ({
 
   const { followers } = useColumFollowers({ isLinkToAlphaHunter: true });
   const { changeLogs } = useColumTwitterChangeLogs();
+  const { twitterAlphaLikeColumn } = useColumAlphaLike({
+    isLinkToAlphaHunter: true,
+    onRefreshTable: listTwitterProjectLike.refetch,
+  });
 
   const onAddItemToWatchList = async () => {
     if (!authState?.access_token) {
@@ -543,10 +571,6 @@ const ProjectDetail: FC<IProjectDetail> = ({
           <h3 className="text-lg font-workSansSemiBold mr-3">
             Twitter changelogs
           </h3>
-
-          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
-            BETA
-          </div>
         </div>
 
         {listChangeLog.length > 0 ? (
@@ -589,6 +613,41 @@ const ProjectDetail: FC<IProjectDetail> = ({
             <Spinner />
           </div>
         )}
+
+        <div className="flex items-center mt-14 ">
+          <h3 className="text-lg font-workSansSemiBold mr-3">
+            More Alpha like {twitterDetail.data?.name}
+          </h3>
+          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+            BETA
+          </div>
+        </div>
+        <div className="mt-5 mx-8">
+          <TableCommon
+            columns={twitterAlphaLikeColumn ?? []}
+            data={listTwitterProjectLike.data?.items ?? []}
+            onChangePage={function (_pageNumber: number): void {
+              setPageAlphaLike(_pageNumber);
+            }}
+            isLoading={listTwitterProjectLike.isLoading}
+            paginationInfo={{
+              currentPage: pageAlphaLike,
+              pageNumber: pageAlphaLike,
+              pageSize: 10,
+              totalPages: listTwitterProjectLike?.data?.totalCount
+                ? Math.ceil(listTwitterProjectLike?.data?.totalCount / 20)
+                : 0,
+              totalElements: listTwitterProjectLike?.data?.totalCount ?? 0,
+            }}
+            onSort={(isSortedDesc) => {
+              if (isSortedDesc === undefined) return;
+              setIsDescSorted(isSortedDesc);
+            }}
+            isSortedDesc={isDescSorted}
+            isHeightMore={true}
+            isPaddingX={true}
+          />
+        </div>
       </div>
 
       {accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM ? (
