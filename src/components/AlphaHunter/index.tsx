@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
@@ -108,6 +108,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
       router.pathname,
+      router.query,
     ],
     queryFn: async () =>
       await apiTwitter.getAlphaHunterDetails(
