@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
-import { CopyShareIcon, CrownIcon, TwitterIcon, WebIcon } from "@/assets/icons";
+import { CrownIcon, TwitterIcon, WebIcon } from "@/assets/icons";
 import Image from "next/image";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import { listUrl } from "../App/Table/TableRow";
@@ -92,8 +92,6 @@ const ProjectDetail: FC<IProjectDetail> = ({
       )
   );
 
-  console.log(listTwitterProjectLike.data, "listTwitterProjectLike");
-
   const shareUrl = `https://alphaquest.io/project/${userId}`;
 
   const listUserChangeLog = useQuery(
@@ -128,6 +126,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
       "getTwitterDetails",
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
+      router.query,
     ],
     queryFn: async () =>
       await apiTwitter.getTwitterDetails(
