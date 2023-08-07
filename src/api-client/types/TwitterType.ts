@@ -117,7 +117,9 @@ export interface TwitterDetails {
 
 export interface ChartData {
   dataTime: string;
-  data: number;
+  alphaHuntersCount: number;
+  followerCount: number;
+  alphaHunters: AlphaHunterDetail[];
 }
 
 export interface ChangeLogs {

@@ -265,7 +265,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<ChartData[] | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/followers-chart-data/${userId}`,
+      `/api/app/twitter/followers-chart-data-by-username?username=${userId}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
