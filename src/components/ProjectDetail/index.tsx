@@ -7,13 +7,17 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
 import TableCommon from "../TableCommon";
 import useColumFollowers from "@/hooks/useTable/useColumFollowers";
-import { ChangeLogs, TwitterDetails } from "@/api-client/types/TwitterType";
+import {
+  ChangeLogs,
+  ChartData,
+  TwitterDetails,
+} from "@/api-client/types/TwitterType";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
-import { CrownIcon, TwitterIcon, WebIcon } from "@/assets/icons";
+import { CrownIcon, InfoIcon, TwitterIcon, WebIcon } from "@/assets/icons";
 import Image from "next/image";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import { listUrl } from "../App/Table/TableRow";
@@ -26,12 +30,21 @@ import {
   TwitterShareButton,
 } from "react-share";
 import useColumAlphaLike from "@/hooks/useTable/useColumAlphaLike";
+import LineChartCustom from "./LineChart";
+import TabButton from "./TabButton";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface IProjectDetail {
   userId?: string;
   onChangeHeart?: () => void;
   isPaddingX?: boolean;
   isPage?: boolean;
+}
+
+enum SelectedDateEnum {
+  sevenD = "7D",
+  thirtyD = "30D",
+  all = "ALL",
 }
 
 const ProjectDetail: FC<IProjectDetail> = ({
@@ -51,6 +64,9 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
   const [isInWatchList, setIsInWatchList] = useState<boolean>(false);
   const [pageAlphaLike, setPageAlphaLike] = useState(1);
+  const [selectedDate, setSelectedDate] = useState<SelectedDateEnum>(
+    SelectedDateEnum.sevenD
+  );
 
   const listAlphaHunter = useQuery(
     [
@@ -127,6 +143,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
       accountExtendDetail?.currentPlanKey,
       authState?.access_token,
       router.query,
+      userId,
     ],
     queryFn: async () =>
       await apiTwitter.getTwitterDetails(
@@ -140,7 +157,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
       setIsInWatchList(twitterDetail.data?.inWatchlist);
   }, [twitterDetail.data?.inWatchlist]);
 
-  // const twitterChartScore = useQuery<ChartData[]>({
+  // const twitterChartScore = useQuery<any[]>({
   //   queryKey: [
   //     "getTwitterChartScore",
   //     accountExtendDetail?.currentPlanKey,
@@ -153,18 +170,22 @@ const ProjectDetail: FC<IProjectDetail> = ({
   //     ),
   // });
 
-  // const twitterChartFollower = useQuery<ChartData[]>({
-  //   queryKey: [
-  //     "getFollowerChartScore",
-  //     accountExtendDetail?.currentPlanKey,
-  //     authState?.access_token,
-  //   ],
-  //   queryFn: async () =>
-  //     await apiTwitter.getFollowerChartData(
-  //       userId as any,
-  //       authState?.access_token ?? ""
-  //     ),
-  // });
+  const twitterChartFollower = useQuery<ChartData[]>({
+    queryKey: [
+      "getFollowerChartScore",
+      accountExtendDetail?.currentPlanKey,
+      authState?.access_token,
+      router.query,
+      userId,
+    ],
+    queryFn: async () =>
+      await apiTwitter.getFollowerChartData(
+        userId as any,
+        authState?.access_token ?? ""
+      ),
+  });
+
+  console.log(twitterChartFollower?.data, "twitterChartFollower");
 
   const { followers } = useColumFollowers({ isLinkToAlphaHunter: true });
   const { changeLogs } = useColumTwitterChangeLogs();
@@ -361,6 +382,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                         ? twitterDetail.data?.categories?.map(
                             (value, index) => (
                               <a
+                                key={index.toString()}
                                 href={`/projects?category=${value?.code}`}
                                 onClick={() => {
                                   mixpanelTrack(
@@ -387,6 +409,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                       {twitterDetail.data && twitterDetail.data?.chains
                         ? twitterDetail.data?.chains?.map((value, index) => (
                             <a
+                              key={index.toString()}
                               href={`/projects?chain=${value?.code}`}
                               onClick={() => {
                                 mixpanelTrack(event_name_enum.on_filter_chain, {
@@ -507,35 +530,69 @@ const ProjectDetail: FC<IProjectDetail> = ({
         </div>
 
         {/* Chart */}
-        {/* 
-        <h3 className="text-lg font-workSansSemiBold mt-14">
-          Twitter Followers and Score Chart
-        </h3>
-        <div className="grid grid-cols-2 gap-6 mt-4 max-lg:grid-cols-1">
-          <div className="bg-[#171B28]  pt-1 px-1">
-            {twitterChartScore.isLoading ? (
-              <div />
-            ) : (
-              <LineChart
-                chartData={twitterChartScore.data ?? []}
-                labelText="Score Chart"
-                labelDataSet="scores"
+
+        <div className="bg-dark-800 py-9 px-6 mt-14">
+          <div className="flex justify-between items-center mb-[51px]">
+            <div className="flex">
+              <p className=" text-[16px] font-workSansMedium mr-1">
+                # of Alpha Hunters Following and Twitter Followers Growth
+              </p>
+              <div data-tooltip-id="info-tooltip" className="cursor-pointer">
+                <Image src={InfoIcon} width={16} height={16} alt="icon" />
+              </div>
+            </div>
+
+            <div className="flex">
+              <TabButton
+                label="7D"
+                onClick={() => setSelectedDate(SelectedDateEnum.sevenD)}
+                active={selectedDate === SelectedDateEnum.sevenD}
               />
-            )}
+              <TabButton
+                label="30D"
+                onClick={() => setSelectedDate(SelectedDateEnum.thirtyD)}
+                active={selectedDate === SelectedDateEnum.thirtyD}
+              />
+              <TabButton
+                label="ALL"
+                onClick={() => setSelectedDate(SelectedDateEnum.all)}
+                active={selectedDate === SelectedDateEnum.all}
+              />
+            </div>
           </div>
-          <div className="bg-[#171B28] ">
-            {twitterChartFollower.isLoading ? (
-              <div />
-            ) : (
-              <LineChart
-                chartData={twitterChartFollower.data ?? []}
-                labelText="Followers Chart"
-                labelDataSet="followers"
-              />
-            )}
+
+          <div className="flex justify-between">
+            <p
+              className="rotate-180 text-center"
+              style={{ writingMode: "vertical-rl" }}
+            >
+              # of Alpha Hunters Following
+            </p>
+
+            <LineChartCustom
+              data={twitterChartFollower?.data ?? []}
+              loading={twitterChartFollower?.isLoading}
+            />
+
+            <p
+              className="rotate-180 text-center mr-2"
+              style={{ writingMode: "vertical-rl" }}
+            >
+              Twitter Followers
+            </p>
+          </div>
+
+          <div className="flex mt-8">
+            <div className="bg-[#E25148] rounded-full w-3 h-3 mr-2 mt-1" />
+            <p className="text-sm font-workSansLight">
+              # of Alpha Hunters Following
+            </p>
+
+            <div className="bg-[#24B592] rounded-full w-3 h-3 mr-2 mt-1 ml-6" />
+            <p className="text-sm font-workSansLight">Twitter Followers</p>
           </div>
         </div>
-        */}
+
         <div className="flex items-center mt-14 ">
           <h3 className="text-lg font-workSansSemiBold mr-3">
             Earliest Alpha Hunter
@@ -680,6 +737,13 @@ const ProjectDetail: FC<IProjectDetail> = ({
           </div>
         </div>
       )}
+
+      <ReactTooltip
+        id="info-tooltip"
+        className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
+        place="right"
+        content="Top interacting wallets can be calculated by # of transactions or by Eth volume. Use the selector to choose"
+      />
     </div>
   );
 };
