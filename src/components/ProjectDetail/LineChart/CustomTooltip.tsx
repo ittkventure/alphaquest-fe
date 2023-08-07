@@ -58,7 +58,7 @@ const CustomTooltip: React.FC<ICustomTooltip> = ({
                     height: 11,
                     borderRadius: "50%",
                     backgroundColor:
-                      pld.dataKey === "twitterFollow" ? "#E25148" : "#24B592",
+                      pld.dataKey === "twitterFollow" ? "#24B592" : "#E25148",
                   }}
                 ></div>
                 <div>
@@ -70,8 +70,8 @@ const CustomTooltip: React.FC<ICustomTooltip> = ({
                     }}
                   >
                     {pld.dataKey === "twitterFollow"
-                      ? "# of Alpha Hunters Following:"
-                      : "Twitter Followers:"}
+                      ? "Twitter Followers:"
+                      : "# of Alpha Hunters Following:"}
                     <span style={{ marginLeft: 5, color: "#FFF" }}>
                       {pld.value}
                     </span>

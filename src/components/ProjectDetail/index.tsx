@@ -185,8 +185,6 @@ const ProjectDetail: FC<IProjectDetail> = ({
       ),
   });
 
-  console.log(twitterChartFollower?.data, "twitterChartFollower");
-
   const { followers } = useColumFollowers({ isLinkToAlphaHunter: true });
   const { changeLogs } = useColumTwitterChangeLogs();
   const { twitterAlphaLikeColumn } = useColumAlphaLike({
