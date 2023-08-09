@@ -84,12 +84,14 @@ const CustomTooltip: React.FC<ICustomTooltip> = ({
 
         <div className="flex mt-2">
           {payload.length > 0 &&
-            payload[0].payload.alphaHunters.map((hunter: AlphaHunterDetail) => (
-              <img
-                src={hunter.profileImageUrl}
-                className="mr-2 w-6 h-6 rounded-full"
-              />
-            ))}
+            payload[0].payload.alphaHunters?.map(
+              (hunter: AlphaHunterDetail) => (
+                <img
+                  src={hunter.profileImageUrl}
+                  className="mr-2 w-6 h-6 rounded-full"
+                />
+              )
+            )}
         </div>
       </div>
     );

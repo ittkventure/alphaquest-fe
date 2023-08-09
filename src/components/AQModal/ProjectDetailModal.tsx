@@ -54,7 +54,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full h-[95vh] max-w-6xl transform overflow-y-scroll rounded-ms bg-dark-800  text-left align-middle shadow-xl transition-all pt-10 relative">
+              <Dialog.Panel className="w-full pb-10 max-w-6xl transform overflow-y-scroll rounded-ms bg-dark-800  text-left align-middle shadow-xl transition-all pt-10 relative">
                 {userId ? (
                   <ProjectDetail
                     onChangeHeart={onChangeHeart}
