@@ -700,6 +700,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
             isSortedDesc={isDescSorted}
             isHeightMore={true}
             isPaddingX={true}
+            isPage={isPage}
           />
         </div>
       </div>
