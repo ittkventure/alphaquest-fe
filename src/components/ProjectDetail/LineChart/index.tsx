@@ -58,7 +58,7 @@ const LineChartCustom: React.FC<ILineChartCustom> = ({ data, loading }) => {
         />
         {!isMd && !isSm && (
           <YAxis
-            yAxisId="left"
+            yAxisId="right"
             tick={{ fill: "#fff" }}
             fontSize={14}
             fontFamily="WorkSans-Medium"
@@ -66,7 +66,7 @@ const LineChartCustom: React.FC<ILineChartCustom> = ({ data, loading }) => {
         )}
         {!isMd && !isSm && (
           <YAxis
-            yAxisId="right"
+            yAxisId="left"
             tick={{ fill: "#fff" }}
             fontSize={14}
             fontFamily="WorkSans-Medium"
