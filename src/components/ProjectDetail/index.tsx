@@ -41,10 +41,9 @@ interface IProjectDetail {
   isPage?: boolean;
 }
 
-enum SelectedDateEnum {
+export enum SelectedDateEnum {
   sevenD = "7D",
   thirtyD = "30D",
-  all = "ALL",
 }
 
 const ProjectDetail: FC<IProjectDetail> = ({
@@ -177,11 +176,13 @@ const ProjectDetail: FC<IProjectDetail> = ({
       authState?.access_token,
       router.query,
       userId,
+      selectedDate,
     ],
     queryFn: async () =>
       await apiTwitter.getFollowerChartData(
         userId as any,
-        authState?.access_token ?? ""
+        authState?.access_token ?? "",
+        selectedDate
       ),
   });
 
@@ -530,7 +531,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
         {/* Chart */}
 
         <div className="bg-dark-800 py-9 px-6 mt-14">
-          <div className="flex justify-between items-center mb-[51px]">
+          <div className="flex justify-between items-center mb-[51px] max-sm:flex-col">
             <div className="flex">
               <p className=" text-[16px] font-workSansMedium mr-1">
                 # of Alpha Hunters Following and Twitter Followers Growth
@@ -540,7 +541,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
               </div>
             </div>
 
-            <div className="flex">
+            <div className="flex w-full max-sm:justify-end max-sm:mt-[34px]">
               <TabButton
                 label="7D"
                 onClick={() => setSelectedDate(SelectedDateEnum.sevenD)}
@@ -551,11 +552,11 @@ const ProjectDetail: FC<IProjectDetail> = ({
                 onClick={() => setSelectedDate(SelectedDateEnum.thirtyD)}
                 active={selectedDate === SelectedDateEnum.thirtyD}
               />
-              <TabButton
+              {/* <TabButton
                 label="ALL"
                 onClick={() => setSelectedDate(SelectedDateEnum.all)}
                 active={selectedDate === SelectedDateEnum.all}
-              />
+              /> */}
             </div>
           </div>
 
@@ -580,14 +581,18 @@ const ProjectDetail: FC<IProjectDetail> = ({
             </p>
           </div>
 
-          <div className="flex mt-8">
-            <div className="bg-[#E25148] rounded-full w-3 h-3 mr-2 mt-1" />
-            <p className="text-sm font-workSansLight">
-              # of Alpha Hunters Following
-            </p>
+          <div className="flex mt-8 max-sm:flex-col">
+            <div className="flex">
+              <div className="bg-[#E25148] rounded-full w-3 h-3 mr-2 mt-1" />
+              <p className="text-sm font-workSansLight">
+                # of Alpha Hunters Following
+              </p>
+            </div>
 
-            <div className="bg-[#24B592] rounded-full w-3 h-3 mr-2 mt-1 ml-6" />
-            <p className="text-sm font-workSansLight">Twitter Followers</p>
+            <div className="flex ml-6 max-sm:ml-0 max-sm:mt-2">
+              <div className="bg-[#24B592] rounded-full w-3 h-3 mr-2 mt-1 " />
+              <p className="text-sm font-workSansLight">Twitter Followers</p>
+            </div>
           </div>
         </div>
 
