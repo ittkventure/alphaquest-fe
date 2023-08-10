@@ -532,7 +532,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
 
         <div className="bg-dark-800 py-9 px-6 mt-14">
           <div className="flex justify-between items-center mb-[51px] max-sm:flex-col">
-            <div className="flex">
+            <div className="flex ">
               <p className=" text-[16px] font-workSansMedium mr-1">
                 # of Alpha Hunters Following and Twitter Followers Growth
               </p>
@@ -541,7 +541,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
               </div>
             </div>
 
-            <div className="flex w-full max-sm:justify-end max-sm:mt-[34px]">
+            <div className="flex max-sm:w-full max-sm:justify-end max-sm:mt-[34px]">
               <TabButton
                 label="7D"
                 onClick={() => setSelectedDate(SelectedDateEnum.sevenD)}
