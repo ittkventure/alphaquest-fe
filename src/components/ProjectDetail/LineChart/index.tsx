@@ -12,6 +12,7 @@ import CustomTooltip from "./CustomTooltip";
 import { ChartData } from "@/api-client/types/TwitterType";
 import { formattedDate } from "@/utils/date";
 import Spinner from "@/components/Spinner";
+import useResponsive from "@/hooks/useWindowDimensions";
 
 interface ILineChartCustom {
   data: ChartData[];
@@ -20,6 +21,7 @@ interface ILineChartCustom {
 
 const LineChartCustom: React.FC<ILineChartCustom> = ({ data, loading }) => {
   if (data.length === 0) return <div></div>;
+  const { isMd, isSm } = useResponsive();
 
   const processData = useMemo(
     () =>
@@ -42,7 +44,7 @@ const LineChartCustom: React.FC<ILineChartCustom> = ({ data, loading }) => {
     );
 
   return (
-    <ResponsiveContainer width="100%" aspect={3}>
+    <ResponsiveContainer width="100%" aspect={isMd || isSm ? 1 : 3}>
       <LineChart width={500} height={300} data={processData}>
         <CartesianGrid horizontal={true} vertical={false} stroke="#38405B" />
         <XAxis
@@ -54,19 +56,23 @@ const LineChartCustom: React.FC<ILineChartCustom> = ({ data, loading }) => {
           padding={{ left: 48, right: 48 }}
           domain={["twitterFollow", "hunterFollow"]}
         />
-        <YAxis
-          yAxisId="left"
-          tick={{ fill: "#fff" }}
-          fontSize={14}
-          fontFamily="WorkSans-Medium"
-        />
-        <YAxis
-          yAxisId="right"
-          tick={{ fill: "#fff" }}
-          fontSize={14}
-          fontFamily="WorkSans-Medium"
-          orientation="right"
-        />
+        {!isMd && !isSm && (
+          <YAxis
+            yAxisId="left"
+            tick={{ fill: "#fff" }}
+            fontSize={14}
+            fontFamily="WorkSans-Medium"
+          />
+        )}
+        {!isMd && !isSm && (
+          <YAxis
+            yAxisId="right"
+            tick={{ fill: "#fff" }}
+            fontSize={14}
+            fontFamily="WorkSans-Medium"
+            orientation="right"
+          />
+        )}
         <Tooltip
           itemStyle={{ color: "#fff" }}
           cursor={true}
