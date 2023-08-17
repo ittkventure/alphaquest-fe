@@ -34,6 +34,7 @@ import WebIcon from "./web-icon.svg";
 import UnknowIcon from "./unknow-icon.svg";
 import TelegramIcon from "./telegram-icon.svg";
 import CopyShareIcon from "./copy-share.svg";
+import InfoIcon from "./info.svg";
 
 export {
   QuoteIcon,
@@ -70,4 +71,5 @@ export {
   UnknowIcon,
   TelegramIcon,
   CopyShareIcon,
+  InfoIcon,
 };

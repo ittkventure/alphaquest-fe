@@ -31,11 +31,11 @@ interface ILineChart {
 
 const LineChart: FC<ILineChart> = ({ chartData, labelText, labelDataSet }) => {
   const [data, setData] = useState({
-    labels: chartData.map((value) => value.data),
+    labels: chartData.map((value) => value.followerCount),
     datasets: [
       {
         label: labelDataSet,
-        data: chartData.map((value) => value.data),
+        data: chartData.map((value) => value.followerCount),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },

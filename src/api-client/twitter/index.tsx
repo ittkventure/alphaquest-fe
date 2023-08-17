@@ -1,3 +1,4 @@
+import { SelectedDateEnum } from "@/components/ProjectDetail";
 import ApiClientBase from "../ApiClientBase";
 import { BaseResponse } from "../types/BaseResponse";
 import {
@@ -262,10 +263,11 @@ class ApiTwitter extends ApiClientBase {
    */
   public async getFollowerChartData(
     userId: string,
-    access_token: string
+    access_token: string,
+    timeFrame: SelectedDateEnum
   ): Promise<ChartData[] | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/followers-chart-data/${userId}`,
+      `/api/app/twitter/followers-chart-data-by-username?username=${userId}&timeFrame=${timeFrame}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
