@@ -8,12 +8,14 @@ interface TableContentTypes {
   initListRows: TwitterItem[];
   isAnimation?: boolean;
   onRefreshTable?: () => void;
+  isShowWatchList?: boolean;
 }
 
 const TableContent: FC<TableContentTypes> = ({
   initListRows,
   isAnimation,
   onRefreshTable,
+  isShowWatchList = true,
 }) => {
   const [listRows, setListRows] = useState<TwitterItem[]>(initListRows);
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +41,7 @@ const TableContent: FC<TableContentTypes> = ({
               });
               setIsOpen(true);
             }}
+            isShowWatchList={isShowWatchList}
           />
         );
       })}

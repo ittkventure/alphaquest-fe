@@ -12,6 +12,7 @@ interface SelectCustomTypes {
   initList: OptionType[];
   onChangeSelected?: (selectedItem?: OptionType) => void;
   selectedValue?: OptionType;
+  isShowSelectOption?: boolean;
 }
 
 const SelectCustom: FC<SelectCustomTypes> = ({
@@ -19,18 +20,22 @@ const SelectCustom: FC<SelectCustomTypes> = ({
   initList,
   onChangeSelected,
   selectedValue,
+  isShowSelectOption = true,
 }) => {
   // const [listMonth, setListMonth] = useState(initList ?? []);
   const [isShowMenu, setIsShowMenu] = useState(false);
 
   const listMonth = useMemo(
-    () => [
-      {
-        name: placeholder ?? "Select",
-        code: "",
-      },
-      ...initList,
-    ],
+    () =>
+      isShowSelectOption
+        ? [
+            {
+              name: placeholder ?? "Select",
+              code: "",
+            },
+            ...initList,
+          ]
+        : [...initList],
     [initList, placeholder]
   );
 
