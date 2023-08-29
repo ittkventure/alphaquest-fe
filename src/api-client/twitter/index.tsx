@@ -303,10 +303,11 @@ class ApiTwitter extends ApiClientBase {
    */
   public async getChartInterestOverTime(
     access_token: string,
-    id?: string
+    id?: string,
+    timeFrame?: string
   ): Promise<any[] | any> {
     const keyword = id;
-    const timeframe = "today-5-y";
+    const timeframe = timeFrame ?? "today-5-y";
 
     const res = await this.instance.get(
       `/api/app/twitter/interest-over-time?${qs.stringify({
@@ -342,6 +343,55 @@ class ApiTwitter extends ApiClientBase {
         pageSize,
         timeframe,
         keyword,
+      })}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getRelateList
+   */
+  public async getRelateList(
+    access_token: string,
+    id?: string,
+    timeFrame?: string
+  ): Promise<any[] | any> {
+    const keyword = id;
+    const timeframe = timeFrame ?? "today-5-y";
+
+    const res = await this.instance.get(
+      `/api/app/narrative/relate-list?${qs.stringify({
+        keyword,
+        timeframe,
+        take: 10,
+      })}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getRelateListProjects
+   */
+  public async getRelateListProjects(
+    access_token: string,
+    id?: string
+  ): Promise<any[] | any> {
+    const keyword = id;
+
+    const res = await this.instance.get(
+      `/api/app/twitter/relate-by-narrative-keyword?${qs.stringify({
+        keyword,
+        take: 10,
       })}`,
       {
         headers: {

@@ -31,8 +31,8 @@ const ChartPage = () => {
       name: "Past 12 Months",
     },
     {
-      code: "today-5-m",
-      name: "Past 5 Months",
+      code: "today-5-y",
+      name: "Past 5 years",
     },
   ]);
 
@@ -77,13 +77,15 @@ const ChartPage = () => {
 
               <div className="flex items-center justify-center">
                 <div className="flex flex-col items-end">
-                  <p className="font-bold text-xl text-[#24B592]">+1200%</p>
+                  <p className="font-bold text-xl text-[#24B592]">
+                    +{item?.growthPercent}%
+                  </p>
                   <p className="text-[#A1A1AA] text-sm">Growth</p>
                 </div>
               </div>
             </div>
             <div className="flex flex-col-reverse pb-2">
-              <div className="mt-4 flex items-center justify-between">
+              {/* <div className="mt-4 flex items-center justify-between">
                 <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
                   <p>Regular</p>
                 </button>
@@ -91,7 +93,7 @@ const ChartPage = () => {
                 <button>
                   <HeartIcon className="w-6 h-6 text-white" />
                 </button>
-              </div>
+              </div> */}
               <div
                 onClick={() =>
                   router.push("/narratives/projects/" + item?.keyword)
@@ -167,6 +169,7 @@ const ChartPage = () => {
                       setTimeFrame(item);
                     }}
                     selectedValue={timeFrame}
+                    isShowSelectOption={false}
                   />
 
                   <div className="relative mr-6  max-lg:mr-2 ">
