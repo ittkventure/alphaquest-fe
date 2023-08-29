@@ -35,6 +35,10 @@ import UnknowIcon from "./unknow-icon.svg";
 import TelegramIcon from "./telegram-icon.svg";
 import CopyShareIcon from "./copy-share.svg";
 import InfoIcon from "./info.svg";
+import folderIcon from "./folder.svg";
+
+import CoinWhiteIcon from "./coin-white-icon.svg";
+import CoinBlackIcon from "./coin-black-icon.svg";
 
 export {
   QuoteIcon,
@@ -72,4 +76,7 @@ export {
   TelegramIcon,
   CopyShareIcon,
   InfoIcon,
+  folderIcon,
+  CoinBlackIcon,
+  CoinWhiteIcon,
 };

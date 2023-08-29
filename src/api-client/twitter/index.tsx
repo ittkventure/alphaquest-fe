@@ -48,7 +48,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/watchlist-item?${qs.stringify(params)}`,
+      `/api/app/twitter/8watchlist-item?${qs.stringify(params)}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
@@ -289,6 +289,60 @@ class ApiTwitter extends ApiClientBase {
       `/api/app/twitter/alpha-like-by-username?username=${userId}&${qs.stringify(
         params
       )}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getChartInterestOverTime
+   */
+  public async getChartInterestOverTime(
+    access_token: string,
+    id?: string
+  ): Promise<any[] | any> {
+    const keyword = id;
+    const timeframe = "today-5-y";
+
+    const res = await this.instance.get(
+      `/api/app/twitter/interest-over-time?${qs.stringify({
+        keyword,
+        timeframe,
+      })}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getChartNarrativeOverTime
+   */
+  public async getChartNarrativeOverTime(
+    access_token: string,
+    timeframeCode?: string,
+    keywordParam?: string,
+    pageSizeParam?: number
+  ): Promise<any[] | any> {
+    const pageNumber = 1;
+    const pageSize = pageSizeParam ?? 9;
+    const keyword = keywordParam ?? "";
+    const timeframe = timeframeCode ?? "today-12-m";
+
+    const res = await this.instance.get(
+      `/api/app/narrative?${qs.stringify({
+        pageNumber,
+        pageSize,
+        timeframe,
+        keyword,
+      })}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
