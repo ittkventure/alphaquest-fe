@@ -11,7 +11,7 @@ export type MothType = {
 interface MonthSelectTypes {
   onChangeSelect: (month: MothType) => void;
   listData?: Array<MothType>;
-  defaultData?: MothType;
+  defaultData?: MothType | any;
 }
 
 const MonthSelect: FC<MonthSelectTypes> = ({

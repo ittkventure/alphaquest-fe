@@ -1,6 +1,14 @@
+import { CoinWhiteIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
-import { FireIcon, HeartIcon, BoltIcon } from "@heroicons/react/24/solid";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import {
+  FireIcon,
+  HeartIcon,
+  BoltIcon,
+  FolderIcon,
+} from "@heroicons/react/24/solid";
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,7 +29,32 @@ const SideMenu = () => {
     mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
   };
 
+  const [isShowSubMenuProject, setIsShowSubMenuProject] = useState(true);
+
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
+    {
+      key: "watchlist",
+      icon: <HeartIcon className="h-5 w-5 mr-2" />,
+      label: "Watchlist",
+      active: false,
+    },
+    {
+      key: "narratives",
+      icon: (
+        <Image
+          src={CoinWhiteIcon}
+          width={20}
+          height={20}
+          alt="icon"
+          className="mr-2"
+        />
+      ),
+      label: "Narratives",
+      active: false,
+    },
+  ]);
+
+  const [listMenuProject, setListMenuProject] = useState<MenuItemType[]>([
     {
       key: "trending",
       icon: <FireIcon className="h-5 w-5 mr-2" />,
@@ -34,22 +67,23 @@ const SideMenu = () => {
       label: "Newest",
       active: false,
     },
-    {
-      key: "watchlist",
-      icon: <HeartIcon className="h-5 w-5 mr-2" />,
-      label: "Watchlist",
-      active: false,
-    },
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
-    if (router.pathname === `/watchlist/projects` && item.key === "watchlist")
-      return "bg-success-500";
-    if (!tab && router.pathname === `/projects/${item.key}` && index != 0)
-      return "bg-success-500";
-    if (!tab && index === 0 && router.pathname !== `/watchlist/projects`)
-      return "bg-success-500";
-    return tab === item.key ? "bg-success-500" : "hover:bg-secondary-600";
+    if (tab) {
+      if (tab === item.key) return "bg-success-500";
+      return "hover:bg-secondary-600";
+    }
+
+    if (router.pathname?.includes(item.key)) return "bg-success-500";
+    return "hover:bg-secondary-600";
+  };
+
+  const renderUrl = (item: MenuItemType) => {
+    if (item.key === "narratives") return "/narratives/projects";
+    return item.key === "watchlist"
+      ? "/watchlist/projects"
+      : `/projects/${item.key}`;
   };
 
   return (
@@ -75,20 +109,11 @@ const SideMenu = () => {
                 <Link
                   onClick={() => {
                     mixpanelTrack(event_name_enum.inbound, {
-                      url:
-                        value.key === "watchlist"
-                          ? "/watchlist/projects"
-                          : `/projects/${value.key}`,
+                      url: renderUrl(value),
                     });
                   }}
-                  href={
-                    value.key === "watchlist"
-                      ? "/watchlist/projects"
-                      : `/projects/${value.key}`
-                  }
-                  className={`flex transition-all duration-300 ${
-                    tab === value.key ? "text-dark-900 " : "text-white"
-                  }`}
+                  href={renderUrl(value)}
+                  className={`flex transition-all duration-300 text-white`}
                 >
                   {value.icon}
                   {value.label}
@@ -97,6 +122,64 @@ const SideMenu = () => {
             </li>
           );
         })}
+
+        <ul className="">
+          <button
+            className="mt-2 w-full"
+            onClick={() => setIsShowSubMenuProject(!isShowSubMenuProject)}
+          >
+            <div className="p-[13px] flex justify-between items-center w-full">
+              <div className="flex items-center">
+                <FolderIcon className="h-5 w-5 mr-2" />
+                <p className="text-white">Projects</p>
+              </div>
+              {
+                <ChevronDownIcon
+                  className={classNames("h-5 w-5 transition-all duration-200", {
+                    "transform rotate-180": isShowSubMenuProject,
+                  })}
+                />
+              }
+            </div>
+          </button>
+          {listMenuProject.map((value, index) => {
+            return (
+              <li
+                className={classNames("mt-2 transition-all duration-200", {
+                  "h-[50px] opacity-100": isShowSubMenuProject,
+                  "h-0 opacity-0": !isShowSubMenuProject,
+                })}
+                key={value.key}
+              >
+                <div
+                  className={`p-[13px] transition-all duration-300 ${_checkActiveTab(
+                    value,
+                    index
+                  )} w-full`}
+                >
+                  <Link
+                    onClick={() => {
+                      mixpanelTrack(event_name_enum.inbound, {
+                        url:
+                          value.key === "watchlist"
+                            ? "/watchlist/projects"
+                            : `/projects/${value.key}`,
+                      });
+                    }}
+                    href={
+                      value.key === "watchlist"
+                        ? "/watchlist/projects"
+                        : `/projects/${value.key}`
+                    }
+                    className={`flex transition-all duration-300 text-white`}
+                  >
+                    <p className="ml-7">{value.label}</p>
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </ul>
 
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">
