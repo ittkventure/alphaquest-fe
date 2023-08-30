@@ -330,10 +330,11 @@ class ApiTwitter extends ApiClientBase {
     access_token: string,
     timeframeCode?: string,
     keywordParam?: string,
-    pageSizeParam?: number
+    pageSizeParam?: number,
+    pageNumberParam?: number
   ): Promise<any[] | any> {
-    const pageNumber = 1;
-    const pageSize = pageSizeParam ?? 9;
+    const pageNumber = pageNumberParam ?? 1;
+    const pageSize = pageSizeParam ?? 30;
     const keyword = keywordParam ?? "";
     const timeframe = timeframeCode ?? "today-12-m";
 
@@ -368,7 +369,7 @@ class ApiTwitter extends ApiClientBase {
       `/api/app/narrative/relate-list?${qs.stringify({
         keyword,
         timeframe,
-        take: 10,
+        take: 5,
       })}`,
       {
         headers: {
