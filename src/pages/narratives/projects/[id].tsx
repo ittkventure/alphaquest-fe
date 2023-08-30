@@ -20,6 +20,7 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import classNames from "classnames";
 import Spinner from "@/components/Spinner";
 import TableContent from "@/components/App/Table/TableContent";
+import { formatNumber } from "@/utils/formatNumber";
 
 const ChartDetail = () => {
   const { authState } = useContext(AuthContext);
@@ -103,10 +104,6 @@ const ChartDetail = () => {
         </div>
         <div className="flex flex-col gap-6 px-[100px]  max-lg:px-7">
           <h1 className="font-bold text-3xl text-start">{id}</h1>
-          <p className="text-start font-workSansLight">
-            Subscription-based stock footage library. Users can access a wide
-            array of high-resolution clips.
-          </p>
 
           <div className="mt-10 bg-[#171B28] p-10">
             <div className="pb-10 flex justify-between">
@@ -126,7 +123,7 @@ const ChartDetail = () => {
               />
               <div className="flex flex-col items-end">
                 <p className="font-bold text-[32px] text-[#24B592]">
-                  +{data?.growthPercent ?? 0}%
+                  +{formatNumber(data?.growthPercent ?? 0)}%
                 </p>
                 <p className="text-[#A1A1AA]">Growth</p>
               </div>
@@ -198,11 +195,11 @@ const ChartDetail = () => {
                 <div className="col-span-2 flex items-center">
                   {item.displayName}
                 </div>
-                <div className="col-span-4 flex justify-center items-center min-h-[100px]">
-                  <ResponsiveContainer width="100%" aspect={3}>
+                <div className="col-span-4 flex justify-center items-center min-h-[100px] mt-5">
+                  <ResponsiveContainer width="100%" aspect={6}>
                     <LineChart
                       width={500}
-                      height={100}
+                      height={60}
                       data={item?.chart?.timelineData?.map((value: any) => {
                         return {
                           followerCount: value.values[0]?.extractedValue,
@@ -248,8 +245,8 @@ const ChartDetail = () => {
                       )}
                     >
                       {item?.growthPercent > 0
-                        ? `+${item?.growthPercent ?? 0}%`
-                        : `${item?.growthPercent ?? 0}%`}
+                        ? `+${formatNumber(item?.growthPercent ?? 0)}%`
+                        : `${formatNumber(item?.growthPercent ?? 0)}%`}
                     </p>
                   </div>
                 </div>
