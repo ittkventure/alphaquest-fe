@@ -21,6 +21,7 @@ import classNames from "classnames";
 import Spinner from "@/components/Spinner";
 import TableContent from "@/components/App/Table/TableContent";
 import { formatNumber } from "@/utils/formatNumber";
+import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 
 const ChartDetail = () => {
   const { authState } = useContext(AuthContext);
@@ -220,7 +221,7 @@ const ChartDetail = () => {
                       <Tooltip
                         itemStyle={{ color: "#fff" }}
                         cursor={true}
-                        content={<CustomTooltip2 />}
+                        content={<CustomTooltipNotLabel />}
                       />
 
                       <Line
