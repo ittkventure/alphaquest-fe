@@ -77,7 +77,7 @@ const ChartDetail = () => {
     );
 
   const listData =
-    data?.timelineData.map((value: any) => {
+    data?.chart?.timelineData.map((value: any) => {
       return {
         followerCount: value.values[0]?.extractedValue,
         name: value.date,
@@ -123,10 +123,21 @@ const ChartDetail = () => {
                 isShowSelectOption={false}
               />
               <div className="flex flex-col items-end">
-                <p className="font-bold text-[32px] text-[#24B592]">
-                  +{formatNumber(data?.growthPercent ?? 0)}%
+                <p
+                  className={classNames(
+                    "font-bold text-[32px] text-[#24B592]",
+                    {
+                      "text-[#E25148]": data?.growthPercent < 0,
+                    }
+                  )}
+                >
+                  {data?.growthPercent > 0
+                    ? `+${formatNumber(data?.growthPercent ?? 0)}%`
+                    : `${formatNumber(data?.growthPercent ?? 0)}%`}
                 </p>
-                <p className="text-[#A1A1AA]">Growth</p>
+                <p className="text-[#A1A1AA]">
+                  {data?.growthPercent > 0 ? "Growth" : "Down"}
+                </p>
               </div>
             </div>
             <ResponsiveContainer width="100%" aspect={3}>

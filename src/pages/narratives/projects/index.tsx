@@ -8,6 +8,7 @@ import AppLayout from "@/layouts/AppLayout";
 import { formatNumber } from "@/utils/formatNumber";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import classNames from "classnames";
 import { useRouter } from "next/router";
 import React from "react";
 import { useContext, useState, useRef } from "react";
@@ -81,10 +82,18 @@ const ChartPage = () => {
 
             <div className="flex items-center justify-center">
               <div className="flex flex-col items-end">
-                <p className="font-bold text-xl text-[#24B592]">
-                  +{formatNumber(item?.growthPercent)}%
+                <p
+                  className={classNames("font-bold text-xl text-[#24B592]", {
+                    "text-[#E25148]": item?.growthPercent < 0,
+                  })}
+                >
+                  {item?.growthPercent > 0
+                    ? `+${formatNumber(item?.growthPercent ?? 0)}%`
+                    : `${formatNumber(item?.growthPercent ?? 0)}%`}
                 </p>
-                <p className="text-[#A1A1AA] text-sm">Growth</p>
+                <p className="text-[#A1A1AA] text-sm">
+                  {item?.growthPercent > 0 ? "Growth" : "Down"}
+                </p>
               </div>
             </div>
           </div>
