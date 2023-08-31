@@ -78,6 +78,7 @@ interface TableRowTypes {
   onReduceCount?: () => void;
   onRefreshTable?: (userId: string) => void;
   onClickAction?: () => void;
+  isShowWatchList?: boolean;
 }
 
 const TableRow: FC<TableRowTypes> = ({
@@ -86,6 +87,7 @@ const TableRow: FC<TableRowTypes> = ({
   isAnimation,
   onRefreshTable,
   onClickAction,
+  isShowWatchList,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -369,7 +371,7 @@ const TableRow: FC<TableRowTypes> = ({
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{itemState.trendingScore}</p>
         </div>
-        {_renderHeartButton()}
+        {isShowWatchList && _renderHeartButton()}
       </div>
     </div>
   );
