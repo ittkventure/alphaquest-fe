@@ -19,13 +19,6 @@ const CustomTooltip: React.FC<ICustomTooltip> = ({
         }}
         className="bg-[#282E44] text-white p-5 flex flex-col"
       >
-        <p
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-        >{`${label}`}</p>
         <div>
           {payload.map(
             (pld: {

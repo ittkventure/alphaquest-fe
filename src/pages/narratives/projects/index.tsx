@@ -1,18 +1,16 @@
 import { apiTwitter } from "@/api-client";
 import Header from "@/components/App/Header";
-import MonthSelect from "@/components/App/MonthSelect";
-import CustomTooltip2 from "@/components/ProjectDetail/LineChart/CustomTooltip2";
-import Spinner from "@/components/Spinner";
+import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 import TableFooter from "@/components/TableCommon/TableFooter";
 import SelectCustom, { OptionType } from "@/components/common/Select";
 import { AuthContext } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { formatNumber } from "@/utils/formatNumber";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import React from "react";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import {
   LineChart,
@@ -26,6 +24,7 @@ const ChartPage = () => {
   const { authState } = useContext(AuthContext);
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const searchInputRef = useRef<any>(null);
   const [timeFrames, setTimeFrames] = useState<Array<OptionType>>([
     {
       code: "today-12-m",
@@ -118,7 +117,7 @@ const ChartPage = () => {
                 <Tooltip
                   itemStyle={{ color: "#fff" }}
                   cursor={true}
-                  content={<CustomTooltip2 />}
+                  content={<CustomTooltipNotLabel />}
                 />
                 {/* <XAxis
                     dataKey="name"
@@ -180,6 +179,7 @@ const ChartPage = () => {
                     <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[8px] left-[30px]" />
 
                     <input
+                      ref={searchInputRef}
                       className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7  max-lg:text-sm ml-6"
                       placeholder="Search"
                       onKeyPress={(event) => {
@@ -191,6 +191,16 @@ const ChartPage = () => {
                         }
                       }}
                     />
+                    <button
+                      onClick={() => {
+                        setKeyword("");
+                        if (searchInputRef) {
+                          searchInputRef.current.value = "";
+                        }
+                      }}
+                    >
+                      <XMarkIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[8px] right-[10px]" />
+                    </button>
                   </div>
                 </div>
               </div>
