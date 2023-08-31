@@ -310,7 +310,7 @@ class ApiTwitter extends ApiClientBase {
     const timeframe = timeFrame ?? "today-5-y";
 
     const res = await this.instance.get(
-      `/api/app/twitter/interest-over-time?${qs.stringify({
+      `/api/app/narrative/interest-over-time?${qs.stringify({
         keyword,
         timeframe,
       })}`,
@@ -392,7 +392,7 @@ class ApiTwitter extends ApiClientBase {
     const res = await this.instance.get(
       `/api/app/twitter/relate-by-narrative-keyword?${qs.stringify({
         keyword,
-        take: 10,
+        take: 5,
       })}`,
       {
         headers: {
