@@ -126,7 +126,11 @@ const ChartPage = () => {
                 <Tooltip
                   itemStyle={{ color: "#fff" }}
                   cursor={true}
-                  content={<CustomTooltipNotLabel />}
+                  content={
+                    <CustomTooltipNotLabel
+                      dotColor={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+                    />
+                  }
                 />
                 {/* <XAxis
                     dataKey="name"
@@ -140,7 +144,7 @@ const ChartPage = () => {
                   yAxisId="left"
                   type="monotone"
                   dataKey="followerCount"
-                  stroke="#24B592"
+                  stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
                   strokeWidth="2"
                   dot={false}
                 />

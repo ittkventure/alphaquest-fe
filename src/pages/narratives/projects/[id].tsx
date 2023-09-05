@@ -166,7 +166,7 @@ const ChartDetail = () => {
                   yAxisId="left"
                   type="monotone"
                   dataKey="followerCount"
-                  stroke="#24B592"
+                  stroke={data?.growthPercent > 0 ? "#24B592" : "#E25148"}
                   strokeWidth="2"
                   dot={false}
                 />
@@ -232,14 +232,20 @@ const ChartDetail = () => {
                       <Tooltip
                         itemStyle={{ color: "#fff" }}
                         cursor={true}
-                        content={<CustomTooltipNotLabel />}
+                        content={
+                          <CustomTooltipNotLabel
+                            dotColor={
+                              item?.growthPercent > 0 ? "#24B592" : "#E25148"
+                            }
+                          />
+                        }
                       />
 
                       <Line
                         yAxisId="left"
                         type="monotone"
                         dataKey="followerCount"
-                        stroke="#24B592"
+                        stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
                         strokeWidth="2"
                         dot={false}
                       />
