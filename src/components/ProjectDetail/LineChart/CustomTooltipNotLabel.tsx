@@ -3,13 +3,13 @@ import React from "react";
 interface ICustomTooltip {
   active?: boolean;
   payload?: any;
-  label?: any;
+  dotColor?: string;
 }
 
 const CustomTooltip: React.FC<ICustomTooltip> = ({
   active,
   payload,
-  label,
+  dotColor,
 }) => {
   if (active && payload && payload.length) {
     return (
@@ -47,8 +47,7 @@ const CustomTooltip: React.FC<ICustomTooltip> = ({
                     width: 11,
                     height: 11,
                     borderRadius: "50%",
-                    backgroundColor:
-                      pld.dataKey !== "twitterFollow" ? "#24B592" : "#E25148",
+                    backgroundColor: dotColor,
                   }}
                 ></div>
                 <div>
@@ -59,9 +58,7 @@ const CustomTooltip: React.FC<ICustomTooltip> = ({
                       marginLeft: 4,
                     }}
                   >
-                    {pld.dataKey !== "twitterFollow"
-                      ? "Trend Score:"
-                      : "Trend Score:"}
+                    Trend Score:
                     <br />
                     <span style={{ marginLeft: 5, color: "#FFF" }}>
                       {pld.value}
