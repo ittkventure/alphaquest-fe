@@ -80,7 +80,7 @@ const SideMenu = () => {
   };
 
   const renderUrl = (item: MenuItemType) => {
-    if (item.key === "narratives") return "/narratives/projects";
+    if (item.key === "narratives") return "/narratives";
     return item.key === "watchlist"
       ? "/watchlist/projects"
       : `/projects/${item.key}`;
