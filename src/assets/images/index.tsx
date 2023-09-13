@@ -18,6 +18,7 @@ import StepnLogo from "./stepn-logo.png";
 import StargateLogo from "./stargate-logo.jpg";
 import PhaoImg from "./phao-img.png";
 import PrayImg from "./pray-img.png";
+import PlaceholderChart from "./placeholder.png";
 
 export {
   ChartImg,
@@ -40,4 +41,5 @@ export {
   StargateLogo,
   PhaoImg,
   PrayImg,
+  PlaceholderChart,
 };

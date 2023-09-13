@@ -39,6 +39,7 @@ import folderIcon from "./folder.svg";
 
 import CoinWhiteIcon from "./coin-white-icon.svg";
 import CoinBlackIcon from "./coin-black-icon.svg";
+import ChessKingHIcon from "./chess-king-icon-h.svg";
 
 export {
   QuoteIcon,
@@ -79,4 +80,5 @@ export {
   folderIcon,
   CoinBlackIcon,
   CoinWhiteIcon,
+  ChessKingHIcon,
 };
