@@ -11,7 +11,7 @@ import {
 import CustomTooltip2 from "@/components/ProjectDetail/LineChart/CustomTooltip2";
 import { useQuery } from "react-query";
 import { apiTwitter } from "@/api-client";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import Header from "@/components/App/Header";
 import { useRouter } from "next/router";
@@ -23,11 +23,13 @@ import TableContent from "@/components/App/Table/TableContent";
 import { formatNumber } from "@/utils/formatNumber";
 import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 import Image from "next/image";
-import { InfoIcon } from "@/assets/icons";
+import { CrownIcon, InfoIcon } from "@/assets/icons";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 const ChartDetail = () => {
-  const { authState } = useContext(AuthContext);
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
   const router = useRouter();
   const { id } = router.query;
 
@@ -99,6 +101,51 @@ const ChartDetail = () => {
     );
   };
 
+  const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/pricing?action=open");
+    } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      router.push("/sign-up");
+    }
+  };
+
+  const renderUpBtn = () => {
+    if (router.pathname === "/watchlist/projects") return null;
+    return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
+      !accountExtendDetail?.currentPlanKey ? (
+      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+          <p className="mb-4">Upgrade account to see all</p>
+
+          <button
+            onClick={onClickPaymentTrial}
+            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+          >
+            <Image
+              src={CrownIcon}
+              width={17}
+              height={14}
+              alt="crown-icon"
+              className="mr-2"
+            />
+            Upgrade to Pro
+          </button>
+        </div>
+      </div>
+    ) : null;
+  };
+
   return (
     <AppLayout>
       <div className="w-full relative min-h-[400px]">
@@ -107,7 +154,7 @@ const ChartDetail = () => {
           <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
         </div>
         <div className="flex flex-col gap-6 px-[100px]  max-lg:px-7">
-          <h1 className="font-bold text-3xl text-start">{id}</h1>
+          <h1 className="font-bold text-3xl text-start">{data?.displayName}</h1>
 
           <div className="mt-10 bg-[#171B28] p-10">
             <div className="pb-10 flex justify-between">
@@ -300,6 +347,7 @@ const ChartDetail = () => {
           place="right"
           content="Numbers represent search interest relative to the highest point on the chart for the given region and time. % Growth represents growth over the time period selected."
         />
+        {renderUpBtn()}
       </div>
     </AppLayout>
   );
