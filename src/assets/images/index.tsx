@@ -19,6 +19,7 @@ import StargateLogo from "./stargate-logo.jpg";
 import PhaoImg from "./phao-img.png";
 import PrayImg from "./pray-img.png";
 import PlaceholderChart from "./placeholder.png";
+import PlaceholderChart2 from "./placeholder-chart-2.png";
 
 export {
   ChartImg,
@@ -42,4 +43,5 @@ export {
   PhaoImg,
   PrayImg,
   PlaceholderChart,
+  PlaceholderChart2,
 };

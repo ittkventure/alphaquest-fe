@@ -23,9 +23,10 @@ import TableContent from "@/components/App/Table/TableContent";
 import { formatNumber } from "@/utils/formatNumber";
 import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 import Image from "next/image";
-import { CrownIcon, InfoIcon } from "@/assets/icons";
+import { ChessKingHIcon, CrownIcon, InfoIcon } from "@/assets/icons";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { UserPayType } from "@/api-client/types/AuthType";
+import { PlaceholderChart2 } from "@/assets/images";
 
 const ChartDetail = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -260,24 +261,53 @@ const ChartDetail = () => {
                 <Spinner />
               </div>
             )}
-            {dataRelateList?.map((item: any, index: number) => (
-              <div className="grid grid-cols-8 border-b border-b-slate-800 pb-2">
-                <div className="col-span-2 flex items-center">
-                  {item?.displayName}
+            {dataRelateList?.map((item: any, index: number) =>
+              !item ? (
+                <div className="w-full h-fit relative bg-[#1B202F]">
+                  <Image
+                    src={PlaceholderChart2}
+                    height={200}
+                    alt="chart"
+                    className="w-full h-fit object-cover"
+                  />
+                  <div className="absolute top-0 w-full h-full flex justify-center items-center gap-4">
+                    <div className="flex items-center gap-5">
+                      <div className="flex justify-center items-center mb-4 gap-3 h-28 pt-4">
+                        <Image
+                          src={ChessKingHIcon}
+                          alt="icon"
+                          width={17}
+                          height={13}
+                        />
+                        <p>Pro Members only</p>
+                      </div>
+                      <button
+                        onClick={onClickPaymentTrial}
+                        className="px-6 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden h-10"
+                      >
+                        Try pro
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-span-4 flex justify-center items-center min-h-[100px] mt-5">
-                  <ResponsiveContainer width="100%" aspect={6}>
-                    <LineChart
-                      width={500}
-                      height={60}
-                      data={item?.chart?.timelineData?.map((value: any) => {
-                        return {
-                          followerCount: value.values[0]?.extractedValue,
-                          name: value?.date,
-                        };
-                      })}
-                    >
-                      {/* <XAxis
+              ) : (
+                <div className="grid grid-cols-8 border-b border-b-slate-800 pb-2">
+                  <div className="col-span-2 flex items-center">
+                    {item?.displayName}
+                  </div>
+                  <div className="col-span-4 flex justify-center items-center min-h-[80px] mt-5">
+                    <ResponsiveContainer width="100%" aspect={9}>
+                      <LineChart
+                        width={500}
+                        height={60}
+                        data={item?.chart?.timelineData?.map((value: any) => {
+                          return {
+                            followerCount: value.values[0]?.extractedValue,
+                            name: value?.date,
+                          };
+                        })}
+                      >
+                        {/* <XAxis
                         dataKey="name"
                         tick={{ fill: "#fff" }}
                         fontSize={14}
@@ -287,47 +317,50 @@ const ChartDetail = () => {
                         domain={["followerCount"]}
                       /> */}
 
-                      <Tooltip
-                        itemStyle={{ color: "#fff" }}
-                        cursor={true}
-                        content={
-                          <CustomTooltipNotLabel
-                            dotColor={
-                              item?.growthPercent > 0 ? "#24B592" : "#E25148"
-                            }
-                          />
-                        }
-                      />
+                        <Tooltip
+                          itemStyle={{ color: "#fff" }}
+                          cursor={true}
+                          content={
+                            <CustomTooltipNotLabel
+                              dotColor={
+                                item?.growthPercent > 0 ? "#24B592" : "#E25148"
+                              }
+                            />
+                          }
+                        />
 
-                      <Line
-                        yAxisId="left"
-                        type="monotone"
-                        dataKey="followerCount"
-                        stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
-                        strokeWidth="2"
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="col-span-2 flex justify-end items-center">
-                  <div>
-                    <p
-                      className={classNames(
-                        "text-[#24B592] text-xl  max-lg:text-sm  max-lg:font-bold",
-                        {
-                          "text-[#E25148]": item?.growthPercent < 0,
-                        }
-                      )}
-                    >
-                      {item?.growthPercent > 0
-                        ? `+${formatNumber(item?.growthPercent ?? 0)}%`
-                        : `${formatNumber(item?.growthPercent ?? 0)}%`}
-                    </p>
+                        <Line
+                          yAxisId="left"
+                          type="monotone"
+                          dataKey="followerCount"
+                          stroke={
+                            item?.growthPercent > 0 ? "#24B592" : "#E25148"
+                          }
+                          strokeWidth="2"
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="col-span-2 flex justify-end items-center">
+                    <div>
+                      <p
+                        className={classNames(
+                          "text-[#24B592] text-xl  max-lg:text-sm  max-lg:font-bold",
+                          {
+                            "text-[#E25148]": item?.growthPercent < 0,
+                          }
+                        )}
+                      >
+                        {item?.growthPercent > 0
+                          ? `+${formatNumber(item?.growthPercent ?? 0)}%`
+                          : `${formatNumber(item?.growthPercent ?? 0)}%`}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
 
           <h3 className="font-bold text-lg text-start mt-6">
@@ -339,7 +372,7 @@ const ChartDetail = () => {
             </div>
           )}
           {_renderTable()}
-          <div className="h-10"></div>
+          <div className="h-28"></div>
         </div>
         <ReactTooltip
           id="info-tooltip-growth"
