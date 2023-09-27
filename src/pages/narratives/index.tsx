@@ -160,7 +160,7 @@ const ChartPage = () => {
               onClick={() => router.push("/narratives/" + item?.keyword)}
               className="cursor-pointer mt-2"
             >
-              <p>{item?.description}</p>
+              <p className="line-clamp-2">{item?.description}</p>
             </div>
             <ResponsiveContainer width="100%" aspect={3}>
               <LineChart width={302} height={140} data={listData}>

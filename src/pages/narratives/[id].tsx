@@ -156,6 +156,7 @@ const ChartDetail = () => {
         </div>
         <div className="flex flex-col gap-6 px-[100px]  max-lg:px-7">
           <h1 className="font-bold text-3xl text-start">{data?.displayName}</h1>
+          <p>{data?.description}</p>
 
           <div className="mt-10 bg-[#171B28] p-10">
             <div className="pb-10 flex justify-between">
