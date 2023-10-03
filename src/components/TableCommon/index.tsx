@@ -199,8 +199,11 @@ const TableCustom: FC<ITableCustom> = ({
                                           } z-10 left-[-5px] bg-dark-800`
                                         : ""
                                     } ${
-                                      isPaddingX ? "px-5" : ""
-                                    }  break-all py-4 text-sm text-white`}
+                                      isPaddingX ? "px-7" : ""
+                                    }  py-4 text-sm text-white `}
+                                    style={{
+                                      wordBreak: "normal",
+                                    }}
                                   >
                                     {
                                       // Render the cell contents

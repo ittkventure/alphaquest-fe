@@ -26,15 +26,19 @@ const useColumTwitterChangeLogs = () => {
                   className="object-cover z-10"
                 />
               </div>
-              <p className="ml-3 text-sm">
+              <p
+                className="ml-3 text-sm px-2"
+                style={{
+                  wordBreak: "break-all",
+                }}
+              >
                 {value}{" "}
                 {accountExtendDetail?.currentPlanKey !==
                   UserPayType.PREMIUM && (
-                  <span>
-                    <i>
-                      (This section is exclusively revealed to our Pro members.
-                      Upgrade your membership to get instant access!)
-                    </i>
+                  <span className="italic">
+                    (This section is exclusively revealed to our Pro members.{" "}
+                    <br />
+                    Upgrade your membership to get instant access!)
                   </span>
                 )}
               </p>
