@@ -48,7 +48,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/8watchlist-item?${qs.stringify(params)}`,
+      `/api/app/twitter/watchlist-item?${qs.stringify(params)}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
