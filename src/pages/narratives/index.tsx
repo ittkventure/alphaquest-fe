@@ -214,8 +214,8 @@ const ChartPage = () => {
           <div className="grid grid-cols-4 gap-6 px-6 pb-6 max-lg:grid-cols-2 max-lg:p-7">
             <div className="col-span-full">
               <p className="text-start text-lg">
-                We track millions of conversations happening across the web and
-                social platforms to identity crypto trends before they take off
+                We track millions of data points to identify crypto narratives
+                before they take off
               </p>
 
               <div>

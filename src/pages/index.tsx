@@ -1,22 +1,40 @@
 import { apiTwitter } from "@/api-client";
 import {
+  ChessKingHIcon,
   DocumentTextIcon,
   HeartIconHome,
   NotificationCircleIconHome,
 } from "@/assets/icons";
-import { HomeBgImg, HomeImg, User1, User2 } from "@/assets/images";
+import {
+  ChartImg,
+  HomeBgImg,
+  HomeImg,
+  PlaceholderChart,
+  User1,
+  User2,
+} from "@/assets/images";
 import { DiscoverProjectItem } from "@/components/Home";
 import CommentItem from "@/components/Home/CommentItem";
 import SubscriptionItem from "@/components/Home/SubscriptionItem";
+import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
+import { formatNumber } from "@/utils/formatNumber";
 import { listDiscoverProjects } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import classNames from "classnames";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-
+import { useQuery } from "react-query";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 interface HomePageType {
   gemCount?: number;
 }
@@ -25,6 +43,136 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
   const router = useRouter();
   const { setTypePaymentAction, authState } = useContext(AuthContext);
 
+  const { data, isLoading } = useQuery(
+    ["chartInterestOverTime", authState?.access_token, "today-12-m", "", 1],
+    async () =>
+      await apiTwitter.getChartNarrativeOverTime(
+        authState?.access_token ?? "",
+        "today-12-m",
+        "",
+        6,
+        1
+      )
+  );
+
+  const renderItemsOfChart = () => {
+    return data?.items?.map((item: any, index: number) => {
+      const listData =
+        item?.chart?.timelineData.map((value: any) => {
+          return {
+            followerCount: value.values[0]?.extractedValue,
+            name: value.date,
+          };
+        }) ?? [];
+
+      console.log(item, "item");
+
+      if (!item)
+        return (
+          <div className="w-full h-fit relative bg-[#1B202F]">
+            <Image
+              src={PlaceholderChart}
+              width={334}
+              height={200}
+              alt="chart"
+              className="w-full h-fit object-cover"
+            />
+            <div className="absolute top-0 w-full h-full flex flex-col justify-center items-center">
+              <div className="w-full flex justify-center mb-4 gap-3">
+                <Image src={ChessKingHIcon} alt="icon" width={17} height={13} />
+                <p>Pro Members only</p>
+              </div>
+              <button
+                onClick={onClickPaymentTrial}
+                className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
+              >
+                Try pro
+              </button>
+            </div>
+          </div>
+        );
+
+      return (
+        <div className="w-full p-4 min-h-fit bg-[#1B202F]">
+          <div
+            onClick={() => router.push("/narratives/" + item?.keyword)}
+            className="w-full flex justify-between mb-4 cursor-pointer"
+          >
+            <p>{item?.displayName}</p>
+
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col items-end">
+                <p
+                  className={classNames("font-bold text-xl text-[#24B592]", {
+                    "text-[#E25148]": item?.growthPercent < 0,
+                  })}
+                >
+                  {item?.growthPercent > 0
+                    ? `+${formatNumber(item?.growthPercent ?? 0)}%`
+                    : `${formatNumber(item?.growthPercent ?? 0)}%`}
+                </p>
+                <p className="text-[#A1A1AA] text-sm">
+                  {item?.growthPercent > 0 ? "Growth" : "Down"}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col-reverse pb-2">
+            {/* <div className="mt-4 flex items-center justify-between">
+                <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
+                  <p>Regular</p>
+                </button>
+
+                <button>
+                  <HeartIcon className="w-6 h-6 text-white" />
+                </button>
+              </div> */}
+            <div
+              onClick={() => router.push("/narratives/" + item?.keyword)}
+              className="cursor-pointer mt-2"
+            >
+              <p className="line-clamp-2">{item?.description}</p>
+            </div>
+            <ResponsiveContainer width="100%" aspect={3}>
+              <LineChart width={302} height={140} data={listData}>
+                <CartesianGrid
+                  horizontal={true}
+                  vertical={false}
+                  stroke="#38405B"
+                />
+
+                <Tooltip
+                  itemStyle={{ color: "#fff" }}
+                  cursor={true}
+                  content={
+                    <CustomTooltipNotLabel
+                      dotColor={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+                    />
+                  }
+                />
+                {/* <XAxis
+                    dataKey="name"
+                    tick={{ fill: "#fff" }}
+                    fontSize={0}
+                    fontFamily="WorkSans-Medium"
+                    fontWeight={500}
+                    domain={["followerCount"]}
+                  /> */}
+                <Line
+                  yAxisId="left"
+                  type="monotone"
+                  dataKey="followerCount"
+                  stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+                  strokeWidth="2"
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      );
+    });
+  };
   const onClickPaymentTrial = () => {
     if (authState) {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
@@ -111,7 +259,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
           </div>
         </div>
 
-        {/* <div className="flex flex-col items-center justify-center mt-32 ">
+        <div className="flex flex-col items-center justify-center mt-32 ">
           <p className="text-[2.75rem] font-workSansSemiBold">
             Find trends & Narratives Before They Happen
           </p>
@@ -123,36 +271,19 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
         </div>
 
         <div className="flex flex-wrap justify-center mt-32">
-          <div className="flex flex-wrap justify-center max-w-[1500px]">
-            <div className="m-3">
-              <Image src={ChartImg} width={392} height={345} alt="avt" />
-            </div>
-            <div className="m-3">
-              <Image src={ChartImg} width={392} height={345} alt="avt" />
-            </div>
-            <div className="m-3">
-              <Image src={ChartImg} width={392} height={345} alt="avt" />
-            </div>
-            <div className="m-3">
-              <Image src={ChartImg} width={392} height={345} alt="avt" />
-            </div>
-            <div className="m-3">
-              <Image src={ChartImg} width={392} height={345} alt="avt" />
-            </div>
-            <div className="m-3">
-              <Image src={ChartImg} width={392} height={345} alt="avt" />
-            </div>
+          <div className="grid grid-cols-3 gap-6 px-[150px] max-lg:px-3 max-lg:grid-cols-2 max-md:grid-cols-1 max-w-[1500px]">
+            {renderItemsOfChart()}
           </div>
         </div>
 
         <div className="flex justify-center mt-8">
           <button
-            onClick={() => router.push("/pricing")}
+            onClick={() => router.push("/narratives")}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
           >
-            Start 7-Day Trial for $9
+            Discover now
           </button>
-        </div> */}
+        </div>
 
         <div className="flex flex-col items-center justify-center mt-32">
           <p className="text-[2.75rem] font-workSansSemiBold">

@@ -27,6 +27,7 @@ import { ChessKingHIcon, CrownIcon, InfoIcon } from "@/assets/icons";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { PlaceholderChart2 } from "@/assets/images";
+import moment from "moment";
 
 const ChartDetail = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -84,15 +85,17 @@ const ChartDetail = () => {
 
   const listData =
     data?.chart?.timelineData.map((value: any) => {
+      console.log(value, "value.date");
+
       return {
         followerCount: value.values[0]?.extractedValue,
-        name: value.date,
+        name: moment(value?.timestamp * 1000).format("MMM YYYY"),
       };
     }) ?? [];
 
   const _renderTable = () => {
     if (!isLoadingRelateListProject && dataRelateListProject?.length === 0)
-      return <p className="text-start font-workSansLight">No data</p>;
+      return null;
     return (
       <TableContent
         initListRows={dataRelateListProject ?? []}
@@ -364,9 +367,12 @@ const ChartDetail = () => {
             )}
           </div>
 
-          <h3 className="font-bold text-lg text-start mt-6">
-            Related Projects
-          </h3>
+          {(!isLoadingRelateListProject &&
+            dataRelateListProject?.length === 0) ?? (
+            <h3 className="font-bold text-lg text-start mt-6">
+              Related Projects
+            </h3>
+          )}
           {isLoadingRelateListProject && (
             <div className="w-full flex justify-center items-center">
               <Spinner />
@@ -379,7 +385,7 @@ const ChartDetail = () => {
           id="info-tooltip-growth"
           className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
           place="right"
-          content="Numbers represent search interest relative to the highest point on the chart for the given region and time. % Growth represents growth over the time period selected."
+          content="Numbers represent search interest relative to the highest point on the chart for the given region and time. % Growth represents growth over the time period selected"
         />
         {renderUpBtn()}
       </div>
