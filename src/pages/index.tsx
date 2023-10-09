@@ -265,8 +265,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
           </p>
 
           <p className="font-thin">
-            Be the first to uncover the next big thing in crypto with our
-            powerful crypto research tool
+            We track millions of data points to identify crypto narratives before they take off
           </p>
         </div>
 
