@@ -190,6 +190,16 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
           {renderMobile()}
 
           <ul className="flex items-center max-lg:hidden text-sm mt-3 max-lg:border-b max-lg:border-b-secondary-600 max-lg:pb-2">
+            <li className="max-lg:flex-1 mr-6  transition-all duration-300 text-primary-500 font-bold">
+              <Link
+                onClick={() => {
+                  mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
+                }}
+                href="/narratives"
+              >
+                Narratives
+              </Link>
+            </li>
             <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300">
               <Link
                 onClick={() => {
