@@ -98,7 +98,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
             onClick={() => router.push("/narratives/" + item?.keyword)}
             className="w-full flex justify-between mb-4 cursor-pointer"
           >
-            <p>{item?.displayName}</p>
+            <p className="font-bold text-lg">{item?.displayName}</p>
 
             <div className="flex items-center justify-center">
               <div className="flex flex-col items-end">
@@ -129,11 +129,11 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
               </div> */}
             <div
               onClick={() => router.push("/narratives/" + item?.keyword)}
-              className="cursor-pointer mt-2"
+              className="cursor-pointer mt-4"
             >
               <p className="line-clamp-2">{item?.description}</p>
             </div>
-            <ResponsiveContainer width="100%" aspect={3}>
+            <ResponsiveContainer width="100%" aspect={2}>
               <LineChart width={302} height={140} data={listData}>
                 <CartesianGrid
                   horizontal={true}
