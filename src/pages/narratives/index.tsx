@@ -172,7 +172,13 @@ const ChartPage = () => {
                 </button>
               </div> */}
             <div
-              onClick={() => router.push("/narratives/" + item?.keyword)}
+              onClick={() =>
+                router.push(
+                  "/narratives/" +
+                    item?.keyword +
+                    `?timeFrame=${timeFrame.code}`
+                )
+              }
               className="cursor-pointer mt-4"
             >
               <p className="line-clamp-2 font-light">{item?.description}</p>

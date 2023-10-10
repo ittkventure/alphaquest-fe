@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import React from "react";
 import {
   LineChart,
@@ -52,6 +52,17 @@ const ChartDetail = () => {
     code: "today-12-m",
     name: "Past 12 Months",
   });
+
+  useEffect(() => {
+    if (router.query?.timeFrame) {
+      const timeFrame = timeFrames.find(
+        (item) => item.code === router.query?.timeFrame
+      );
+      if (timeFrame) {
+        setTimeFrame(timeFrame);
+      }
+    }
+  }, [router.query]);
 
   const { data, isLoading: isLoadingIOT } = useQuery(
     ["chartInterestOverTime", authState?.access_token, id, timeFrame],
@@ -296,7 +307,10 @@ const ChartDetail = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-8 border-b border-b-slate-800 pb-2">
-                  <button className="col-span-2 flex items-center" onClick={() => router.push("/narratives/" + item?.keyword)}>
+                  <button
+                    className="col-span-2 flex items-center"
+                    onClick={() => router.push("/narratives/" + item?.keyword)}
+                  >
                     {item?.displayName}
                   </button>
                   <div className="col-span-4 flex justify-center items-center min-h-[80px] mt-5">
