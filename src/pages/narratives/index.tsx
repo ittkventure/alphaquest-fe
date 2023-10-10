@@ -139,7 +139,11 @@ const ChartPage = () => {
       return (
         <div className="w-full p-4 min-h-fit bg-[#1B202F]">
           <div
-            onClick={() => router.push("/narratives/" + item?.keyword)}
+            onClick={() =>
+              router.push(
+                "/narratives/" + item?.keyword + `?timeFrame=${timeFrame.code}`
+              )
+            }
             className="w-full flex justify-between mb-4 cursor-pointer"
           >
             <p className="font-bold text-lg">{item?.displayName}</p>
