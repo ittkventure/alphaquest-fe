@@ -133,7 +133,7 @@ const ChartPage = () => {
               <div className="flex flex-col items-end">
                 <p
                   className={classNames("font-bold text-xl text-[#24B592]", {
-                    "text-[#E25148]": item?.growthPercent < 0,
+                    "text-[#E25148]": item?.growthPercent <= 0,
                   })}
                 >
                   {item?.growthPercent > 0

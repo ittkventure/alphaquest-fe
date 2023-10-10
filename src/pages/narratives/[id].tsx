@@ -182,7 +182,7 @@ const ChartDetail = () => {
                   className={classNames(
                     "font-bold text-[32px] text-[#24B592]",
                     {
-                      "text-[#E25148]": data?.growthPercent < 0,
+                      "text-[#E25148]": data?.growthPercent <= 0,
                     }
                   )}
                 >
@@ -296,9 +296,9 @@ const ChartDetail = () => {
                 </div>
               ) : (
                 <div className="grid grid-cols-8 border-b border-b-slate-800 pb-2">
-                  <div className="col-span-2 flex items-center">
+                  <button className="col-span-2 flex items-center" onClick={() => router.push("/narratives/" + item?.keyword)}>
                     {item?.displayName}
-                  </div>
+                  </button>
                   <div className="col-span-4 flex justify-center items-center min-h-[80px] mt-5">
                     <ResponsiveContainer width="100%" aspect={9}>
                       <LineChart
