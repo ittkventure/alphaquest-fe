@@ -43,18 +43,18 @@ const DiscoverProjectItem: FC<DiscoverProjectItemTypes> = ({
         <div className="mt-4">
           <p className="text-center">Found {found}</p>
         </div>
-        <div className="mt-[6px] text-success-500 font-workSansLight text-xs">
-          {/* <p className="text-center">{dayAfter}</p> */}
+        <div className="mt-[6px] text-success-500 font-normal text-sm">
+          <p className="text-center">{dayAfter}</p>
         </div>
         <div className="w-full px-5">
-          <div className="mt-[25px] px-3 py-[6px] border border-white w-full text-sm">
+          <div className="mt-[20px] px-3 py-[6px] border border-white w-full text-sm">
             <p className="text-center">{des}</p>
           </div>
         </div>
-        <div className="mt-[18px]">
+        <div className="mt-[15px]">
           <p className="text-center text-3xl font-workSansBold">{follow}</p>
         </div>
-        <div className="mt-2 w-32 text-sm">
+        <div className="mt-1 w-32 text-sm">
           <p className="text-center">
             {" "}
             followers now (vs {whenFound} when found)
