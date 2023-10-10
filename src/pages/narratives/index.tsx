@@ -13,7 +13,7 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import {
@@ -65,6 +65,21 @@ const ChartPage = () => {
       router.push("/sign-up");
     }
   };
+
+  useEffect(() => {
+    router.push(`/narratives?timeFrame=${timeFrame.code}`);
+  }, [timeFrame]);
+
+  useEffect(() => {
+    if (router.query?.timeFrame) {
+      const timeFrame = timeFrames.find(
+        (item) => item.code === router.query?.timeFrame
+      );
+      if (timeFrame) {
+        setTimeFrame(timeFrame);
+      }
+    }
+  }, [router.query]);
 
   const { data, isLoading } = useQuery(
     [
@@ -214,7 +229,9 @@ const ChartPage = () => {
           <div className="grid grid-cols-4 gap-6 px-6 pb-6 max-lg:grid-cols-2 max-lg:p-7">
             <div className="col-span-full">
               <p className="text-start text-lg">
-              We track millions of data points to identify crypto narratives before they take off. Here’s the current top and rising narratives based on search interest on Google
+                We track millions of data points to identify crypto narratives
+                before they take off. Here’s the current top and rising
+                narratives based on search interest on Google
               </p>
 
               <div>
