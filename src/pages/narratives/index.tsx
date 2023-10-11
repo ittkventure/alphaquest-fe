@@ -23,6 +23,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { formatSelectOptions, formatUrl } from "@/utils/string";
 
 const ChartPage = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -67,13 +68,14 @@ const ChartPage = () => {
   };
 
   useEffect(() => {
-    router.push(`/narratives?timeFrame=${timeFrame.code}`);
+    router.push(`/narratives?timeFrame=${formatSelectOptions(timeFrame.code)}`);
   }, [timeFrame]);
 
   useEffect(() => {
     if (router.query?.timeFrame) {
       const timeFrame = timeFrames.find(
-        (item) => item.code === router.query?.timeFrame
+        (item) =>
+          item.code === formatSelectOptions(router.query?.timeFrame?.toString())
       );
       if (timeFrame) {
         setTimeFrame(timeFrame);
@@ -141,7 +143,9 @@ const ChartPage = () => {
           <div
             onClick={() =>
               router.push(
-                "/narratives/" + item?.keyword + `?timeFrame=${timeFrame.code}`
+                "/narratives/" +
+                  formatUrl(item?.keyword) +
+                  `?timeFrame=${formatSelectOptions(timeFrame.code)}`
               )
             }
             className="w-full flex justify-between mb-4 cursor-pointer"
@@ -179,8 +183,8 @@ const ChartPage = () => {
               onClick={() =>
                 router.push(
                   "/narratives/" +
-                    item?.keyword +
-                    `?timeFrame=${timeFrame.code}`
+                    formatUrl(item?.keyword) +
+                    `?timeFrame=${formatSelectOptions(timeFrame.code)}`
                 )
               }
               className="cursor-pointer mt-4"
