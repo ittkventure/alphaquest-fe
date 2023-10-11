@@ -382,7 +382,7 @@ const ChartDetail = () => {
           </div>
 
           {(!isLoadingRelateListProject &&
-            dataRelateListProject?.length === 0) ?? (
+            dataRelateListProject?.length == 0) ? null : (
             <h3 className="font-bold text-lg text-start mt-6">
               Related Projects
             </h3>
