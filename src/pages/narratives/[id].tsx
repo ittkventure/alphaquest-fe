@@ -28,13 +28,13 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { PlaceholderChart2 } from "@/assets/images";
 import moment from "moment";
+import { formatSelectOptions, formatUrlRevert } from "@/utils/string";
 
 const ChartDetail = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
   const router = useRouter();
-  const { id } = router.query;
-
+  const id = formatUrlRevert(router.query?.id as string);
   if (!id) return null;
 
   const [timeFrames, setTimeFrames] = useState<Array<OptionType>>([
@@ -56,7 +56,8 @@ const ChartDetail = () => {
   useEffect(() => {
     if (router.query?.timeFrame) {
       const timeFrame = timeFrames.find(
-        (item) => item.code === router.query?.timeFrame
+        (item) =>
+          item.code === formatSelectOptions(router.query?.timeFrame?.toString())
       );
       if (timeFrame) {
         setTimeFrame(timeFrame);
