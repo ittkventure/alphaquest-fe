@@ -13,7 +13,7 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import {
@@ -65,6 +65,21 @@ const ChartPage = () => {
       router.push("/sign-up");
     }
   };
+
+  useEffect(() => {
+    router.push(`/narratives?timeFrame=${timeFrame.code}`);
+  }, [timeFrame]);
+
+  useEffect(() => {
+    if (router.query?.timeFrame) {
+      const timeFrame = timeFrames.find(
+        (item) => item.code === router.query?.timeFrame
+      );
+      if (timeFrame) {
+        setTimeFrame(timeFrame);
+      }
+    }
+  }, [router.query]);
 
   const { data, isLoading } = useQuery(
     [
@@ -124,16 +139,20 @@ const ChartPage = () => {
       return (
         <div className="w-full p-4 min-h-fit bg-[#1B202F]">
           <div
-            onClick={() => router.push("/narratives/" + item?.keyword)}
+            onClick={() =>
+              router.push(
+                "/narratives/" + item?.keyword + `?timeFrame=${timeFrame.code}`
+              )
+            }
             className="w-full flex justify-between mb-4 cursor-pointer"
           >
-            <p>{item?.displayName}</p>
+            <p className="font-bold text-lg">{item?.displayName}</p>
 
             <div className="flex items-center justify-center">
               <div className="flex flex-col items-end">
                 <p
                   className={classNames("font-bold text-xl text-[#24B592]", {
-                    "text-[#E25148]": item?.growthPercent < 0,
+                    "text-[#E25148]": item?.growthPercent <= 0,
                   })}
                 >
                   {item?.growthPercent > 0
@@ -157,12 +176,18 @@ const ChartPage = () => {
                 </button>
               </div> */}
             <div
-              onClick={() => router.push("/narratives/" + item?.keyword)}
-              className="cursor-pointer mt-2"
+              onClick={() =>
+                router.push(
+                  "/narratives/" +
+                    item?.keyword +
+                    `?timeFrame=${timeFrame.code}`
+                )
+              }
+              className="cursor-pointer mt-4"
             >
-              <p>{item?.description}</p>
+              <p className="line-clamp-2 font-light">{item?.description}</p>
             </div>
-            <ResponsiveContainer width="100%" aspect={3}>
+            <ResponsiveContainer width="100%" aspect={2}>
               <LineChart width={302} height={140} data={listData}>
                 <CartesianGrid
                   horizontal={true}
@@ -214,8 +239,9 @@ const ChartPage = () => {
           <div className="grid grid-cols-4 gap-6 px-6 pb-6 max-lg:grid-cols-2 max-lg:p-7">
             <div className="col-span-full">
               <p className="text-start text-lg">
-                We track millions of conversations happening across the web and
-                social platforms to identity crypto trends before they take off
+                We track millions of data points to identify crypto narratives
+                before they take off. Here’s the current top and rising
+                narratives based on search interest on Google:
               </p>
 
               <div>

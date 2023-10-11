@@ -19,6 +19,14 @@ import StargateLogo from "./stargate-logo.jpg";
 import PhaoImg from "./phao-img.png";
 import PrayImg from "./pray-img.png";
 import PlaceholderChart from "./placeholder.png";
+import PlaceholderChart2 from "./placeholder-chart-2.png";
+
+import ArbdogeLogo from "./arbdoge-logo.jpg";
+import FriendtechLogo from "./friendtech-logo.jpg";
+import MiladyLogo from "./milady-logo.jpg";
+import Pepelogo from "./pepe-logo.jpg";
+import TipcoinLogo from "./tipcoin-logo.jpg";
+import UnibotLogo from "./unibot-logo.jpg";
 
 export {
   ChartImg,
@@ -42,4 +50,11 @@ export {
   PhaoImg,
   PrayImg,
   PlaceholderChart,
+  PlaceholderChart2,
+  ArbdogeLogo,
+  FriendtechLogo,
+  MiladyLogo,
+  Pepelogo,
+  TipcoinLogo,
+  UnibotLogo
 };
