@@ -241,7 +241,7 @@ const ChartPage = () => {
               <p className="text-start text-lg">
                 We track millions of data points to identify crypto narratives
                 before they take off. Here’s the current top and rising
-                narratives based on search interest on Google
+                narratives based on search interest on Google:
               </p>
 
               <div>
