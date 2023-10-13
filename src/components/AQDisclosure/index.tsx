@@ -1,5 +1,7 @@
+import { replaceURLs } from "@/utils/url";
 import { ArrowDownIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import React, { FC, useState } from "react";
+import Linkify from "react-linkify";
 
 interface IAQDisclosure {
   index: number;
@@ -27,7 +29,7 @@ const AQDisclosure: FC<IAQDisclosure> = ({
           <p className="text-[40px] mx-4 font-workSansExtraLight text-success-500">
             /
           </p>{" "}
-          <p className="max-lg:text-left max-lg:text-sm">{title}</p>
+          <p className="max-lg:text-left max-lg:text-sm text-start">{title}</p>
         </div>
         <div
           className={`transition-all duration-200 ${!open ? "" : "rotate-180"}`}
@@ -41,7 +43,7 @@ const AQDisclosure: FC<IAQDisclosure> = ({
           open ? "max-h-max py-4 max-lg:py-0 mb-6" : "h-0 py-0 overflow-hidden"
         }`}
       >
-        <p className="mt-4 pr-3 max-lg:text-sm">{content}</p>
+        <Linkify>{content}</Linkify>
       </div>
     </button>
   );
