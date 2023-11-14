@@ -48,7 +48,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({
       <div className="relative">
         <button
           onClick={() => setIsShowMenu(!isShowMenu)}
-          className="text-success-500 flex justify-center items-center border-b border-success-500 px-[2px] ml-2"
+          className="text-success-500 flex justify-center items-center border-b border-success-500 px-[2px]"
         >
           <p>{selectedValue.label}</p>
           <ChevronDownIcon className="h-5 w-5 ml-2" />
