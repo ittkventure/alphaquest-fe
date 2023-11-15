@@ -27,6 +27,7 @@ import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -59,7 +60,7 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
-  const [sortByLabel, setSortByLabel] = useState<string>("score");
+  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs followed");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [hasLoadMore, setHasLoadMore] = useState(true);
@@ -346,7 +347,7 @@ const AppContent: FC<AppContentTypes> = ({
                       "sorted by" + (month.value as SortByType) ?? "SCORE",
                   });
                   setSortBy((month.value as SortByType) ?? "SCORE");
-                  setSortByLabel(month.label ?? "SCORE");
+                  setSortByLabel(month.label ?? "# of KOLs followed");
                 }}
                 defaultData={{
                   value: sortBy,
@@ -487,7 +488,12 @@ const AppContent: FC<AppContentTypes> = ({
             <span>Project</span>
             <div className="flex items-center gap-1">
               <span>New KOLs followed</span>
-              <Image src={InfoIcon} width={20} height={20} alt="icon" />
+              <div
+                data-tooltip-id="info-tooltip-kol"
+                className="cursor-pointer"
+              >
+                <Image src={InfoIcon} width={20} height={20} alt="icon" />
+              </div>
             </div>
           </div>
           {isSearchLoading ? null : _renderTable()}
@@ -508,6 +514,12 @@ const AppContent: FC<AppContentTypes> = ({
           ) : null}
         </div>
       </div>
+      <ReactTooltip
+        id="info-tooltip-kol"
+        className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
+        place="bottom"
+        content="Number of new Alpha Hunters who followed last X. Click on the project to find out which Alpha Hunters are following it."
+      />
     </div>
   );
 };

@@ -17,7 +17,7 @@ import { DiscoverProjectItemTypes } from "@/components/Home/DiscoverProjectItem"
 
 const initListSort = [
   {
-    label: "Score",
+    label: "# of KOLs followed",
     value: "SCORE",
   },
   {
