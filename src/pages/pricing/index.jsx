@@ -51,7 +51,13 @@ const Subscription = () => {
       title: "What kind of data does Alpha Quest collect?",
       content: `Alpha Quest collects data related to crypto projects and trends, as well as user data related to subscription preferences and usage of the app. We take privacy and security very seriously and only collect data necessary to provide our services.`,
     },
+    {
+      title:
+        "I don't have Paypal, Visa or Master card? Can I subscribe to the AlphaQuest Pro Plan using crypto?",
+      content: `Using Paypal or Credit card would be more convenient for renewals. However, we also accept cryptocurrency payments if you prefer not to use those methods. Please reach out to https://t.me/alphaquestio for detailed instructions`,
+    },
   ];
+  const [isYear, setIsYear] = useState(false);
 
   const router = useRouter();
 
