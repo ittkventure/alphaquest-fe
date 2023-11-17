@@ -518,7 +518,9 @@ const AppContent: FC<AppContentTypes> = ({
         id="info-tooltip-kol"
         className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
         place="bottom"
-        content="Number of new Alpha Hunters who followed last X. Click on the project to find out which Alpha Hunters are following it."
+        content={`Number of new Alpha Hunters who followed ${
+          timeLabel === "ALL" ? "all" : `last ${timeLabel}`
+        }. Click on the project to find out which Alpha Hunters are following it.`}
       />
     </div>
   );
