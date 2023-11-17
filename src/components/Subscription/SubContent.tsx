@@ -247,7 +247,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
   return (
     <div>
       <div className="flex w-full justify-center items-center mt-[102px]">
-        <div className="flex p-[2px] border border-success-600 gap-[1px]">
+        {/* <div className="flex p-[2px] border border-success-600 gap-[1px]">
           <div
             className={classNames(
               "px-10 py-1 hover:bg-success-600 cursor-pointer transition-all duration-300",
@@ -270,7 +270,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
           >
             <p>Pay Annually - get 2 months free</p>
           </div>
-        </div>
+        </div> */}
       </div>
       {renderContent()}
     </div>
