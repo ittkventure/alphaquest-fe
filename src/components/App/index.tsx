@@ -467,7 +467,7 @@ const AppContent: FC<AppContentTypes> = ({
                 <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
 
                 <input
-                  className="w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
+                  className="2xl:w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
                   placeholder="Search"
                   onKeyPress={(event) => {
                     if (event.key === "Enter" && event.currentTarget.value) {
