@@ -57,7 +57,6 @@ const Subscription = () => {
       content: `Using Paypal or Credit card would be more convenient for renewals. However, we also accept cryptocurrency payments if you prefer not to use those methods. Please reach out to https://t.me/alphaquestio for detailed instructions`,
     },
   ];
-  const [isYear, setIsYear] = useState(false);
 
   const router = useRouter();
 
@@ -71,13 +70,14 @@ const Subscription = () => {
     }
   }, [typePayment, router.query]);
 
-  const getPaymentLink = async (withoutTrial) => {
+  const getPaymentLink = async (withoutTrial, isYear) => {
     setIsLoading(true);
     try {
       if (authState) {
         const paymentLink = await apiPayment.getLinkPayment(
           authState?.access_token,
-          withoutTrial
+          withoutTrial,
+          isYear
         );
         Paddle.Checkout.open({
           override: paymentLink,

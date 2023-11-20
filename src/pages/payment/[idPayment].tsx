@@ -1,10 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import HomeLayout from "@/layouts/HomeLayout";
-import { NextPage } from "next";
 import { apiPayment } from "@/api-client";
 import { AuthContext } from "@/contexts/useAuthContext";
-import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import Spinner from "@/components/Spinner";
 import Image from "next/image";
 import { BlurBgImg } from "@/assets/images";

@@ -6,7 +6,7 @@ import Spinner from "../Spinner";
 import classNames from "classnames";
 
 interface ISubContent {
-  onPayment: (withoutTrial: boolean) => void;
+  onPayment: (withoutTrial: boolean, isYear: boolean) => void;
   isLoading: boolean;
 }
 
@@ -28,15 +28,15 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
                 <div className="flex items-end my-6">
                   <p className="text-[40px] leading-[35px] font-workSansBold text-primary-500">
-                    $11
+                    $0
                   </p>
                   <p className="text-xl">/month</p>
                 </div>
 
                 <div className="flex items-end my-6">
-                  <p className="text-lg mr-2 line-through">$1,188</p>
+                  <p className="text-lg mr-2 line-through">$0</p>
                   <div className="flex">
-                    <p className="text-lg text-primary-500">$990</p>
+                    <p className="text-lg text-primary-500">$0</p>
                     <p className="text-lg text-primary-500">/year</p>
                   </div>
                 </div>
@@ -88,7 +88,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
                 <div className="flex items-end my-6">
                   <p className="text-[40px] leading-[35px] font-workSansBold text-primary-500">
-                    $69
+                    $82.5
                   </p>
                   <p className="text-xl">/month</p>
                 </div>
@@ -119,7 +119,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                 <div className="mt-[43px] max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
                   <button
                     disabled={isLoading}
-                    onClick={() => onPayment(true)}
+                    onClick={() => onPayment(true, isYear)}
                     className={`py-3 px-6 bg-primary-500 flex items-center ${
                       isLoading ? "opacity-40" : ""
                     }`}
@@ -224,7 +224,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
               <div className="mt-[43px] max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
                 <button
                   disabled={isLoading}
-                  onClick={() => onPayment(true)}
+                  onClick={() => onPayment(true, isYear)}
                   className={`py-3 px-6 bg-primary-500 flex items-center ${
                     isLoading ? "opacity-40" : ""
                   }`}
