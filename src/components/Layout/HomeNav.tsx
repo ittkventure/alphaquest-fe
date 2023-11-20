@@ -81,7 +81,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                     alt="crown-icon"
                     className="mr-2"
                   />
-                  Upgrade to Pro
+                  Start 7-day trial
                 </button>
               </div>
             ) : null}
@@ -146,7 +146,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                     alt="crown-icon"
                     className="mr-2"
                   />
-                  Upgrade to Pro
+                  Start 7-day trial
                 </button>
               </div>
             ) : null}
@@ -236,7 +236,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                       alt="crown-icon"
                       className="mr-2"
                     />
-                    Upgrade to Pro
+                    Start 7-day trial
                   </button>
                 </div>
               ) : null}

@@ -736,7 +736,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                 alt="crown-icon"
                 className="mr-2"
               />
-              Upgrade to Pro
+              Start 7-day trial
             </button>
           </div>
         </div>
