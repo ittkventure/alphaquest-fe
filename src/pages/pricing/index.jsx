@@ -147,7 +147,7 @@ const Subscription = () => {
         </div>
 
         <div className="flex max-lg:text-center max-lg:text-2xl max-lg:mt-16 flex-col items-center justify-center text-[2rem] font-workSansSemiBold mt-[120px]">
-          <p>Over 100,000+ Investors Use AlphaQuest</p>
+          <p>Loved by both Ventures Capitals and Retail Investors</p>
         </div>
 
         <div className="flex items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[120px] max-lg:py-5 mt-11 max-lg:mt-0">
