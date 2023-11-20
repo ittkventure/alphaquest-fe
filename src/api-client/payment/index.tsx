@@ -12,10 +12,11 @@ class ApiPayment extends ApiClientBase {
    */
   public async getLinkPayment(
     access_token: string,
-    withoutTrial: boolean
+    withoutTrial: boolean,
+    isYear: boolean
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
-      `/api/app/payment/pay-link?withoutTrial=${withoutTrial}`,
+      `/api/app/payment/pay-link?withoutTrial=${withoutTrial}&isAnnualPlan=${isYear}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
