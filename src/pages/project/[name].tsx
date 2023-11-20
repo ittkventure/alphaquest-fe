@@ -45,7 +45,7 @@ const ProjectPage: FC<Props> = ({ nameProject }) => {
                   alt="crown-icon"
                   className="mr-2"
                 />
-                Upgrade to Pro
+                Start 7-day trial
               </button>
             </div>
           </div>

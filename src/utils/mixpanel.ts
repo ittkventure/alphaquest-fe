@@ -11,7 +11,7 @@ export enum event_name_enum {
   on_filter_category = "On filter category",
   on_filter_chain = "On filter chain",
   on_sort_project = "On sort project",
-  upgrade_to_pro = "Upgrade to pro",
+  upgrade_to_pro = "Start 7-day trial",
   on_search_keyword = "On project search",
   on_open_project_detail = "On click project",
   on_open_alpha_hunter = "On alpha hunter",
