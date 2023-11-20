@@ -63,9 +63,9 @@ const Subscription = () => {
   useEffect(() => {
     if (router.query?.action === "open" && authState?.access_token) {
       if (typePayment === TypePayment.TRIAL) {
-        getPaymentLink(false);
+        getPaymentLink(false, false);
       } else if (typePayment === TypePayment.PRO) {
-        getPaymentLink(true);
+        getPaymentLink(true, false);
       }
     }
   }, [typePayment, router.query]);
@@ -132,7 +132,7 @@ const Subscription = () => {
 
           <div className="max-lg:w-full max-lg:mt-6">
             <button
-              onClick={() => getPaymentLink(false)}
+              onClick={() => getPaymentLink(false, false)}
               className="px-6 max-lg:text-sm max-lg:w-full py-[10px] bg-success-600 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
               disabled={isLoading}
             >
