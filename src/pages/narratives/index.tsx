@@ -53,7 +53,7 @@ const ChartPage = () => {
       url: router.pathname,
     });
     if (authState) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
       });
@@ -62,7 +62,7 @@ const ChartPage = () => {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }
   };
