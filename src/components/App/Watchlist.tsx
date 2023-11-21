@@ -103,13 +103,13 @@ const Watchlist: FC<WatchlistTypes> = ({
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing?action=open",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/pricing?action=open");
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }
   };
