@@ -175,12 +175,12 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
   };
   const onClickPaymentTrial = () => {
     if (authState) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
       router.push("/pricing?action=open");
     } else {
       mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
       router.push("/sign-up");
     }
   };
@@ -265,7 +265,8 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
           </p>
 
           <p className="font-thin">
-            We track millions of data points to identify crypto narratives before they take off
+            We track millions of data points to identify crypto narratives
+            before they take off
           </p>
         </div>
 
