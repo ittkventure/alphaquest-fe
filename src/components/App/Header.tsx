@@ -1,15 +1,18 @@
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
+import { NotificationHeader } from "@/assets/icons";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
+// import NumberNoti from "./NumberNoti";
+import NotificationContent from "./NotificationContent";
 
 interface IHeader {
   title?: string;
@@ -21,6 +24,18 @@ const Header: FC<IHeader> = ({ title }) => {
   const { setKeyword, keyword } = useContext(SearchContext);
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+
+  const [openNotification, setOpenNotification] = useState(false);
+  let notiRef: React.MutableRefObject<any> = useRef();  
+  useEffect(() => {
+    // click outside to close notification content
+    let handler = (e: any) => {
+      if(notiRef.current && !notiRef.current?.contains(e.target))
+      setOpenNotification(false)
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler)
+  })
 
   const onGoLogin = () => {
     mixpanelTrack(event_name_enum.inbound, {
@@ -102,6 +117,21 @@ const Header: FC<IHeader> = ({ title }) => {
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
         </button> */}
+
+        {authState && (
+          <div className="relative" ref={notiRef}>
+            <Image
+              src={NotificationHeader}
+              alt="notification header icon"
+              width={40}
+              height={40}
+              className="cursor-pointer"
+              onClick={() => setOpenNotification(!openNotification)}
+            />
+            {/* <NumberNoti count={23} /> */}
+            {openNotification && <NotificationContent />}
+          </div>
+        )}
 
         {!authState && (
           <div className="max-lg:flex-1 max-lg:hidden">

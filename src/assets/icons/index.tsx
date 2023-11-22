@@ -13,6 +13,7 @@ import CodeIconHome from "./code-icon-home.svg";
 import HeartIconHome from "./heart-icon-home.svg";
 import NotificationCircleIconHome from "./notification-circle-icon-home.svg";
 import ChestKingIcon from "./chess-king-icon.svg";
+import NotificationHeader from "./notification_header.svg";
 
 import TickIcon from "./tick-icon.svg";
 import UserIcon from "./user-icon.svg";
@@ -81,4 +82,5 @@ export {
   CoinBlackIcon,
   CoinWhiteIcon,
   ChessKingHIcon,
+  NotificationHeader,
 };
