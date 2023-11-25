@@ -1,4 +1,4 @@
-export type TimeFrameTypes = "ALL" | "30D" | "7D" | "1D";
+export type TimeFrameTypes = "ALL" | "30D" | "7D" | "1D" | "90D";
 export type SortByType =
   | "SCORE"
   | "DISCOVERED_DATE"

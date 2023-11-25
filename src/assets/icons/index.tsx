@@ -41,6 +41,8 @@ import CoinWhiteIcon from "./coin-white-icon.svg";
 import CoinBlackIcon from "./coin-black-icon.svg";
 import ChessKingHIcon from "./chess-king-icon-h.svg";
 
+import InfoIcon2 from "./info-icon.svg";
+
 export {
   QuoteIcon,
   DocumentTextIcon,
@@ -81,4 +83,5 @@ export {
   CoinBlackIcon,
   CoinWhiteIcon,
   ChessKingHIcon,
+  InfoIcon2,
 };

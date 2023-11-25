@@ -60,6 +60,8 @@ const Header: FC<IHeader> = ({ title }) => {
     if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunter";
     if (router.pathname.indexOf("/chain") !== -1) return "Chain";
     if (router.pathname.indexOf("/category") !== -1) return "Category";
+    if (router.pathname.indexOf("/top-alpha-hunter-by-discoveries") !== -1)
+      return "Top Alpha Hunters by Early Discoveries";
 
     if (title) return title;
 
@@ -85,7 +87,7 @@ const Header: FC<IHeader> = ({ title }) => {
 
       <div className="flex justify-center items-center ">
         <div className="relative mr-6  max-lg:mr-2 ml-4">
-          <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[11px] left-[5px]" />
+          <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
           <input
             className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "

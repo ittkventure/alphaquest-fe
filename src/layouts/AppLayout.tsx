@@ -10,7 +10,7 @@ const AppLayout: FC<AppLayoutTypes> = ({ children }) => {
   return (
     <div>
       <SEO />
-      <div className="flex pl-64 max-lg:pl-0 overflow-x-hidden">
+      <div className="flex pl-64 max-lg:pl-0">
         {children}
 
         <SideMenu />

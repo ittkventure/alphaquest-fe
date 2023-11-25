@@ -266,7 +266,7 @@ const ChartPage = () => {
                   />
 
                   <div className="relative mr-6  max-lg:mr-2 ">
-                    <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[8px] left-[30px]" />
+                    <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
                     <input
                       ref={searchInputRef}

@@ -13,6 +13,7 @@ import {
   TwitterItem,
 } from "../types/TwitterType";
 import qs from "qs";
+import { TopAlphaResponse } from "@/types/topAlpha";
 
 class ApiTwitter extends ApiClientBase {
   constructor() {
@@ -127,6 +128,30 @@ class ApiTwitter extends ApiClientBase {
   ): Promise<AlphaHunterDetail | any> {
     const res = await this.instance.get(
       `/api/app/twitter-alpha-hunter/by-username?username=${userId}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+  /**
+   * getTopByEarlyDiscoveries
+   */
+  public async getTopByEarlyDiscoveries(
+    data: {
+      pageNumber?: number;
+      pageSize?: number;
+      timeFrame: string;
+      numberOfEarlyDiscoveries: number;
+    },
+    access_token: string
+  ): Promise<TopAlphaResponse> {
+    const res = await this.instance.get(
+      `https://api.alphaquest.io/api/app/twitter-alpha-hunter/top-by-early-discoveries?${qs.stringify(
+        data
+      )}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
