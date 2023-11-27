@@ -20,6 +20,10 @@ import { TopAlphaItem } from "@/types/topAlpha";
 const TopAlphaHunterByDiscoveries: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("30D");
   const [timeLabel, setTimeLabel] = useState<string>("30D");
+
+  const [followers, setFollowers] = useState<TimeFrameTypes | any>("500");
+  const [followersLabel, setFollowersLabel] = useState<string>("500 followers");
+
   const [chainSelected, setChainSelected] = useState<OptionType>({
     code: "",
     name: "Chain - All",
@@ -43,6 +47,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
       pageNumber,
       timeFrame,
       authState?.access_token,
+      followers,
     ],
     queryFn: () =>
       apiTwitter.getTopByEarlyDiscoveries(
@@ -50,7 +55,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
           pageNumber: pageNumber,
           pageSize: 20,
           timeFrame: timeFrame,
-          numberOfEarlyDiscoveries: 500,
+          numberOfEarlyDiscoveries: followers,
         },
         authState?.access_token ?? ""
       ),
@@ -76,13 +81,11 @@ const TopAlphaHunterByDiscoveries: FC = () => {
     setHasLoadMore(true);
     setPageNumber(1);
     setTopAlphaListState(topAlphaQuery.data?.items ?? []);
-  }, [timeFrame]);
+  }, [timeFrame, followers]);
 
   const observer: React.MutableRefObject<any> = useRef();
 
   const setPageLoadMore = () => {
-    console.log("triggers", hasLoadMore, !topAlphaQuery.isLoading, pageNumber);
-
     if (hasLoadMore && !topAlphaQuery.isLoading)
       setPageNumber((page) => page + 1);
   };
@@ -103,37 +106,67 @@ const TopAlphaHunterByDiscoveries: FC = () => {
   return (
     <div className="px-6 tooltipBoundary">
       <div className="flex max-lg:flex-col max-lg:items-center justify-between">
-        <div className="flex items-center">
-          <p>{totalCount ?? "..."} Alpha mentioned last</p>
+        <div>
+          <div className="flex items-center">
+            <p>{totalCount ?? "..."} Alpha Hunters tracking in the last, </p>
 
-          <MonthSelect
-            onChangeSelect={(month) => {
-              setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-              setTimeLabel(month.label ?? "ALL");
-            }}
-            defaultData={{
-              value: timeFrame,
-              label: timeLabel,
-            }}
-            listData={[
-              {
-                label: "7d",
-                value: "7D",
-              },
-              {
-                label: "30d",
-                value: "30D",
-              },
-              {
-                label: "90d",
-                value: "90D",
-              },
-              {
-                label: "All",
-                value: "ALL",
-              },
-            ]}
-          />
+            <MonthSelect
+              onChangeSelect={(month) => {
+                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                setTimeLabel(month.label ?? "ALL");
+              }}
+              defaultData={{
+                value: timeFrame,
+                label: timeLabel,
+              }}
+              listData={[
+                {
+                  label: "7d",
+                  value: "7D",
+                },
+                {
+                  label: "30d",
+                  value: "30D",
+                },
+                {
+                  label: "90d",
+                  value: "90D",
+                },
+                {
+                  label: "All",
+                  value: "ALL",
+                },
+              ]}
+            />
+          </div>
+          <div className="flex items-center mt-4">
+            <p>sorted by # of projects with less than </p>
+            <MonthSelect
+              onChangeSelect={(month) => {
+                setFollowers((month.value as TimeFrameTypes) ?? "500");
+                setFollowersLabel(month.label ?? "500 followers");
+              }}
+              defaultData={{
+                value: followers,
+                label: followersLabel,
+              }}
+              listData={[
+                {
+                  label: "300 followers",
+                  value: "300",
+                },
+                {
+                  label: "500 followers",
+                  value: "500",
+                },
+                {
+                  label: "1000 followers",
+                  value: "1000",
+                },
+              ]}
+            />
+            <p>they discovered</p>
+          </div>
         </div>
         <div className="flex max-lg:items-center justify-between max-lg:mt-5">
           <div className="mr-3">

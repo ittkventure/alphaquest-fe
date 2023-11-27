@@ -37,7 +37,10 @@ const AvatarRow: FC<IAvatarRowProps> = ({ item, index }) => {
   };
 
   return (
-    <a href={item?.userId ? `/alpha-hunter/${item?.username}` : "#"}>
+    <a
+      href={item?.userId ? `/alpha-hunter/${item?.username}` : "#"}
+      target={item?.userId ?? "_blank"}
+    >
       <div className="w-full flex items-center ">
         <div className="mr-6">{index + 1}</div>
         {item.name === "UNKNOWN" ? (
