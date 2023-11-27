@@ -108,7 +108,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
       <div className="flex max-lg:flex-col max-lg:items-center justify-between">
         <div>
           <div className="flex items-center">
-            <p>{totalCount ?? "..."} Alpha Hunters tracking in the last, </p>
+            <p>{totalCount ?? "..."} Alpha Hunters tracking in the last </p>
 
             <MonthSelect
               onChangeSelect={(month) => {
@@ -165,7 +165,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
                 },
               ]}
             />
-            <p>they discovered</p>
+            <p className="ml-1">they discovered</p>
           </div>
         </div>
         <div className="flex max-lg:items-center justify-between max-lg:mt-5">
@@ -194,7 +194,10 @@ const TopAlphaHunterByDiscoveries: FC = () => {
 
       <div className="mt-6">
         {topAlphaListState.length > 0 && (
-          <TableTopAlphaHunterByDiscoveries topAlphaList={topAlphaListState} />
+          <TableTopAlphaHunterByDiscoveries
+            timeFrame={timeFrame}
+            topAlphaList={topAlphaListState}
+          />
         )}
         {topAlphaQuery.isLoading && (
           <div className="flex justify-center items-center mt-8">

@@ -67,7 +67,9 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                         />
                         <p className="font-workSansMedium">
                           {project.name} on{" "}
-                          {moment(project.followingTime).format("MM/DD/YYYY")}
+                          {moment(project.followingTime)
+                            .utc()
+                            .format("MM/DD/YYYY")}
                         </p>
                       </div>
                     );
