@@ -34,7 +34,7 @@ const Header: FC<IHeader> = ({ title }) => {
       url: router.pathname,
     });
     if (authState) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
       });
@@ -43,7 +43,7 @@ const Header: FC<IHeader> = ({ title }) => {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }
   };
@@ -142,7 +142,7 @@ const Header: FC<IHeader> = ({ title }) => {
                 alt="crown-icon"
                 className="mr-2"
               />
-              Upgrade to Pro
+              Start 7-day trial
             </button>
           </div>
         )}

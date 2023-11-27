@@ -125,13 +125,13 @@ const ChartDetail = () => {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/pricing?action=open");
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }
   };
@@ -155,7 +155,7 @@ const ChartDetail = () => {
               alt="crown-icon"
               className="mr-2"
             />
-            Upgrade to Pro
+            Start 7-day trial
           </button>
         </div>
       </div>
@@ -382,8 +382,8 @@ const ChartDetail = () => {
             )}
           </div>
 
-          {(!isLoadingRelateListProject &&
-            dataRelateListProject?.length == 0) ? null : (
+          {!isLoadingRelateListProject &&
+          dataRelateListProject?.length == 0 ? null : (
             <h3 className="font-bold text-lg text-start mt-6">
               Related Projects
             </h3>
