@@ -1,3 +1,4 @@
+import { Category } from "./../api-client/types/TwitterType";
 export interface TopAlphaResponse {
   items: TopAlphaItem[];
   totalCount: number;
@@ -14,6 +15,8 @@ export interface TopAlphaItem {
   numberOfEarlyDiscoveries: number;
   alphaFollowingCount: number;
   projectsFollowedLastXDays: ProjectsFollowedLastXday[];
+  chain: any;
+  category: any;
 }
 
 export interface ProjectsFollowedLastXday {

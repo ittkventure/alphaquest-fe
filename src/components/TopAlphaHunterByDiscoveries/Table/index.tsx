@@ -22,7 +22,7 @@ const TableTopAlphaHunterByDiscoveries: FC<
           <div className="w-[127px]">Followers</div>
           <div className="w-[214px]"># of Projects Mentioned</div>
           <div className="w-[521px] ml-3">Projects Followed last 60 days</div>
-          <div className="pr-4 flex w-[240px] gap-1">
+          <div className="pr-4 flex w-[calc(100%-1150px)] gap-1">
             # of Early Discoveries{" "}
             <Image src={InfoIcon2} width={20} height={20} alt="InfoIcon2" />
           </div>
@@ -35,17 +35,17 @@ const TableTopAlphaHunterByDiscoveries: FC<
                 <AvatarRow item={item} index={index} />
               </div>
               <div className="w-[127px] flex items-start">
-                <p>{formatNumberWithCommas(item.followerCount)}</p>
+                <p>{item.followerCount}</p>
               </div>
               <div className="w-[214px]">
-                <p>{formatNumberWithCommas(item.alphaFollowingCount)}</p>
+                <p>{item.alphaFollowingCount}</p>
               </div>
               <div className="w-[521px] ml-3">
                 <ProjectsFollowedRow
                   projectsFollowedLastXDays={item?.projectsFollowedLastXDays}
                 />
               </div>
-              <div className="pr-4 w-[240px]">
+              <div className="pr-4 w-[calc(100%-1150px)]">
                 <div className="flex items-center justify-between">
                   <p>{formatNumberWithCommas(item.numberOfEarlyDiscoveries)}</p>
                   <p>
