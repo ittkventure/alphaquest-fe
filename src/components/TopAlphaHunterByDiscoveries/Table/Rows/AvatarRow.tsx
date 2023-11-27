@@ -37,27 +37,29 @@ const AvatarRow: FC<IAvatarRowProps> = ({ item, index }) => {
   };
 
   return (
-    <div className="w-full flex items-center ">
-      <div className="mr-6">{index + 1}</div>
-      {item.name === "UNKNOWN" ? (
-        <div className="w-10 h-10 rounded-full mr-3 animate-pulse bg-slate-600" />
-      ) : (
-        <img
-          src={item.profileImageUrl}
-          alt=""
-          className="w-10 h-10 rounded-full mr-3"
-        />
-      )}
-      <div>
+    <a href={item?.userId ? `/alpha-hunter/${item?.username}` : "#"}>
+      <div className="w-full flex items-center ">
+        <div className="mr-6">{index + 1}</div>
         {item.name === "UNKNOWN" ? (
-          <div className="w-[100px] h-3 animate-pulse bg-slate-600 rounded-full" />
+          <div className="w-10 h-10 rounded-full mr-3 animate-pulse bg-slate-600" />
         ) : (
-          <p className="font-workSansMedium">{item.name}</p>
+          <img
+            src={item.profileImageUrl}
+            alt=""
+            className="w-10 h-10 rounded-full mr-3"
+          />
         )}
+        <div>
+          {item.name === "UNKNOWN" ? (
+            <div className="w-[100px] h-3 animate-pulse bg-slate-600 rounded-full" />
+          ) : (
+            <p className="font-workSansMedium">{item.name}</p>
+          )}
 
-        <div className="flex item-center flex-wrap">{renderDes()}</div>
+          <div className="flex item-center flex-wrap">{renderDes()}</div>
+        </div>
       </div>
-    </div>
+    </a>
   );
 };
 
