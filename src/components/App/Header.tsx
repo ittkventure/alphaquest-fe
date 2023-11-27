@@ -119,7 +119,7 @@ const Header: FC<IHeader> = ({ title }) => {
         </button> */}
 
         {authState && (
-          <div className="relative" ref={notiRef}>
+          <div className="lg:relative" ref={notiRef}>
             <Image
               src={NotificationHeader}
               alt="notification header icon"
@@ -129,7 +129,7 @@ const Header: FC<IHeader> = ({ title }) => {
               onClick={() => setOpenNotification(!openNotification)}
             />
             {/* <NumberNoti count={23} /> */}
-            {openNotification && <NotificationContent />}
+            {openNotification && <NotificationContent closeNotification={() => setOpenNotification(false)} />}
           </div>
         )}
 

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 type Notification = {
   id: number;
@@ -13,7 +14,13 @@ type Notification = {
   timeAgo: string;
 };
 
-export default function NotificationContent() {
+type NotificationContentProps = {
+  closeNotification?: () => void;
+};
+
+export default function NotificationContent({
+  closeNotification,
+}: NotificationContentProps) {
   const [isRead, setIsRead] = useState(false);
 
   const fetchNoti = (isRead: boolean) => {
@@ -38,7 +45,13 @@ export default function NotificationContent() {
           ? "99+"
           : notifications?.data?.length}
       </div>
-      <div className="bg-[#292C35] absolute top-[48px] right-[-8rem] w-[420px] h-[80vh] flex flex-col gap-5 p-6 z-10 overflow-y-auto notification-content">
+      <div className="bg-[#292C35] max-lg:bg-dark-900 max-lg:z-[1000] max-lg:h-screen max-lg:fixed max-lg:top-0 absolute max-lg:left-0 top-[48px] right-[-8rem] w-[420px] h-[80vh] flex flex-col gap-5 p-6 z-10 overflow-y-auto notification-content transition-all duration-300">
+        <div className="hidden max-lg:block">
+          <XMarkIcon
+            className="h-7 w-7 transition-all duration-300"
+            onClick={closeNotification}
+          />
+        </div>
         <div className="flex justify-between">
           <span className="text-white text-xl font-semibold">
             Notifications
