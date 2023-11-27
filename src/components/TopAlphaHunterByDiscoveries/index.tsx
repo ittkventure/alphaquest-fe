@@ -152,8 +152,8 @@ const TopAlphaHunterByDiscoveries: FC = () => {
               }}
               listData={[
                 {
-                  label: "300 followers",
-                  value: "300",
+                  label: "100 followers",
+                  value: "100",
                 },
                 {
                   label: "500 followers",
