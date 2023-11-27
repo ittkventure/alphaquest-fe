@@ -56,21 +56,33 @@ const TopAlphaHunterByDiscoveries: FC = () => {
       ),
   });
 
-  const topAlphaList = topAlphaQuery.data?.items ?? [];
   const totalCount = topAlphaQuery.data?.totalCount ?? 0;
 
   useEffect(() => {
-    if (!topAlphaList) return;
-    if (topAlphaList.length === 0) {
+    if (!topAlphaQuery.data?.items) return;
+    if (
+      topAlphaQuery.data?.items.length === 0 &&
+      UserPayType.PREMIUM === accountExtendDetail?.currentPlanKey
+    ) {
       setHasLoadMore(false);
+      setTopAlphaListState((prev) => [...prev, ...topAlphaQuery.data?.items]);
       return;
     }
-    setTopAlphaListState((prev) => [...prev, ...topAlphaList]);
-  }, [topAlphaList]);
+
+    setTopAlphaListState((prev) => [...prev, ...topAlphaQuery.data?.items]);
+  }, [topAlphaQuery.data]);
+
+  useEffect(() => {
+    setHasLoadMore(true);
+    setPageNumber(1);
+    setTopAlphaListState(topAlphaQuery.data?.items ?? []);
+  }, [timeFrame]);
 
   const observer: React.MutableRefObject<any> = useRef();
 
   const setPageLoadMore = () => {
+    console.log("triggers", hasLoadMore, !topAlphaQuery.isLoading, pageNumber);
+
     if (hasLoadMore && !topAlphaQuery.isLoading)
       setPageNumber((page) => page + 1);
   };
