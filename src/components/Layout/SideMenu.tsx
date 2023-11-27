@@ -180,6 +180,36 @@ const SideMenu = () => {
             );
           })}
         </ul>
+        <button
+          className="mt-2 w-full"
+          onClick={() => router.push("/top-alpha-hunter-by-discoveries")}
+        >
+          <div
+            className={classNames(
+              "p-[13px] flex justify-between items-center w-full transition-all duration-300",
+              {
+                "bg-success-500": router.pathname.includes(
+                  "/top-alpha-hunter-by-discoveries"
+                ),
+                "hover:bg-secondary-600": !router.pathname.includes(
+                  "/top-alpha-hunter-by-discoveries"
+                ),
+              }
+            )}
+          >
+            <div className="flex items-center">
+              <FolderIcon className="h-5 w-5 mr-2" />
+              <p className="text-white">Alpha Hunter</p>
+            </div>
+            {/* {
+              <ChevronDownIcon
+                className={classNames("h-5 w-5 transition-all duration-200", {
+                  "transform rotate-180": isShowSubMenuProject,
+                })}
+              />
+            } */}
+          </div>
+        </button>
       </ul>
 
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">
