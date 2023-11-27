@@ -198,7 +198,7 @@ const SideMenu = () => {
             )}
           >
             <div className="flex items-center">
-              {/* <FolderIcon className="h-5 w-5 mr-2" /> */}
+              <FolderIcon className="h-5 w-5 mr-2" />
               <p className="text-white">Alpha Hunter</p>
             </div>
             {/* {
