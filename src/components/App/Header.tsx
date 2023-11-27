@@ -11,8 +11,10 @@ import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
-// import NumberNoti from "./NumberNoti";
 import NotificationContent from "./NotificationContent";
+import { useQuery } from "react-query";
+import axios from "axios";
+import NumberNotification from "./NumberNotification";
 
 interface IHeader {
   title?: string;
@@ -26,16 +28,16 @@ const Header: FC<IHeader> = ({ title }) => {
     useContext(AuthContext);
 
   const [openNotification, setOpenNotification] = useState(false);
-  let notiRef: React.MutableRefObject<any> = useRef();  
+  let notiRef: React.MutableRefObject<any> = useRef();
   useEffect(() => {
     // click outside to close notification content
     let handler = (e: any) => {
-      if(notiRef.current && !notiRef.current?.contains(e.target))
-      setOpenNotification(false)
-    }
+      if (notiRef.current && !notiRef.current?.contains(e.target))
+        setOpenNotification(false);
+    };
     document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler)
-  })
+    return () => document.removeEventListener("mousedown", handler);
+  });
 
   const onGoLogin = () => {
     mixpanelTrack(event_name_enum.inbound, {
@@ -80,6 +82,10 @@ const Header: FC<IHeader> = ({ title }) => {
 
     return capitalized(tab ? tab?.toString() : "Trending");
   };
+
+  const { data: notifications } = useQuery(["getNotificationsTotal", true], () =>
+    axios.get("/api/notifications")
+  );
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -128,8 +134,12 @@ const Header: FC<IHeader> = ({ title }) => {
               className="cursor-pointer"
               onClick={() => setOpenNotification(!openNotification)}
             />
-            {/* <NumberNoti count={23} /> */}
-            {openNotification && <NotificationContent closeNotification={() => setOpenNotification(false)} />}
+            <NumberNotification count={notifications?.data?.length || 0} />
+            {openNotification && (
+              <NotificationContent
+                closeNotification={() => setOpenNotification(false)}
+              />
+            )}
           </div>
         )}
 

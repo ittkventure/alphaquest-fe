@@ -34,17 +34,6 @@ export default function NotificationContent({
 
   return (
     <>
-      <div
-        className={`absolute rounded-full ${
-          notifications?.data?.length > 100
-            ? "w-7 h-5 top-[-4px] right-[-12px]"
-            : "w-5 h-4 top-0 right-[-6px]"
-        } bg-[#be123c] text-white text-xs flex items-center justify-center`}
-      >
-        {notifications?.data?.length > 100
-          ? "99+"
-          : notifications?.data?.length}
-      </div>
       <div className="bg-[#292C35] max-lg:bg-dark-900 max-lg:z-[1000] max-lg:h-screen max-lg:fixed max-lg:top-0 absolute max-lg:left-0 top-[48px] right-[-8rem] w-[420px] h-[80vh] flex flex-col gap-5 p-6 z-10 overflow-y-auto notification-content transition-all duration-300">
         <div className="hidden max-lg:block">
           <XMarkIcon
