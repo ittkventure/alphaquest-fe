@@ -10,6 +10,32 @@ interface IAvatarRowProps {
 
 const AvatarRow: FC<IAvatarRowProps> = ({ item, index }) => {
   const router = useRouter();
+
+  const renderDes = () => {
+    if (item.name === "UNKNOWN") return <div />;
+    return item?.attributes?.map((attribute, index) => {
+      return (
+        <a
+          key={attribute?.code}
+          href={`/projects?chain=${attribute?.code}`}
+          onClick={() => {
+            mixpanelTrack(event_name_enum.on_filter_chain, {
+              url: router.pathname,
+              name: attribute?.name,
+              code: attribute?.code,
+            });
+          }}
+        >
+          <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 z-50 mr-1 ">
+            {attribute
+              ? ` ${index === 0 ? "" : "·"} ${attribute.name} ${" "}`
+              : ""}
+          </p>
+        </a>
+      );
+    });
+  };
+
   return (
     <div className="w-full flex items-center ">
       <div className="mr-6">{index + 1}</div>
@@ -28,24 +54,8 @@ const AvatarRow: FC<IAvatarRowProps> = ({ item, index }) => {
         ) : (
           <p className="font-workSansMedium">{item.name}</p>
         )}
-        {item.name === "UNKNOWN" ? (
-          <div className="w-[130px] h-3 animate-pulse bg-slate-600 rounded-full mt-3" />
-        ) : (
-          <a
-            href={`/projects?chain=${item.chain?.code}`}
-            onClick={() => {
-              mixpanelTrack(event_name_enum.on_filter_chain, {
-                url: router.pathname,
-                name: item.chain?.name,
-                code: item.chain?.code,
-              });
-            }}
-          >
-            <p className="font-workSansRegular text-sm max-lg:text-xs text-secondary-500 z-50 mr-1 ">
-              {item.chain ? ` · ${item.chain.name} ${" "}` : ""}
-            </p>
-          </a>
-        )}
+
+        <div className="flex item-center flex-wrap">{renderDes()}</div>
       </div>
     </div>
   );

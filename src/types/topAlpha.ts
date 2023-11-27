@@ -17,6 +17,7 @@ export interface TopAlphaItem {
   projectsFollowedLastXDays: ProjectsFollowedLastXday[];
   chain: any;
   category: any;
+  attributes?: any[];
 }
 
 export interface ProjectsFollowedLastXday {

@@ -38,7 +38,12 @@ const TopAlphaHunterByDiscoveries: FC = () => {
   );
 
   const topAlphaQuery = useQuery({
-    queryKey: ["topAlphaHunterByDiscoveries", pageNumber, timeFrame],
+    queryKey: [
+      "topAlphaHunterByDiscoveries",
+      pageNumber,
+      timeFrame,
+      authState?.access_token,
+    ],
     queryFn: () =>
       apiTwitter.getTopByEarlyDiscoveries(
         {

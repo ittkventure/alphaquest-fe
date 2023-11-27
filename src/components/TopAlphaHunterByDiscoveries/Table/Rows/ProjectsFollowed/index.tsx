@@ -12,12 +12,24 @@ interface IProjectsFollowedRowProps {
 const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
   projectsFollowedLastXDays,
 }) => {
+  console.log(
+    projectsFollowedLastXDays.length,
+    "projectsFollowedLastXDays.length"
+  );
+
+  const exactLength = projectsFollowedLastXDays.filter((item) => {
+    return item.projectsCount !== 0;
+  }).length;
+
   return (
     <div className="relative flex items-center">
       <div className="absolute w-full pr-10">
         <div className="w-full border-2 border-dashed border-[#2D354D] " />
       </div>
       <div className="flex gap-3 justify-center items-center w-full pr-10">
+        {exactLength % 2 !== 0 && exactLength < 10 && (
+          <div className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-full" />
+        )}
         {projectsFollowedLastXDays.map((item) => {
           const id = uuidv4();
           if (item.projectsCount === 0) return null;
