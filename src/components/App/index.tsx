@@ -22,9 +22,12 @@ import { useRouter } from "next/router";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
-import { CrownIcon } from "@/assets/icons";
+import { CrownIcon, InfoIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { SearchContext } from "@/contexts/useSearchContext";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -48,6 +51,7 @@ const AppContent: FC<AppContentTypes> = ({
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+  const { setKeyword, keyword } = useContext(SearchContext);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -56,7 +60,7 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
-  const [sortByLabel, setSortByLabel] = useState<string>("score");
+  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs followed");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [hasLoadMore, setHasLoadMore] = useState(true);
@@ -310,47 +314,49 @@ const AppContent: FC<AppContentTypes> = ({
   const renderDes = () => {
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
-        <div className="flex justify-start">
+        <div className="flex flex-col justify-start max-lg:w-[90vw]">
           <p>
             {totalCount.toLocaleString()} projects discovered during the last
           </p>
-
-          <MonthSelect
-            onChangeSelect={(month) => {
-              mixpanelTrack(event_name_enum.on_filter_project, {
-                url: router.pathname,
-                value_search: (month.value as TimeFrameTypes) ?? "ALL",
-                message:
-                  "projects discovered during the last " +
-                    (month.value as TimeFrameTypes) ?? "ALL",
-              });
-              setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-              setTimeLabel(month.label ?? "ALL");
-            }}
-            defaultData={{
-              value: timeFrame,
-              label: timeLabel,
-            }}
-          />
-        </div>
-        <div className="flex">
-          <p className="ml-1">sorted by</p>
-          <MonthSelect
-            onChangeSelect={(month) => {
-              mixpanelTrack(event_name_enum.on_sort_project, {
-                url: router.pathname,
-                value_sort: (month.value as SortByType) ?? "SCORE",
-                message: "sorted by" + (month.value as SortByType) ?? "SCORE",
-              });
-              setSortBy((month.value as SortByType) ?? "SCORE");
-              setSortByLabel(month.label ?? "SCORE");
-            }}
-            defaultData={{
-              value: sortBy,
-              label: sortByLabel,
-            }}
-            listData={initListSort as Array<any>}
-          />
+          <div className="flex">
+            <MonthSelect
+              onChangeSelect={(month) => {
+                mixpanelTrack(event_name_enum.on_filter_project, {
+                  url: router.pathname,
+                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                  message:
+                    "projects discovered during the last " +
+                      (month.value as TimeFrameTypes) ?? "ALL",
+                });
+                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                setTimeLabel(month.label ?? "ALL");
+              }}
+              defaultData={{
+                value: timeFrame,
+                label: timeLabel,
+              }}
+            />
+            <div className="flex">
+              <p className="mx-2">sorted by</p>
+              <MonthSelect
+                onChangeSelect={(month) => {
+                  mixpanelTrack(event_name_enum.on_sort_project, {
+                    url: router.pathname,
+                    value_sort: (month.value as SortByType) ?? "SCORE",
+                    message:
+                      "sorted by" + (month.value as SortByType) ?? "SCORE",
+                  });
+                  setSortBy((month.value as SortByType) ?? "SCORE");
+                  setSortByLabel(month.label ?? "# of KOLs followed");
+                }}
+                defaultData={{
+                  value: sortBy,
+                  label: sortByLabel,
+                }}
+                listData={initListSort as Array<any>}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -396,62 +402,81 @@ const AppContent: FC<AppContentTypes> = ({
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
           {!chainsParams && !categoryParams && (
-            <div className="flex max-lg:items-center justify-between max-lg:mt-5">
-              <div className="mr-3">
-                <SelectCustom
-                  placeholder="Chain - All"
-                  initList={chains}
-                  onChangeSelected={(item: any) => {
-                    mixpanelTrack(event_name_enum.on_filter_chain, {
-                      url: router.pathname,
-                      code: item?.code,
-                      name: item?.name,
-                    });
-                    setChainSelected(item);
-                    let query = "";
-                    if (!item?.code) {
-                      if (categoryQuery) {
-                        query = `?category=${categoryQuery}`;
+            <div className="flex max-lg:flex-col max-lg:gap-4 max-lg:items-center justify-between max-lg:mt-5">
+              <div className="flex">
+                <div className="mr-3">
+                  <SelectCustom
+                    placeholder="Chain - All"
+                    initList={chains}
+                    onChangeSelected={(item: any) => {
+                      mixpanelTrack(event_name_enum.on_filter_chain, {
+                        url: router.pathname,
+                        code: item?.code,
+                        name: item?.name,
+                      });
+                      setChainSelected(item);
+                      let query = "";
+                      if (!item?.code) {
+                        if (categoryQuery) {
+                          query = `?category=${categoryQuery}`;
+                        } else {
+                          query = "";
+                        }
+                      } else if (categorySelected?.code) {
+                        query = `?category=${categorySelected?.code}&chain=${item?.code}`;
                       } else {
-                        query = "";
+                        query = `?chain=${item?.code}`;
                       }
-                    } else if (categorySelected?.code) {
-                      query = `?category=${categorySelected?.code}&chain=${item?.code}`;
-                    } else {
-                      query = `?chain=${item?.code}`;
-                    }
-                    router.push(`/projects/${tab ?? ""}${query}`);
-                  }}
-                  selectedValue={chainSelected}
-                />
-              </div>
-              <div>
-                <SelectCustom
-                  placeholder="Category - All"
-                  initList={category}
-                  onChangeSelected={(item: any) => {
-                    mixpanelTrack(event_name_enum.on_filter_category, {
-                      url: router.pathname,
-                      code: item?.code,
-                      name: item?.name,
-                    });
-                    setCategorySelected(item);
-                    let query = "";
-                    if (!item?.code) {
-                      if (chainQuery) {
-                        query = `?chain=${chainQuery}`;
+                      router.push(`/projects/${tab ?? ""}${query}`);
+                    }}
+                    selectedValue={chainSelected}
+                  />
+                </div>
+                <div>
+                  <SelectCustom
+                    placeholder="Category - All"
+                    initList={category}
+                    onChangeSelected={(item: any) => {
+                      mixpanelTrack(event_name_enum.on_filter_category, {
+                        url: router.pathname,
+                        code: item?.code,
+                        name: item?.name,
+                      });
+                      setCategorySelected(item);
+                      let query = "";
+                      if (!item?.code) {
+                        if (chainQuery) {
+                          query = `?chain=${chainQuery}`;
+                        } else {
+                          query = "";
+                        }
+                      } else if (chainSelected?.code) {
+                        query = `?category=${item?.code}&chain=${chainSelected?.code}`;
                       } else {
-                        query = "";
+                        query = `?category=${item?.code}`;
                       }
-                    } else if (chainSelected?.code) {
-                      query = `?category=${item?.code}&chain=${chainSelected?.code}`;
-                    } else {
-                      query = `?category=${item?.code}`;
-                    }
 
-                    router.push(`/projects/${tab ?? ""}${query}`);
+                      router.push(`/projects/${tab ?? ""}${query}`);
+                    }}
+                    selectedValue={categorySelected}
+                  />
+                </div>
+              </div>
+
+              <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
+                <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
+
+                <input
+                  className="2xl:w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
+                  placeholder="Search"
+                  onKeyPress={(event) => {
+                    if (event.key === "Enter" && event.currentTarget.value) {
+                      setKeyword(event.currentTarget.value ?? "");
+                      router.push(
+                        "/search?keyword=" + event.currentTarget.value
+                      );
+                    }
                   }}
-                  selectedValue={categorySelected}
                 />
               </div>
             </div>
@@ -459,6 +484,18 @@ const AppContent: FC<AppContentTypes> = ({
         </div>
 
         <div className="mt-7 max-lg:mt-9">
+          <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
+            <span>Project</span>
+            <div className="flex items-center gap-1">
+              <span>New KOLs followed</span>
+              <div
+                data-tooltip-id="info-tooltip-kol"
+                className="cursor-pointer"
+              >
+                <Image src={InfoIcon} width={20} height={20} alt="icon" />
+              </div>
+            </div>
+          </div>
           {isSearchLoading ? null : _renderTable()}
           {errorMsg ? (
             <div className="h-[60vh] flex justify-center items-start">
@@ -477,6 +514,14 @@ const AppContent: FC<AppContentTypes> = ({
           ) : null}
         </div>
       </div>
+      <ReactTooltip
+        id="info-tooltip-kol"
+        className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
+        place="bottom"
+        content={`Number of new Alpha Hunters who followed ${
+          timeLabel === "ALL" ? "all" : `last ${timeLabel}`
+        }. Click on the project to find out which Alpha Hunters are following it.`}
+      />
     </div>
   );
 };
