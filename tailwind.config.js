@@ -46,7 +46,25 @@ module.exports = {
         workSansBold: "WorkSans-Bold",
         workSansBlack: "WorkSans-Black",
       },
+      keyframes: {
+        slideDownAndFade: {
+          "0%": {
+            height: 0,
+            opacity: 0,
+          },
+          "60%" : {
+            height: "calc(80vh+10px)"
+          },
+          "100%" : {
+            height: "80vh",
+            opacity: 1,
+          }
+        }
+      }
     },
+    animation: {
+      slideDownAndFade: 'slideDownAndFade 0.3s ease-in forwards'
+    }
   },
   plugins: [require("@headlessui/tailwindcss")],
 };

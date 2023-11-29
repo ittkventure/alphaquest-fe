@@ -34,7 +34,7 @@ export default function NotificationContent({
 
   return (
     <>
-      <div className="bg-[#292C35] max-lg:bg-dark-900 max-lg:z-[1000] max-lg:h-screen max-lg:fixed max-lg:top-0 absolute max-lg:left-0 top-[48px] right-[-8rem] w-[420px] h-[80vh] flex flex-col gap-5 p-6 z-10 overflow-y-auto notification-content transition-all duration-300">
+      <div className="bg-[#292C35] max-lg:bg-dark-900 max-lg:z-[1000] max-lg:h-screen max-lg:fixed max-lg:top-0 absolute max-lg:left-0 top-[48px] right-[-8rem] w-[420px] max-lg:w-full h-[80vh] flex flex-col gap-5 p-6 z-10 overflow-y-auto max-lg:overflow-hidden notification-content lg:animate-slideDownAndFade">
         <div className="hidden max-lg:block">
           <XMarkIcon
             className="h-7 w-7 transition-all duration-300"
