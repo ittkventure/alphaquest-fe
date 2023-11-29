@@ -1,18 +1,12 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "@/contexts/useAuthContext";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-
-type Notification = {
-  id: number;
-  isRead: boolean;
-  avatarUrl: any;
-  iconUrl: any;
-  projectName: string;
-  title: string;
-  timeAgo: string;
-};
+import { fetchNotifications } from "@/api-client/notification";
+import { Notification } from "@/api-client/types/Notification";
+import { calculateTimeAgo } from "@/utils/date";
 
 type NotificationContentProps = {
   closeNotification?: () => void;
@@ -22,14 +16,18 @@ export default function NotificationContent({
   closeNotification,
 }: NotificationContentProps) {
   const [isRead, setIsRead] = useState(false);
+  const { authState } = useContext(AuthContext);
 
   const fetchNoti = (isRead: boolean) => {
     if (isRead) return axios.get(`/api/notifications?isRead=true`);
     if (!isRead) return axios.get("/api/notifications");
   };
 
-  const { data: notifications } = useQuery(["getNotifications", isRead], () =>
-    fetchNoti(isRead)
+  const accessToken = authState?.access_token || "";
+
+  const { data: notifications } = useQuery(
+    ["getNotifications", isRead, { pageNumber: 1, pageSize: 20 }],
+    () => fetchNotifications(accessToken, isRead)
   );
 
   return (
@@ -71,16 +69,16 @@ export default function NotificationContent({
           </div>
         </div>
         <div className="flex flex-col">
-          {notifications?.data?.map((notification: Notification) => (
+          {notifications?.items?.map((notification: Notification) => (
             <div
               key={notification.id}
               className={`flex gap-4 p-2 ${
-                !notification.isRead ? "bg-[#3F3F46]" : undefined
+                notification.unread ? "bg-[#3F3F46]" : undefined
               }`}
             >
               <div className="w-32 h-32">
                 <Image
-                  src={notification.avatarUrl}
+                  src={notification.imageUrl}
                   alt="avatar"
                   width={64}
                   height={64}
@@ -91,20 +89,20 @@ export default function NotificationContent({
                 <div className="flex gap-1 items-center">
                   <div className="w-4 h-4">
                     <Image
-                      src={notification.iconUrl}
+                      src={notification.imageUrl}
                       alt="icon"
                       width={16}
                       height={16}
                       className="object-fill rounded-full"
                     />
                   </div>
-                  <span>{notification.projectName}</span>
+                  <span className="break-all">{notification.title}</span>
                 </div>
                 <span className="text-white text-base">
-                  {notification.title}
+                  {notification.messsage}
                 </span>
                 <span className="text-xs text-secondary-400">
-                  {notification.timeAgo} ago
+                  {calculateTimeAgo(notification.createdAt)}
                 </span>
               </div>
             </div>
