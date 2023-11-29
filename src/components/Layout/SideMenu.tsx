@@ -9,6 +9,7 @@ import {
   FolderIcon,
 } from "@heroicons/react/24/solid";
 import classNames from "classnames";
+import { Profile } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -182,23 +183,23 @@ const SideMenu = () => {
         </ul>
         <button
           className="mt-2 w-full"
-          onClick={() => router.push("/top-alpha-hunter-by-discoveries")}
+          onClick={() => router.push("/alpha-hunters")}
         >
           <div
             className={classNames(
               "p-[13px] flex justify-between items-center w-full transition-all duration-300",
               {
                 "bg-success-500": router.pathname.includes(
-                  "/top-alpha-hunter-by-discoveries"
+                  "/alpha-hunters"
                 ),
                 "hover:bg-secondary-600": !router.pathname.includes(
-                  "/top-alpha-hunter-by-discoveries"
+                  "/alpha-hunters"
                 ),
               }
             )}
           >
             <div className="flex items-center">
-              <FolderIcon className="h-5 w-5 mr-2" />
+              <Profile variant="Bold" className="h-6 w-6 mr-2" />
               <p className="text-white">Alpha Hunter</p>
             </div>
             {/* {

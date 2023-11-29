@@ -16,6 +16,7 @@ import { AuthContext } from "@/contexts/useAuthContext";
 import Spinner from "../Spinner";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { TopAlphaItem } from "@/types/topAlpha";
+import UpgradeProButton from "../UpgradeProButton";
 
 const TopAlphaHunterByDiscoveries: FC = () => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("30D");
@@ -107,7 +108,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
     <div className="px-6 tooltipBoundary">
       <div className="flex max-lg:flex-col max-lg:items-center justify-between">
         <div>
-          <div className="flex items-center">
+          <div className="flex items-center gap-1">
             <p>{totalCount ?? "..."} Alpha Hunters tracking in the last </p>
 
             <MonthSelect
@@ -139,7 +140,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
               ]}
             />
           </div>
-          <div className="flex items-center mt-4">
+          <div className="flex items-center mt-4 gap-1">
             <p>sorted by # of projects with less than </p>
             <MonthSelect
               onChangeSelect={(month) => {
@@ -169,7 +170,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
           </div>
         </div>
         <div className="flex max-lg:items-center justify-between max-lg:mt-5">
-          <div className="mr-3">
+          {/* <div className="mr-3">
             <SelectCustom
               placeholder="Tokens - All"
               initList={chains}
@@ -188,7 +189,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
               }}
               selectedValue={categorySelected}
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -208,6 +209,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
           <div className="h-7 w-full" ref={triggerElement}></div>
         ) : null}
       </div>
+      <UpgradeProButton />
     </div>
   );
 };
