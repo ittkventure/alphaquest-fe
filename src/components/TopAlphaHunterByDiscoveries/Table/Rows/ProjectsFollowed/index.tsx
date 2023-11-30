@@ -39,11 +39,11 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                       alt=""
                       className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
                     />
-                    <div className="absolute -top-1 -right-[2px] w-4 h-4 rounded-full bg-[#E25148] flex justify-center items-center">
+                    {item.projectsCount > 1 && <div className="absolute -top-1 -right-[2px] w-4 h-4 rounded-full bg-[#E25148] flex justify-center items-center">
                       <p className="text-[10px] font-workSansMedium">
-                        +{item.projectsCount}
+                        +{item.projectsCount-1}
                       </p>
-                    </div>
+                    </div>}
                   </div>
                 }
                 key={`top-alpha-hunter-by-discoveries-${id}`}
