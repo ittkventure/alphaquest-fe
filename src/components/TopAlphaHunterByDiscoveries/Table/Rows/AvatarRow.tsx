@@ -1,7 +1,10 @@
+import { TwitterBlueIcon } from "@/assets/icons";
 import { TopAlphaItem } from "@/types/topAlpha";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 
 interface IAvatarRowProps {
   item: TopAlphaItem;
@@ -60,7 +63,17 @@ const AvatarRow: FC<IAvatarRowProps> = ({ item, index }) => {
           {item.name === "UNKNOWN" ? (
             <div className="w-[100px] h-3 animate-pulse bg-slate-600 rounded-full" />
           ) : (
-            <p className="font-workSansMedium">{item.name}</p>
+            <div className="flex items-center gap-2">
+              <p className="font-workSansMedium">{item.name}</p>
+              <a href={item.twitterUrl}>
+                <Image
+                  src={TwitterBlueIcon}
+                  width={16}
+                  height={16}
+                  alt="Verified"
+                />
+              </a>
+            </div>
           )}
 
           <div className="flex item-center flex-wrap">{renderDes()}</div>
