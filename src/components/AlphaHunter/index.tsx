@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
@@ -24,6 +24,8 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
+  const changelogsRef: React.MutableRefObject<any> = useRef();
+  const followRef: React.MutableRefObject<any> = useRef();
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
@@ -32,6 +34,16 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
   const [isDescSortedLast, setIsDescSortedLast] = useState(false);
+
+  useEffect(() => {
+    if (router.asPath?.includes("follow"))
+      followRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (router.asPath?.includes("update"))
+      changelogsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  });
 
   const listEarlyFollower = useQuery(
     [
@@ -261,7 +273,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
         </div>
 
-        <div>
+        <div ref={followRef}>
           <div className="flex items-center mt-14 ">
             <h3 className="text-lg font-workSansSemiBold  mr-3">
               Latest Following
@@ -297,7 +309,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
         </div>
 
-        <div>
+        <div ref={changelogsRef}>
           <div className="flex items-center mt-14 ">
             <h3 className="text-lg font-workSansSemiBold mr-3">
               Twitter changelogs

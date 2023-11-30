@@ -1,4 +1,4 @@
-import React, { FC, memo, useContext, useEffect, useState } from "react";
+import React, { FC, memo, useContext, useEffect, useState, useRef } from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -66,6 +66,19 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const [selectedDate, setSelectedDate] = useState<SelectedDateEnum>(
     SelectedDateEnum.sevenD
   );
+
+  const changelogsRef: React.MutableRefObject<any> = useRef();
+  const followRef: React.MutableRefObject<any> = useRef();
+
+  useEffect(() => {
+    if (router.asPath?.includes("follow"))
+      followRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (router.asPath?.includes("update"))
+      changelogsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  });
 
   const listAlphaHunter = useQuery(
     [
@@ -530,7 +543,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
 
         {/* Chart */}
 
-        <div className="bg-dark-800 py-9 px-6 mt-14">
+        <div className="bg-dark-800 py-9 px-6 mt-14" ref={followRef}>
           <div className="flex justify-between items-center mb-[51px] max-sm:flex-col">
             <div className="flex ">
               <p className=" text-[16px] font-workSansMedium mr-1">
@@ -626,7 +639,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
           />
         </div>
 
-        <div className="flex items-center mt-14 ">
+        <div className="flex items-center mt-14" ref={changelogsRef}>
           <h3 className="text-lg font-workSansSemiBold mr-3">
             Twitter changelogs
           </h3>
