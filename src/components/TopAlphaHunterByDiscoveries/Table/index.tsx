@@ -35,7 +35,7 @@ const TableTopAlphaHunterByDiscoveries: FC<
         {topAlphaList.map((item, index) => {
           return (
             <div className="flex flex-row items-center py-3 ">
-              <div className="w-[293px] pl-[14px] pr-6 mr-24">
+              <div className="w-[333px] pl-[14px] pr-6 mr-14">
                 <AvatarRow item={item} index={index} />
               </div>
               <div className="w-[127px] flex items-start">
