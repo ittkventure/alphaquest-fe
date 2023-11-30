@@ -83,7 +83,13 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                             className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
                           />
                           <p className="font-workSansMedium">
-                            {project.name} on{" "}
+                            <span
+                              onClick={onClickPaymentTrial}
+                              className="italic underline cursor-pointer"
+                            >
+                              Upgrade to Access
+                            </span>{" "}
+                            on{" "}
                             {moment(project.followingTime)
                               .utc()
                               .format("MM/DD/YYYY")}
@@ -106,15 +112,7 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                             className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
                           />
                           <p className="font-workSansMedium">
-                            <span
-                              onClick={onClickPaymentTrial}
-                              className="italic underline cursor-pointer"
-                            >
-                              {project.name === "UNKNOWN"
-                                ? "Upgrade to Access"
-                                : project.name}
-                            </span>{" "}
-                            on{" "}
+                            {project.name} on{" "}
                             {moment(project.followingTime)
                               .utc()
                               .format("MM/DD/YYYY")}
