@@ -8,11 +8,11 @@ import React, {
 } from "react";
 import MonthSelect from "../App/MonthSelect";
 import { TimeFrameTypes } from "@/api-client/types/TwitterType";
-import SelectCustom, { OptionType } from "../common/Select";
+import { OptionType } from "../common/Select";
 import TableTopAlphaHunterByDiscoveries from "./Table";
 import { useQuery } from "react-query";
 import { apiTwitter } from "@/api-client";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import Spinner from "../Spinner";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { TopAlphaItem } from "@/types/topAlpha";
@@ -198,6 +198,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
           <TableTopAlphaHunterByDiscoveries
             timeFrame={timeFrame}
             topAlphaList={topAlphaListState}
+            followers={followers}
           />
         )}
         {topAlphaQuery.isLoading && (
