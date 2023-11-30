@@ -15,6 +15,7 @@ import NotificationContent from "./NotificationContent";
 import { useQuery } from "react-query";
 import axios from "axios";
 import NumberNotification from "./NumberNotification";
+import { fetchNotifications } from "@/api-client/notification";
 
 interface IHeader {
   title?: string;
@@ -83,8 +84,9 @@ const Header: FC<IHeader> = ({ title }) => {
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
-  const { data: notifications } = useQuery(["getNotificationsTotal", true], () =>
-    axios.get("/api/notifications")
+  const { data: notifications } = useQuery(
+    ["getNotificationsTotal"],
+    () => fetchNotifications(authState?.access_token || "")
   );
 
   return (
@@ -134,7 +136,7 @@ const Header: FC<IHeader> = ({ title }) => {
               className="cursor-pointer"
               onClick={() => setOpenNotification(!openNotification)}
             />
-            <NumberNotification count={notifications?.data?.length || 0} />
+            {notifications?.totalCount && <NumberNotification count={notifications?.totalCount} />}
             {openNotification && (
               <NotificationContent
                 closeNotification={() => setOpenNotification(false)}

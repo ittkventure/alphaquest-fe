@@ -2,11 +2,11 @@ import Image from "next/image";
 import { useState, useContext } from "react";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { useQuery } from "react-query";
-import axios from "axios";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { fetchNotifications } from "@/api-client/notification";
 import { Notification } from "@/api-client/types/Notification";
 import { calculateTimeAgo } from "@/utils/date";
+import { AlphaHunterIcon, ProjectIcon } from "@/assets/icons";
 
 type NotificationContentProps = {
   closeNotification?: () => void;
@@ -18,16 +18,11 @@ export default function NotificationContent({
   const [isRead, setIsRead] = useState(false);
   const { authState } = useContext(AuthContext);
 
-  const fetchNoti = (isRead: boolean) => {
-    if (isRead) return axios.get(`/api/notifications?isRead=true`);
-    if (!isRead) return axios.get("/api/notifications");
-  };
-
   const accessToken = authState?.access_token || "";
 
   const { data: notifications } = useQuery(
     ["getNotifications", isRead, { pageNumber: 1, pageSize: 20 }],
-    () => fetchNotifications(accessToken, isRead)
+    () => fetchNotifications(accessToken, isRead, { pageNumber: 1, pageSize: 20 })
   );
 
   return (
@@ -72,7 +67,7 @@ export default function NotificationContent({
           {notifications?.items?.map((notification: Notification) => (
             <div
               key={notification.id}
-              className={`flex gap-4 p-2 ${
+              className={`flex gap-4 p-2 cursor-pointer ${
                 notification.unread ? "bg-[#3F3F46]" : undefined
               }`}
             >
@@ -82,24 +77,24 @@ export default function NotificationContent({
                   alt="avatar"
                   width={64}
                   height={64}
-                  className="object-fill rounded-full"
+                  className="object-cover rounded-full"
                 />
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-1 items-center">
                   <div className="w-4 h-4">
                     <Image
-                      src={notification.imageUrl}
+                      src={notification?.title === "Alpha Hunter" ? AlphaHunterIcon : ProjectIcon}
                       alt="icon"
-                      width={16}
-                      height={16}
+                      width={20}
+                      height={20}
                       className="object-fill rounded-full"
                     />
                   </div>
                   <span className="break-all">{notification.title}</span>
                 </div>
                 <span className="text-white text-base">
-                  {notification.messsage}
+                  {notification.message}
                 </span>
                 <span className="text-xs text-secondary-400">
                   {calculateTimeAgo(notification.createdAt)}

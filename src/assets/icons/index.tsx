@@ -13,7 +13,6 @@ import CodeIconHome from "./code-icon-home.svg";
 import HeartIconHome from "./heart-icon-home.svg";
 import NotificationCircleIconHome from "./notification-circle-icon-home.svg";
 import ChestKingIcon from "./chess-king-icon.svg";
-import NotificationHeader from "./notification_header.svg";
 
 import TickIcon from "./tick-icon.svg";
 import UserIcon from "./user-icon.svg";
@@ -41,6 +40,11 @@ import folderIcon from "./folder.svg";
 import CoinWhiteIcon from "./coin-white-icon.svg";
 import CoinBlackIcon from "./coin-black-icon.svg";
 import ChessKingHIcon from "./chess-king-icon-h.svg";
+
+// Notification Icon
+import NotificationHeader from "./notification_header.svg";
+import AlphaHunterIcon from "./alpha-hunter-icon.svg";
+import ProjectIcon from "./project-icon.svg";
 
 export {
   QuoteIcon,
@@ -83,4 +87,6 @@ export {
   CoinWhiteIcon,
   ChessKingHIcon,
   NotificationHeader,
+  AlphaHunterIcon,
+  ProjectIcon,
 };

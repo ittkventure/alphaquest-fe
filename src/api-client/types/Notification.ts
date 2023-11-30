@@ -1,7 +1,7 @@
 export type Notification = {
     id: string;
     type: string;
-    messsage: string;
+    message: string;
     ref1: string;
     ref2: string;
     imageUrl: string;
