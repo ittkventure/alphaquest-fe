@@ -17,7 +17,11 @@ const AvatarRow: FC<IAvatarRowProps> = ({ item, index }) => {
       return (
         <a
           key={attribute?.code}
-          href={`/projects?chain=${attribute?.code}`}
+          href={
+            attribute?.type === "CHAIN"
+              ? `/projects?chain=${attribute?.code}`
+              : `/projects?category=${attribute?.code}`
+          }
           onClick={() => {
             mixpanelTrack(event_name_enum.on_filter_chain, {
               url: router.pathname,

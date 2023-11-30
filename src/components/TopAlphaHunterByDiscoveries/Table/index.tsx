@@ -26,7 +26,7 @@ const TableTopAlphaHunterByDiscoveries: FC<
           <div className="w-[521px] ml-3">
             Projects Followed last {timeFrame?.replaceAll("D", "")} days
           </div>
-          <div className="pr-4 flex w-[calc(100%-1150px)] gap-1">
+          <div className="pr-4 flex items-center w-[calc(100%-1150px)] gap-1">
             # of Early Discoveries{" "}
             <Image src={InfoIcon2} width={20} height={20} alt="InfoIcon2" />
           </div>
