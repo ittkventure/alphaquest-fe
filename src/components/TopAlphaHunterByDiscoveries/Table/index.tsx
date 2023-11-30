@@ -22,7 +22,7 @@ const TableTopAlphaHunterByDiscoveries: FC<
         <div className="flex flex-row bg-[#1F2536] py-3">
           <div className="w-[293px] pl-11 mr-24">Account</div>
           <div className="w-[127px]">Followers</div>
-          <div className="w-[214px]"># of Projects Mentioned</div>
+          <div className="w-[214px]">Total # of Projects Followed</div>
           <div className="w-[521px] ml-3">
             Projects Followed last {timeFrame?.replaceAll("D", "")} days
           </div>

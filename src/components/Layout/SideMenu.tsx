@@ -200,7 +200,7 @@ const SideMenu = () => {
           >
             <div className="flex items-center">
               <Profile variant="Bold" className="h-6 w-6 mr-2" />
-              <p className="text-white">Alpha Hunter</p>
+              <p className="text-white">Alpha Hunters</p>
             </div>
             {/* {
               <ChevronDownIcon
