@@ -9,6 +9,7 @@ import {
   FolderIcon,
 } from "@heroicons/react/24/solid";
 import classNames from "classnames";
+import { Profile } from "iconsax-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -180,6 +181,36 @@ const SideMenu = () => {
             );
           })}
         </ul>
+        <button
+          className="mt-2 w-full"
+          onClick={() => router.push("/alpha-hunters")}
+        >
+          <div
+            className={classNames(
+              "p-[13px] flex justify-between items-center w-full transition-all duration-300",
+              {
+                "bg-success-500": router.pathname.includes(
+                  "/alpha-hunters"
+                ),
+                "hover:bg-secondary-600": !router.pathname.includes(
+                  "/alpha-hunters"
+                ),
+              }
+            )}
+          >
+            <div className="flex items-center">
+              <Profile variant="Bold" className="h-6 w-6 mr-2" />
+              <p className="text-white">Alpha Hunters</p>
+            </div>
+            {/* {
+              <ChevronDownIcon
+                className={classNames("h-5 w-5 transition-all duration-200", {
+                  "transform rotate-180": isShowSubMenuProject,
+                })}
+              />
+            } */}
+          </div>
+        </button>
       </ul>
 
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">

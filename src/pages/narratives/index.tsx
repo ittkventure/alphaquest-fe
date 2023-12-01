@@ -53,7 +53,7 @@ const ChartPage = () => {
       url: router.pathname,
     });
     if (authState) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
       });
@@ -62,7 +62,7 @@ const ChartPage = () => {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }
   };
@@ -266,7 +266,7 @@ const ChartPage = () => {
                   />
 
                   <div className="relative mr-6  max-lg:mr-2 ">
-                    <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[8px] left-[30px]" />
+                    <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-2 left-8" />
 
                     <input
                       ref={searchInputRef}

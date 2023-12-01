@@ -265,7 +265,8 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
           </p>
 
           <p className="font-thin">
-            We track millions of data points to identify crypto narratives before they take off
+            We track millions of data points to identify crypto narratives
+            before they take off
           </p>
         </div>
 

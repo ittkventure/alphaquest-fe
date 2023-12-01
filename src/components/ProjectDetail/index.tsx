@@ -284,13 +284,13 @@ const ProjectDetail: FC<IProjectDetail> = ({
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing?action=open",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/pricing?action=open");
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
       });
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       router.push("/sign-up");
     }
   };
@@ -749,7 +749,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                 alt="crown-icon"
                 className="mr-2"
               />
-              Upgrade to Pro
+              Start 7-day trial
             </button>
           </div>
         </div>

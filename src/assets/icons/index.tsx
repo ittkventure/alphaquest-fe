@@ -45,6 +45,7 @@ import ChessKingHIcon from "./chess-king-icon-h.svg";
 import NotificationHeader from "./notification_header.svg";
 import AlphaHunterIcon from "./alpha-hunter-icon.svg";
 import ProjectIcon from "./project-icon.svg";
+import InfoIcon2 from "./info-icon.svg";
 
 export {
   QuoteIcon,
@@ -89,4 +90,5 @@ export {
   NotificationHeader,
   AlphaHunterIcon,
   ProjectIcon,
+  InfoIcon2,
 };

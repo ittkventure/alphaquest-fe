@@ -57,27 +57,27 @@ const Subscription = () => {
       content: `Using Paypal or Credit card would be more convenient for renewals. However, we also accept cryptocurrency payments if you prefer not to use those methods. Please reach out to https://t.me/alphaquestio for detailed instructions`,
     },
   ];
-  const [isYear, setIsYear] = useState(false);
 
   const router = useRouter();
 
   useEffect(() => {
     if (router.query?.action === "open" && authState?.access_token) {
       if (typePayment === TypePayment.TRIAL) {
-        getPaymentLink(false);
+        getPaymentLink(false, false);
       } else if (typePayment === TypePayment.PRO) {
-        getPaymentLink(true);
+        getPaymentLink(true, false);
       }
     }
   }, [typePayment, router.query]);
 
-  const getPaymentLink = async (withoutTrial) => {
+  const getPaymentLink = async (withoutTrial, isYear) => {
     setIsLoading(true);
     try {
       if (authState) {
         const paymentLink = await apiPayment.getLinkPayment(
           authState?.access_token,
-          withoutTrial
+          withoutTrial,
+          isYear
         );
         Paddle.Checkout.open({
           override: paymentLink,
@@ -132,7 +132,7 @@ const Subscription = () => {
 
           <div className="max-lg:w-full max-lg:mt-6">
             <button
-              onClick={() => getPaymentLink(false)}
+              onClick={() => getPaymentLink(false, false)}
               className="px-6 max-lg:text-sm max-lg:w-full py-[10px] bg-success-600 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
               disabled={isLoading}
             >
@@ -147,7 +147,7 @@ const Subscription = () => {
         </div>
 
         <div className="flex max-lg:text-center max-lg:text-2xl max-lg:mt-16 flex-col items-center justify-center text-[2rem] font-workSansSemiBold mt-[120px]">
-          <p>Over 100,000+ Investors Use AlphaQuest</p>
+          <p>Loved by both Ventures Capitals and Retail Investors</p>
         </div>
 
         <div className="flex items-center justify-between w-[1205px] max-xl:w-full max-w-[1350px] py-[120px] max-lg:py-5 mt-11 max-lg:mt-0">

@@ -5,19 +5,21 @@ import React, { FC, useEffect, useState } from "react";
 
 export type MothType = {
   label?: string;
-  value?: TimeFrameTypes | SortByType;
+  value?: TimeFrameTypes | SortByType | any;
 };
 
 interface MonthSelectTypes {
   onChangeSelect: (month: MothType) => void;
   listData?: Array<MothType>;
   defaultData?: MothType | any;
+  className?: string;
 }
 
 const MonthSelect: FC<MonthSelectTypes> = ({
   onChangeSelect,
   listData,
   defaultData,
+  className,
 }) => {
   const [listMonth, setListMonth] = useState(listData ?? initListMonth);
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -63,7 +65,9 @@ const MonthSelect: FC<MonthSelectTypes> = ({
               key={index.toString()}
               className={`flex justify-center items-center w-24 py-2 hover:bg-success-500 font-workSansLight ${
                 isShowMenu ? "" : "hidden"
-              } ${selectedValue.value === value.value ? "bg-success-500" : ""}`}
+              } ${
+                selectedValue.value === value.value ? "bg-success-500" : ""
+              } ${className}`}
               onClick={() => {
                 setIsShowMenu(false);
                 onChangeSelect(value as MothType);

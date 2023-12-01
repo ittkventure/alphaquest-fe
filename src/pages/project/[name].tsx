@@ -3,9 +3,11 @@ import { CrownIcon } from "@/assets/icons";
 import Header from "@/components/App/Header";
 import ProjectDetail from "@/components/ProjectDetail";
 import Spinner from "@/components/Spinner";
-import { AuthContext } from "@/contexts/useAuthContext";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { FC, useContext } from "react";
 
 interface Props {
@@ -13,7 +15,28 @@ interface Props {
 }
 
 const ProjectPage: FC<Props> = ({ nameProject }) => {
-  const { accountExtendDetail } = useContext(AuthContext);
+  const { accountExtendDetail, authState, setTypePaymentAction } =
+    useContext(AuthContext);
+  const router = useRouter();
+  const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/pricing?action=open");
+    } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/sign-up");
+    }
+  };
+
   return (
     <AppLayout>
       <div className="w-full">
@@ -35,7 +58,7 @@ const ProjectPage: FC<Props> = ({ nameProject }) => {
               <p className="mb-4">Upgrade account to see all</p>
 
               <button
-                onClick={() => {}}
+                onClick={onClickPaymentTrial}
                 className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
               >
                 <Image
@@ -45,7 +68,7 @@ const ProjectPage: FC<Props> = ({ nameProject }) => {
                   alt="crown-icon"
                   className="mr-2"
                 />
-                Upgrade to Pro
+                Start 7-day trial
               </button>
             </div>
           </div>

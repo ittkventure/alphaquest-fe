@@ -164,6 +164,10 @@ select:-webkit-autofill:focus {
   transition-duration: 0.2s;
 }
 
+.opaque {
+  opacity: 1 !important;
+}
+
 @layer utilities {
   @variants responsive {
     /* Hide scrollbar for Chrome, Safari and Opera */
