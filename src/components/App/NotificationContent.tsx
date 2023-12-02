@@ -1,11 +1,8 @@
 import Image from "next/image";
-import { useState, useContext } from "react";
-import { AuthContext } from "@/contexts/useAuthContext";
-import { useQuery } from "react-query";
+import { useState, useRef, useCallback } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import {
   checkAsReadNotification,
-  fetchNotifications,
 } from "@/api-client/notification";
 import {
   NOTIFICATION_TYPE,
@@ -15,6 +12,7 @@ import { calculateTimeAgo } from "@/utils/date";
 import { AlphaHunterIcon, ProjectIcon } from "@/assets/icons";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { useNotifications } from "@/hooks/useNotifications";
 
 type NotificationContentProps = {
   closeNotification: () => void;
@@ -25,14 +23,31 @@ export default function NotificationContent({
 }: NotificationContentProps) {
   const router = useRouter();
   const [isRead, setIsRead] = useState(false);
-  const { authState } = useContext(AuthContext);
 
-  const accessToken = authState?.access_token || "";
+  const {
+    notifications,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+    isLoading,
+    refetch,
+  } = useNotifications(isRead);
 
-  const { data: notifications, refetch } = useQuery(
-    ["getNotifications", isRead, { pageNumber: 1, pageSize: 100 }],
-    () =>
-      fetchNotifications(accessToken, isRead, { pageNumber: 1, pageSize: 100 })
+  // IntersectionObserver to handle Infinite Scroll
+  const observer = useRef<IntersectionObserver>();
+
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetching) {
+          fetchNextPage();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasNextPage]
   );
 
   const redirectByType = (type: NOTIFICATION_TYPE, ref: string) => {
@@ -104,9 +119,14 @@ export default function NotificationContent({
           </div>
         </div>
         <div className="flex flex-col">
-          {notifications?.items?.map((notification: Notification) => (
+          {notifications?.items?.map((notification: any, index) => (
             <div
               key={notification.id}
+              ref={
+                notifications?.items.length === index + 1
+                  ? lastElementRef
+                  : null
+              }
               onClick={() => handleNotiItem(notification)}
               className={`flex gap-4 p-2 cursor-pointer ${
                 notification.unread ? "bg-[#3F3F46]" : undefined
