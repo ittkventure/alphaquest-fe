@@ -32,7 +32,7 @@ const TableTopAlphaHunterByDiscoveries: FC<
               data-tooltip-id="info-tooltip-discoveries"
               className="cursor-pointer"
             >
-              <Image src={InfoIcon2} width={20} height={20} alt="InfoIcon2" />
+              <Image src={InfoIcon2} width={20} height={20} alt="InfoIcon2" className="min-h-[20px] min-w-[20px]" />
             </div>
           </div>
         </div>
