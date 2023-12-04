@@ -1,9 +1,7 @@
 import Image from "next/image";
 import { useState, useRef, useCallback } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import {
-  checkAsReadNotification,
-} from "@/api-client/notification";
+import { checkAsReadNotification } from "@/api-client/notification";
 import {
   NOTIFICATION_TYPE,
   Notification,
@@ -82,14 +80,14 @@ export default function NotificationContent({
 
   return (
     <>
-      <div className="bg-[#292C35] max-lg:bg-dark-900 max-lg:z-[1000] max-lg:h-screen max-lg:fixed max-lg:top-0 absolute max-lg:left-0 top-[48px] right-[-8rem] w-[420px] max-lg:w-full h-[80vh] flex flex-col gap-5 p-6 z-10 overflow-y-auto max-lg:overflow-hidden notification-content lg:animate-slideDownAndFade">
+      <div className="bg-[#292C35] max-lg:bg-dark-900 max-lg:z-[1000] max-lg:h-screen max-lg:fixed max-lg:top-0 absolute max-lg:left-0 top-[48px] right-[-8rem] w-[420px] max-lg:w-full h-[80vh] flex flex-col gap-5 z-10 overflow-y-auto max-lg:overflow-hidden notification-content lg:animate-slideDownAndFade">
         <div className="hidden max-lg:block">
           <XMarkIcon
             className="h-7 w-7 transition-all duration-300"
             onClick={closeNotification}
           />
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between px-6 pt-6">
           <span className="text-white text-xl font-semibold">
             Notifications
           </span>
@@ -132,16 +130,14 @@ export default function NotificationContent({
                 notification.unread ? "bg-[#3F3F46]" : undefined
               }`}
             >
-              <div className="w-32 h-32">
-                <Image
-                  src={notification.imageUrl}
-                  alt="avatar"
-                  width={64}
-                  height={64}
-                  className="object-cover rounded-full"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
+              <Image
+                src={notification.imageUrl}
+                alt="avatar"
+                width={64}
+                height={64}
+                className="object-cover relative inline-block h-16 w-16 object-center rounded-full ml-4"
+              />
+              <div className="flex flex-col gap-2 mr-4">
                 <div className="flex gap-1 items-center">
                   <div className="w-4 h-4">
                     <Image
