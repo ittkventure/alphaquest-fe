@@ -25,6 +25,9 @@ import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { Tab } from "@headlessui/react";
+import classNames from "classnames";
+import Narratives from "../Narratives";
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
@@ -346,17 +349,73 @@ const Watchlist: FC<WatchlistTypes> = ({
       {renderUpBtn()}
       <div className="p-6">
         <Header />
-        <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
+        <div className="h-[1px] bg-white bg-opacity-20 mt-4 max-lg:hidden" />
       </div>
-      <div className="hidden max-lg:block">
-        <TabApp onChangeTab={_handleSelectTab} />
-      </div>
-      {_renderUpPro()}
+      <Tab.Group>
+        <Tab.List className=" mx-6 w-full border-b border-white/20">
+          <Tab>
+            {({ selected }) => (
+              /* Use the `selected` state to conditionally style the selected tab. */
+              <button
+                className={classNames(
+                  "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                  {
+                    "text-primary-500 border-b-[3px] border-primary-500":
+                      selected,
+                  }
+                )}
+              >
+                Narratives
+              </button>
+            )}
+          </Tab>
+          <Tab>
+            {({ selected }) => (
+              /* Use the `selected` state to conditionally style the selected tab. */
+              <button
+                className={classNames(
+                  "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                  {
+                    "text-primary-500 border-b-[3px] border-primary-500":
+                      selected,
+                  }
+                )}
+              >
+                Projects
+              </button>
+            )}
+          </Tab>
+          <Tab>
+            {({ selected }) => (
+              /* Use the `selected` state to conditionally style the selected tab. */
+              <button
+                className={classNames(
+                  "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                  {
+                    "text-primary-500 border-b-[3px] border-primary-500":
+                      selected,
+                  }
+                )}
+              >
+                Alpha Hunters
+              </button>
+            )}
+          </Tab>
+        </Tab.List>
+        <Tab.Panels>
+          <Tab.Panel className="py-6">
+            <Narratives />
+          </Tab.Panel>
+          <Tab.Panel className="mt-6">
+            <div className="hidden max-lg:block">
+              <TabApp onChangeTab={_handleSelectTab} />
+            </div>
+            {_renderUpPro()}
 
-      <div className="px-6 pb-6 ">
-        <div className="flex max-lg:flex-col max-lg:items-center justify-between">
-          {renderDes()}
-          {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
+            <div className="px-6 pb-6 ">
+              <div className="flex max-lg:flex-col max-lg:items-center justify-between">
+                {renderDes()}
+                {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
             <div className="mr-3">
               <SelectCustom
                 placeholder="Chain - All"
@@ -372,30 +431,34 @@ const Watchlist: FC<WatchlistTypes> = ({
               />
             </div>
           </div> */}
-        </div>
+              </div>
 
-        <div className="mt-7 max-lg:mt-9">
-          {_renderTable()}
-          {errorMsg &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <p className="mt-10 text-center">{errorMsg}</p>
-          ) : null}
-          {isLoading &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <SkeletonLoading numberOfRow={10} />
-          ) : null}
-          {isLoadingMore &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <SkeletonLoading numberOfRow={3} />
-          ) : null}
-          {!isLoadingMore &&
-          !errorMsg &&
-          !isLoading &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <div className="h-7 w-full" ref={triggerElement}></div>
-          ) : null}
-        </div>
-      </div>
+              <div className="mt-7 max-lg:mt-9">
+                {_renderTable()}
+                {errorMsg &&
+                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+                  <p className="mt-10 text-center">{errorMsg}</p>
+                ) : null}
+                {isLoading &&
+                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+                  <SkeletonLoading numberOfRow={10} />
+                ) : null}
+                {isLoadingMore &&
+                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+                  <SkeletonLoading numberOfRow={3} />
+                ) : null}
+                {!isLoadingMore &&
+                !errorMsg &&
+                !isLoading &&
+                accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+                  <div className="h-7 w-full" ref={triggerElement}></div>
+                ) : null}
+              </div>
+            </div>
+          </Tab.Panel>
+          <Tab.Panel className="p-6">Alpha Hunters</Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   );
 };
