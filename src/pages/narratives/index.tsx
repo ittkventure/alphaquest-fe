@@ -9,8 +9,12 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { formatNumber } from "@/utils/formatNumber";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
-import { HeartIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconBold, } from "@heroicons/react/24/solid";
+import {
+  HeartIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
 
 import classNames from "classnames";
 import Image from "next/image";
@@ -42,19 +46,19 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
   onClickPaymentTrial,
   router,
   timeFrame,
-  refetch
+  refetch,
 }) => {
-  
- 
-
   return data?.items?.map((item: any, index: number) => {
     const addWatchListMutate = useMutation({
-      mutationFn: (params: {refId: string, type: WatchListTypes, subType: string}) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
+      mutationFn: (params: {
+        refId: string;
+        type: WatchListTypes;
+        subType: string;
+      }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
       onSuccess: () => {
-        refetch && refetch()
+        refetch && refetch();
       },
-  
-    })
+    });
 
     const listData =
       item?.chart?.timelineData.map((value: any) => {
@@ -63,7 +67,6 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
           name: value.date,
         };
       }) ?? [];
-
 
     if (!item)
       return (
@@ -123,19 +126,33 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
         </div>
         <div className="flex flex-col-reverse pb-4">
           <div className="mt-4 flex items-center justify-end absolute bottom-3 right-3">
-              {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
+            {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
                 <p>Regular</p>
               </button> */}
 
-              <button onClick={() => {
-                
-                addWatchListMutate.mutate({refId: item?.keyword, type: WatchListTypes.NARRATIVE, subType: timeFrame.code})
-              }} disabled={addWatchListMutate.isLoading}>
-                {addWatchListMutate.isLoading && <Spinner  />}
-                
-                {!addWatchListMutate.isLoading && (item?.isFavorite ? <HeartIconBold  type="" className="w-6 h-6 text-primary-500" /> : <HeartIcon type="" className="w-6 h-6 text-white hover:text-success-600 transition-all duration-200" />)}
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                addWatchListMutate.mutate({
+                  refId: item?.keyword,
+                  type: WatchListTypes.NARRATIVE,
+                  subType: timeFrame.code,
+                });
+              }}
+              disabled={addWatchListMutate.isLoading}
+            >
+              {addWatchListMutate.isLoading && <Spinner />}
+
+              {!addWatchListMutate.isLoading &&
+                (item?.inWatchlist ? (
+                  <HeartIconBold type="" className="w-6 h-6 text-primary-500" />
+                ) : (
+                  <HeartIcon
+                    type=""
+                    className="w-6 h-6 text-white hover:text-success-600 transition-all duration-200"
+                  />
+                ))}
+            </button>
+          </div>
           <div
             onClick={() =>
               router.push(
@@ -187,7 +204,7 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
       </div>
     );
   });
-}
+};
 
 const ChartPage = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -265,7 +282,6 @@ const ChartPage = () => {
       )
   );
 
-
   return (
     <div className="w-full">
       <AppLayout>
@@ -329,14 +345,22 @@ const ChartPage = () => {
                 </div>
               </div>
             </div>
-            {isLoading
-              ? Array.from(Array(12).keys()).map((item, index) => (
-                  <div
-                    className="animate-pulse col-span-1 h-[260px] bg-[#1B202F]"
-                    key={index}
-                  />
-                ))
-              : <NarrativesItem data={data} onClickPaymentTrial={onClickPaymentTrial} router={router} timeFrame={timeFrame} refetch={refetch} />}
+            {isLoading ? (
+              Array.from(Array(12).keys()).map((item, index) => (
+                <div
+                  className="animate-pulse col-span-1 h-[260px] bg-[#1B202F]"
+                  key={index}
+                />
+              ))
+            ) : (
+              <NarrativesItem
+                data={data}
+                onClickPaymentTrial={onClickPaymentTrial}
+                router={router}
+                timeFrame={timeFrame}
+                refetch={refetch}
+              />
+            )}
             <div className="col-span-full">
               <TableFooter
                 paginationInfo={{
