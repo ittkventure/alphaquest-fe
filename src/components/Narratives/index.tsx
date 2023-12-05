@@ -146,7 +146,7 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
               {addWatchListMutate.isLoading && <Spinner />}
 
               {!addWatchListMutate.isLoading &&
-                (item?.isFavorite ? (
+                (item?.inWatchlist ? (
                   <HeartIconBold type="" className="w-6 h-6 text-primary-500" />
                 ) : (
                   <HeartIcon
