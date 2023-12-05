@@ -41,63 +41,125 @@ interface NarrativesItemProps {
   refetch?: () => void;
 }
 
-const NarrativesItem: FC<NarrativesItemProps> = ({
+interface NarrativesItemChildProps extends NarrativesItemProps {
+  item: any;
+}
+
+const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
   data,
   onClickPaymentTrial,
   router,
   timeFrame,
   refetch,
+  item,
 }) => {
+  const addWatchListMutate = useMutation({
+    mutationFn: (params: {
+      refId: string;
+      type: WatchListTypes;
+      subType: string;
+    }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
+    onSuccess: () => {
+      refetch && refetch();
+    },
+  });
+
+  const listData =
+    item?.chart?.timelineData.map((value: any) => {
+      return {
+        followerCount: value.values[0]?.extractedValue,
+        name: value.date,
+      };
+    }) ?? [];
+
   if (data?.items?.length === 0 || !data?.items)
     return <p>No narrative in watchlist</p>;
 
-  return data?.items?.map((item: any, index: number) => {
-    const addWatchListMutate = useMutation({
-      mutationFn: (params: {
-        refId: string;
-        type: WatchListTypes;
-        subType: string;
-      }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
-      onSuccess: () => {
-        refetch && refetch();
-      },
-    });
+  if (!item)
+    return (
+      <div className="w-full h-fit relative bg-[#1B202F]">
+        <Image
+          src={PlaceholderChart}
+          width={334}
+          height={200}
+          alt="chart"
+          className="w-full h-fit object-cover"
+        />
+        <div className="absolute top-0 w-full h-full flex flex-col justify-center items-center">
+          <div className="w-full flex justify-center mb-4 gap-3">
+            <Image src={ChessKingHIcon} alt="icon" width={17} height={13} />
+            <p>Pro Members only</p>
+          </div>
+          <button
+            onClick={onClickPaymentTrial}
+            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
+          >
+            Try pro
+          </button>
+        </div>
+      </div>
+    );
 
-    const listData =
-      item?.chart?.timelineData.map((value: any) => {
-        return {
-          followerCount: value.values[0]?.extractedValue,
-          name: value.date,
-        };
-      }) ?? [];
+  return (
+    <div className="w-full p-4 min-h-fit bg-[#1B202F] relative">
+      <div
+        onClick={() =>
+          router.push(
+            "/narratives/" +
+              formatUrl(item?.keyword) +
+              `?timeFrame=${formatSelectOptions(timeFrame.code)}`
+          )
+        }
+        className="w-full flex justify-between mb-4 cursor-pointer"
+      >
+        <p className="font-bold text-lg">{item?.displayName}</p>
 
-    if (!item)
-      return (
-        <div className="w-full h-fit relative bg-[#1B202F]">
-          <Image
-            src={PlaceholderChart}
-            width={334}
-            height={200}
-            alt="chart"
-            className="w-full h-fit object-cover"
-          />
-          <div className="absolute top-0 w-full h-full flex flex-col justify-center items-center">
-            <div className="w-full flex justify-center mb-4 gap-3">
-              <Image src={ChessKingHIcon} alt="icon" width={17} height={13} />
-              <p>Pro Members only</p>
-            </div>
-            <button
-              onClick={onClickPaymentTrial}
-              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
+        <div className="flex items-center justify-center">
+          <div className="flex flex-col items-end">
+            <p
+              className={classNames("font-bold text-xl text-[#24B592]", {
+                "text-[#E25148]": item?.growthPercent <= 0,
+              })}
             >
-              Try pro
-            </button>
+              {item?.growthPercent > 0
+                ? `+${formatNumber(item?.growthPercent ?? 0)}%`
+                : `${formatNumber(item?.growthPercent ?? 0)}%`}
+            </p>
+            <p className="text-[#A1A1AA] text-sm">
+              {item?.growthPercent > 0 ? "Growth" : "Down"}
+            </p>
           </div>
         </div>
-      );
+      </div>
+      <div className="flex flex-col-reverse pb-4">
+        <div className="mt-4 flex items-center justify-end absolute bottom-3 right-3">
+          {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
+              <p>Regular</p>
+            </button> */}
 
-    return (
-      <div className="w-full p-4 min-h-fit bg-[#1B202F] relative">
+          <button
+            onClick={() => {
+              addWatchListMutate.mutate({
+                refId: item?.keyword,
+                type: WatchListTypes.NARRATIVE,
+                subType: timeFrame.code,
+              });
+            }}
+            disabled={addWatchListMutate.isLoading}
+          >
+            {addWatchListMutate.isLoading && <Spinner />}
+
+            {!addWatchListMutate.isLoading &&
+              (item?.inWatchlist ? (
+                <HeartIconBold type="" className="w-6 h-6 text-primary-500" />
+              ) : (
+                <HeartIcon
+                  type=""
+                  className="w-6 h-6 text-white hover:text-success-600 transition-all duration-200"
+                />
+              ))}
+          </button>
+        </div>
         <div
           onClick={() =>
             router.push(
@@ -106,105 +168,63 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
                 `?timeFrame=${formatSelectOptions(timeFrame.code)}`
             )
           }
-          className="w-full flex justify-between mb-4 cursor-pointer"
+          className="cursor-pointer mt-4"
         >
-          <p className="font-bold text-lg">{item?.displayName}</p>
-
-          <div className="flex items-center justify-center">
-            <div className="flex flex-col items-end">
-              <p
-                className={classNames("font-bold text-xl text-[#24B592]", {
-                  "text-[#E25148]": item?.growthPercent <= 0,
-                })}
-              >
-                {item?.growthPercent > 0
-                  ? `+${formatNumber(item?.growthPercent ?? 0)}%`
-                  : `${formatNumber(item?.growthPercent ?? 0)}%`}
-              </p>
-              <p className="text-[#A1A1AA] text-sm">
-                {item?.growthPercent > 0 ? "Growth" : "Down"}
-              </p>
-            </div>
-          </div>
+          <p className="line-clamp-2 font-light">{item?.description}</p>
         </div>
-        <div className="flex flex-col-reverse pb-4">
-          <div className="mt-4 flex items-center justify-end absolute bottom-3 right-3">
-            {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
-                <p>Regular</p>
-              </button> */}
+        <ResponsiveContainer width="100%" aspect={2}>
+          <LineChart width={302} height={140} data={listData}>
+            <CartesianGrid
+              horizontal={true}
+              vertical={false}
+              stroke="#38405B"
+            />
 
-            <button
-              onClick={() => {
-                addWatchListMutate.mutate({
-                  refId: item?.keyword,
-                  type: WatchListTypes.NARRATIVE,
-                  subType: timeFrame.code,
-                });
-              }}
-              disabled={addWatchListMutate.isLoading}
-            >
-              {addWatchListMutate.isLoading && <Spinner />}
-
-              {!addWatchListMutate.isLoading &&
-                (item?.inWatchlist ? (
-                  <HeartIconBold type="" className="w-6 h-6 text-primary-500" />
-                ) : (
-                  <HeartIcon
-                    type=""
-                    className="w-6 h-6 text-white hover:text-success-600 transition-all duration-200"
-                  />
-                ))}
-            </button>
-          </div>
-          <div
-            onClick={() =>
-              router.push(
-                "/narratives/" +
-                  formatUrl(item?.keyword) +
-                  `?timeFrame=${formatSelectOptions(timeFrame.code)}`
-              )
-            }
-            className="cursor-pointer mt-4"
-          >
-            <p className="line-clamp-2 font-light">{item?.description}</p>
-          </div>
-          <ResponsiveContainer width="100%" aspect={2}>
-            <LineChart width={302} height={140} data={listData}>
-              <CartesianGrid
-                horizontal={true}
-                vertical={false}
-                stroke="#38405B"
-              />
-
-              <Tooltip
-                itemStyle={{ color: "#fff" }}
-                cursor={true}
-                content={
-                  <CustomTooltipNotLabel
-                    dotColor={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
-                  />
-                }
-              />
-              {/* <XAxis
-                  dataKey="name"
-                  tick={{ fill: "#fff" }}
-                  fontSize={0}
-                  fontFamily="WorkSans-Medium"
-                  fontWeight={500}
-                  domain={["followerCount"]}
-                /> */}
-              <Line
-                yAxisId="left"
-                type="monotone"
-                dataKey="followerCount"
-                stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
-                strokeWidth="2"
-                dot={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+            <Tooltip
+              itemStyle={{ color: "#fff" }}
+              cursor={true}
+              content={
+                <CustomTooltipNotLabel
+                  dotColor={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+                />
+              }
+            />
+            {/* <XAxis
+                dataKey="name"
+                tick={{ fill: "#fff" }}
+                fontSize={0}
+                fontFamily="WorkSans-Medium"
+                fontWeight={500}
+                domain={["followerCount"]}
+              /> */}
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="followerCount"
+              stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+              strokeWidth="2"
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
+    </div>
+  );
+};
+
+const NarrativesItem: FC<NarrativesItemProps> = ({
+  data,
+  onClickPaymentTrial,
+  router,
+  timeFrame,
+  refetch,
+}) => {
+  return data?.items?.map((item: any, index: number) => {
+    return (
+      <NarrativesItemChild
+        key={index}
+        {...{ item, data, onClickPaymentTrial, router, timeFrame, refetch }}
+      />
     );
   });
 };
