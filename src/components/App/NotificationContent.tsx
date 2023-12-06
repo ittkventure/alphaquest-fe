@@ -26,7 +26,6 @@ export default function NotificationContent({
     notifications,
     hasNextPage,
     fetchNextPage,
-    isFetching,
     isLoading,
     refetch,
   } = useNotifications(isRead);
@@ -39,7 +38,7 @@ export default function NotificationContent({
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetching) {
+        if (entries[0].isIntersecting && hasNextPage) {
           fetchNextPage();
         }
       });
