@@ -1,12 +1,10 @@
 import { apiTwitter } from "@/api-client";
 import { ChessKingHIcon } from "@/assets/icons";
 import { PlaceholderChart } from "@/assets/images";
-import Header from "@/components/App/Header";
 import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 import TableFooter from "@/components/TableCommon/TableFooter";
 import SelectCustom, { OptionType } from "@/components/common/Select";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
-import AppLayout from "@/layouts/AppLayout";
 import { formatNumber } from "@/utils/formatNumber";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import {
@@ -170,7 +168,7 @@ const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
           }
           className="cursor-pointer mt-4"
         >
-          <p className="line-clamp-2 font-light">{item?.description}</p>
+          <p className="font-light line-clamp-2">{item?.description}</p>
         </div>
         <ResponsiveContainer width="100%" aspect={2}>
           <LineChart width={302} height={140} data={listData}>

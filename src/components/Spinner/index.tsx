@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { FC } from "react";
 
 interface ISpinner {
@@ -9,7 +10,10 @@ const Spinner: FC<ISpinner> = ({ customClassName, strokeWidth }) => {
   return (
     <div role="status">
       <svg
-        className={`animate-spin -ml-1 mr-3 h-5 w-5 text-white ${customClassName}`}
+        className={classNames(
+          `animate-spin -ml-1 mr-3 h-5 w-5 text-white`,
+          customClassName
+        )}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
