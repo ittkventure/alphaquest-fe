@@ -9,13 +9,19 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
 import { formatNumber } from "@/utils/formatNumber";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  HeartIcon,
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
+
 import classNames from "classnames";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useContext, useState, useRef } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   LineChart,
   Line,
@@ -24,6 +30,181 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { formatSelectOptions, formatUrl } from "@/utils/string";
+import { WatchListTypes } from "@/api-client/twitter";
+import Spinner from "@/components/Spinner";
+
+interface NarrativesItemProps {
+  data: any;
+  onClickPaymentTrial: () => void;
+  router: any;
+  timeFrame: any;
+  refetch?: () => void;
+}
+
+const NarrativesItem: FC<NarrativesItemProps> = ({
+  data,
+  onClickPaymentTrial,
+  router,
+  timeFrame,
+  refetch,
+}) => {
+  return data?.items?.map((item: any, index: number) => {
+    const addWatchListMutate = useMutation({
+      mutationFn: (params: {
+        refId: string;
+        type: WatchListTypes;
+        subType: string;
+      }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
+      onSuccess: () => {
+        refetch && refetch();
+      },
+    });
+
+    const listData =
+      item?.chart?.timelineData.map((value: any) => {
+        return {
+          followerCount: value.values[0]?.extractedValue,
+          name: value.date,
+        };
+      }) ?? [];
+
+    if (!item)
+      return (
+        <div className="w-full h-fit relative bg-[#1B202F]">
+          <Image
+            src={PlaceholderChart}
+            width={334}
+            height={200}
+            alt="chart"
+            className="w-full h-fit object-cover"
+          />
+          <div className="absolute top-0 w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full flex justify-center mb-4 gap-3">
+              <Image src={ChessKingHIcon} alt="icon" width={17} height={13} />
+              <p>Pro Members only</p>
+            </div>
+            <button
+              onClick={onClickPaymentTrial}
+              className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
+            >
+              Try pro
+            </button>
+          </div>
+        </div>
+      );
+
+    return (
+      <div className="w-full p-4 min-h-fit bg-[#1B202F] relative">
+        <div
+          onClick={() =>
+            router.push(
+              "/narratives/" +
+                formatUrl(item?.keyword) +
+                `?timeFrame=${formatSelectOptions(timeFrame.code)}`
+            )
+          }
+          className="w-full flex justify-between mb-4 cursor-pointer"
+        >
+          <p className="font-bold text-lg">{item?.displayName}</p>
+
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col items-end">
+              <p
+                className={classNames("font-bold text-xl text-[#24B592]", {
+                  "text-[#E25148]": item?.growthPercent <= 0,
+                })}
+              >
+                {item?.growthPercent > 0
+                  ? `+${formatNumber(item?.growthPercent ?? 0)}%`
+                  : `${formatNumber(item?.growthPercent ?? 0)}%`}
+              </p>
+              <p className="text-[#A1A1AA] text-sm">
+                {item?.growthPercent > 0 ? "Growth" : "Down"}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col-reverse pb-4">
+          <div className="mt-4 flex items-center justify-end absolute bottom-3 right-3">
+            {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
+                <p>Regular</p>
+              </button> */}
+
+            <button
+              onClick={() => {
+                addWatchListMutate.mutate({
+                  refId: item?.keyword,
+                  type: WatchListTypes.NARRATIVE,
+                  subType: timeFrame.code,
+                });
+              }}
+              disabled={addWatchListMutate.isLoading}
+            >
+              {addWatchListMutate.isLoading && <Spinner />}
+
+              {!addWatchListMutate.isLoading &&
+                (item?.inWatchlist ? (
+                  <HeartIconBold type="" className="w-6 h-6 text-primary-500" />
+                ) : (
+                  <HeartIcon
+                    type=""
+                    className="w-6 h-6 text-white hover:text-success-600 transition-all duration-200"
+                  />
+                ))}
+            </button>
+          </div>
+          <div
+            onClick={() =>
+              router.push(
+                "/narratives/" +
+                  formatUrl(item?.keyword) +
+                  `?timeFrame=${formatSelectOptions(timeFrame.code)}`
+              )
+            }
+            className="cursor-pointer mt-4"
+          >
+            <p className="line-clamp-2 font-light">{item?.description}</p>
+          </div>
+          <ResponsiveContainer width="100%" aspect={2}>
+            <LineChart width={302} height={140} data={listData}>
+              <CartesianGrid
+                horizontal={true}
+                vertical={false}
+                stroke="#38405B"
+              />
+
+              <Tooltip
+                itemStyle={{ color: "#fff" }}
+                cursor={true}
+                content={
+                  <CustomTooltipNotLabel
+                    dotColor={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+                  />
+                }
+              />
+              {/* <XAxis
+                  dataKey="name"
+                  tick={{ fill: "#fff" }}
+                  fontSize={0}
+                  fontFamily="WorkSans-Medium"
+                  fontWeight={500}
+                  domain={["followerCount"]}
+                /> */}
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="followerCount"
+                stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
+                strokeWidth="2"
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+    );
+  });
+};
 
 const ChartPage = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -83,7 +264,7 @@ const ChartPage = () => {
     }
   }, [router.query]);
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     [
       "chartInterestOverTime",
       authState?.access_token,
@@ -100,137 +281,6 @@ const ChartPage = () => {
         page
       )
   );
-
-  const renderItemsOfChart = () => {
-    return data?.items?.map((item: any, index: number) => {
-      const listData =
-        item?.chart?.timelineData.map((value: any) => {
-          return {
-            followerCount: value.values[0]?.extractedValue,
-            name: value.date,
-          };
-        }) ?? [];
-
-      console.log(item, "item");
-
-      if (!item)
-        return (
-          <div className="w-full h-fit relative bg-[#1B202F]">
-            <Image
-              src={PlaceholderChart}
-              width={334}
-              height={200}
-              alt="chart"
-              className="w-full h-fit object-cover"
-            />
-            <div className="absolute top-0 w-full h-full flex flex-col justify-center items-center">
-              <div className="w-full flex justify-center mb-4 gap-3">
-                <Image src={ChessKingHIcon} alt="icon" width={17} height={13} />
-                <p>Pro Members only</p>
-              </div>
-              <button
-                onClick={onClickPaymentTrial}
-                className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
-              >
-                Try pro
-              </button>
-            </div>
-          </div>
-        );
-
-      return (
-        <div className="w-full p-4 min-h-fit bg-[#1B202F]">
-          <div
-            onClick={() =>
-              router.push(
-                "/narratives/" +
-                  formatUrl(item?.keyword) +
-                  `?timeFrame=${formatSelectOptions(timeFrame.code)}`
-              )
-            }
-            className="w-full flex justify-between mb-4 cursor-pointer"
-          >
-            <p className="font-bold text-lg">{item?.displayName}</p>
-
-            <div className="flex items-center justify-center">
-              <div className="flex flex-col items-end">
-                <p
-                  className={classNames("font-bold text-xl text-[#24B592]", {
-                    "text-[#E25148]": item?.growthPercent <= 0,
-                  })}
-                >
-                  {item?.growthPercent > 0
-                    ? `+${formatNumber(item?.growthPercent ?? 0)}%`
-                    : `${formatNumber(item?.growthPercent ?? 0)}%`}
-                </p>
-                <p className="text-[#A1A1AA] text-sm">
-                  {item?.growthPercent > 0 ? "Growth" : "Down"}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col-reverse pb-2">
-            {/* <div className="mt-4 flex items-center justify-between">
-                <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
-                  <p>Regular</p>
-                </button>
-
-                <button>
-                  <HeartIcon className="w-6 h-6 text-white" />
-                </button>
-              </div> */}
-            <div
-              onClick={() =>
-                router.push(
-                  "/narratives/" +
-                    formatUrl(item?.keyword) +
-                    `?timeFrame=${formatSelectOptions(timeFrame.code)}`
-                )
-              }
-              className="cursor-pointer mt-4"
-            >
-              <p className="line-clamp-2 font-light">{item?.description}</p>
-            </div>
-            <ResponsiveContainer width="100%" aspect={2}>
-              <LineChart width={302} height={140} data={listData}>
-                <CartesianGrid
-                  horizontal={true}
-                  vertical={false}
-                  stroke="#38405B"
-                />
-
-                <Tooltip
-                  itemStyle={{ color: "#fff" }}
-                  cursor={true}
-                  content={
-                    <CustomTooltipNotLabel
-                      dotColor={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
-                    />
-                  }
-                />
-                {/* <XAxis
-                    dataKey="name"
-                    tick={{ fill: "#fff" }}
-                    fontSize={0}
-                    fontFamily="WorkSans-Medium"
-                    fontWeight={500}
-                    domain={["followerCount"]}
-                  /> */}
-                <Line
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="followerCount"
-                  stroke={item?.growthPercent > 0 ? "#24B592" : "#E25148"}
-                  strokeWidth="2"
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      );
-    });
-  };
 
   return (
     <div className="w-full">
@@ -295,14 +345,22 @@ const ChartPage = () => {
                 </div>
               </div>
             </div>
-            {isLoading
-              ? Array.from(Array(12).keys()).map((item, index) => (
-                  <div
-                    className="animate-pulse col-span-1 h-[260px] bg-[#1B202F]"
-                    key={index}
-                  />
-                ))
-              : renderItemsOfChart()}
+            {isLoading ? (
+              Array.from(Array(12).keys()).map((item, index) => (
+                <div
+                  className="animate-pulse col-span-1 h-[260px] bg-[#1B202F]"
+                  key={index}
+                />
+              ))
+            ) : (
+              <NarrativesItem
+                data={data}
+                onClickPaymentTrial={onClickPaymentTrial}
+                router={router}
+                timeFrame={timeFrame}
+                refetch={refetch}
+              />
+            )}
             <div className="col-span-full">
               <TableFooter
                 paginationInfo={{

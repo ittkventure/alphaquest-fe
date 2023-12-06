@@ -43,6 +43,7 @@ const AppPage: NextPage = () => {
 
   return (
     <AppLayout>
+      
       {isLoading === false ? (
         <Watchlist
           listItemsProps={data?.items ?? []}

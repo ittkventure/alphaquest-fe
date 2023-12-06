@@ -14,6 +14,13 @@ import {
 } from "../types/TwitterType";
 import qs from "qs";
 import { TopAlphaResponse } from "@/types/topAlpha";
+import { getAccessToken } from "@/utils/access_token";
+
+export enum WatchListTypes {
+  PROJECT = "PROJECT",
+  NARRATIVE = "NARRATIVE",
+  ALPHA_HUNTER = "ALPHA_HUNTER",
+}
 
 class ApiTwitter extends ApiClientBase {
   constructor() {
@@ -356,7 +363,8 @@ class ApiTwitter extends ApiClientBase {
     timeframeCode?: string,
     keywordParam?: string,
     pageSizeParam?: number,
-    pageNumberParam?: number
+    pageNumberParam?: number,
+    watchlistParam?: boolean
   ): Promise<any[] | any> {
     const pageNumber = pageNumberParam ?? 1;
     const pageSize = pageSizeParam ?? 30;
@@ -369,6 +377,7 @@ class ApiTwitter extends ApiClientBase {
         pageSize,
         timeframe,
         keyword,
+        watchlist: watchlistParam,
       })}`,
       {
         headers: {
@@ -422,6 +431,26 @@ class ApiTwitter extends ApiClientBase {
       {
         headers: {
           Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * addWatchList
+   */
+  public async addWatchList(
+    refId: string,
+    type: WatchListTypes,
+    subType?: string
+  ) {
+    const res = await this.instance.put(
+      `/api/app/watchlist/item/${refId}?type=${type}&subType=${subType}`,
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + getAccessToken(),
         },
       }
     );
