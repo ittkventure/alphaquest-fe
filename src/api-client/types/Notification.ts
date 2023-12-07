@@ -3,6 +3,7 @@ export enum NOTIFICATION_TYPE {
     AlphaHunterUpdateInfo = "ALPHA_HUNTER_UPDATE_THEIR_INFO",
     ProjectFollowAlphaHunter = "PROJECT_HAS_FOLLOWED_BY_NEW_ALPHA_HUNTER",
     ProjectUpdateInfo = "PROJECT_HAS_UPDATE_THEIR_INFO",
+    NarrativeChange = "NARRATIVE_CHANGE",
 }
 
 export type Notification = {

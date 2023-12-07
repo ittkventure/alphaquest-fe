@@ -7,7 +7,7 @@ import {
   Notification,
 } from "@/api-client/types/Notification";
 import { calculateTimeAgo } from "@/utils/date";
-import { AlphaHunterIcon, ProjectIcon } from "@/assets/icons";
+import { AlphaHunterIcon, ProjectIcon, NarrativesIcon } from "@/assets/icons";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useNotifications } from "@/hooks/useNotifications";
@@ -22,13 +22,8 @@ export default function NotificationContent({
   const router = useRouter();
   const [isRead, setIsRead] = useState(false);
 
-  const {
-    notifications,
-    hasNextPage,
-    fetchNextPage,
-    isLoading,
-    refetch,
-  } = useNotifications(isRead);
+  const { notifications, hasNextPage, fetchNextPage, isLoading, refetch } =
+    useNotifications(isRead);
 
   // IntersectionObserver to handle Infinite Scroll
   const observer = useRef<IntersectionObserver>();
@@ -48,6 +43,7 @@ export default function NotificationContent({
   );
 
   const redirectByType = (type: NOTIFICATION_TYPE, ref: string) => {
+    if (!ref) return;
     if (type === NOTIFICATION_TYPE.AlphaHunterFollowProject)
       router.push(`/alpha-hunter/${ref}?follow`);
     if (type === NOTIFICATION_TYPE.AlphaHunterUpdateInfo)
@@ -56,16 +52,17 @@ export default function NotificationContent({
       router.push(`/project/${ref}?follow`);
     if (type === NOTIFICATION_TYPE.ProjectUpdateInfo)
       router.push(`/project/${ref}?update`);
+    if (type === NOTIFICATION_TYPE.NarrativeChange) router.push(`/narratives`);
   };
 
   const handleNotiItem = async (notification: Notification) => {
-    if (!notification.unread)
-      redirectByType(notification.type, notification.ref2);
-    if (notification.unread) {
+    if (!notification?.unread)
+      redirectByType(notification?.type, notification?.ref2);
+    if (notification?.unread) {
       try {
-        await checkAsReadNotification(notification.id);
+        await checkAsReadNotification(notification?.id);
         await refetch();
-        redirectByType(notification.type, notification.ref2);
+        redirectByType(notification?.type, notification?.ref2);
       } catch (error: any) {
         if (error?.response?.data?.error?.message) {
           toast.error(error?.response?.data?.error?.message);
@@ -75,6 +72,12 @@ export default function NotificationContent({
       }
     }
     closeNotification();
+  };
+
+  const renderIconType = (title: string) => {
+    if (title === "Alpha Hunter") return AlphaHunterIcon;
+    if (title === "Narrative") return NarrativesIcon;
+    return ProjectIcon;
   };
 
   return (
@@ -118,7 +121,7 @@ export default function NotificationContent({
         <div className="flex flex-col">
           {notifications?.items?.map((notification: any, index) => (
             <div
-              key={notification.id}
+              key={notification?.id}
               ref={
                 notifications?.items.length === index + 1
                   ? lastElementRef
@@ -126,11 +129,11 @@ export default function NotificationContent({
               }
               onClick={() => handleNotiItem(notification)}
               className={`flex gap-4 p-2 cursor-pointer ${
-                notification.unread ? "bg-[#3F3F46]" : undefined
+                notification?.unread ? "bg-[#3F3F46]" : undefined
               }`}
             >
               <Image
-                src={notification.imageUrl}
+                src={notification?.imageUrl || AlphaHunterIcon}
                 alt="avatar"
                 width={64}
                 height={64}
@@ -140,24 +143,20 @@ export default function NotificationContent({
                 <div className="flex gap-1 items-center">
                   <div className="w-4 h-4">
                     <Image
-                      src={
-                        notification?.title === "Alpha Hunter"
-                          ? AlphaHunterIcon
-                          : ProjectIcon
-                      }
+                      src={renderIconType(notification?.title)}
                       alt="icon"
                       width={20}
                       height={20}
                       className="object-fill rounded-full"
                     />
                   </div>
-                  <span className="break-all">{notification.title}</span>
+                  <span className="break-all">{notification?.title}</span>
                 </div>
                 <span className="text-white text-base">
-                  {notification.message}
+                  {notification?.message}
                 </span>
                 <span className="text-xs text-secondary-400">
-                  {calculateTimeAgo(notification.createdAt)}
+                  {calculateTimeAgo(notification?.createdAt)}
                 </span>
               </div>
             </div>
