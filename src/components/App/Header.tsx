@@ -173,7 +173,7 @@ const Header: FC<IHeader> = ({ title }) => {
             //   }
             // }}
           />
-          <QuickSearch searchString={searchString} />
+          {searchString?.length > 2 && <QuickSearch searchString={searchString} />}
         </div>
         {/* 
         <button id="search-btn">
