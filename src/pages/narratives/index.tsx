@@ -124,7 +124,7 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col-reverse pb-4">
+        <div className="flex flex-col-reverse pb-8">
           <div className="mt-4 flex items-center justify-end absolute bottom-3 right-3">
             {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
                 <p>Regular</p>
@@ -139,8 +139,11 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
                 });
               }}
               disabled={addWatchListMutate.isLoading}
+              className="w-10 h-8 flex justify-center items-center "
             >
-              {addWatchListMutate.isLoading && <Spinner />}
+              {addWatchListMutate.isLoading && (
+                <Spinner customClassName="ml-2 pl-0 mr-0" />
+              )}
 
               {!addWatchListMutate.isLoading &&
                 (item?.inWatchlist ? (
