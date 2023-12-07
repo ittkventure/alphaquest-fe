@@ -56,7 +56,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({
           <ChevronDownIcon className="h-5 w-5 ml-2" />
         </button>
         <div
-          className={`bg-secondary-600 transition-all duration-300 w-24 absolute top-[26px] z-40 ${
+          className={`bg-secondary-600 transition-all duration-300 w-24 absolute top-[26px] z-[9999] ${
             isShowMenu ? "opacity-100" : "opacity-0"
           }`}
         >
