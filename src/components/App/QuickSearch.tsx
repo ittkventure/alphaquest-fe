@@ -14,7 +14,8 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
   const [alphahunters, setAlphaHunters] = useState<SearchItem[]>([]);
   const [narratives, setNarratives] = useState<SearchItem[]>([]);
 
-  localforage.getItem("narratives", (err, value: any) => {
+  localforage.getItem("narratives", (err, value: string | null) => {
+    if (!value) return;
     const narratives = filterDataSearch(
       JSON.parse(value),
       ["displayName"],
@@ -22,7 +23,8 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
     );
     setNarratives(narratives);
   });
-  localforage.getItem("projects", (err, value: any) => {
+  localforage.getItem("projects", (err, value: string | null) => {
+    if (!value) return;
     const projects = filterDataSearch(
       JSON.parse(value),
       ["displayName"],
@@ -30,7 +32,8 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
     );
     setProjects(projects);
   });
-  localforage.getItem("alphahunters", (err, value: any) => {
+  localforage.getItem("alphahunters", (err, value: string | null) => {
+    if (!value) return;
     const alphahunters = filterDataSearch(
       JSON.parse(value),
       ["displayName"],
@@ -44,13 +47,14 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
         <>
           <div className="flex flex-col gap-4">
             <span className="uppercase text-xs font-semibold">Projects</span>
-            {projects?.map((project: any) => (
+            {projects?.map((project: SearchItem) => (
               <div className="flex justify-between items-center text-sm font-light">
                 <div className="flex items-center gap-3">
                   <Image
                     src={
-                      JSON.parse(project?.metadata)?.profileImageUrl ||
-                      AlphaHunterIcon
+                      project?.metadata
+                        ? JSON.parse(project?.metadata)?.profileImageUrl
+                        : AlphaHunterIcon
                     }
                     alt="quick search"
                     width={24}
@@ -65,7 +69,7 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
           </div>
           <div className="flex flex-col gap-4 pt-4">
             <span className="uppercase text-xs font-semibold">Narratives</span>
-            {narratives?.map((narrative: any) => (
+            {narratives?.map((narrative: SearchItem) => (
               <div className="flex justify-between items-center text-sm font-light">
                 <div className="flex items-center gap-3">
                   <Image
@@ -82,14 +86,17 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
             ))}
           </div>
           <div className="flex flex-col gap-4 pt-4">
-            <span className="uppercase text-xs font-semibold">Alpha Hunters</span>
-            {alphahunters?.map((alpha: any) => (
+            <span className="uppercase text-xs font-semibold">
+              Alpha Hunters
+            </span>
+            {alphahunters?.map((alpha: SearchItem) => (
               <div className="flex justify-between items-center text-sm">
                 <div className="flex items-center gap-3">
                   <Image
                     src={
-                      JSON.parse(alpha?.metadata)?.profileImageUrl ||
-                      AlphaHunterIcon
+                      alpha?.metadata
+                        ? JSON.parse(alpha?.metadata)?.profileImageUrl
+                        : AlphaHunterIcon
                     }
                     alt="quick search"
                     width={24}
@@ -98,7 +105,9 @@ export default function QuickSearch({ searchString }: QuickSearchProps) {
                   />
                   <span>{alpha?.displayName}</span>
                 </div>
-                <span>{alpha?.sortOrder ? `#${alpha?.sortOrder}` : undefined}</span>
+                <span>
+                  {alpha?.sortOrder ? `#${alpha?.sortOrder}` : undefined}
+                </span>
               </div>
             ))}
           </div>
