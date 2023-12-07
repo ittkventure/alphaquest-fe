@@ -28,6 +28,7 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import Narratives from "../Narratives";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
@@ -43,6 +44,8 @@ const Watchlist: FC<WatchlistTypes> = ({
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs followed");
+  const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -66,6 +69,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   const [chainSelected, setChainSelected] = useState<OptionType>();
   const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     setFirstCalled(true);
@@ -96,7 +100,14 @@ const Watchlist: FC<WatchlistTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeFrame, accountExtendDetail, chainSelected, categorySelected, sortBy]);
+  }, [
+    timeFrame,
+    accountExtendDetail,
+    chainSelected,
+    categorySelected,
+    sortBy,
+    keyword,
+  ]);
 
   const onClickPaymentTrial = () => {
     mixpanelTrack(event_name_enum.upgrade_to_pro, {
@@ -139,6 +150,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           newest: false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword,
         },
         authState?.access_token ?? ""
       );
@@ -180,6 +192,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           newest: false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword,
         },
         authState?.access_token ?? ""
       );
@@ -274,22 +287,6 @@ const Watchlist: FC<WatchlistTypes> = ({
     } catch (error) {}
   };
 
-  const renderDes = () => {
-    if (
-      accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !authState?.access_token
-    )
-      return "";
-
-    return (
-      <div className="flex items-center max-xl:flex-col max-lg:mt-2">
-        <div className="flex justify-start">
-          <p>{totalCount} projects in your watchlist</p>
-        </div>
-      </div>
-    );
-  };
-
   const renderUpBtn = () => {
     if (router.pathname === "/watchlist/projects") return null;
     return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
@@ -340,6 +337,57 @@ const Watchlist: FC<WatchlistTypes> = ({
           />
           Start 7-day trial
         </button>
+      </div>
+    );
+  };
+
+  const renderDes = () => {
+    return (
+      <div className="flex items-center max-xl:flex-col max-lg:mt-2">
+        <div className="flex flex-col justify-start max-lg:w-[90vw]">
+          <p>
+            {totalCount.toLocaleString()} projects discovered during the last
+          </p>
+          <div className="flex">
+            <MonthSelect
+              onChangeSelect={(month) => {
+                mixpanelTrack(event_name_enum.on_filter_project, {
+                  url: router.pathname,
+                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                  message:
+                    "projects discovered during the last " +
+                      (month.value as TimeFrameTypes) ?? "ALL",
+                });
+                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                setTimeLabel(month.label ?? "ALL");
+              }}
+              defaultData={{
+                value: timeFrame,
+                label: timeLabel,
+              }}
+            />
+            <div className="flex">
+              <p className="mx-2">sorted by</p>
+              <MonthSelect
+                onChangeSelect={(month) => {
+                  mixpanelTrack(event_name_enum.on_sort_project, {
+                    url: router.pathname,
+                    value_sort: (month.value as SortByType) ?? "SCORE",
+                    message:
+                      "sorted by" + (month.value as SortByType) ?? "SCORE",
+                  });
+                  setSortBy((month.value as SortByType) ?? "SCORE");
+                  setSortByLabel(month.label ?? "# of KOLs followed");
+                }}
+                defaultData={{
+                  value: sortBy,
+                  label: sortByLabel,
+                }}
+                listData={initListSort as Array<any>}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -415,6 +463,57 @@ const Watchlist: FC<WatchlistTypes> = ({
             <div className="px-6 pb-6 ">
               <div className="flex max-lg:flex-col max-lg:items-center justify-between">
                 {renderDes()}
+                <div className="flex max-lg:flex-col max-lg:gap-4 max-lg:items-center justify-between max-lg:mt-5">
+                  <div className="flex">
+                    <div className="mr-3">
+                      <SelectCustom
+                        placeholder="Chain - All"
+                        initList={chains}
+                        onChangeSelected={(item: any) => {
+                          mixpanelTrack(event_name_enum.on_filter_chain, {
+                            url: router.pathname,
+                            code: item?.code,
+                            name: item?.name,
+                          });
+                          setChainSelected(item);
+                        }}
+                        selectedValue={chainSelected}
+                      />
+                    </div>
+                    <div>
+                      <SelectCustom
+                        placeholder="Category - All"
+                        initList={category}
+                        onChangeSelected={(item: any) => {
+                          mixpanelTrack(event_name_enum.on_filter_category, {
+                            url: router.pathname,
+                            code: item?.code,
+                            name: item?.name,
+                          });
+                          setCategorySelected(item);
+                        }}
+                        selectedValue={categorySelected}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
+                    <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
+
+                    <input
+                      className="2xl:w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
+                      placeholder="Search"
+                      onKeyPress={(event) => {
+                        if (
+                          event.key === "Enter" &&
+                          event.currentTarget.value
+                        ) {
+                          setKeyword(event.currentTarget.value ?? "");
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
                 {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
             <div className="mr-3">
               <SelectCustom
