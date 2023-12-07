@@ -6,16 +6,26 @@ import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import NotificationContent from "./NotificationContent";
 import { useQuery } from "react-query";
-import axios from "axios";
 import NumberNotification from "./NumberNotification";
 import { fetchNotifications } from "@/api-client/notification";
+import QuickSearch from "./QuickSearch";
+import { fetchQuickSearch } from "@/api-client/quick-search";
+import { SEARCH_TYPE, SearchItem } from "@/api-client/types/QuickSearch";
+import { setQuickSearchData } from "@/utils/quickSearch";
 
 interface IHeader {
   title?: string;
@@ -25,8 +35,48 @@ const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
   const { tab } = router.query;
   const { setKeyword, keyword } = useContext(SearchContext);
+  const [searchString, setSearchString] = useState("");
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+
+  const { data: quickSearchData } = useQuery(
+    "getQuickSearch",
+    fetchQuickSearch,
+    {
+      staleTime: Infinity,
+    }
+  );
+
+  const projects = useMemo(() => {
+    if (quickSearchData?.data)
+      return (
+        quickSearchData?.data?.filter(
+          (item: SearchItem) => item.type === SEARCH_TYPE.Project
+        ) || []
+      );
+  }, [quickSearchData]);
+
+  const narratives = useMemo(() => {
+    if (quickSearchData?.data)
+      return (
+        quickSearchData?.data?.filter(
+          (item: SearchItem) => item.type === SEARCH_TYPE.Narrative
+        ) || []
+      );
+  }, [quickSearchData]);
+
+  const alphahunters = useMemo(() => {
+    if (quickSearchData?.data)
+      return (
+        quickSearchData?.data?.filter(
+          (item: SearchItem) => item.type === SEARCH_TYPE.AlphaHunter
+        ) || []
+      );
+  }, [quickSearchData]);
+
+  useEffect(() => {
+    setQuickSearchData(projects, narratives, alphahunters);
+  }, [])
 
   const [openNotification, setOpenNotification] = useState(false);
   let notiRef: React.MutableRefObject<any> = useRef();
@@ -86,9 +136,8 @@ const Header: FC<IHeader> = ({ title }) => {
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
-  const { data: notifications } = useQuery(
-    ["getNotificationsTotal"],
-    () => fetchNotifications(authState?.access_token || "")
+  const { data: notifications } = useQuery(["getNotificationsTotal"], () =>
+    fetchNotifications(authState?.access_token || "")
   );
 
   return (
@@ -115,13 +164,16 @@ const Header: FC<IHeader> = ({ title }) => {
           <input
             className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "
             placeholder="Search"
-            onKeyPress={(event) => {
-              if (event.key === "Enter" && event.currentTarget.value) {
-                setKeyword(event.currentTarget.value ?? "");
-                router.push("/search?keyword=" + event.currentTarget.value);
-              }
-            }}
+            value={searchString}
+            onChange={e => setSearchString(e?.target?.value)}
+            // onKeyPress={(event) => {
+            //   if (event.key === "Enter" && event.currentTarget.value) {
+            //     setKeyword(event.currentTarget.value ?? "");
+            //     router.push("/search?keyword=" + event.currentTarget.value);
+            //   }
+            // }}
           />
+          <QuickSearch searchString={searchString} />
         </div>
         {/* 
         <button id="search-btn">
@@ -138,7 +190,9 @@ const Header: FC<IHeader> = ({ title }) => {
               className="cursor-pointer"
               onClick={() => setOpenNotification(!openNotification)}
             />
-            {notifications?.totalCount && <NumberNotification count={notifications?.totalCount} />}
+            {notifications?.totalCount && (
+              <NumberNotification count={notifications?.totalCount} />
+            )}
             {openNotification && (
               <NotificationContent
                 closeNotification={() => setOpenNotification(false)}
