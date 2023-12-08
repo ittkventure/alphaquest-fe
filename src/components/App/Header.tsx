@@ -6,14 +6,7 @@ import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, {
-  FC,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-} from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
@@ -23,9 +16,6 @@ import { useQuery } from "react-query";
 import NumberNotification from "./NumberNotification";
 import { fetchNotifications } from "@/api-client/notification";
 import QuickSearch from "./QuickSearch";
-import { fetchQuickSearch } from "@/api-client/quick-search";
-import { SEARCH_TYPE, SearchItem } from "@/api-client/types/QuickSearch";
-import { setQuickSearchData } from "@/utils/quickSearch";
 
 interface IHeader {
   title?: string;
@@ -39,44 +29,8 @@ const Header: FC<IHeader> = ({ title }) => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
 
-  const { data: quickSearchData } = useQuery(
-    "getQuickSearch",
-    fetchQuickSearch,
-    {
-      staleTime: Infinity,
-    }
-  );
-
-  const projects = useMemo(() => {
-    if (quickSearchData?.data)
-      return (
-        quickSearchData?.data?.filter(
-          (item: SearchItem) => item.type === SEARCH_TYPE.Project
-        ) || []
-      );
-  }, [quickSearchData]);
-
-  const narratives = useMemo(() => {
-    if (quickSearchData?.data)
-      return (
-        quickSearchData?.data?.filter(
-          (item: SearchItem) => item.type === SEARCH_TYPE.Narrative
-        ) || []
-      );
-  }, [quickSearchData]);
-
-  const alphahunters = useMemo(() => {
-    if (quickSearchData?.data)
-      return (
-        quickSearchData?.data?.filter(
-          (item: SearchItem) => item.type === SEARCH_TYPE.AlphaHunter
-        ) || []
-      );
-  }, [quickSearchData]);
-
-  useEffect(() => {
-    setQuickSearchData(projects, narratives, alphahunters);
-  }, [])
+  const [openQuickSearch, setOpenQuickSearch] = useState(false);
+  let searchRef: React.MutableRefObject<any> = useRef();
 
   const [openNotification, setOpenNotification] = useState(false);
   let notiRef: React.MutableRefObject<any> = useRef();
@@ -85,6 +39,8 @@ const Header: FC<IHeader> = ({ title }) => {
     let handler = (e: any) => {
       if (notiRef.current && !notiRef.current?.contains(e.target))
         setOpenNotification(false);
+      if (searchRef.current && !searchRef.current?.contains(e.target))
+        setOpenQuickSearch(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -158,14 +114,17 @@ const Header: FC<IHeader> = ({ title }) => {
       </div>
 
       <div className="flex justify-center items-center ">
-        <div className="relative mr-6  max-lg:mr-2 ml-4">
+        <div className="relative mr-6  max-lg:mr-2 ml-4" ref={searchRef}>
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
           <input
             className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "
             placeholder="Search"
             value={searchString}
-            onChange={e => setSearchString(e?.target?.value)}
+            onChange={(e) => {
+              setSearchString(e?.target?.value);
+              setOpenQuickSearch(true);
+            }}
             // onKeyPress={(event) => {
             //   if (event.key === "Enter" && event.currentTarget.value) {
             //     setKeyword(event.currentTarget.value ?? "");
@@ -173,7 +132,13 @@ const Header: FC<IHeader> = ({ title }) => {
             //   }
             // }}
           />
-          {searchString?.length > 2 && <QuickSearch searchString={searchString} />}
+          {searchString?.length > 2 && openQuickSearch && (
+            <QuickSearch
+              searchString={searchString}
+              closeQuickSearch={() => setOpenQuickSearch(false)}
+              resetSearch={() => setSearchString("")}
+            />
+          )}
         </div>
         {/* 
         <button id="search-btn">
