@@ -43,11 +43,11 @@ export default function QuickSearch({
       {searchString && (
         <>
           {!!projects?.length && (
-            <div className="flex flex-col gap-4">
-              <span className="uppercase text-xs font-bold">Projects</span>
+            <div className="flex flex-col gap-1">
+              <span className="uppercase text-sm font-bold">Projects</span>
               {projects?.map((project: SearchItem) => (
                 <div
-                  className="flex justify-between items-center text-sm font-light cursor-pointer hover:bg-dark-300"
+                  className="flex justify-between p-[6px] items-center text-sm font-light cursor-pointer hover:bg-dark-300"
                   key={project?.key}
                   onClick={() => {
                     router.push(
@@ -81,13 +81,13 @@ export default function QuickSearch({
             </div>
           )}
           {!!narratives?.length && (
-            <div className="flex flex-col gap-4 pt-4">
+            <div className="flex flex-col gap-1 pt-4">
               {narratives?.length && (
-                <span className="uppercase text-xs font-bold">Narratives</span>
+                <span className="uppercase text-sm font-bold">Narratives</span>
               )}
               {narratives?.map((narrative: SearchItem) => (
                 <div
-                  className="flex justify-between items-center text-sm font-light cursor-pointer hover:bg-dark-300"
+                  className="flex justify-between p-[6px] items-center text-sm font-light cursor-pointer hover:bg-dark-300"
                   key={narrative?.key}
                   onClick={() => {
                     router.push(
@@ -119,16 +119,16 @@ export default function QuickSearch({
             </div>
           )}
           {!!alphahunters?.length && (
-            <div className="flex flex-col gap-4 pt-4">
+            <div className="flex flex-col gap-1 pt-4">
               {alphahunters?.length && (
-                <span className="uppercase text-xs font-bold">
+                <span className="uppercase text-sm font-bold">
                   Alpha Hunters
                 </span>
               )}
 
               {alphahunters?.map((alpha: SearchItem) => (
                 <div
-                  className="flex justify-between items-center text-sm cursor-pointer hover:bg-dark-300"
+                  className="flex justify-between p-[6px] items-center text-sm cursor-pointer hover:bg-dark-300"
                   key={alpha?.key}
                   onClick={() => {
                     router.push(
