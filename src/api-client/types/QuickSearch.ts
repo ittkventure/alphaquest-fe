@@ -4,12 +4,6 @@ export enum SEARCH_TYPE {
     Narrative = "Narrative",
 }
 
-type Metadata = {
-    username: string;
-    name: string;
-    profileImageUrl: string;
-}
-
 type Attribute = {
     code: string;
     name: string;
@@ -21,6 +15,6 @@ export type SearchItem = {
     key: number;
     displayName: string;
     sortOrder: number;
-    metadata?: Metadata;
+    metadata?: string;
     attributes?: Attribute[]; 
 }

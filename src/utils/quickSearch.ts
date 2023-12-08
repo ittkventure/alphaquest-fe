@@ -25,6 +25,6 @@ export const getSearchDataByType = async (type: SEARCH_TYPE) => {
 
 export const filterDataSearch = (data: any, keys: string[], searchString: string) => {
     return data?.filter((obj: any) => {
-        return keys.some(key => obj.hasOwnProperty(key) && obj[key].includes(searchString.toLowerCase()));
+        return keys.some(key => obj.hasOwnProperty(key) && `${obj[key].toLowerCase()}`.includes(searchString.toLowerCase()));
     });
 }
