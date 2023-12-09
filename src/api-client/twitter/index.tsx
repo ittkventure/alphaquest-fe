@@ -19,7 +19,7 @@ import { getAccessToken } from "@/utils/access_token";
 export enum WatchListTypes {
   PROJECT = "PROJECT",
   NARRATIVE = "NARRATIVE",
-  ALPHA_HUNTER = "ALPHA_HUNTER",
+  ALPHA_HUNTER = "KOL",
 }
 
 class ApiTwitter extends ApiClientBase {
@@ -152,6 +152,7 @@ class ApiTwitter extends ApiClientBase {
       pageSize?: number;
       timeFrame: string;
       numberOfEarlyDiscoveries: number;
+      watchlist?: boolean;
     },
     access_token: string
   ): Promise<TopAlphaResponse> {
@@ -162,6 +163,29 @@ class ApiTwitter extends ApiClientBase {
       {
         headers: {
           Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getAlphaHunterWatchList
+   */
+  public async getAlphaHunterWatchList(
+    data: {
+      pageNumber?: number;
+      pageSize?: number;
+      timeFrame: string;
+    },
+  ): Promise<TopAlphaResponse> {
+    const res = await this.instance.get(
+      `https://api.alphaquest.io/api/app/twitter-alpha-hunter/watchlist?${qs.stringify(
+        data
+      )}`,
+      {
+        headers: {
+          Authorization: "Bearer " +  getAccessToken(),
         },
       }
     );
@@ -446,7 +470,7 @@ class ApiTwitter extends ApiClientBase {
     subType?: string
   ) {
     const res = await this.instance.put(
-      `/api/app/watchlist/item/${refId}?type=${type}&subType=${subType}`,
+      subType ? `/api/app/watchlist/item/${refId}?type=${type}&subType=${subType}` : `/api/app/watchlist/item/${refId}?type=${type}`,
       {},
       {
         headers: {

@@ -18,6 +18,7 @@ export interface TopAlphaItem {
   chain: any;
   category: any;
   attributes?: any[];
+  inWatchlist?: boolean;
 }
 
 export interface ProjectsFollowedLastXday {
