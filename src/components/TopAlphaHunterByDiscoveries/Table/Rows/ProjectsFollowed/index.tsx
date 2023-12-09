@@ -41,7 +41,7 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
         <div className="w-full border-[0.5px] border-dashed border-[#2D354D] " />
       </div>
       <div className="flex gap-3 justify-center items-center w-full pr-10">
-        {projectsFollowedLastXDays.map((item) => {
+        {projectsFollowedLastXDays?.map((item) => {
           const id = uuidv4();
           if (item.projectsCount === 0)
             return (

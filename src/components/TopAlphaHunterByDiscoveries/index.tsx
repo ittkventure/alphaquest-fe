@@ -17,8 +17,15 @@ import Spinner from "../Spinner";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { TopAlphaItem } from "@/types/topAlpha";
 import UpgradeProButton from "../UpgradeProButton";
+import classNames from "classnames";
 
-const TopAlphaHunterByDiscoveries: FC = () => {
+interface ITopAlphaHunterByDiscoveriesProps {
+  isWatchList?: boolean;
+}
+
+const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
+  isWatchList,
+}) => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("30D");
   const [timeLabel, setTimeLabel] = useState<string>("30D");
 
@@ -42,6 +49,8 @@ const TopAlphaHunterByDiscoveries: FC = () => {
     []
   );
 
+  const [isRefetch, setIsRefetch] = useState(false)
+
   const topAlphaQuery = useQuery({
     queryKey: [
       "topAlphaHunterByDiscoveries",
@@ -51,12 +60,13 @@ const TopAlphaHunterByDiscoveries: FC = () => {
       followers,
     ],
     queryFn: () =>
-      apiTwitter.getTopByEarlyDiscoveries(
+     apiTwitter.getTopByEarlyDiscoveries(
         {
           pageNumber: pageNumber,
           pageSize: 20,
           timeFrame: timeFrame,
           numberOfEarlyDiscoveries: followers,
+          watchlist: isWatchList,
         },
         authState?.access_token ?? ""
       ),
@@ -66,6 +76,11 @@ const TopAlphaHunterByDiscoveries: FC = () => {
 
   useEffect(() => {
     if (!topAlphaQuery.data?.items) return;
+    if(isRefetch) {
+      setIsRefetch(false)
+      setTopAlphaListState(topAlphaQuery.data?.items);
+      return;
+    }
     if (
       topAlphaQuery.data?.items.length === 0 &&
       UserPayType.PREMIUM === accountExtendDetail?.currentPlanKey
@@ -74,7 +89,7 @@ const TopAlphaHunterByDiscoveries: FC = () => {
       setTopAlphaListState((prev) => [...prev, ...topAlphaQuery.data?.items]);
       return;
     }
-
+    
     setTopAlphaListState((prev) => [...prev, ...topAlphaQuery.data?.items]);
   }, [topAlphaQuery.data]);
 
@@ -104,8 +119,18 @@ const TopAlphaHunterByDiscoveries: FC = () => {
     [setPageLoadMore]
   );
 
+  const onRefetch = () => { 
+    setHasLoadMore(true);
+    setPageNumber(1);
+    setIsRefetch(true);
+    topAlphaQuery.refetch();
+  }
+
   return (
-    <div className="px-6 tooltipBoundary">
+    <div className={classNames("tooltipBoundary", {
+      "px-0": isWatchList,
+      "px-6": !isWatchList,
+    })}>
       <div className="flex max-lg:flex-col max-lg:items-center justify-between">
         <div>
           <div className="flex items-center gap-1">
@@ -199,6 +224,8 @@ const TopAlphaHunterByDiscoveries: FC = () => {
             timeFrame={timeFrame}
             topAlphaList={topAlphaListState}
             followers={followers}
+            refetch={onRefetch}
+            isWatchList={isWatchList}
           />
         )}
         {topAlphaQuery.isLoading && (

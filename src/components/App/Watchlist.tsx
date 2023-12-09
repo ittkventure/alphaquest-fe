@@ -29,6 +29,7 @@ import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import Narratives from "../Narratives";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import TopAlphaHunterByDiscoveries from "../TopAlphaHunterByDiscoveries";
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
@@ -555,7 +556,9 @@ const Watchlist: FC<WatchlistTypes> = ({
               </div>
             </div>
           </Tab.Panel>
-          <Tab.Panel className="p-6">Alpha Hunters</Tab.Panel>
+          <Tab.Panel className="p-6">
+            <TopAlphaHunterByDiscoveries isWatchList={true} />
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </div>
