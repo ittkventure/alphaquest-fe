@@ -10,7 +10,11 @@ import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { useQuery } from "react-query";
 
-const AppPage: NextPage = () => {
+interface Props { 
+  tab?: string;
+}
+
+const WatchListPage: NextPage<Props> = ({tab}) => {
   const { authState, accountExtendDetail } = useContext(AuthContext);
   const apiTwitter = new ApiTwitter();
   const router = useRouter();
@@ -48,6 +52,7 @@ const AppPage: NextPage = () => {
         <Watchlist
           listItemsProps={data?.items ?? []}
           totalCountProps={data?.totalCount ?? 0}
+          tab={tab as any}
         />
       ) : (
         <div className="w-full">
@@ -62,12 +67,14 @@ const AppPage: NextPage = () => {
       )}
     </AppLayout>
   );
-};
+}
 
-export default AppPage;
+export default WatchListPage
 
-export async function getServerSideProps({ params }: any) {
+export async function getServerSideProps({ params, query }: any) {
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      tab: params?.tab,
+    }, // will be passed to the page component as props
   };
 }

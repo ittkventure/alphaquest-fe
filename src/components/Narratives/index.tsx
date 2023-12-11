@@ -129,8 +129,8 @@ const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col-reverse pb-4">
-        <div className="mt-4 flex items-center justify-end absolute bottom-3 right-3">
+      <div className="flex flex-col-reverse pb-6">
+        <div className="mt-7 flex items-center justify-end absolute bottom-3 right-3">
           {/* <button className="py-2 px-3 h-8 flex justify-center items-center bg-[#FAFAFA] bg-opacity-10">
               <p>Regular</p>
             </button> */}

@@ -71,11 +71,13 @@ const SideMenu = () => {
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
+    if(router.pathname?.indexOf('watchlist') !== -1 && item.key === 'narratives') return "hover:bg-secondary-600";
+    if(router.pathname?.indexOf(item.key) !== -1 && item.key === 'watchlist') return "bg-success-500";
     if (tab) {
       if (tab === item.key) return "bg-success-500";
       return "hover:bg-secondary-600";
     }
-
+    
     if (router.pathname?.includes(item.key)) return "bg-success-500";
     return "hover:bg-secondary-600";
   };
@@ -83,7 +85,7 @@ const SideMenu = () => {
   const renderUrl = (item: MenuItemType) => {
     if (item.key === "narratives") return "/narratives";
     return item.key === "watchlist"
-      ? "/watchlist/projects"
+      ? "/watchlist/narratives"
       : `/projects/${item.key}`;
   };
 

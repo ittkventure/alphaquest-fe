@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -10,7 +11,6 @@ import Header from "./Header";
 import MonthSelect from "./MonthSelect";
 import SelectCustom, { OptionType } from "../common/Select";
 import TableContent from "./Table/TableContent";
-import TabApp from "./TabApp";
 import ApiTwitter from "@/api-client/twitter";
 import {
   SortByType,
@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
-import { CrownIcon } from "@/assets/icons";
+import { CrownIcon, InfoIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { Tab } from "@headlessui/react";
@@ -30,11 +30,14 @@ import classNames from "classnames";
 import Narratives from "../Narratives";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import TopAlphaHunterByDiscoveries from "../TopAlphaHunterByDiscoveries";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+
+type TabTypes = "narratives" | "projects" | "alpha-hunters"
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
-  tab?: "watchlist" | "trending" | "newest" | string;
+  tab?: TabTypes;
 }
 
 const Watchlist: FC<WatchlistTypes> = ({
@@ -50,9 +53,9 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [newest, setNewest] = useState<string>(
-    tab ? tab?.toString() : "trending"
-  );
+
+  const [tabSelected, setTabSelected] = useState<TabTypes>(tab ?? "narratives")
+
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
   const [hasLoadMore, setHasLoadMore] = useState(true);
@@ -81,7 +84,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab, accountExtendDetail]);
+  }, [ accountExtendDetail]);
 
   useEffect(() => {
     fetchData();
@@ -224,13 +227,16 @@ const Watchlist: FC<WatchlistTypes> = ({
   const _handleSelectTab = (tabIndex: number) => {
     switch (tabIndex) {
       case 0:
-        setNewest("trending");
+        setTabSelected("narratives");
+        router.push("/watchlist/narratives");
         return;
       case 1:
-        setNewest("newest");
+        setTabSelected("projects");
+        router.push("/watchlist/projects");
         return;
       default:
-        setNewest("watchlist");
+        setTabSelected("alpha-hunters");
+        router.push("/watchlist/alpha-hunters");
         return;
     }
   };
@@ -289,7 +295,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const renderUpBtn = () => {
-    if (router.pathname === "/watchlist/projects") return null;
+    if (router.pathname.indexOf("watchlist")) return null;
     return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
@@ -393,6 +399,18 @@ const Watchlist: FC<WatchlistTypes> = ({
     );
   };
 
+  const selectedIndex = useMemo(() => { 
+    switch (tabSelected) {
+      case "narratives":
+        return 0;
+      case "projects":
+        return 1;
+      default:
+        return 2;
+    }
+
+  }, [tabSelected])
+
   return (
     <div className="w-full relative ">
       {renderUpBtn()}
@@ -400,7 +418,7 @@ const Watchlist: FC<WatchlistTypes> = ({
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 mt-4 max-lg:hidden" />
       </div>
-      <Tab.Group>
+      <Tab.Group selectedIndex={selectedIndex} onChange={_handleSelectTab}>
         <Tab.List className=" mx-6 w-full border-b border-white/20">
           <Tab>
             {({ selected }) => (
@@ -456,9 +474,7 @@ const Watchlist: FC<WatchlistTypes> = ({
             <Narratives />
           </Tab.Panel>
           <Tab.Panel className="mt-6">
-            <div className="hidden max-lg:block">
-              <TabApp onChangeTab={_handleSelectTab} />
-            </div>
+            
             {_renderUpPro()}
 
             <div className="px-6 pb-6 ">
@@ -534,6 +550,18 @@ const Watchlist: FC<WatchlistTypes> = ({
               </div>
 
               <div className="mt-7 max-lg:mt-9">
+              <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
+                <span>Project</span>
+                <div className="flex items-center gap-1">
+                  <span>New KOLs followed</span>
+                  <div
+                    data-tooltip-id="info-tooltip-kol"
+                    className="cursor-pointer"
+                  >
+                    <Image src={InfoIcon} width={20} height={20} alt="icon" />
+                  </div>
+                </div>
+              </div>
                 {_renderTable()}
                 {errorMsg &&
                 accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
@@ -561,6 +589,15 @@ const Watchlist: FC<WatchlistTypes> = ({
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
+
+      <ReactTooltip
+        id="info-tooltip-kol"
+        className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
+        place="bottom"
+        content={`Number of new Alpha Hunters who followed ${
+          timeLabel === "ALL" ? "all" : `last ${timeLabel}`
+        }. Click on the project to find out which Alpha Hunters are following it.`}
+      />
     </div>
   );
 };
