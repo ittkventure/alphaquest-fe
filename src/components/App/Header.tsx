@@ -73,7 +73,7 @@ const Header: FC<IHeader> = ({ title }) => {
   };
 
   const renderTitle = () => {
-    if (router.pathname === "/watchlist/projects") return "Watchlist";
+    if (router.pathname.indexOf("watchlist")) return "Watchlist";
     if (router.pathname.indexOf("/search") !== -1) return "Search";
     if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunters";
     if (router.pathname.indexOf("/chain") !== -1) return "Chain";
