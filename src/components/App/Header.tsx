@@ -159,7 +159,7 @@ const Header: FC<IHeader> = ({ title }) => {
                 }
               }}
             />
-            {unreadCount?.unreadCount && (
+            {!!unreadCount?.unreadCount && (
               <NumberNotification count={unreadCount?.unreadCount} />
             )}
             {openNotification && (
