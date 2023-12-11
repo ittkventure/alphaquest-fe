@@ -1,7 +1,7 @@
 export default function NumberNotification({ count }: { count: number }) {
   return (
     <>
-      {count && (
+      {!!count && (
         <div
           className={`absolute rounded-full ${
             count > 100

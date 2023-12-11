@@ -14,7 +14,7 @@ import { SearchContext } from "@/contexts/useSearchContext";
 import NotificationContent from "./NotificationContent";
 import { useQuery } from "react-query";
 import NumberNotification from "./NumberNotification";
-import { fetchNotifications } from "@/api-client/notification";
+import { checkTotalUnreadCount, clearAllNotiByClick } from "@/api-client/notification";
 import QuickSearch from "./QuickSearch";
 
 interface IHeader {
@@ -92,9 +92,7 @@ const Header: FC<IHeader> = ({ title }) => {
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
-  const { data: notifications } = useQuery(["getNotificationsTotal"], () =>
-    fetchNotifications(authState?.access_token || "")
-  );
+  const { data: unreadCount, refetch: fetchUnreadCount } = useQuery("getUnreadCount", checkTotalUnreadCount);
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -153,10 +151,16 @@ const Header: FC<IHeader> = ({ title }) => {
               width={40}
               height={40}
               className="cursor-pointer"
-              onClick={() => setOpenNotification(!openNotification)}
+              onClick={() => {
+                setOpenNotification(!openNotification)
+                if (!!unreadCount?.unreadCount) {
+                  clearAllNotiByClick();
+                  fetchUnreadCount();
+                }
+              }}
             />
-            {notifications?.totalCount && (
-              <NumberNotification count={notifications?.totalCount} />
+            {unreadCount?.unreadCount && (
+              <NumberNotification count={unreadCount?.unreadCount} />
             )}
             {openNotification && (
               <NotificationContent
