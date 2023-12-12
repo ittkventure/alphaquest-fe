@@ -12,7 +12,7 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import NotificationContent from "./NotificationContent";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import NumberNotification from "./NumberNotification";
 import { checkTotalUnreadCount, clearAllNotiByClick } from "@/api-client/notification";
 import QuickSearch from "./QuickSearch";
@@ -93,6 +93,11 @@ const Header: FC<IHeader> = ({ title }) => {
   };
 
   const { data: unreadCount, refetch: fetchUnreadCount } = useQuery("getUnreadCount", checkTotalUnreadCount);
+  const { mutate: clearAllNoti } = useMutation("clearAllNoti", clearAllNotiByClick, {
+    onSuccess() {
+      fetchUnreadCount();
+    },
+  });
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -154,8 +159,7 @@ const Header: FC<IHeader> = ({ title }) => {
               onClick={() => {
                 setOpenNotification(!openNotification)
                 if (!!unreadCount?.unreadCount) {
-                  clearAllNotiByClick();
-                  fetchUnreadCount();
+                  clearAllNoti();
                 }
               }}
             />
