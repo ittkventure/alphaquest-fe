@@ -301,7 +301,7 @@ const ChartDetail = () => {
                         onClick={onClickPaymentTrial}
                         className="px-6 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden h-10"
                       >
-                        Try pro
+                        Try AlphaQuest Pro
                       </button>
                     </div>
                   </div>

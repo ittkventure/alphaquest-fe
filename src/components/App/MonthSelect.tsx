@@ -1,6 +1,7 @@
 import { SortByType, TimeFrameTypes } from "@/api-client/types/TwitterType";
 import { initListMonth } from "@/utils/list";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import classNames from "classnames";
 import React, { FC, useEffect, useState } from "react";
 
 export type MothType = {
@@ -13,6 +14,7 @@ interface MonthSelectTypes {
   listData?: Array<MothType>;
   defaultData?: MothType | any;
   className?: string;
+  selectBoxClassName?: string;
 }
 
 const MonthSelect: FC<MonthSelectTypes> = ({
@@ -20,6 +22,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({
   listData,
   defaultData,
   className,
+  selectBoxClassName
 }) => {
   const [listMonth, setListMonth] = useState(listData ?? initListMonth);
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -56,14 +59,19 @@ const MonthSelect: FC<MonthSelectTypes> = ({
           <ChevronDownIcon className="h-5 w-5 ml-2" />
         </button>
         <div
-          className={`bg-secondary-600 transition-all duration-300 w-24 absolute top-[26px] z-[9999] ${
-            isShowMenu ? "opacity-100" : "opacity-0"
-          }`}
+          className={classNames(
+            `bg-secondary-600 transition-all duration-300 absolute top-[26px] z-[9999] min-w-[100px]`,
+            {
+              'opacity-100': isShowMenu,
+              'opacity-0': !isShowMenu
+            },
+            selectBoxClassName
+          )}
         >
           {listMonth.map((value, index) => (
             <button
               key={index.toString()}
-              className={`flex justify-center items-center w-24 py-2 hover:bg-success-500 font-workSansLight ${
+              className={`flex justify-center items-center py-2 hover:bg-success-500 font-workSansLight w-full px-2 ${
                 isShowMenu ? "" : "hidden"
               } ${
                 selectedValue.value === value.value ? "bg-success-500" : ""

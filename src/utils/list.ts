@@ -34,6 +34,29 @@ const initListSort = [
   },
 ];
 
+const initListSortForWatchlist = [
+  {
+    label: "Watchlist most recent date added",
+    value: "WATCHLIST_MOST_RECENT_DATE_ADDED",
+  },
+  {
+    label: "# of KOLs followed",
+    value: "SCORE",
+  },
+  {
+    label: "Discovered Date",
+    value: "DISCOVERED_DATE",
+  },
+  {
+    label: "Twitter Follow",
+    value: "TWITTER_FOLLOWER",
+  },
+  {
+    label: "Twitter Create Date",
+    value: "TWITTER_CREATED_DATE",
+  },
+];
+
 const initListMonth = [
   {
     label: "1d",
@@ -226,4 +249,5 @@ export {
   listRowMock,
   initListSort,
   listDiscoverProjects,
+  initListSortForWatchlist
 };

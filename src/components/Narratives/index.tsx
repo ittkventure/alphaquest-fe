@@ -92,7 +92,7 @@ const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
             onClick={onClickPaymentTrial}
             className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center max-lg:hidden"
           >
-            Try pro
+            Try AlphaQuest Pro
           </button>
         </div>
       </div>
