@@ -32,7 +32,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import TopAlphaHunterByDiscoveries from "../TopAlphaHunterByDiscoveries";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-type TabTypes = "narratives" | "projects" | "alpha-hunters"
+type TabTypes = "narratives" | "projects" | "alpha-hunters";
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
@@ -48,16 +48,20 @@ const Watchlist: FC<WatchlistTypes> = ({
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
-  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs followed");
+  const [sortByLabel, setSortByLabel] = useState<string>(
+    "Watchlist most recent date added"
+  );
   const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
 
-  const [tabSelected, setTabSelected] = useState<TabTypes>(tab ?? "narratives")
+  const [tabSelected, setTabSelected] = useState<TabTypes>(tab ?? "narratives");
 
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
-  const [sortBy, setSortBy] = useState<SortByType>("SCORE");
+  const [sortBy, setSortBy] = useState<SortByType>(
+    "WATCHLIST_MOST_RECENT_DATE_ADDED"
+  );
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -84,7 +88,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ accountExtendDetail]);
+  }, [accountExtendDetail]);
 
   useEffect(() => {
     fetchData();
@@ -259,7 +263,7 @@ const Watchlist: FC<WatchlistTypes> = ({
     [setPageLoadMore]
   );
 
-  const onRefreshTable = (userId: string) => {
+  const onRefreshTable = () => {
     const tcAfterRemove = Number(totalCount) - 1;
     setTotalCount(tcAfterRemove.toString());
   };
@@ -277,7 +281,7 @@ const Watchlist: FC<WatchlistTypes> = ({
       <TableContent
         initListRows={listItems ?? []}
         isAnimation={true}
-        // onRefreshTable={onRefreshTable}
+        onRefreshTable={onRefreshTable}
       />
     );
   };
@@ -348,50 +352,64 @@ const Watchlist: FC<WatchlistTypes> = ({
     );
   };
 
+  useEffect(() => {
+    console.log("totalCount", totalCount);
+  }, [totalCount]);
+
   const renderDes = () => {
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
         <div className="flex flex-col justify-start max-lg:w-[90vw]">
           <p>
-            {totalCount.toLocaleString()} projects discovered during the last
+            {totalCount.toLocaleString()} Alpha Hunters added to your watchlist
+            sorted by
           </p>
-          <div className="flex">
+          <div className="flex flex-col">
             <MonthSelect
               onChangeSelect={(month) => {
-                mixpanelTrack(event_name_enum.on_filter_project, {
+                mixpanelTrack(event_name_enum.on_sort_project, {
                   url: router.pathname,
-                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                  value_sort:
+                    (month.value as SortByType) ??
+                    "WATCHLIST_MOST_RECENT_DATE_ADDED",
                   message:
-                    "projects discovered during the last " +
-                      (month.value as TimeFrameTypes) ?? "ALL",
+                    "sorted by" + (month.value as SortByType) ??
+                    "WATCHLIST_MOST_RECENT_DATE_ADDED",
                 });
-                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-                setTimeLabel(month.label ?? "ALL");
+                setSortBy(
+                  (month.value as SortByType) ??
+                    "WATCHLIST_MOST_RECENT_DATE_ADDED"
+                );
+                setSortByLabel(month.label ?? "# of KOLs followed");
               }}
               defaultData={{
-                value: timeFrame,
-                label: timeLabel,
+                value: sortBy,
+                label: sortByLabel,
               }}
+              listData={initListSortForWatchlist as Array<any>}
+              selectBoxClassName="w-full"
             />
-            <div className="flex">
-              <p className="mx-2">sorted by</p>
+            <div className="flex mt-2">
+              <p className="mr-2">
+                with # of new projects followed calculated during last
+              </p>
+
               <MonthSelect
                 onChangeSelect={(month) => {
-                  mixpanelTrack(event_name_enum.on_sort_project, {
+                  mixpanelTrack(event_name_enum.on_filter_project, {
                     url: router.pathname,
-                    value_sort: (month.value as SortByType) ?? "WATCHLIST_MOST_RECENT_DATE_ADDED",
+                    value_search: (month.value as TimeFrameTypes) ?? "ALL",
                     message:
-                      "sorted by" + (month.value as SortByType) ?? "WATCHLIST_MOST_RECENT_DATE_ADDED",
+                      "projects discovered during the last " +
+                        (month.value as TimeFrameTypes) ?? "ALL",
                   });
-                  setSortBy((month.value as SortByType) ?? "WATCHLIST_MOST_RECENT_DATE_ADDED");
-                  setSortByLabel(month.label ?? "# of KOLs followed");
+                  setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                  setTimeLabel(month.label ?? "ALL");
                 }}
                 defaultData={{
-                  value: sortBy,
-                  label: sortByLabel,
+                  value: timeFrame,
+                  label: timeLabel,
                 }}
-                listData={initListSortForWatchlist as Array<any>}
-                selectBoxClassName="w-full"
               />
             </div>
           </div>
@@ -400,7 +418,7 @@ const Watchlist: FC<WatchlistTypes> = ({
     );
   };
 
-  const selectedIndex = useMemo(() => { 
+  const selectedIndex = useMemo(() => {
     switch (tabSelected) {
       case "narratives":
         return 0;
@@ -409,8 +427,7 @@ const Watchlist: FC<WatchlistTypes> = ({
       default:
         return 2;
     }
-
-  }, [tabSelected])
+  }, [tabSelected]);
 
   return (
     <div className="w-full relative ">
@@ -475,7 +492,6 @@ const Watchlist: FC<WatchlistTypes> = ({
             <Narratives />
           </Tab.Panel>
           <Tab.Panel className="mt-6">
-            
             {_renderUpPro()}
 
             <div className="px-6 pb-6 ">
@@ -551,18 +567,18 @@ const Watchlist: FC<WatchlistTypes> = ({
               </div>
 
               <div className="mt-7 max-lg:mt-9">
-              <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
-                <span>Project</span>
-                <div className="flex items-center gap-1">
-                  <span>New KOLs followed</span>
-                  <div
-                    data-tooltip-id="info-tooltip-kol"
-                    className="cursor-pointer"
-                  >
-                    <Image src={InfoIcon} width={20} height={20} alt="icon" />
+                <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
+                  <span>Project</span>
+                  <div className="flex items-center gap-1">
+                    <span>New KOLs followed</span>
+                    <div
+                      data-tooltip-id="info-tooltip-kol"
+                      className="cursor-pointer"
+                    >
+                      <Image src={InfoIcon} width={20} height={20} alt="icon" />
+                    </div>
                   </div>
                 </div>
-              </div>
                 {_renderTable()}
                 {errorMsg &&
                 accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
