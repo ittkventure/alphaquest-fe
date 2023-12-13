@@ -48,9 +48,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
-  const [sortByLabel, setSortByLabel] = useState<string>(
-    "Watchlist most recent date added"
-  );
+  const [sortByLabel, setSortByLabel] = useState<string>("Date added");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -360,10 +358,11 @@ const Watchlist: FC<WatchlistTypes> = ({
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
         <div className="flex flex-col justify-start max-lg:w-[90vw]">
-          <p>
-            {totalCount.toLocaleString()} Date added to your watchlist sorted by
-          </p>
-          <div className="flex flex-col">
+          <div className="flex gap-2">
+            <p>
+              {totalCount.toLocaleString()} Alpha Hunters added to your
+              watchlist sorted by
+            </p>
             <MonthSelect
               onChangeSelect={(month) => {
                 mixpanelTrack(event_name_enum.on_sort_project, {
@@ -379,38 +378,37 @@ const Watchlist: FC<WatchlistTypes> = ({
                   (month.value as SortByType) ??
                     "WATCHLIST_MOST_RECENT_DATE_ADDED"
                 );
-                setSortByLabel(month.label ?? "# of KOLs followed");
+                setSortByLabel(month.label ?? "Date added");
               }}
               defaultData={{
                 value: sortBy,
                 label: sortByLabel,
               }}
               listData={initListSortForWatchlist as Array<any>}
-              selectBoxClassName="w-full"
             />
-            <div className="flex mt-2">
-              <p className="mr-2">
-                with # of new projects followed calculated during last
-              </p>
+          </div>
+          <div className="flex mt-2">
+            <p className="mr-2">
+              with # of new projects followed calculated during last
+            </p>
 
-              <MonthSelect
-                onChangeSelect={(month) => {
-                  mixpanelTrack(event_name_enum.on_filter_project, {
-                    url: router.pathname,
-                    value_search: (month.value as TimeFrameTypes) ?? "ALL",
-                    message:
-                      "projects discovered during the last " +
-                        (month.value as TimeFrameTypes) ?? "ALL",
-                  });
-                  setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-                  setTimeLabel(month.label ?? "ALL");
-                }}
-                defaultData={{
-                  value: timeFrame,
-                  label: timeLabel,
-                }}
-              />
-            </div>
+            <MonthSelect
+              onChangeSelect={(month) => {
+                mixpanelTrack(event_name_enum.on_filter_project, {
+                  url: router.pathname,
+                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                  message:
+                    "projects discovered during the last " +
+                      (month.value as TimeFrameTypes) ?? "ALL",
+                });
+                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                setTimeLabel(month.label ?? "ALL");
+              }}
+              defaultData={{
+                value: timeFrame,
+                label: timeLabel,
+              }}
+            />
           </div>
         </div>
       </div>
@@ -497,7 +495,7 @@ const Watchlist: FC<WatchlistTypes> = ({
               <div className="flex max-lg:flex-col max-lg:items-center justify-between">
                 {renderDes()}
                 <div className="flex max-lg:flex-col max-lg:gap-4 max-lg:items-center justify-between max-lg:mt-5">
-                  <div className="flex">
+                  {/* <div className="flex">
                     <div className="mr-3">
                       <SelectCustom
                         placeholder="Chain - All"
@@ -528,7 +526,7 @@ const Watchlist: FC<WatchlistTypes> = ({
                         selectedValue={categorySelected}
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
                     <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />

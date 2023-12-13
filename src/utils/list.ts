@@ -10,7 +10,7 @@ import {
   MiladyLogo,
   Pepelogo,
   TipcoinLogo,
-  UnibotLogo
+  UnibotLogo,
 } from "@/assets/images";
 import { TableObject } from "@/components/App/Table/TableRow";
 import { DiscoverProjectItemTypes } from "@/components/Home/DiscoverProjectItem";
@@ -36,7 +36,7 @@ const initListSort = [
 
 const initListSortForWatchlist = [
   {
-    label: "Watchlist most recent date added",
+    label: "Date added",
     value: "WATCHLIST_MOST_RECENT_DATE_ADDED",
   },
   {
@@ -249,5 +249,5 @@ export {
   listRowMock,
   initListSort,
   listDiscoverProjects,
-  initListSortForWatchlist
+  initListSortForWatchlist,
 };
