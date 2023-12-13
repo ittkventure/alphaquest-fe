@@ -360,7 +360,7 @@ const Watchlist: FC<WatchlistTypes> = ({
         <div className="flex flex-col justify-start max-lg:w-[90vw]">
           <div className="flex gap-2">
             <p>
-              {totalCount.toLocaleString()} Alpha Hunters added to your
+              {totalCount.toLocaleString()} Projects added to your
               watchlist sorted by
             </p>
             <MonthSelect
@@ -389,7 +389,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           </div>
           <div className="flex mt-2">
             <p className="mr-2">
-              with # of new projects followed calculated during last
+              with # of new Alpha Hunters followed calculated during last
             </p>
 
             <MonthSelect
