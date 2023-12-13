@@ -23,7 +23,7 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
 import { CrownIcon, InfoIcon } from "@/assets/icons";
-import { initListSort } from "@/utils/list";
+import { initListSort, initListSortForWatchlist } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
@@ -379,18 +379,19 @@ const Watchlist: FC<WatchlistTypes> = ({
                 onChangeSelect={(month) => {
                   mixpanelTrack(event_name_enum.on_sort_project, {
                     url: router.pathname,
-                    value_sort: (month.value as SortByType) ?? "SCORE",
+                    value_sort: (month.value as SortByType) ?? "WATCHLIST_MOST_RECENT_DATE_ADDED",
                     message:
-                      "sorted by" + (month.value as SortByType) ?? "SCORE",
+                      "sorted by" + (month.value as SortByType) ?? "WATCHLIST_MOST_RECENT_DATE_ADDED",
                   });
-                  setSortBy((month.value as SortByType) ?? "SCORE");
+                  setSortBy((month.value as SortByType) ?? "WATCHLIST_MOST_RECENT_DATE_ADDED");
                   setSortByLabel(month.label ?? "# of KOLs followed");
                 }}
                 defaultData={{
                   value: sortBy,
                   label: sortByLabel,
                 }}
-                listData={initListSort as Array<any>}
+                listData={initListSortForWatchlist as Array<any>}
+                selectBoxClassName="w-full"
               />
             </div>
           </div>

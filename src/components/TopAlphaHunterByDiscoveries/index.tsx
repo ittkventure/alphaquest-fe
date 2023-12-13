@@ -53,7 +53,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
 
   const topAlphaQuery = useQuery({
     queryKey: [
-      "topAlphaHunterByDiscoveries",
+      isWatchList ? "getTopByEarlyDiscoveriesWatchList" : "getTopByEarlyDiscoveries",
       pageNumber,
       timeFrame,
       authState?.access_token,
