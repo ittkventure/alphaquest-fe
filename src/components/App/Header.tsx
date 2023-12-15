@@ -86,9 +86,8 @@ const Header: FC<IHeader> = ({ title }) => {
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
-  const { data: notifications } = useQuery(
-    ["getNotificationsTotal"],
-    () => fetchNotifications(authState?.access_token || "")
+  const { data: notifications } = useQuery(["getNotificationsTotal"], () =>
+    fetchNotifications(authState?.access_token || "")
   );
 
   return (
@@ -138,7 +137,9 @@ const Header: FC<IHeader> = ({ title }) => {
               className="cursor-pointer"
               onClick={() => setOpenNotification(!openNotification)}
             />
-            {notifications?.totalCount && <NumberNotification count={notifications?.totalCount} />}
+            {notifications?.totalCount && (
+              <NumberNotification count={notifications?.totalCount} />
+            )}
             {openNotification && (
               <NotificationContent
                 closeNotification={() => setOpenNotification(false)}
@@ -184,7 +185,7 @@ const Header: FC<IHeader> = ({ title }) => {
                 alt="crown-icon"
                 className="mr-2"
               />
-              Start 7-day trial
+              Upgrade your account for full access
             </button>
           </div>
         )}

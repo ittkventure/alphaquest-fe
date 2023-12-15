@@ -207,7 +207,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
             onClick={onClickPaymentTrial}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem] z-50"
           >
-            Start 7-Day Trial for $9
+            Upgrade your account for full access for $9
           </button>
         </div>
 
@@ -308,7 +308,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
             onClick={onClickPaymentTrial}
             className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
           >
-            Start 7-Day Trial for $9
+            Upgrade your account for full access for $9
           </button>
         </div>
 
@@ -345,7 +345,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
               onClick={onClickPaymentTrial}
               className="px-6 py-4 bg-primary-500 font-workSansRegular text-[1.125rem]"
             >
-              Start 7-Day Trial for $9
+              Upgrade your account for full access for $9
             </button>
           </div>
         </div>

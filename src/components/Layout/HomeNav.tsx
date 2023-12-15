@@ -81,7 +81,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                     alt="crown-icon"
                     className="mr-2"
                   />
-                  Start 7-day trial
+                  Upgrade your account for full access
                 </button>
               </div>
             ) : null}
@@ -146,7 +146,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                     alt="crown-icon"
                     className="mr-2"
                   />
-                  Start 7-day trial
+                  Upgrade your account for full access
                 </button>
               </div>
             ) : null}
@@ -236,7 +236,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                       alt="crown-icon"
                       className="mr-2"
                     />
-                    Start 7-day trial
+                    Upgrade your account for full access
                   </button>
                 </div>
               ) : null}

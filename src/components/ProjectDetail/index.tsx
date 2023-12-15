@@ -1,4 +1,11 @@
-import React, { FC, memo, useContext, useEffect, useState, useRef } from "react";
+import React, {
+  FC,
+  memo,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -207,22 +214,22 @@ const ProjectDetail: FC<IProjectDetail> = ({
   });
 
   const onAddItemToWatchList = async () => {
-    if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/login",
-      });
-      router.push("/login");
-      return;
-    }
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/pricing",
-      });
-      router.push("/pricing?action=open");
+    // if (!authState?.access_token) {
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/login",
+    //   });
+    //   router.push("/login");
+    //   return;
+    // }
+    // if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+    //   setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/pricing",
+    //   });
+    //   router.push("/pricing?action=open");
 
-      return;
-    }
+    //   return;
+    // }
     try {
       setIsLoadingHeart(true);
 
@@ -749,7 +756,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                 alt="crown-icon"
                 className="mr-2"
               />
-              Start 7-day trial
+              Upgrade your account for full access
             </button>
           </div>
         </div>

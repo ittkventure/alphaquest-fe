@@ -297,7 +297,6 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const renderUpBtn = () => {
-    if (router.pathname.indexOf("watchlist")) return null;
     return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
@@ -315,7 +314,7 @@ const Watchlist: FC<WatchlistTypes> = ({
               alt="crown-icon"
               className="mr-2"
             />
-            Start 7-day trial
+            Upgrade your account for full access
           </button>
         </div>
       </div>
@@ -323,6 +322,8 @@ const Watchlist: FC<WatchlistTypes> = ({
   };
 
   const _renderUpPro = () => {
+    if (router.pathname.indexOf("watchlist")) return null;
+
     if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM) return;
     return (
       <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
@@ -344,7 +345,7 @@ const Watchlist: FC<WatchlistTypes> = ({
             alt="crown-icon"
             className="mr-2"
           />
-          Start 7-day trial
+          Upgrade your account for full access
         </button>
       </div>
     );
@@ -428,7 +429,6 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   return (
     <div className="w-full relative ">
-      {renderUpBtn()}
       <div className="p-6">
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 mt-4 max-lg:hidden" />
@@ -490,6 +490,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           </Tab.Panel>
           <Tab.Panel className="mt-6">
             {_renderUpPro()}
+            {listItems.length >= 10 && renderUpBtn()}
 
             <div className="px-6 pb-6 ">
               <div className="flex max-lg:flex-col max-lg:items-center justify-between">
