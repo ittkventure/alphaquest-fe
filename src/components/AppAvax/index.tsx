@@ -301,7 +301,8 @@ const AppContent: FC<AppContentTypes> = ({
             {totalCount.toLocaleString()} projects discovered during the last
           </p>
           <div className="flex">
-            <MonthSelect
+            <p className="text-success-500">30D</p>
+            {/* <MonthSelect
               onChangeSelect={(month) => {
                 mixpanelTrack(event_name_enum.on_filter_project, {
                   url: router.pathname,
@@ -318,7 +319,7 @@ const AppContent: FC<AppContentTypes> = ({
                 label: timeLabel,
               }}
               disabled={true}
-            />
+            /> */}
             <div className="flex">
               <p className="mx-2">sorted by</p>
               <MonthSelect
@@ -446,7 +447,7 @@ const AppContent: FC<AppContentTypes> = ({
                 </div>
               </div> */}
 
-            <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
+            {/* <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
               <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
 
               <input
@@ -459,7 +460,7 @@ const AppContent: FC<AppContentTypes> = ({
                   }
                 }}
               />
-            </div>
+            </div> */}
           </div>
         </div>
 
