@@ -28,6 +28,7 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { getAccessToken } from "@/utils/access-token";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -348,29 +349,27 @@ const AppContent: FC<AppContentTypes> = ({
 
   const renderUpBtn = () => {
     // if (router.pathname === "/watchlist/projects") return null;
-    // return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-    //   !accountExtendDetail?.currentPlanKey ? (
-    //   <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
-    //     <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-    //       <p className="mb-4">Upgrade account to see all</p>
+    return !getAccessToken() ? (
+      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+          <p className="mb-4">Sign up to access free dashboard</p>
 
-    //       <button
-    //         onClick={onClickPaymentTrial}
-    //         className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-    //       >
-    //         <Image
-    //           src={CrownIcon}
-    //           width={17}
-    //           height={14}
-    //           alt="crown-icon"
-    //           className="mr-2"
-    //         />
-    //         Start 7-day trial
-    //       </button>
-    //     </div>
-    //   </div>
-    // ) : null;
-    return null;
+          <button
+            onClick={() => router.push("/sign-up")}
+            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+          >
+            {/* <Image
+              src={CrownIcon}
+              width={17}
+              height={14}
+              alt="crown-icon"
+              className="mr-2"
+            /> */}
+            Discover Now
+          </button>
+        </div>
+      </div>
+    ) : null;
   };
 
   return (
