@@ -200,6 +200,7 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   const fetchDataLoadMore = async () => {
+    if (!getAccessToken()) return;
     try {
       setIsLoadingMore(true);
       setErrorMsg("");
