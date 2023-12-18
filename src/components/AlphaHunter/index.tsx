@@ -13,6 +13,7 @@ import Spinner from "../Spinner";
 import TableCommon from "../TableCommon";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IAlphaHunter {
   userId?: string;
@@ -135,27 +136,27 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {
-    if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/login",
-      });
-      router.push("/login");
-      return;
-    }
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/pricing",
-      });
-      router.push("/pricing?action=open");
+    // if (!authState?.access_token) {
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/login",
+    //   });
+    //   router.push("/login");
+    //   return;
+    // }
+    // if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+    //   setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/pricing",
+    //   });
+    //   router.push("/pricing?action=open");
 
-      return;
-    }
+    //   return;
+    // }
     try {
       setIsLoadingHeart(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
+        await apiTwitter.addWatchList(userId ?? "", WatchListTypes.PROJECT);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             alphaHunterDetail.data?.name ?? "project"

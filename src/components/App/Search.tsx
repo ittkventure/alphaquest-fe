@@ -284,7 +284,7 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   const renderUpBtn = () => {
-    if (router.pathname.indexOf('watchlist')) return null;
+    if (router.pathname.indexOf("watchlist")) return null;
     return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
@@ -302,7 +302,7 @@ const AppContent: FC<AppContentTypes> = ({
               alt="crown-icon"
               className="mr-2"
             />
-            Start 7-day trial
+            Upgrade your account for full access
           </button>
         </div>
       </div>
