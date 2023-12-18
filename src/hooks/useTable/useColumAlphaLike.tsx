@@ -15,6 +15,7 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import { listUrl } from "@/components/App/Table/TableRow";
 import { TwitterIcon } from "@/assets/icons";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IAlphaHunterFollowers {
   isLinkToAlphaHunter?: boolean;
@@ -51,7 +52,7 @@ const useColumAlphaLike = ({
       setIsLoading(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId, authState?.access_token);
+        await apiTwitter.addWatchList(userId, WatchListTypes.PROJECT);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${name} to watchlist`,
         });

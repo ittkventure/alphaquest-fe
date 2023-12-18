@@ -40,6 +40,7 @@ import useColumAlphaLike from "@/hooks/useTable/useColumAlphaLike";
 import LineChartCustom from "./LineChart";
 import TabButton from "./TabButton";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IProjectDetail {
   userId?: string;
@@ -234,10 +235,11 @@ const ProjectDetail: FC<IProjectDetail> = ({
       setIsLoadingHeart(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(
+        await apiTwitter.addWatchList(
           twitterDetail.data?.userId ?? "",
-          authState?.access_token
+          WatchListTypes.PROJECT
         );
+
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             twitterDetail.data?.name ?? "project"

@@ -13,6 +13,7 @@ import Spinner from "../Spinner";
 import TableCommon from "../TableCommon";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IAlphaHunter {
   userId?: string;
@@ -155,7 +156,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       setIsLoadingHeart(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
+        await apiTwitter.addWatchList(userId ?? "", WatchListTypes.PROJECT);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             alphaHunterDetail.data?.name ?? "project"

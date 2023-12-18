@@ -22,6 +22,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { WatchListTypes } from "@/api-client/twitter";
 
 export const listUrl = [
   {
@@ -120,10 +121,8 @@ const TableRow: FC<TableRowTypes> = ({
       setIsLoading(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(
-          itemState.userId,
-          authState?.access_token
-        );
+        await apiTwitter.addWatchList(itemState.userId, WatchListTypes.PROJECT);
+
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${itemState.name} to watchlist`,
         });
