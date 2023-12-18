@@ -11,10 +11,14 @@ import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import NotificationContent from "./NotificationContent";
 import { useMutation, useQuery } from "react-query";
 import NumberNotification from "./NumberNotification";
-import { checkTotalUnreadCount, clearAllNotiByClick } from "@/api-client/notification";
+import {
+  checkTotalUnreadCount,
+  clearAllNotiByClick,
+} from "@/api-client/notification";
 import QuickSearch from "./QuickSearch";
 
 interface IHeader {
@@ -31,6 +35,7 @@ const Header: FC<IHeader> = ({ title }) => {
 
   const [openQuickSearch, setOpenQuickSearch] = useState(false);
   let searchRef: React.MutableRefObject<any> = useRef();
+  const [openSeachMobile, setOpenSearchMobile] = useState(false);
 
   const [openNotification, setOpenNotification] = useState(false);
   let notiRef: React.MutableRefObject<any> = useRef();
@@ -92,12 +97,19 @@ const Header: FC<IHeader> = ({ title }) => {
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
-  const { data: unreadCount, refetch: fetchUnreadCount } = useQuery("getUnreadCount", checkTotalUnreadCount);
-  const { mutate: clearAllNoti } = useMutation("clearAllNoti", clearAllNotiByClick, {
-    onSuccess() {
-      fetchUnreadCount();
-    },
-  });
+  const { data: unreadCount, refetch: fetchUnreadCount } = useQuery(
+    "getUnreadCount",
+    checkTotalUnreadCount
+  );
+  const { mutate: clearAllNoti } = useMutation(
+    "clearAllNoti",
+    clearAllNotiByClick,
+    {
+      onSuccess() {
+        fetchUnreadCount();
+      },
+    }
+  );
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -116,12 +128,15 @@ const Header: FC<IHeader> = ({ title }) => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center ">
-        <div className="relative mr-6  max-lg:mr-2 ml-4" ref={searchRef}>
+      <div className="flex justify-center items-center">
+        <div
+          className="relative mr-6 max-lg:mr-2 ml-4 max-lg:hidden"
+          ref={searchRef}
+        >
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
           <input
-            className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "
+            className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7 max-lg:text-sm "
             placeholder="Search"
             value={searchString}
             onChange={(e) => {
@@ -143,6 +158,49 @@ const Header: FC<IHeader> = ({ title }) => {
             />
           )}
         </div>
+        <div className="hidden max-lg:block">
+          {openSeachMobile ? (
+            <div className="fixed h-screen bg-dark-900 z-[1000] top-0 left-0 w-full flex flex-col gap-4 px-6 pt-6">
+              <XMarkIcon
+            className="h-7 w-7 transition-all duration-300"
+            onClick={() => setOpenSearchMobile(false)}
+          />
+              <div className="relative">
+                <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-2 left-[5px]" />
+                <input
+                  className="w-full bg-secondary-600 py-2 pl-8 text-sm"
+                  placeholder="Search"
+                  value={searchString}
+                  onChange={(e) => {
+                    setSearchString(e?.target?.value);
+                    setOpenQuickSearch(true);
+                  }}
+                  // onKeyPress={(event) => {
+                  //   if (event.key === "Enter" && event.currentTarget.value) {
+                  //     setKeyword(event.currentTarget.value ?? "");
+                  //     router.push("/search?keyword=" + event.currentTarget.value);
+                  //   }
+                  // }}
+                />
+                {searchString?.length > 2 && openQuickSearch && (
+                  <QuickSearch
+                    searchString={searchString}
+                    closeQuickSearch={() => setOpenQuickSearch(false)}
+                    resetSearch={() => setSearchString("")}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MagnifyingGlassIcon
+              className="w-6 h-6 text-white max-lg:mr-3"
+              onClick={() => {
+                setSearchString("");
+                setOpenSearchMobile(true);
+              }}
+            />
+          )}
+        </div>
         {/* 
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
@@ -157,7 +215,7 @@ const Header: FC<IHeader> = ({ title }) => {
               height={40}
               className="cursor-pointer"
               onClick={() => {
-                setOpenNotification(!openNotification)
+                setOpenNotification(!openNotification);
                 if (!!unreadCount?.unreadCount) {
                   clearAllNoti();
                 }

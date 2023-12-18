@@ -39,7 +39,7 @@ export default function QuickSearch({
   }, [quickSearchData]);
 
   return (
-    <div className="absolute right-0 top-12 p-4 bg-[#292C35] w-[480px] h-[70vh] z-20 flex flex-col gap-4 text-white overflow-y-auto divide-y divide-[#52525B]">
+    <div className="lg:absolute lg:right-0 lg:top-12 lg:p-4 lg:bg-[#292C35] lg:w-[480px] lg:h-[70vh] z-[1000] flex flex-col gap-4 text-white overflow-y-auto divide-y divide-[#52525B] max-lg:mt-4">
       {searchString && (
         <>
           {!!projects?.length && (
@@ -55,6 +55,7 @@ export default function QuickSearch({
                         ? `/project/${JSON.parse(project?.metadata)?.username}`
                         : `/projects`
                     );
+                    alert('abc')
                     closeQuickSearch();
                     resetSearch();
                   }}
@@ -95,7 +96,7 @@ export default function QuickSearch({
                         ? `/narratives/${narrative?.key}`
                         : `/narratives`
                     );
-                    closeQuickSearch();
+                    // closeQuickSearch();
                     resetSearch();
                   }}
                 >
