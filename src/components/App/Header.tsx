@@ -44,7 +44,7 @@ const Header: FC<IHeader> = ({ title }) => {
     let handler = (e: any) => {
       if (notiRef.current && !notiRef.current?.contains(e.target))
         setOpenNotification(false);
-      if (searchRef.current && !searchRef.current?.contains(e.target))
+      if (!searchRef.current || !searchRef.current?.contains(e.target))
         setOpenQuickSearch(false);
     };
     document.addEventListener("mousedown", handler);
@@ -162,10 +162,10 @@ const Header: FC<IHeader> = ({ title }) => {
           {openSeachMobile ? (
             <div className="fixed h-screen bg-dark-900 z-[1000] top-0 left-0 w-full flex flex-col gap-4 px-6 pt-6">
               <XMarkIcon
-            className="h-7 w-7 transition-all duration-300"
-            onClick={() => setOpenSearchMobile(false)}
-          />
-              <div className="relative">
+                className="h-7 w-7 transition-all duration-300"
+                onClick={() => setOpenSearchMobile(false)}
+              />
+              <div className="relative" ref={searchRef}>
                 <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-2 left-[5px]" />
                 <input
                   className="w-full bg-secondary-600 py-2 pl-8 text-sm"
@@ -187,6 +187,7 @@ const Header: FC<IHeader> = ({ title }) => {
                     searchString={searchString}
                     closeQuickSearch={() => setOpenQuickSearch(false)}
                     resetSearch={() => setSearchString("")}
+                    closeSearchMobile={() => setOpenSearchMobile(false)}
                   />
                 )}
               </div>

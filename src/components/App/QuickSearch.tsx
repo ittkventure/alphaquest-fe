@@ -10,12 +10,14 @@ type QuickSearchProps = {
   searchString: string;
   closeQuickSearch: () => void;
   resetSearch: () => void;
+  closeSearchMobile?: () => void;
 };
 
 export default function QuickSearch({
   searchString,
   closeQuickSearch,
   resetSearch,
+  closeSearchMobile,
 }: QuickSearchProps) {
   const router = useRouter();
   const { data: quickSearchData } = useQuery(
@@ -55,9 +57,9 @@ export default function QuickSearch({
                         ? `/project/${JSON.parse(project?.metadata)?.username}`
                         : `/projects`
                     );
-                    alert('abc')
                     closeQuickSearch();
                     resetSearch();
+                    closeSearchMobile && closeSearchMobile();
                   }}
                 >
                   <div className="flex items-center gap-3">
@@ -96,8 +98,9 @@ export default function QuickSearch({
                         ? `/narratives/${narrative?.key}`
                         : `/narratives`
                     );
-                    // closeQuickSearch();
+                    closeQuickSearch();
                     resetSearch();
+                    closeSearchMobile && closeSearchMobile();
                   }}
                 >
                   <div className="flex items-center gap-3">
@@ -141,6 +144,7 @@ export default function QuickSearch({
                     );
                     closeQuickSearch();
                     resetSearch();
+                    closeSearchMobile && closeSearchMobile();
                   }}
                 >
                   <div className="flex items-center gap-3">
