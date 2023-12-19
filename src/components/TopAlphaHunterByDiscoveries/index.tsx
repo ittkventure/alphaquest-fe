@@ -238,7 +238,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
           <div className="h-7 w-full" ref={triggerElement}></div>
         ) : null}
       </div>
-      <UpgradeProButton />
+      <UpgradeProButton length={topAlphaListState.length} />
     </div>
   );
 };

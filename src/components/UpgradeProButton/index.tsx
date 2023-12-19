@@ -4,9 +4,13 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { FC, useContext } from "react";
 
-const UpgradeProButton = () => {
+interface IUpgradeProButtonProps {
+  length?: number;
+}
+
+const UpgradeProButton: FC<IUpgradeProButtonProps> = ({ length = 0 }) => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
   const router = useRouter();
@@ -32,26 +36,30 @@ const UpgradeProButton = () => {
 
   return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
     !accountExtendDetail?.currentPlanKey ? (
-    <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
-      <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-        <p className="mb-4">Upgrade account for full access</p>
+    length >= 10 ? (
+      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+          <p className="mb-4">Upgrade account for full access</p>
 
-        <button
-          onClick={onClickPaymentTrial}
-          className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-        >
-          <Image
-            src={CrownIcon}
-            width={17}
-            height={14}
-            alt="crown-icon"
-            className="mr-2"
-          />
-          Upgrade to Pro
-        </button>
+          <button
+            onClick={onClickPaymentTrial}
+            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+          >
+            <Image
+              src={CrownIcon}
+              width={17}
+              height={14}
+              alt="crown-icon"
+              className="mr-2"
+            />
+            Upgrade to Pro
+          </button>
+        </div>
       </div>
-    </div>
-  ) : null;
+    ) : null
+  ) : (
+    <div />
+  );
 };
 
 export default UpgradeProButton;

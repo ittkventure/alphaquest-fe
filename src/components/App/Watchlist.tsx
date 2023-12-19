@@ -286,28 +286,30 @@ const Watchlist: FC<WatchlistTypes> = ({
     } catch (error) {}
   };
 
-  const renderUpBtn = () => {
-    return accountExtendDetail?.currentPlanKey === UserPayType.FREE ? (
-      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
-        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-          <p className="mb-4">Upgrade account for full access</p>
+  const renderUpBtn = (length: number) => {
+    return accountExtendDetail?.currentPlanKey === UserPayType.FREE
+      ? length >= 10 && (
+          <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+            <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+              <p className="mb-4">Upgrade account for full access</p>
 
-          <button
-            onClick={onClickPaymentTrial}
-            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-          >
-            <Image
-              src={CrownIcon}
-              width={17}
-              height={14}
-              alt="crown-icon"
-              className="mr-2"
-            />
-            Start 7-day trial
-          </button>
-        </div>
-      </div>
-    ) : null;
+              <button
+                onClick={onClickPaymentTrial}
+                className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+              >
+                <Image
+                  src={CrownIcon}
+                  width={17}
+                  height={14}
+                  alt="crown-icon"
+                  className="mr-2"
+                />
+                Start 7-day trial
+              </button>
+            </div>
+          </div>
+        )
+      : null;
   };
 
   const _renderUpPro = () => {
@@ -316,6 +318,7 @@ const Watchlist: FC<WatchlistTypes> = ({
       accountExtendDetail?.currentPlanKey === UserPayType.FREE
     )
       return;
+
     return (
       <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
         <div className="flex justify-center items-center mb-4">
@@ -491,7 +494,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           </Tab.Panel>
           <Tab.Panel className="py-6">
             {_renderUpPro()}
-            {renderUpBtn()}
+            {renderUpBtn(listItems.length)}
 
             <div className="px-6 pb-6 ">
               <div className="flex max-lg:flex-col max-lg:items-center justify-between">
