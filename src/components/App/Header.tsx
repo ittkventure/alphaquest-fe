@@ -185,7 +185,7 @@ const Header: FC<IHeader> = ({ title }) => {
                 alt="crown-icon"
                 className="mr-2"
               />
-              Upgrade your account for full access
+              Start 7-day trial
             </button>
           </div>
         )}

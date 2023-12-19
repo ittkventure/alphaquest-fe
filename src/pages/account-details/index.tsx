@@ -44,7 +44,7 @@ const AccountDetails = () => {
     } catch (error: any) {
       setIsLoading(false);
       toast.error(
-        `${error?.response?.data?.error?.message ?? error?.message}`,
+        `${error?.response?.data?.error?.data?.messsage ?? error?.message}`,
         {}
       );
     }
