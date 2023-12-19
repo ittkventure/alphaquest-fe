@@ -142,7 +142,7 @@ const ChartDetail = () => {
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
         <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-          <p className="mb-4">Upgrade account to see all</p>
+          <p className="mb-4">Upgrade account for full access</p>
 
           <button
             onClick={onClickPaymentTrial}
@@ -155,7 +155,7 @@ const ChartDetail = () => {
               alt="crown-icon"
               className="mr-2"
             />
-            Upgrade your account for full access
+            Start 7-day trial
           </button>
         </div>
       </div>

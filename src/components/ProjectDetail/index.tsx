@@ -252,8 +252,11 @@ const ProjectDetail: FC<IProjectDetail> = ({
         toast.warning("Please login for use this feature");
       }
       setIsLoadingHeart(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoadingHeart(false);
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     }
   };
 
@@ -745,7 +748,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
           } bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]`}
         >
           <div className="w-full h-[200px] flex flex-col justify-center items-center bg-linear-backdrop">
-            <p className="mb-4">Upgrade account to see all</p>
+            <p className="mb-4">Upgrade account for full access</p>
 
             <button
               onClick={onClickPaymentTrial}
@@ -758,7 +761,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                 alt="crown-icon"
                 className="mr-2"
               />
-              Upgrade your account for full access
+              Start 7-day trial
             </button>
           </div>
         </div>

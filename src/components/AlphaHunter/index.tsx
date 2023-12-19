@@ -167,8 +167,11 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         toast.warning("Please login for use this feature");
       }
       setIsLoadingHeart(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoadingHeart(false);
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     }
   };
 

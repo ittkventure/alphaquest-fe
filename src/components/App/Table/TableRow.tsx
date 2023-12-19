@@ -132,8 +132,11 @@ const TableRow: FC<TableRowTypes> = ({
         toast.warning("Please login for use this feature");
       }
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     }
   };
 

@@ -1,9 +1,7 @@
 import Image from "next/image";
 import { useState, useRef, useCallback } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import {
-  checkAsReadNotification,
-} from "@/api-client/notification";
+import { checkAsReadNotification } from "@/api-client/notification";
 import {
   NOTIFICATION_TYPE,
   Notification,
@@ -70,8 +68,8 @@ export default function NotificationContent({
         await refetch();
         redirectByType(notification.type, notification.ref2);
       } catch (error: any) {
-        if (error?.response?.data?.error?.message) {
-          toast.error(error?.response?.data?.error?.message);
+        if (error?.response?.data?.error?.data?.messsage) {
+          toast.error(error?.response?.data?.error?.data?.messsage);
         } else {
           toast.error("Error when unread notification, please try again!");
         }

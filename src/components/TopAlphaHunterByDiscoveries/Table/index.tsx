@@ -11,9 +11,10 @@ import { useMutation } from "react-query";
 import { WatchListTypes } from "@/api-client/twitter";
 import { apiTwitter } from "@/api-client";
 import Spinner2 from "@/components/Spinner2";
-import { HeartIcon as HeartIconBold  } from "@heroicons/react/24/solid";
+import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
+import { toast } from "react-toastify";
 
-interface IAlphaItemProps { 
+interface IAlphaItemProps {
   item: TopAlphaItem;
   index: number;
   refetch?: () => void;
@@ -26,9 +27,8 @@ const AlphaItem: FC<IAlphaItemProps> = ({
   refetch,
   isWatchList,
 }) => {
+  const [heart, setHeart] = useState(item.inWatchlist);
 
-  const [heart, setHeart] = useState(item.inWatchlist)
-  
   const addWatchListAHMutate = useMutation({
     mutationFn: (params: {
       refId: string;
@@ -36,52 +36,59 @@ const AlphaItem: FC<IAlphaItemProps> = ({
       subType: string;
     }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
     onSuccess: () => {
-      setHeart(pre => !pre)
-        refetch && refetch()
-      
+      setHeart((pre) => !pre);
+      refetch && refetch();
     },
-  })
-
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
+    },
+  });
 
   return isWatchList && !heart ? null : (
     <div className="flex flex-row items-center py-3 ">
-  <div className="w-[333px] pl-[14px] pr-6 mr-14">
-    <AvatarRow item={item} index={index} />
-  </div>
-  <div className="w-[127px] flex items-start">
-    <p>{item.followerCount}</p>
-  </div>
-  <div className="w-[214px]">
-    <p>{item.alphaFollowingCount}</p>
-  </div>
-  <div className="w-[521px] ml-3">
-    <ProjectsFollowedRow
-      projectsFollowedLastXDays={item?.projectsFollowedLastXDays}
-    />
-  </div>
-  <div className="pr-4 w-[calc(100%-1150px)]">
-    <div className="flex items-center justify-between">
-      <p>{item.numberOfEarlyDiscoveries}</p>
-      <button onClick={() => {
-        addWatchListAHMutate.mutate({
-          refId: item.userId,
-          type: WatchListTypes.ALPHA_HUNTER,
-          subType: '',
-        })
-      }}
-      disabled={addWatchListAHMutate.isLoading}
-      >
-        {addWatchListAHMutate.isLoading && <Spinner2 />}
+      <div className="w-[333px] pl-[14px] pr-6 mr-14">
+        <AvatarRow item={item} index={index} />
+      </div>
+      <div className="w-[127px] flex items-start">
+        <p>{item.followerCount}</p>
+      </div>
+      <div className="w-[214px]">
+        <p>{item.alphaFollowingCount}</p>
+      </div>
+      <div className="w-[521px] ml-3">
+        <ProjectsFollowedRow
+          projectsFollowedLastXDays={item?.projectsFollowedLastXDays}
+        />
+      </div>
+      <div className="pr-4 w-[calc(100%-1150px)]">
+        <div className="flex items-center justify-between">
+          <p>{item.numberOfEarlyDiscoveries}</p>
+          <button
+            onClick={() => {
+              addWatchListAHMutate.mutate({
+                refId: item.userId,
+                type: WatchListTypes.ALPHA_HUNTER,
+                subType: "",
+              });
+            }}
+            disabled={addWatchListAHMutate.isLoading}
+          >
+            {addWatchListAHMutate.isLoading && <Spinner2 />}
 
-        {!addWatchListAHMutate.isLoading && (
-          heart ? <HeartIconBold  className="h-6 w-6 text-red-500 transition-all duration-200" /> : <HeartIcon className="h-6 w-6 hover:text-success-500 transition-all duration-200" />
-        )}
-      </button>
+            {!addWatchListAHMutate.isLoading &&
+              (heart ? (
+                <HeartIconBold className="h-6 w-6 text-red-500 transition-all duration-200" />
+              ) : (
+                <HeartIcon className="h-6 w-6 hover:text-success-500 transition-all duration-200" />
+              ))}
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-  )
-}
+  );
+};
 
 interface ITableTopAlphaHunterByDiscoveriesProps {
   topAlphaList: TopAlphaItem[];
@@ -110,14 +117,26 @@ const TableTopAlphaHunterByDiscoveries: FC<
               data-tooltip-id="info-tooltip-discoveries"
               className="cursor-pointer"
             >
-              <Image src={InfoIcon2} width={20} height={20} alt="InfoIcon2" className="min-h-[20px] min-w-[20px]" />
+              <Image
+                src={InfoIcon2}
+                width={20}
+                height={20}
+                alt="InfoIcon2"
+                className="min-h-[20px] min-w-[20px]"
+              />
             </div>
           </div>
         </div>
 
         {topAlphaList.map((item, index) => {
           return isWatchList && !item.inWatchlist ? null : (
-            <AlphaItem key={item?.userId} item={item} index={index} refetch={refetch} isWatchList={isWatchList} />
+            <AlphaItem
+              key={item?.userId}
+              item={item}
+              index={index}
+              refetch={refetch}
+              isWatchList={isWatchList}
+            />
           );
         })}
       </div>
