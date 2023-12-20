@@ -258,6 +258,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   const onRefreshTable = () => {
     const tcAfterRemove = Number(totalCount) - 1;
     setTotalCount(tcAfterRemove.toString());
+    fetchData();
   };
 
   const _renderTable = () => {
