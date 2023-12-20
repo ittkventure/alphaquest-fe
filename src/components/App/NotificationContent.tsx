@@ -11,6 +11,7 @@ import { AlphaHunterIcon, ProjectIcon, NarrativesIcon } from "@/assets/icons";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useNotifications } from "@/hooks/useNotifications";
+import ImageWithFallback from "./ImageWithFallBack";
 
 type NotificationContentProps = {
   closeNotification: () => void;
@@ -132,8 +133,9 @@ export default function NotificationContent({
                 notification?.unread ? "bg-[#3F3F46]" : undefined
               }`}
             >
-              <Image
+              <ImageWithFallback
                 src={notification?.imageUrl || AlphaHunterIcon}
+                fallbackSrc={AlphaHunterIcon}
                 alt="avatar"
                 width={64}
                 height={64}
