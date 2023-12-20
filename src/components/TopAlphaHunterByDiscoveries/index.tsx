@@ -78,7 +78,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
 
   useEffect(() => {
     if (!topAlphaQuery.data?.items) return;
-    if (isRefetch) {
+    if (isRefetch || pageNumber == 1) {
       setIsRefetch(false);
       setTopAlphaListState(topAlphaQuery.data?.items);
       return;
