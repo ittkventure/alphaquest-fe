@@ -12,10 +12,10 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import NotificationContent from "./NotificationContent";
-import { useQuery } from "react-query";
-import axios from "axios";
+import { useMutation, useQuery } from "react-query";
 import NumberNotification from "./NumberNotification";
-import { fetchNotifications } from "@/api-client/notification";
+import { checkTotalUnreadCount, clearAllNotiByClick } from "@/api-client/notification";
+import QuickSearch from "./QuickSearch";
 
 interface IHeader {
   title?: string;
@@ -25,8 +25,12 @@ const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
   const { tab } = router.query;
   const { setKeyword, keyword } = useContext(SearchContext);
+  const [searchString, setSearchString] = useState("");
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+
+  const [openQuickSearch, setOpenQuickSearch] = useState(false);
+  let searchRef: React.MutableRefObject<any> = useRef();
 
   const [openNotification, setOpenNotification] = useState(false);
   let notiRef: React.MutableRefObject<any> = useRef();
@@ -35,6 +39,8 @@ const Header: FC<IHeader> = ({ title }) => {
     let handler = (e: any) => {
       if (notiRef.current && !notiRef.current?.contains(e.target))
         setOpenNotification(false);
+      if (searchRef.current && !searchRef.current?.contains(e.target))
+        setOpenQuickSearch(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -86,9 +92,12 @@ const Header: FC<IHeader> = ({ title }) => {
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
-  const { data: notifications } = useQuery(["getNotificationsTotal"], () =>
-    fetchNotifications(authState?.access_token || "")
-  );
+  const { data: unreadCount, refetch: fetchUnreadCount } = useQuery("getUnreadCount", checkTotalUnreadCount);
+  const { mutate: clearAllNoti } = useMutation("clearAllNoti", clearAllNotiByClick, {
+    onSuccess() {
+      fetchUnreadCount();
+    },
+  });
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -108,19 +117,31 @@ const Header: FC<IHeader> = ({ title }) => {
       </div>
 
       <div className="flex justify-center items-center ">
-        <div className="relative mr-6  max-lg:mr-2 ml-4">
+        <div className="relative mr-6  max-lg:mr-2 ml-4" ref={searchRef}>
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
           <input
             className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "
             placeholder="Search"
-            onKeyPress={(event) => {
-              if (event.key === "Enter" && event.currentTarget.value) {
-                setKeyword(event.currentTarget.value ?? "");
-                router.push("/search?keyword=" + event.currentTarget.value);
-              }
+            value={searchString}
+            onChange={(e) => {
+              setSearchString(e?.target?.value);
+              setOpenQuickSearch(true);
             }}
+            // onKeyPress={(event) => {
+            //   if (event.key === "Enter" && event.currentTarget.value) {
+            //     setKeyword(event.currentTarget.value ?? "");
+            //     router.push("/search?keyword=" + event.currentTarget.value);
+            //   }
+            // }}
           />
+          {searchString?.length > 2 && openQuickSearch && (
+            <QuickSearch
+              searchString={searchString}
+              closeQuickSearch={() => setOpenQuickSearch(false)}
+              resetSearch={() => setSearchString("")}
+            />
+          )}
         </div>
         {/* 
         <button id="search-btn">
@@ -135,10 +156,15 @@ const Header: FC<IHeader> = ({ title }) => {
               width={40}
               height={40}
               className="cursor-pointer"
-              onClick={() => setOpenNotification(!openNotification)}
+              onClick={() => {
+                setOpenNotification(!openNotification)
+                if (!!unreadCount?.unreadCount) {
+                  clearAllNoti();
+                }
+              }}
             />
-            {notifications?.totalCount && (
-              <NumberNotification count={notifications?.totalCount} />
+            {!!unreadCount?.unreadCount && (
+              <NumberNotification count={unreadCount?.unreadCount} />
             )}
             {openNotification && (
               <NotificationContent
