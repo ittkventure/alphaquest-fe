@@ -360,16 +360,7 @@ const TableRow: FC<TableRowTypes> = ({
           </div>
         </div>
       </div>
-      <div
-        className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center "
-        onClick={
-          onClickAction
-            ? () => {
-                if (itemState.name !== "UNKNOWN") onClickAction();
-              }
-            : () => {}
-        }
-      >
+      <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{itemState.trendingScore}</p>
         </div>
