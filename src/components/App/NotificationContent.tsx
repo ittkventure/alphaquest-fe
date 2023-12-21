@@ -119,7 +119,7 @@ export default function NotificationContent({
             </div>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col max-lg:overflow-auto">
           {notifications?.items?.map((notification: any, index) => (
             <div
               key={notification?.id}

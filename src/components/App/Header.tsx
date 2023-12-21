@@ -165,7 +165,7 @@ const Header: FC<IHeader> = ({ title }) => {
                 className="h-7 w-7 transition-all duration-300"
                 onClick={() => setOpenSearchMobile(false)}
               />
-              <div className="relative" ref={searchRef}>
+              <div className="relative max-lg:overflow-auto" ref={searchRef}>
                 <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-2 left-[5px]" />
                 <input
                   className="w-full bg-secondary-600 py-2 pl-8 text-sm"
