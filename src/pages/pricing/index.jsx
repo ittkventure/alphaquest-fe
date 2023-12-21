@@ -95,8 +95,8 @@ const Subscription = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      if (error?.response?.data?.error?.message) {
-        toast.error(error?.response?.data?.error?.message);
+      if (error?.response?.data?.error?.data?.messsage) {
+        toast.error(error?.response?.data?.error?.data?.messsage);
       } else {
         toast.error("Error when payment, please try again!");
       }

@@ -49,18 +49,20 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
     []
   );
 
-  const [isRefetch, setIsRefetch] = useState(false)
+  const [isRefetch, setIsRefetch] = useState(false);
 
   const topAlphaQuery = useQuery({
     queryKey: [
-      isWatchList ? "getTopByEarlyDiscoveriesWatchList" : "getTopByEarlyDiscoveries",
+      isWatchList
+        ? "getTopByEarlyDiscoveriesWatchList"
+        : "getTopByEarlyDiscoveries",
       pageNumber,
       timeFrame,
       authState?.access_token,
       followers,
     ],
     queryFn: () =>
-     apiTwitter.getTopByEarlyDiscoveries(
+      apiTwitter.getTopByEarlyDiscoveries(
         {
           pageNumber: pageNumber,
           pageSize: 20,
@@ -76,20 +78,17 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
 
   useEffect(() => {
     if (!topAlphaQuery.data?.items) return;
-    if(isRefetch) {
-      setIsRefetch(false)
+    if (isRefetch || pageNumber == 1) {
+      setIsRefetch(false);
       setTopAlphaListState(topAlphaQuery.data?.items);
       return;
     }
-    if (
-      topAlphaQuery.data?.items.length === 0 &&
-      UserPayType.PREMIUM === accountExtendDetail?.currentPlanKey
-    ) {
+    if (topAlphaQuery.data?.items.length === 0) {
       setHasLoadMore(false);
       setTopAlphaListState((prev) => [...prev, ...topAlphaQuery.data?.items]);
       return;
     }
-    
+
     setTopAlphaListState((prev) => [...prev, ...topAlphaQuery.data?.items]);
   }, [topAlphaQuery.data]);
 
@@ -119,18 +118,20 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
     [setPageLoadMore]
   );
 
-  const onRefetch = () => { 
+  const onRefetch = () => {
     setHasLoadMore(true);
     setPageNumber(1);
     setIsRefetch(true);
     topAlphaQuery.refetch();
-  }
+  };
 
   return (
-    <div className={classNames("tooltipBoundary", {
-      "px-0": isWatchList,
-      "px-6": !isWatchList,
-    })}>
+    <div
+      className={classNames("tooltipBoundary", {
+        "px-0": isWatchList,
+        "px-6": !isWatchList,
+      })}
+    >
       <div className="flex max-lg:flex-col max-lg:items-center justify-between">
         <div>
           <div className="flex items-center gap-1">
@@ -219,7 +220,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
       </div>
 
       <div className="mt-6">
-        {topAlphaListState.length > 0 && (
+        {
           <TableTopAlphaHunterByDiscoveries
             timeFrame={timeFrame}
             topAlphaList={topAlphaListState}
@@ -227,7 +228,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
             refetch={onRefetch}
             isWatchList={isWatchList}
           />
-        )}
+        }
         {topAlphaQuery.isLoading && (
           <div className="flex justify-center items-center mt-8">
             <Spinner />
@@ -237,7 +238,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
           <div className="h-7 w-full" ref={triggerElement}></div>
         ) : null}
       </div>
-      <UpgradeProButton />
+      <UpgradeProButton length={topAlphaListState.length} />
     </div>
   );
 };

@@ -30,6 +30,7 @@ import {
 import { formatSelectOptions, formatUrl } from "@/utils/string";
 import { WatchListTypes } from "@/api-client/twitter";
 import Spinner from "@/components/Spinner";
+import { toast } from "react-toastify";
 
 interface NarrativesItemProps {
   data: any;
@@ -59,6 +60,11 @@ const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
     }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
     onSuccess: () => {
       refetch && refetch();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     },
   });
 
