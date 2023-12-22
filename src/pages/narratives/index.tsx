@@ -50,6 +50,9 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
   timeFrame,
   refetch,
 }) => {
+  const { accountExtendDetail, authState, setTypePaymentAction } =
+    useContext(AuthContext);
+
   return data?.items?.map((item: any, index: number) => {
     const addWatchListMutate = useMutation({
       mutationFn: (params: {
@@ -140,6 +143,10 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
 
             <button
               onClick={() => {
+                if (!authState?.access_token) {
+                  onClickPaymentTrial();
+                  return;
+                }
                 addWatchListMutate.mutate({
                   refId: item?.keyword,
                   type: WatchListTypes.NARRATIVE,
@@ -372,22 +379,24 @@ const ChartPage = () => {
                 refetch={refetch}
               />
             )}
-            <div className="col-span-full">
-              <TableFooter
-                paginationInfo={{
-                  currentPage: page,
-                  pageNumber: page,
-                  pageSize: 10,
-                  totalPages: data?.totalCount
-                    ? Math.ceil(data?.totalCount / 20)
-                    : 0,
-                  totalElements: data?.totalCount ?? 0,
-                }}
-                onChange={(page) => {
-                  setPage(page);
-                }}
-              />
-            </div>
+            {accountExtendDetail?.currentPlanKey === TypePayment.PRO && (
+              <div className="col-span-full">
+                <TableFooter
+                  paginationInfo={{
+                    currentPage: page,
+                    pageNumber: page,
+                    pageSize: 10,
+                    totalPages: data?.totalCount
+                      ? Math.ceil(data?.totalCount / 20)
+                      : 0,
+                    totalElements: data?.totalCount ?? 0,
+                  }}
+                  onChange={(page) => {
+                    setPage(page);
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
       </AppLayout>

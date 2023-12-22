@@ -101,22 +101,24 @@ const TableRow: FC<TableRowTypes> = ({
   }, [item]);
 
   const onAddItemToWatchList = async () => {
-    // if (!authState?.access_token) {
-    //   mixpanelTrack(event_name_enum.inbound, {
-    //     url: "/login",
-    //   });
-    //   router.push("/login");
-    //   return;
-    // }
-    // if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-    //   setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-    //   mixpanelTrack(event_name_enum.inbound, {
-    //     url: "/pricing",
-    //   });
-    //   router.push("/pricing?action=open");
-
-    //   return;
-    // }
+    if (!authState?.access_token) {
+      mixpanelTrack(event_name_enum.upgrade_to_pro, {
+        url: router.pathname,
+      });
+      if (authState) {
+        setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+        mixpanelTrack(event_name_enum.inbound, {
+          url: "/pricing",
+        });
+        router.push("/pricing?action=open");
+      } else {
+        mixpanelTrack(event_name_enum.inbound, {
+          url: "/sign-up",
+        });
+        setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+        router.push("/sign-up");
+      }
+    }
     try {
       setIsLoading(true);
 
