@@ -17,6 +17,9 @@ type NotificationContentProps = {
   closeNotification: () => void;
 };
 
+const DEFAULT_NOTI_CONTENT = "Add any narrative, alpha hunter or project to receive notification Learn more about watchlists and notifications here";
+const DEFAULT_REDIRECT_LINK = "https://docs.alphaquest.io/features/watchlist-and-notifications";
+
 export default function NotificationContent({
   closeNotification,
 }: NotificationContentProps) {
@@ -43,7 +46,8 @@ export default function NotificationContent({
     [isLoading, hasNextPage]
   );
 
-  const redirectByType = (type: NOTIFICATION_TYPE, ref: string) => {
+  const redirectByType = (type: NOTIFICATION_TYPE, ref: string, isBlankMesseage?: boolean) => {
+    if (!isBlankMesseage) router.push(DEFAULT_REDIRECT_LINK);
     if (!ref) return;
     if (type === NOTIFICATION_TYPE.AlphaHunterFollowProject)
       router.push(`/alpha-hunter/${ref}?follow`);
@@ -58,12 +62,12 @@ export default function NotificationContent({
 
   const handleNotiItem = async (notification: Notification) => {
     if (!notification?.unread)
-      redirectByType(notification?.type, notification?.ref2);
+      redirectByType(notification?.type, notification?.ref2, !!notification?.message);
     if (notification?.unread) {
       try {
         await checkAsReadNotification(notification?.id);
         await refetch();
-        redirectByType(notification?.type, notification?.ref2);
+        redirectByType(notification?.type, notification?.ref2, !!notification?.message);
       } catch (error: any) {
         if (error?.response?.data?.error?.data?.messsage) {
           toast.error(error?.response?.data?.error?.data?.messsage);
@@ -155,7 +159,7 @@ export default function NotificationContent({
                   <span className="break-all">{notification?.title}</span>
                 </div>
                 <span className="text-white text-base">
-                  {notification?.message}
+                  {notification?.message || DEFAULT_NOTI_CONTENT}
                 </span>
                 <span className="text-xs text-secondary-400">
                   {calculateTimeAgo(notification?.createdAt)}
