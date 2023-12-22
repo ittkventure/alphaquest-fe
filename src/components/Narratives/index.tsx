@@ -52,6 +52,9 @@ const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
   refetch,
   item,
 }) => {
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
+
   const addWatchListMutate = useMutation({
     mutationFn: (params: {
       refId: string;
@@ -143,6 +146,10 @@ const NarrativesItemChild: FC<NarrativesItemChildProps> = ({
 
           <button
             onClick={() => {
+              if (!authState?.access_token) {
+                onClickPaymentTrial();
+                return;
+              }
               addWatchListMutate.mutate({
                 refId: item?.keyword,
                 type: WatchListTypes.NARRATIVE,
@@ -234,7 +241,8 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
 };
 
 const Narratives = () => {
-  const { authState, setTypePaymentAction } = useContext(AuthContext);
+  const { authState, setTypePaymentAction, accountExtendDetail } =
+    useContext(AuthContext);
   const router = useRouter();
   const [page, setPage] = useState(1);
   const searchInputRef = useRef<any>(null);
@@ -374,22 +382,24 @@ const Narratives = () => {
               refetch={refetch}
             />
           )}
-          <div className="col-span-full">
-            <TableFooter
-              paginationInfo={{
-                currentPage: page,
-                pageNumber: page,
-                pageSize: 10,
-                totalPages: data?.totalCount
-                  ? Math.ceil(data?.totalCount / 20)
-                  : 0,
-                totalElements: data?.totalCount ?? 0,
-              }}
-              onChange={(page) => {
-                setPage(page);
-              }}
-            />
-          </div>
+          {accountExtendDetail?.currentPlanKey === TypePayment.PRO && (
+            <div className="col-span-full">
+              <TableFooter
+                paginationInfo={{
+                  currentPage: page,
+                  pageNumber: page,
+                  pageSize: 10,
+                  totalPages: data?.totalCount
+                    ? Math.ceil(data?.totalCount / 20)
+                    : 0,
+                  totalElements: data?.totalCount ?? 0,
+                }}
+                onChange={(page) => {
+                  setPage(page);
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

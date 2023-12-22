@@ -13,6 +13,9 @@ import { apiTwitter } from "@/api-client";
 import Spinner2 from "@/components/Spinner2";
 import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
+import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
+import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { useRouter } from "next/router";
 
 interface IAlphaItemProps {
   item: TopAlphaItem;
@@ -28,7 +31,9 @@ const AlphaItem: FC<IAlphaItemProps> = ({
   isWatchList,
 }) => {
   const [heart, setHeart] = useState(item.inWatchlist);
-
+  const router = useRouter();
+  const { authState, accountExtendDetail, setTypePaymentAction } =
+    useContext(AuthContext);
   const addWatchListAHMutate = useMutation({
     mutationFn: (params: {
       refId: string;
@@ -45,6 +50,25 @@ const AlphaItem: FC<IAlphaItemProps> = ({
       );
     },
   });
+
+  const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing?action=open",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/pricing?action=open");
+    } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/sign-up");
+    }
+  };
 
   return isWatchList && !heart ? null : (
     <div className="flex flex-row items-center py-3 ">
@@ -67,6 +91,10 @@ const AlphaItem: FC<IAlphaItemProps> = ({
           <p>{item.numberOfEarlyDiscoveries}</p>
           <button
             onClick={() => {
+              if (!authState?.access_token) {
+                onClickPaymentTrial();
+                return;
+              }
               addWatchListAHMutate.mutate({
                 refId: item.userId,
                 type: WatchListTypes.ALPHA_HUNTER,

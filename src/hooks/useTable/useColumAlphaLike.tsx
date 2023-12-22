@@ -31,6 +31,26 @@ const useColumAlphaLike = ({
   const { accountExtendDetail, authState, setTypePaymentAction } =
     useContext(AuthContext);
   const router = useRouter();
+
+  const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing?action=open",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/pricing?action=open");
+    } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/sign-up");
+    }
+  };
+
   const onAddItemToWatchList = async (userId: string, name: string) => {
     // if (!authState?.access_token) {
     //   mixpanelTrack(event_name_enum.inbound, {
@@ -50,6 +70,10 @@ const useColumAlphaLike = ({
     // }
     try {
       setIsLoading(true);
+      if (!authState?.access_token) {
+        onClickPaymentTrial();
+        return;
+      }
 
       if (authState?.access_token) {
         await apiTwitter.addWatchList(userId, WatchListTypes.PROJECT);

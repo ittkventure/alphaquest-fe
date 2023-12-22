@@ -233,6 +233,10 @@ const ProjectDetail: FC<IProjectDetail> = ({
     // }
     try {
       setIsLoadingHeart(true);
+      if (!authState?.access_token) {
+        onClickPaymentTrial();
+        return;
+      }
 
       if (authState?.access_token) {
         await apiTwitter.addWatchList(
