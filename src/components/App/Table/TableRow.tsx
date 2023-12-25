@@ -252,7 +252,7 @@ const TableRow: FC<TableRowTypes> = ({
         </div>
         <div className="mr-4">
           <div
-            className={`flex items-center ${
+            className={`flex max-lg:flex-col max-lg:items-start max-lg:gap-1 items-center ${
               itemState.name !== "UNKNOWN"
                 ? ""
                 : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
@@ -272,7 +272,7 @@ const TableRow: FC<TableRowTypes> = ({
                 >
                   {itemState.name}
                 </p>
-                <div className="flex">
+                <div className="flex ">
                   <button
                     onClick={() => {
                       mixpanelTrack(event_name_enum.outbound, {
@@ -331,7 +331,7 @@ const TableRow: FC<TableRowTypes> = ({
               {itemState.description}
             </p>
           </div>
-          <div className="flex">
+          <div className="flex flex-wrap">
             <p
               onClick={
                 onClickAction

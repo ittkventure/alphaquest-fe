@@ -395,9 +395,9 @@ const AppContent: FC<AppContentTypes> = ({
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
       </div>
-      <div className="hidden max-lg:block">
+      {/* <div className="hidden max-lg:block">
         <TabApp onChangeTab={_handleSelectTab} />
-      </div>
+      </div> */}
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
