@@ -71,13 +71,18 @@ const SideMenu = () => {
   ]);
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
-    if(router.pathname?.indexOf('watchlist') !== -1 && item.key === 'narratives') return "hover:bg-secondary-600";
-    if(router.pathname?.indexOf(item.key) !== -1 && item.key === 'watchlist') return "bg-success-500";
+    if (
+      router.pathname?.indexOf("watchlist") !== -1 &&
+      item.key === "narratives"
+    )
+      return "hover:bg-secondary-600";
+    if (router.pathname?.indexOf(item.key) !== -1 && item.key === "watchlist")
+      return "bg-success-500";
     if (tab) {
       if (tab === item.key) return "bg-success-500";
       return "hover:bg-secondary-600";
     }
-    
+
     if (router.pathname?.includes(item.key)) return "bg-success-500";
     return "hover:bg-secondary-600";
   };
@@ -191,12 +196,9 @@ const SideMenu = () => {
             className={classNames(
               "p-[13px] flex justify-between items-center w-full transition-all duration-300",
               {
-                "bg-success-500": router.pathname.includes(
-                  "/alpha-hunters"
-                ),
-                "hover:bg-secondary-600": !router.pathname.includes(
-                  "/alpha-hunters"
-                ),
+                "bg-success-500": router.pathname.includes("/alpha-hunters"),
+                "hover:bg-secondary-600":
+                  !router.pathname.includes("/alpha-hunters"),
               }
             )}
           >
@@ -248,13 +250,13 @@ const SideMenu = () => {
             <Link
               onClick={() => {
                 mixpanelTrack(event_name_enum.outbound, {
-                  url: "https://discord.gg/EsMqKqjKB2",
+                  url: "https://docs.alphaquest.io/",
                 });
               }}
-              href={"https://discord.gg/EsMqKqjKB2"}
+              href={"https://docs.alphaquest.io/"}
               target="_blank"
             >
-              Discord
+              Docs
             </Link>
           </li>
         </ul>
