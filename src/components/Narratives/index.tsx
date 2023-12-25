@@ -31,6 +31,7 @@ import { formatSelectOptions, formatUrl } from "@/utils/string";
 import { WatchListTypes } from "@/api-client/twitter";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 interface NarrativesItemProps {
   data: any;
@@ -382,7 +383,7 @@ const Narratives = () => {
               refetch={refetch}
             />
           )}
-          {accountExtendDetail?.currentPlanKey === TypePayment.PRO && (
+          {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM && (
             <div className="col-span-full">
               <TableFooter
                 paginationInfo={{
