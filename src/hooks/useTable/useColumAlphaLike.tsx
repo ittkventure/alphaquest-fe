@@ -15,6 +15,7 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import { listUrl } from "@/components/App/Table/TableRow";
 import { TwitterIcon } from "@/assets/icons";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IAlphaHunterFollowers {
   isLinkToAlphaHunter?: boolean;
@@ -30,28 +31,52 @@ const useColumAlphaLike = ({
   const { accountExtendDetail, authState, setTypePaymentAction } =
     useContext(AuthContext);
   const router = useRouter();
-  const onAddItemToWatchList = async (userId: string, name: string) => {
-    if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/login",
-      });
-      router.push("/login");
-      return;
-    }
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/pricing",
-      });
-      router.push("/pricing?action=open");
 
-      return;
+  const onClickPaymentTrial = () => {
+    mixpanelTrack(event_name_enum.upgrade_to_pro, {
+      url: router.pathname,
+    });
+    if (authState) {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing?action=open",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/pricing?action=open");
+    } else {
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/sign-up",
+      });
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+      router.push("/sign-up");
     }
+  };
+
+  const onAddItemToWatchList = async (userId: string, name: string) => {
+    // if (!authState?.access_token) {
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/login",
+    //   });
+    //   router.push("/login");
+    //   return;
+    // }
+    // if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+    //   setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/pricing",
+    //   });
+    //   router.push("/pricing?action=open");
+
+    //   return;
+    // }
     try {
       setIsLoading(true);
+      if (!authState?.access_token) {
+        onClickPaymentTrial();
+        return;
+      }
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId, authState?.access_token);
+        await apiTwitter.addWatchList(userId, WatchListTypes.PROJECT);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${name} to watchlist`,
         });
@@ -60,8 +85,11 @@ const useColumAlphaLike = ({
         toast.warning("Please login for use this feature");
       }
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     }
   };
 

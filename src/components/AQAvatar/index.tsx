@@ -12,7 +12,7 @@ const AQAvatar = () => {
   const { accountExtendDetail } = useContext(AuthContext);
 
   return (
-    <Link
+    <a
       onClick={() => {
         mixpanelTrack(event_name_enum.inbound, { url: "/account-details" });
       }}
@@ -49,7 +49,7 @@ const AQAvatar = () => {
           ) : null}
         </div>
       </div>
-    </Link>
+    </a>
   );
 };
 

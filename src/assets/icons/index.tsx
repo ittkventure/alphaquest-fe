@@ -41,6 +41,13 @@ import CoinWhiteIcon from "./coin-white-icon.svg";
 import CoinBlackIcon from "./coin-black-icon.svg";
 import ChessKingHIcon from "./chess-king-icon-h.svg";
 
+// Notification Icon
+import NotificationHeader from "./notification_header.svg";
+import AlphaHunterIcon from "./alpha-hunter-icon.svg";
+import ProjectIcon from "./project-icon.svg";
+import InfoIcon2 from "./info-icon.svg";
+import NarrativesIcon from "./narratives-icon.svg";
+
 export {
   QuoteIcon,
   DocumentTextIcon,
@@ -81,4 +88,9 @@ export {
   CoinBlackIcon,
   CoinWhiteIcon,
   ChessKingHIcon,
+  NotificationHeader,
+  AlphaHunterIcon,
+  ProjectIcon,
+  InfoIcon2,
+  NarrativesIcon,
 };

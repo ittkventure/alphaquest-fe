@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -10,7 +11,6 @@ import Header from "./Header";
 import MonthSelect from "./MonthSelect";
 import SelectCustom, { OptionType } from "../common/Select";
 import TableContent from "./Table/TableContent";
-import TabApp from "./TabApp";
 import ApiTwitter from "@/api-client/twitter";
 import {
   SortByType,
@@ -22,14 +22,22 @@ import { useRouter } from "next/router";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
-import { CrownIcon } from "@/assets/icons";
-import { initListSort } from "@/utils/list";
+import { CrownIcon, InfoIcon } from "@/assets/icons";
+import { initListSort, initListSortForWatchlist } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { Tab } from "@headlessui/react";
+import classNames from "classnames";
+import Narratives from "../Narratives";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import TopAlphaHunterByDiscoveries from "../TopAlphaHunterByDiscoveries";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+
+type TabTypes = "narratives" | "projects" | "alpha-hunters";
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
-  tab?: "watchlist" | "trending" | "newest" | string;
+  tab?: TabTypes;
 }
 
 const Watchlist: FC<WatchlistTypes> = ({
@@ -40,14 +48,18 @@ const Watchlist: FC<WatchlistTypes> = ({
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+  const [sortByLabel, setSortByLabel] = useState<string>("Date added");
+  const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [newest, setNewest] = useState<string>(
-    tab ? tab?.toString() : "trending"
-  );
+
+  const [tabSelected, setTabSelected] = useState<TabTypes>(tab ?? "narratives");
+
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
-  const [sortBy, setSortBy] = useState<SortByType>("SCORE");
+  const [sortBy, setSortBy] = useState<SortByType>(
+    "WATCHLIST_MOST_RECENT_DATE_ADDED"
+  );
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -63,6 +75,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   const [chainSelected, setChainSelected] = useState<OptionType>();
   const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     setFirstCalled(true);
@@ -73,7 +86,7 @@ const Watchlist: FC<WatchlistTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab, accountExtendDetail]);
+  }, [accountExtendDetail]);
 
   useEffect(() => {
     fetchData();
@@ -93,7 +106,14 @@ const Watchlist: FC<WatchlistTypes> = ({
   useEffect(() => {
     if (firstCalled) fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [timeFrame, accountExtendDetail, chainSelected, categorySelected, sortBy]);
+  }, [
+    timeFrame,
+    accountExtendDetail,
+    chainSelected,
+    categorySelected,
+    sortBy,
+    keyword,
+  ]);
 
   const onClickPaymentTrial = () => {
     mixpanelTrack(event_name_enum.upgrade_to_pro, {
@@ -116,11 +136,6 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const fetchData = async (currentTab?: string) => {
     try {
-      if (
-        accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-        !authState?.access_token
-      )
-        return;
       const tabCheck = currentTab ?? tab;
       setIsLoading(true);
       setErrorMsg("");
@@ -136,6 +151,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           newest: false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword,
         },
         authState?.access_token ?? ""
       );
@@ -164,7 +180,6 @@ const Watchlist: FC<WatchlistTypes> = ({
 
   const fetchDataLoadMore = async () => {
     try {
-      if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) return;
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
@@ -177,6 +192,7 @@ const Watchlist: FC<WatchlistTypes> = ({
           newest: false,
           categories: categorySelected?.code ? [categorySelected.code] : [],
           chains: chainSelected?.code ? [chainSelected.code] : [],
+          searchText: keyword,
         },
         authState?.access_token ?? ""
       );
@@ -207,13 +223,16 @@ const Watchlist: FC<WatchlistTypes> = ({
   const _handleSelectTab = (tabIndex: number) => {
     switch (tabIndex) {
       case 0:
-        setNewest("trending");
+        setTabSelected("narratives");
+        router.push("/watchlist/narratives");
         return;
       case 1:
-        setNewest("newest");
+        setTabSelected("projects");
+        router.push("/watchlist/projects");
         return;
       default:
-        setNewest("watchlist");
+        setTabSelected("alpha-hunters");
+        router.push("/watchlist/alpha-hunters");
         return;
     }
   };
@@ -236,17 +255,14 @@ const Watchlist: FC<WatchlistTypes> = ({
     [setPageLoadMore]
   );
 
-  const onRefreshTable = (userId: string) => {
+  const onRefreshTable = () => {
     const tcAfterRemove = Number(totalCount) - 1;
     setTotalCount(tcAfterRemove.toString());
+    fetchData();
   };
 
   const _renderTable = () => {
-    if (
-      accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !authState?.access_token
-    )
-      return "";
+    if (!authState?.access_token) return "";
     if (isLoading) return null;
     if (listItems.length === 0 && !errorMsg)
       return <p className="text-center">No data.</p>;
@@ -254,7 +270,7 @@ const Watchlist: FC<WatchlistTypes> = ({
       <TableContent
         initListRows={listItems ?? []}
         isAnimation={true}
-        // onRefreshTable={onRefreshTable}
+        onRefreshTable={onRefreshTable}
       />
     );
   };
@@ -271,50 +287,39 @@ const Watchlist: FC<WatchlistTypes> = ({
     } catch (error) {}
   };
 
-  const renderDes = () => {
-    if (
-      accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !authState?.access_token
-    )
-      return "";
+  const renderUpBtn = (length: number) => {
+    return accountExtendDetail?.currentPlanKey === UserPayType.FREE
+      ? length >= 10 && (
+          <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
+            <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
+              <p className="mb-4">Upgrade account for full access</p>
 
-    return (
-      <div className="flex items-center max-xl:flex-col max-lg:mt-2">
-        <div className="flex justify-start">
-          <p>{totalCount} projects in your watchlist</p>
-        </div>
-      </div>
-    );
-  };
-
-  const renderUpBtn = () => {
-    if (router.pathname === "/watchlist/projects") return null;
-    return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !accountExtendDetail?.currentPlanKey ? (
-      <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
-        <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-          <p className="mb-4">Upgrade account to see all</p>
-
-          <button
-            onClick={onClickPaymentTrial}
-            className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
-          >
-            <Image
-              src={CrownIcon}
-              width={17}
-              height={14}
-              alt="crown-icon"
-              className="mr-2"
-            />
-            Start 7-day trial
-          </button>
-        </div>
-      </div>
-    ) : null;
+              <button
+                onClick={onClickPaymentTrial}
+                className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+              >
+                <Image
+                  src={CrownIcon}
+                  width={17}
+                  height={14}
+                  alt="crown-icon"
+                  className="mr-2"
+                />
+                Start 7-day trial
+              </button>
+            </div>
+          </div>
+        )
+      : null;
   };
 
   const _renderUpPro = () => {
-    if (accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM) return;
+    if (
+      accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
+      accountExtendDetail?.currentPlanKey === UserPayType.FREE
+    )
+      return;
+
     return (
       <div className="w-full mt-5 max-lg:mt-10 flex flex-col justify-center items-center z-10">
         <div className="flex justify-center items-center mb-4">
@@ -341,22 +346,162 @@ const Watchlist: FC<WatchlistTypes> = ({
     );
   };
 
+  useEffect(() => {
+    console.log("totalCount", totalCount);
+  }, [totalCount]);
+
+  const renderDes = () => {
+    if (
+      accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM &&
+      accountExtendDetail?.currentPlanKey !== UserPayType.FREE
+    )
+      return;
+    return (
+      <div className="flex items-center max-xl:flex-col max-lg:mt-2">
+        <div className="flex flex-col justify-start max-lg:w-[90vw]">
+          <div className="flex gap-2">
+            <p>
+              {totalCount.toLocaleString()} Projects added to your
+              watchlist sorted by
+            </p>
+            <MonthSelect
+              onChangeSelect={(month) => {
+                mixpanelTrack(event_name_enum.on_sort_project, {
+                  url: router.pathname,
+                  value_sort:
+                    (month.value as SortByType) ??
+                    "WATCHLIST_MOST_RECENT_DATE_ADDED",
+                  message:
+                    "sorted by" + (month.value as SortByType) ??
+                    "WATCHLIST_MOST_RECENT_DATE_ADDED",
+                });
+                setSortBy(
+                  (month.value as SortByType) ??
+                    "WATCHLIST_MOST_RECENT_DATE_ADDED"
+                );
+                setSortByLabel(month.label ?? "Date added");
+              }}
+              defaultData={{
+                value: sortBy,
+                label: sortByLabel,
+              }}
+              listData={initListSortForWatchlist as Array<any>}
+            />
+          </div>
+          <div className="flex mt-2">
+            <p className="mr-2">
+              with # of new Alpha Hunters followed calculated during last
+            </p>
+
+            <MonthSelect
+              onChangeSelect={(month) => {
+                mixpanelTrack(event_name_enum.on_filter_project, {
+                  url: router.pathname,
+                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                  message:
+                    "projects discovered during the last " +
+                      (month.value as TimeFrameTypes) ?? "ALL",
+                });
+                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
+                setTimeLabel(month.label ?? "ALL");
+              }}
+              defaultData={{
+                value: timeFrame,
+                label: timeLabel,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const selectedIndex = useMemo(() => {
+    switch (tabSelected) {
+      case "narratives":
+        return 0;
+      case "projects":
+        return 1;
+      default:
+        return 2;
+    }
+  }, [tabSelected]);
+
   return (
     <div className="w-full relative ">
-      {renderUpBtn()}
       <div className="p-6">
         <Header />
-        <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
+        <div className="h-[1px] bg-white bg-opacity-20 mt-4 max-lg:hidden" />
       </div>
-      <div className="hidden max-lg:block">
-        <TabApp onChangeTab={_handleSelectTab} />
-      </div>
-      {_renderUpPro()}
+      <Tab.Group selectedIndex={selectedIndex} onChange={_handleSelectTab}>
+        <Tab.List className=" mx-6 w-full border-b border-white/20">
+          <Tab>
+            {({ selected }) => (
+              /* Use the `selected` state to conditionally style the selected tab. */
+              <button
+                className={classNames(
+                  "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                  {
+                    "text-primary-500 border-b-[3px] border-primary-500":
+                      selected,
+                  }
+                )}
+              >
+                Narratives
+              </button>
+            )}
+          </Tab>
+          <Tab>
+            {({ selected }) => (
+              /* Use the `selected` state to conditionally style the selected tab. */
+              <button
+                className={classNames(
+                  "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                  {
+                    "text-primary-500 border-b-[3px] border-primary-500":
+                      selected,
+                  }
+                )}
+              >
+                Projects
+              </button>
+            )}
+          </Tab>
+          <Tab>
+            {({ selected }) => (
+              /* Use the `selected` state to conditionally style the selected tab. */
+              <button
+                className={classNames(
+                  "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                  {
+                    "text-primary-500 border-b-[3px] border-primary-500":
+                      selected,
+                  }
+                )}
+              >
+                Alpha Hunters
+              </button>
+            )}
+          </Tab>
+        </Tab.List>
+        <Tab.Panels>
+          <Tab.Panel className="py-6">
+            {_renderUpPro()}
 
-      <div className="px-6 pb-6 ">
-        <div className="flex max-lg:flex-col max-lg:items-center justify-between">
-          {renderDes()}
-          {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
+            {(accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
+              accountExtendDetail?.currentPlanKey === UserPayType.FREE) && (
+              <Narratives />
+            )}
+          </Tab.Panel>
+          <Tab.Panel className="py-6">
+            {_renderUpPro()}
+            {renderUpBtn(listItems.length)}
+
+            <div className="px-6 pb-6 ">
+              <div className="flex max-lg:flex-col max-lg:items-center justify-between">
+                {renderDes()}
+
+                {/* <div className="flex max-lg:items-center justify-between max-lg:mt-5">
             <div className="mr-3">
               <SelectCustom
                 placeholder="Chain - All"
@@ -372,30 +517,59 @@ const Watchlist: FC<WatchlistTypes> = ({
               />
             </div>
           </div> */}
-        </div>
+              </div>
 
-        <div className="mt-7 max-lg:mt-9">
-          {_renderTable()}
-          {errorMsg &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <p className="mt-10 text-center">{errorMsg}</p>
-          ) : null}
-          {isLoading &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <SkeletonLoading numberOfRow={10} />
-          ) : null}
-          {isLoadingMore &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <SkeletonLoading numberOfRow={3} />
-          ) : null}
-          {!isLoadingMore &&
-          !errorMsg &&
-          !isLoading &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <div className="h-7 w-full" ref={triggerElement}></div>
-          ) : null}
-        </div>
-      </div>
+              {(accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
+                accountExtendDetail?.currentPlanKey === UserPayType.FREE) && (
+                <div className="mt-7 max-lg:mt-9">
+                  <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
+                    <span>Project</span>
+                    <div className="flex items-center gap-1">
+                      <span>New KOLs followed</span>
+                      <div
+                        data-tooltip-id="info-tooltip-kol"
+                        className="cursor-pointer"
+                      >
+                        <Image
+                          src={InfoIcon}
+                          width={20}
+                          height={20}
+                          alt="icon"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {_renderTable()}
+                  {errorMsg ? (
+                    <p className="mt-10 text-center">{errorMsg}</p>
+                  ) : null}
+                  {isLoading ? <SkeletonLoading numberOfRow={10} /> : null}
+                  {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
+                  {!isLoadingMore && !errorMsg && !isLoading ? (
+                    <div className="h-7 w-full" ref={triggerElement}></div>
+                  ) : null}
+                </div>
+              )}
+            </div>
+          </Tab.Panel>
+          <Tab.Panel className="p-6">
+            {_renderUpPro()}
+            {(accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ||
+              accountExtendDetail?.currentPlanKey === UserPayType.FREE) && (
+              <TopAlphaHunterByDiscoveries isWatchList={true} />
+            )}
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
+
+      <ReactTooltip
+        id="info-tooltip-kol"
+        className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
+        place="bottom"
+        content={`Number of new Alpha Hunters who followed ${
+          timeLabel === "ALL" ? "all" : `last ${timeLabel}`
+        }. Click on the project to find out which Alpha Hunters are following it.`}
+      />
     </div>
   );
 };

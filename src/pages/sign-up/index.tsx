@@ -74,7 +74,7 @@ const SignUp = () => {
       handleLogged(res);
     } catch (error: any) {
       toast.error(
-        `${error?.response?.data?.error?.message ?? error?.message}`,
+        `${error?.response?.data?.error?.data?.messsage ?? error?.message}`,
         {}
       );
       setIsLoading(false);

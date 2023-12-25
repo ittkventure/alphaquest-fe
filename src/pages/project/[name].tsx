@@ -55,7 +55,7 @@ const ProjectPage: FC<Props> = ({ nameProject }) => {
             className={`fixed bottom-0 w-screen h-[200px] max-lg:pr-0 pr-64 z-[999]`}
           >
             <div className="w-full h-[200px] flex flex-col justify-center items-center bg-linear-backdrop">
-              <p className="mb-4">Upgrade account to see all</p>
+              <p className="mb-4">Upgrade account for full access</p>
 
               <button
                 onClick={onClickPaymentTrial}

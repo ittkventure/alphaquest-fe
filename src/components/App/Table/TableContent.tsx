@@ -42,6 +42,7 @@ const TableContent: FC<TableContentTypes> = ({
               setIsOpen(true);
             }}
             isShowWatchList={isShowWatchList}
+            onRefreshTable={onRefreshTable}
           />
         );
       })}

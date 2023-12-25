@@ -13,6 +13,14 @@ import {
   TwitterItem,
 } from "../types/TwitterType";
 import qs from "qs";
+import { TopAlphaResponse } from "@/types/topAlpha";
+import { getAccessToken } from "@/utils/access_token";
+
+export enum WatchListTypes {
+  PROJECT = "PROJECT",
+  NARRATIVE = "NARRATIVE",
+  ALPHA_HUNTER = "KOL",
+}
 
 class ApiTwitter extends ApiClientBase {
   constructor() {
@@ -148,6 +156,54 @@ class ApiTwitter extends ApiClientBase {
       {
         headers: {
           Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+  /**
+   * getTopByEarlyDiscoveries
+   */
+  public async getTopByEarlyDiscoveries(
+    data: {
+      pageNumber?: number;
+      pageSize?: number;
+      timeFrame: string;
+      numberOfEarlyDiscoveries: number;
+      watchlist?: boolean;
+    },
+    access_token: string
+  ): Promise<TopAlphaResponse> {
+    const res = await this.instance.get(
+      `https://api.alphaquest.io/api/app/twitter-alpha-hunter/top-by-early-discoveries?${qs.stringify(
+        data
+      )}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * getAlphaHunterWatchList
+   */
+  public async getAlphaHunterWatchList(
+    data: {
+      pageNumber?: number;
+      pageSize?: number;
+      timeFrame: string;
+    },
+  ): Promise<TopAlphaResponse> {
+    const res = await this.instance.get(
+      `https://api.alphaquest.io/api/app/twitter-alpha-hunter/watchlist?${qs.stringify(
+        data
+      )}`,
+      {
+        headers: {
+          Authorization: "Bearer " +  getAccessToken(),
         },
       }
     );
@@ -349,7 +405,8 @@ class ApiTwitter extends ApiClientBase {
     timeframeCode?: string,
     keywordParam?: string,
     pageSizeParam?: number,
-    pageNumberParam?: number
+    pageNumberParam?: number,
+    watchlistParam?: boolean
   ): Promise<any[] | any> {
     const pageNumber = pageNumberParam ?? 1;
     const pageSize = pageSizeParam ?? 30;
@@ -362,6 +419,7 @@ class ApiTwitter extends ApiClientBase {
         pageSize,
         timeframe,
         keyword,
+        watchlist: watchlistParam,
       })}`,
       {
         headers: {
@@ -415,6 +473,26 @@ class ApiTwitter extends ApiClientBase {
       {
         headers: {
           Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
+   * addWatchList
+   */
+  public async addWatchList(
+    refId: string,
+    type: WatchListTypes,
+    subType?: string
+  ) {
+    const res = await this.instance.put(
+      subType ? `/api/app/watchlist/item/${refId}?type=${type}&subType=${subType}` : `/api/app/watchlist/item/${refId}?type=${type}`,
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + getAccessToken(),
         },
       }
     );

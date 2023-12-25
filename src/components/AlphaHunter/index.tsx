@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState, useRef } from "react";
 import { useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
@@ -13,6 +13,7 @@ import Spinner from "../Spinner";
 import TableCommon from "../TableCommon";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IAlphaHunter {
   userId?: string;
@@ -24,6 +25,8 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
   const [isLoadingHeart, setIsLoadingHeart] = useState<boolean>(false);
+  const changelogsRef: React.MutableRefObject<any> = useRef();
+  const followRef: React.MutableRefObject<any> = useRef();
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [pageUserChangeLog, setPageUserChangeLog] = useState(1);
@@ -32,6 +35,16 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
   const [isDescSortedLast, setIsDescSortedLast] = useState(false);
+
+  useEffect(() => {
+    if (router.asPath?.includes("follow"))
+      followRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (router.asPath?.includes("update"))
+      changelogsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  });
 
   const listEarlyFollower = useQuery(
     [
@@ -123,27 +136,27 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const { changeLogs } = useColumTwitterChangeLogs();
 
   const onAddItemToWatchList = async () => {
-    if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/login",
-      });
-      router.push("/login");
-      return;
-    }
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/pricing",
-      });
-      router.push("/pricing?action=open");
+    // if (!authState?.access_token) {
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/login",
+    //   });
+    //   router.push("/login");
+    //   return;
+    // }
+    // if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+    //   setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/pricing",
+    //   });
+    //   router.push("/pricing?action=open");
 
-      return;
-    }
+    //   return;
+    // }
     try {
       setIsLoadingHeart(true);
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(userId ?? "", authState?.access_token);
+        await apiTwitter.addWatchList(userId ?? "", WatchListTypes.PROJECT);
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             alphaHunterDetail.data?.name ?? "project"
@@ -154,8 +167,11 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         toast.warning("Please login for use this feature");
       }
       setIsLoadingHeart(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoadingHeart(false);
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     }
   };
 
@@ -261,7 +277,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
         </div>
 
-        <div>
+        <div ref={followRef}>
           <div className="flex items-center mt-14 ">
             <h3 className="text-lg font-workSansSemiBold  mr-3">
               Latest Following
@@ -297,7 +313,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
           </div>
         </div>
 
-        <div>
+        <div ref={changelogsRef}>
           <div className="flex items-center mt-14 ">
             <h3 className="text-lg font-workSansSemiBold mr-3">
               Twitter changelogs

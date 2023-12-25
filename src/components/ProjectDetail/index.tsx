@@ -1,4 +1,11 @@
-import React, { FC, memo, useContext, useEffect, useState } from "react";
+import React, {
+  FC,
+  memo,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
@@ -33,6 +40,7 @@ import useColumAlphaLike from "@/hooks/useTable/useColumAlphaLike";
 import LineChartCustom from "./LineChart";
 import TabButton from "./TabButton";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { WatchListTypes } from "@/api-client/twitter";
 
 interface IProjectDetail {
   userId?: string;
@@ -66,6 +74,19 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const [selectedDate, setSelectedDate] = useState<SelectedDateEnum>(
     SelectedDateEnum.sevenD
   );
+
+  const changelogsRef: React.MutableRefObject<any> = useRef();
+  const followRef: React.MutableRefObject<any> = useRef();
+
+  useEffect(() => {
+    if (router.asPath?.includes("follow"))
+      followRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (router.asPath?.includes("update"))
+      changelogsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+  });
 
   const listAlphaHunter = useQuery(
     [
@@ -194,30 +215,35 @@ const ProjectDetail: FC<IProjectDetail> = ({
   });
 
   const onAddItemToWatchList = async () => {
-    if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/login",
-      });
-      router.push("/login");
-      return;
-    }
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/pricing",
-      });
-      router.push("/pricing?action=open");
+    // if (!authState?.access_token) {
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/login",
+    //   });
+    //   router.push("/login");
+    //   return;
+    // }
+    // if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+    //   setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+    //   mixpanelTrack(event_name_enum.inbound, {
+    //     url: "/pricing",
+    //   });
+    //   router.push("/pricing?action=open");
 
-      return;
-    }
+    //   return;
+    // }
     try {
       setIsLoadingHeart(true);
+      if (!authState?.access_token) {
+        onClickPaymentTrial();
+        return;
+      }
 
       if (authState?.access_token) {
-        await apiTwitter.putToWatchList(
+        await apiTwitter.addWatchList(
           twitterDetail.data?.userId ?? "",
-          authState?.access_token
+          WatchListTypes.PROJECT
         );
+
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${
             twitterDetail.data?.name ?? "project"
@@ -230,8 +256,11 @@ const ProjectDetail: FC<IProjectDetail> = ({
         toast.warning("Please login for use this feature");
       }
       setIsLoadingHeart(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoadingHeart(false);
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
     }
   };
 
@@ -530,7 +559,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
 
         {/* Chart */}
 
-        <div className="bg-dark-800 py-9 px-6 mt-14">
+        <div className="bg-dark-800 py-9 px-6 mt-14" ref={followRef}>
           <div className="flex justify-between items-center mb-[51px] max-sm:flex-col">
             <div className="flex ">
               <p className=" text-[16px] font-workSansMedium mr-1">
@@ -626,7 +655,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
           />
         </div>
 
-        <div className="flex items-center mt-14 ">
+        <div className="flex items-center mt-14" ref={changelogsRef}>
           <h3 className="text-lg font-workSansSemiBold mr-3">
             Twitter changelogs
           </h3>
@@ -723,7 +752,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
           } bottom-0 w-full h-[200px] max-lg:pl-0 z-[999]`}
         >
           <div className="w-full h-[200px] flex flex-col justify-center items-center bg-linear-backdrop">
-            <p className="mb-4">Upgrade account to see all</p>
+            <p className="mb-4">Upgrade account for full access</p>
 
             <button
               onClick={onClickPaymentTrial}

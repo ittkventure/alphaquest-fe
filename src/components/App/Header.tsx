@@ -1,15 +1,25 @@
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
+import { NotificationHeader } from "@/assets/icons";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import NotificationContent from "./NotificationContent";
+import { useMutation, useQuery } from "react-query";
+import NumberNotification from "./NumberNotification";
+import {
+  checkTotalUnreadCount,
+  clearAllNotiByClick,
+} from "@/api-client/notification";
+import QuickSearch from "./QuickSearch";
 
 interface IHeader {
   title?: string;
@@ -19,8 +29,27 @@ const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
   const { tab } = router.query;
   const { setKeyword, keyword } = useContext(SearchContext);
+  const [searchString, setSearchString] = useState("");
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
+
+  const [openQuickSearch, setOpenQuickSearch] = useState(false);
+  let searchRef: React.MutableRefObject<any> = useRef();
+  const [openSeachMobile, setOpenSearchMobile] = useState(false);
+
+  const [openNotification, setOpenNotification] = useState(false);
+  let notiRef: React.MutableRefObject<any> = useRef();
+  useEffect(() => {
+    // click outside to close notification content
+    let handler = (e: any) => {
+      if (notiRef.current && !notiRef.current?.contains(e.target))
+        setOpenNotification(false);
+      if (!searchRef.current || !searchRef.current?.contains(e.target))
+        setOpenQuickSearch(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  });
 
   const onGoLogin = () => {
     mixpanelTrack(event_name_enum.inbound, {
@@ -55,16 +84,32 @@ const Header: FC<IHeader> = ({ title }) => {
   };
 
   const renderTitle = () => {
-    if (router.pathname === "/watchlist/projects") return "Watchlist";
+    if (router.pathname.indexOf("watchlist") !== -1) return "Watchlist";
     if (router.pathname.indexOf("/search") !== -1) return "Search";
-    if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunter";
+    if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunters";
     if (router.pathname.indexOf("/chain") !== -1) return "Chain";
     if (router.pathname.indexOf("/category") !== -1) return "Category";
+    if (router.pathname.indexOf("/alpha-hunters") !== -1)
+      return "Top Alpha Hunters by Early Discoveries";
 
     if (title) return title;
 
     return capitalized(tab ? tab?.toString() : "Trending");
   };
+
+  const { data: unreadCount, refetch: fetchUnreadCount } = useQuery(
+    "getUnreadCount",
+    checkTotalUnreadCount
+  );
+  const { mutate: clearAllNoti } = useMutation(
+    "clearAllNoti",
+    clearAllNotiByClick,
+    {
+      onSuccess() {
+        fetchUnreadCount();
+      },
+    }
+  );
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -83,25 +128,110 @@ const Header: FC<IHeader> = ({ title }) => {
         </div>
       </div>
 
-      <div className="flex justify-center items-center ">
-        <div className="relative mr-6  max-lg:mr-2 ml-4">
-          <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[6px] top-[11px] left-[5px]" />
+      <div className="flex justify-center items-center">
+        <div
+          className="relative mr-6 max-lg:mr-2 ml-4 max-lg:hidden"
+          ref={searchRef}
+        >
+          <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
           <input
-            className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7  max-lg:text-sm "
+            className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7 max-lg:text-sm "
             placeholder="Search"
-            onKeyPress={(event) => {
-              if (event.key === "Enter" && event.currentTarget.value) {
-                setKeyword(event.currentTarget.value ?? "");
-                router.push("/search?keyword=" + event.currentTarget.value);
-              }
+            value={searchString}
+            onChange={(e) => {
+              setSearchString(e?.target?.value);
+              setOpenQuickSearch(true);
             }}
+            // onKeyPress={(event) => {
+            //   if (event.key === "Enter" && event.currentTarget.value) {
+            //     setKeyword(event.currentTarget.value ?? "");
+            //     router.push("/search?keyword=" + event.currentTarget.value);
+            //   }
+            // }}
           />
+          {searchString?.length > 2 && openQuickSearch && (
+            <QuickSearch
+              searchString={searchString}
+              closeQuickSearch={() => setOpenQuickSearch(false)}
+              resetSearch={() => setSearchString("")}
+            />
+          )}
+        </div>
+        <div className="hidden max-lg:block">
+          {openSeachMobile ? (
+            <div className="fixed h-screen bg-dark-900 z-[1000] top-0 left-0 w-full flex flex-col gap-4 px-6 pt-6">
+              <XMarkIcon
+                className="h-7 w-7 transition-all duration-300"
+                onClick={() => setOpenSearchMobile(false)}
+              />
+              <div className="relative max-lg:overflow-auto" ref={searchRef}>
+                <MagnifyingGlassIcon className="w-5 h-5 text-white absolute top-2 left-[5px]" />
+                <input
+                  className="w-full bg-secondary-600 py-2 pl-8 text-sm"
+                  placeholder="Search"
+                  value={searchString}
+                  onChange={(e) => {
+                    setSearchString(e?.target?.value);
+                    setOpenQuickSearch(true);
+                  }}
+                  // onKeyPress={(event) => {
+                  //   if (event.key === "Enter" && event.currentTarget.value) {
+                  //     setKeyword(event.currentTarget.value ?? "");
+                  //     router.push("/search?keyword=" + event.currentTarget.value);
+                  //   }
+                  // }}
+                />
+                {searchString?.length > 2 && openQuickSearch && (
+                  <QuickSearch
+                    searchString={searchString}
+                    closeQuickSearch={() => setOpenQuickSearch(false)}
+                    resetSearch={() => setSearchString("")}
+                    closeSearchMobile={() => setOpenSearchMobile(false)}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <MagnifyingGlassIcon
+              className="w-6 h-6 text-white max-lg:mr-3"
+              onClick={() => {
+                setSearchString("");
+                setOpenSearchMobile(true);
+              }}
+            />
+          )}
         </div>
         {/* 
         <button id="search-btn">
           <MagnifyingGlassIcon className="w-5 h-5 text-white hidden max-lg:block" />
         </button> */}
+
+        {authState && (
+          <div className="lg:relative" ref={notiRef}>
+            <Image
+              src={NotificationHeader}
+              alt="notification header icon"
+              width={40}
+              height={40}
+              className="cursor-pointer"
+              onClick={() => {
+                setOpenNotification(!openNotification);
+                if (!!unreadCount?.unreadCount) {
+                  clearAllNoti();
+                }
+              }}
+            />
+            {!!unreadCount?.unreadCount && (
+              <NumberNotification count={unreadCount?.unreadCount} />
+            )}
+            {openNotification && (
+              <NotificationContent
+                closeNotification={() => setOpenNotification(false)}
+              />
+            )}
+          </div>
+        )}
 
         {!authState && (
           <div className="max-lg:flex-1 max-lg:hidden">

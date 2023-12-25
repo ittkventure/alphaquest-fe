@@ -110,6 +110,16 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
         }  hidden max-lg:block  overflow-hidden`}
       >
         <ul className="flex flex-col items-center text-base mt-3">
+          <li className="max-lg:flex-1 text-primary-500 transition-all duration-300">
+            <Link
+              onClick={() => {
+                mixpanelTrack(event_name_enum.inbound, { url: "/projects" });
+              }}
+              href="/narratives"
+            >
+              Narratives
+            </Link>
+          </li>
           <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
             <Link
               onClick={() => {
@@ -129,6 +139,9 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
             >
               Pricing
             </Link>
+          </li>
+          <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
+            <Link href="https://docs.alphaquest.io/">Docs</Link>
           </li>
 
           <li>
@@ -219,6 +232,9 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
               >
                 Pricing
               </Link>
+            </li>
+            <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300">
+              <Link href="https://docs.alphaquest.io/">Docs</Link>
             </li>
 
             <li>
