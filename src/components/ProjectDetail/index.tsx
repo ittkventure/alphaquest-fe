@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useState,
   useRef,
+  Fragment,
 } from "react";
 import Spinner from "../Spinner";
 import { HeartIcon } from "@heroicons/react/24/outline";
@@ -24,7 +25,16 @@ import { useRouter } from "next/router";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { toast } from "react-toastify";
-import { CrownIcon, InfoIcon, TwitterIcon, WebIcon } from "@/assets/icons";
+import {
+  CrownIcon,
+  FacebookWhiteIcon,
+  InfoIcon,
+  ShareIcon,
+  TelegramWhiteIcon,
+  TwitterIcon,
+  TwitterWhiteIcon,
+  WebIcon,
+} from "@/assets/icons";
 import Image from "next/image";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import { listUrl } from "../App/Table/TableRow";
@@ -41,6 +51,8 @@ import LineChartCustom from "./LineChart";
 import TabButton from "./TabButton";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { WatchListTypes } from "@/api-client/twitter";
+import { Menu, Transition } from "@headlessui/react";
+import { Copy } from "iconsax-react";
 
 interface IProjectDetail {
   userId?: string;
@@ -275,7 +287,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
     return (
       <button
         onClick={onAddItemToWatchList}
-        className="max-lg:mt-2 flex justify-center items-center w-7"
+        className=" flex justify-center items-center w-7"
         disabled={isLoadingHeart}
       >
         {isLoadingHeart ? (
@@ -284,9 +296,9 @@ const ProjectDetail: FC<IProjectDetail> = ({
             strokeWidth="1"
           />
         ) : isInWatchList ? (
-          <HeartIconSolid className="h-5 w-7 text-primary-500 transition-all duration-300" />
+          <HeartIconSolid className="h-5 w-7 max-lg:w-6 max-lg:h-6 text-primary-500 transition-all duration-300" />
         ) : (
-          <HeartIcon className="h-5 w-7 hover:text-success-500 transition-all duration-300" />
+          <HeartIcon className="h-5 w-7 max-lg:w-6 max-lg:h-6 hover:text-success-500 transition-all duration-300" />
         )}
       </button>
     );
@@ -326,19 +338,100 @@ const ProjectDetail: FC<IProjectDetail> = ({
 
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
-      <div className="flex px-[100px] max-lg:px-[10px] w-full">
+      <div className="flex max-lg:flex-col px-[100px] max-lg:px-[10px] w-full">
         {twitterDetail.isLoading || twitterDetail.isFetching ? (
           <div className="w-full flex justify-center items-center py-14">
             <Spinner />
           </div>
         ) : (
           <>
-            <img
-              className="h-20 w-20 rounded-[50%]"
-              src={twitterDetail.data?.profileImageUrl}
-            />
-            <div className="ml-5 w-full">
-              <div className="flex justify-between w-full">
+            <div className="flex justify-between">
+              <img
+                className="h-20 w-20 rounded-[50%]"
+                src={twitterDetail.data?.profileImageUrl}
+              />
+              <div className=" hidden max-lg:flex">
+                <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-[16px] max-lg:font-workSansSemiBold h-fit">
+                  <p>+{twitterDetail.data?.trendingScore}</p>
+                </div>
+                <div>{_renderHeartButton()}</div>
+                <div>
+                  <Menu as={"div"} className="relative inline-block text-left">
+                    <Menu.Button>
+                      <Image
+                        src={ShareIcon}
+                        width={24}
+                        height={24}
+                        alt="t-i"
+                        className="ml-2"
+                      />
+                    </Menu.Button>
+
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 bg-[#292C35] shadow-lg ring-1 ring-black/5 focus:outline-none">
+                        <div className="px-4 py-4">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <div className="flex items-center gap-4">
+                                <button className="px-2 pt-[6px] pb-[2px] border border-[#FAFAFA] border-opacity-20">
+                                  <FacebookShareButton url={shareUrl}>
+                                    <Image
+                                      src={FacebookWhiteIcon}
+                                      alt="t-i"
+                                      className="w-5 h-5"
+                                    />
+                                  </FacebookShareButton>
+                                </button>
+                                <button className="px-2 pt-[6px] pb-[2px] border border-[#FAFAFA] border-opacity-20">
+                                  <TwitterShareButton url={shareUrl}>
+                                    <Image
+                                      src={TwitterWhiteIcon}
+                                      alt="t-i"
+                                      className="w-5 h-5"
+                                    />
+                                  </TwitterShareButton>
+                                </button>
+                                <button className="px-2 pt-[6px] pb-[2px] border border-[#FAFAFA] border-opacity-20">
+                                  <TelegramShareButton
+                                    url={shareUrl}
+                                    className="p-0"
+                                  >
+                                    <Image
+                                      src={TelegramWhiteIcon}
+                                      alt="t-i"
+                                      className="w-5 h-5"
+                                    />
+                                  </TelegramShareButton>
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(shareUrl);
+                                    toast.success("Copied to clipboard");
+                                  }}
+                                  className="p-2 border border-[#FAFAFA] border-opacity-20"
+                                >
+                                  <Copy className="w-5 h-5" />
+                                </button>
+                              </div>
+                            )}
+                          </Menu.Item>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
+              </div>
+            </div>
+            <div className="ml-5 max-lg:mt-4 max-lg:ml-0 w-full">
+              <div className="flex  justify-between w-full">
                 <div className="w-full">
                   <div className="flex w-full justify-between">
                     <div className="flex items-center">
@@ -391,7 +484,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                         );
                       })}
                     </div>
-                    <div className="ml-20 max-lg:ml-[20px]">
+                    <div className="ml-20 max-lg:ml-[20px] max-lg:hidden">
                       <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
                         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
                           <p>+{twitterDetail.data?.trendingScore}</p>
@@ -405,7 +498,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                   </p>
 
                   <div className="flex justify-between mt-3 items-center">
-                    <div className="flex">
+                    <div className="flex flex-wrap gap-2">
                       {twitterDetail.data && twitterDetail.data?.categories
                         ? twitterDetail.data?.categories?.map(
                             (value, index) => (
@@ -425,7 +518,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                               >
                                 <p
                                   key={index.toString()}
-                                  className="text-sm border px-2 mr-2"
+                                  className="text-sm border px-2"
                                 >
                                   {value.name}
                                 </p>
@@ -458,7 +551,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
                         : null}
                     </div>
 
-                    <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center">
+                    <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center max-lg:hidden">
                       <p>Share: </p>
                       <div className="flex items-center">
                         <TelegramShareButton url={shareUrl} className="ml-1">
@@ -630,7 +723,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
             Earliest Alpha Hunter
           </h3>
         </div>
-        <div className="mt-5 mx-8">
+        <div className="mt-5 mx-8 max-lg:mx-0">
           <TableCommon
             columns={followers ?? []}
             data={listAlphaHunter.data?.items ?? []}
@@ -710,7 +803,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
             BETA
           </div>
         </div>
-        <div className="mt-5 mx-8">
+        <div className="mt-5 mx-8 max-lg:mx-0">
           <TableCommon
             columns={twitterAlphaLikeColumn ?? []}
             data={listTwitterProjectLike.data?.items ?? []}
