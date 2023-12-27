@@ -7,6 +7,7 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { useRouter } from "next/router";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import Link from "next/link";
+import useResponsive from "@/hooks/useWindowDimensions";
 interface IProjectsFollowedRowProps {
   projectsFollowedLastXDays: Array<ProjectsFollowedLastXday>;
 }
@@ -16,6 +17,7 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
 }) => {
   const router = useRouter();
   const { setTypePaymentAction, authState } = useContext(AuthContext);
+  const { isSm, isMd } = useResponsive();
 
   const onClickPaymentTrial = () => {
     mixpanelTrack(event_name_enum.upgrade_to_pro, {
@@ -70,8 +72,9 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                 arrowStyle={{ color: "#282E44" }}
                 on={["hover", "focus"]}
                 keepTooltipInside=".tooltipBoundary"
+                arrow={isMd || isSm ? false : true}
               >
-                <div className="bg-[#282E44] pt-4 pb-2 max-h-[377px] overflow-y-scroll overflow-x-hidden">
+                <div className="bg-[#282E44] pt-4 pb-2 max-h-[377px] max-lg:w-full max-lg:fixed max-lg:bottom-0 max-lg:right-0 overflow-y-scroll overflow-x-hidden">
                   {item.projects.map((project) => {
                     if (project.username === "UNKNOWN")
                       return (
