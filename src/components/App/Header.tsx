@@ -228,6 +228,7 @@ const Header: FC<IHeader> = ({ title }) => {
             {openNotification && (
               <NotificationContent
                 closeNotification={() => setOpenNotification(false)}
+                onClickPaymentTrial={accountExtendDetail?.currentPlanKey === UserPayType.FREE ? onClickPaymentTrial : undefined}
               />
             )}
           </div>
