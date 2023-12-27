@@ -69,7 +69,7 @@ const TableCustom: FC<ITableCustom> = ({
             className={`shadow relative w-full  ${
               authState?.access_token &&
               accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                ? "overflow-x-scroll no-scrollbar"
+                ? "overflow-x-scroll "
                 : ""
             }`}
             {...rest}
@@ -84,7 +84,7 @@ const TableCustom: FC<ITableCustom> = ({
               {...getTableProps()}
             >
               {isShowHeader && (
-                <thead className="bg-[#1F2536] sticky ">
+                <thead className="bg-[#1F2536]  ">
                   {
                     // Loop over the header rows
                     headerGroups.map(
@@ -107,7 +107,7 @@ const TableCustom: FC<ITableCustom> = ({
                                       : "text-center"
                                   }  ${
                                     column.render("Header") === "Accounts"
-                                      ? "sticky z-10 top-0 left-[-5px] bg-[#1F2536]"
+                                      ? " z-10 top-0 left-[-5px] bg-[#1F2536]"
                                       : ""
                                   } px-6 py-3 text-sm  uppercase tracking-wider font-bold text-white`}
                                 >
@@ -129,7 +129,7 @@ const TableCustom: FC<ITableCustom> = ({
                                         : ""
                                     } ${
                                       column.render("Header") === "Accounts"
-                                        ? "max-lg:min-w-[200px] sticky  z-10 top-0 left-[-5px]"
+                                        ? "max-lg:min-w-[200px]   z-10 top-0 left-[-5px]"
                                         : ""
                                     } ${
                                       column.render("Header") === "Tags"
@@ -194,7 +194,7 @@ const TableCustom: FC<ITableCustom> = ({
                                     {...cell.getCellProps()}
                                     className={`${
                                       cell.column?.Header === "Accounts"
-                                        ? `sticky ${
+                                        ? ` ${
                                             isShowHeader && "px-6"
                                           } z-10 left-[-5px] bg-dark-800`
                                         : ""
@@ -230,7 +230,7 @@ const TableCustom: FC<ITableCustom> = ({
                                   {...cell.getCellProps()}
                                   className={`${
                                     cell.column?.Header === "Accounts"
-                                      ? `sticky ${
+                                      ? ` ${
                                           isShowHeader && "px-6"
                                         } z-10 left-[-5px] bg-dark-800`
                                       : ""
