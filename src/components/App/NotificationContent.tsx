@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useContext } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { checkAsReadNotification } from "@/api-client/notification";
 import {
@@ -7,27 +7,42 @@ import {
   Notification,
 } from "@/api-client/types/Notification";
 import { calculateTimeAgo } from "@/utils/date";
-import { AlphaHunterIcon, ProjectIcon, NarrativesIcon } from "@/assets/icons";
+import {
+  AlphaHunterIcon,
+  ProjectIcon,
+  NarrativesIcon,
+  CrownIcon,
+} from "@/assets/icons";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useNotifications } from "@/hooks/useNotifications";
 import ImageWithFallback from "./ImageWithFallBack";
+import { AuthContext } from "@/contexts/useAuthContext";
+import { UserPayType } from "@/api-client/types/AuthType";
 
 type NotificationContentProps = {
   closeNotification: () => void;
+  onClickPaymentTrial?: () => void;
 };
 
-const DEFAULT_NOTI_CONTENT = "Add any narrative, alpha hunter or project to receive notification Learn more about watchlists and notifications here";
-const DEFAULT_REDIRECT_LINK = "https://docs.alphaquest.io/features/watchlist-and-notifications";
+const DEFAULT_NOTI_CONTENT =
+  "Add any narrative, alpha hunter or project to receive notification Learn more about watchlists and notifications here";
+const DEFAULT_REDIRECT_LINK =
+  "https://docs.alphaquest.io/features/watchlist-and-notifications";
 
 export default function NotificationContent({
   closeNotification,
+  onClickPaymentTrial,
 }: NotificationContentProps) {
   const router = useRouter();
   const [isRead, setIsRead] = useState(false);
+  const { accountExtendDetail } = useContext(AuthContext);
 
   const { notifications, hasNextPage, fetchNextPage, isLoading, refetch } =
-    useNotifications(isRead);
+    useNotifications(
+      isRead,
+      accountExtendDetail?.currentPlanKey === UserPayType.FREE
+    );
 
   // IntersectionObserver to handle Infinite Scroll
   const observer = useRef<IntersectionObserver>();
@@ -46,7 +61,11 @@ export default function NotificationContent({
     [isLoading, hasNextPage]
   );
 
-  const redirectByType = (type: NOTIFICATION_TYPE, ref: string, isBlankMesseage?: boolean) => {
+  const redirectByType = (
+    type: NOTIFICATION_TYPE,
+    ref: string,
+    isBlankMesseage?: boolean
+  ) => {
     if (!isBlankMesseage) router.push(DEFAULT_REDIRECT_LINK);
     if (!ref) return;
     if (type === NOTIFICATION_TYPE.AlphaHunterFollowProject)
@@ -62,12 +81,20 @@ export default function NotificationContent({
 
   const handleNotiItem = async (notification: Notification) => {
     if (!notification?.unread)
-      redirectByType(notification?.type, notification?.ref2, !!notification?.message);
+      redirectByType(
+        notification?.type,
+        notification?.ref2,
+        !!notification?.message
+      );
     if (notification?.unread) {
       try {
         await checkAsReadNotification(notification?.id);
         await refetch();
-        redirectByType(notification?.type, notification?.ref2, !!notification?.message);
+        redirectByType(
+          notification?.type,
+          notification?.ref2,
+          !!notification?.message
+        );
       } catch (error: any) {
         if (error?.response?.data?.error?.data?.messsage) {
           toast.error(error?.response?.data?.error?.data?.messsage);
@@ -123,7 +150,7 @@ export default function NotificationContent({
             </div>
           </div>
         </div>
-        <div className="flex flex-col max-lg:overflow-auto">
+        <div className="flex flex-col max-lg:overflow-auto relative">
           {notifications?.items?.map((notification: any, index) => (
             <div
               key={notification?.id}
@@ -167,6 +194,27 @@ export default function NotificationContent({
               </div>
             </div>
           ))}
+          {accountExtendDetail?.currentPlanKey === UserPayType.FREE && (
+            <div className="fixed lg:absolute w-full h-[250px] bottom-0 left-0 bg-linear-backdrop z-10 max-lg:pl-0">
+              <div className="w-full h-[250px] flex flex-col justify-center items-center z-10">
+                <p className="mb-4">Explore Further with AlphaQuest Pro</p>
+
+                <button
+                  onClick={onClickPaymentTrial}
+                  className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
+                >
+                  <Image
+                    src={CrownIcon}
+                    width={17}
+                    height={14}
+                    alt="crown-icon"
+                    className="mr-2"
+                  />
+                  Start 7-day trial
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

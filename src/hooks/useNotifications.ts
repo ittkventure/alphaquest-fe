@@ -3,19 +3,21 @@ import { useInfiniteQuery } from "react-query";
 import request from "@/api-client/notification/request";
 import { BaseResponse } from "@/api-client/types/BaseResponse";
 
-const fetcher = async (page: number, unread: boolean) => {
-    const url = !unread ? "/api/app/notification?pageSize=20&pageNumber=" : "/api/app/notification?unread=true&pageSize=20&pageNumber="
+const fetcher = async (page: number, unread: boolean, isUserFree: boolean) => {
+    const pageSize = isUserFree ? 5 : 20;
+    const url = !unread ? `/api/app/notification?pageSize=${pageSize}&pageNumber=` : `/api/app/notification?unread=true&pageSize=${pageSize}&pageNumber=`
     const res = await request.get(`${url}${page}`)
     return res.data;
 }
 
-export const useNotifications = (unread: boolean) => {
+export const useNotifications = (unread: boolean, isUserFree: boolean) => {
 
     const { data, error, fetchNextPage, status, hasNextPage, isFetching, isLoading, refetch } = useInfiniteQuery(
         ['getNotifications', unread],
-        ({ pageParam = 1 }) => fetcher(pageParam, unread),
+        ({ pageParam = 1 }) => fetcher(pageParam, unread, isUserFree),
         {
             getNextPageParam: (_lastPage: BaseResponse<Notification>, pages: BaseResponse<Notification>[]) => {
+                if (isUserFree) return undefined
                 const totalPage = Math.floor(_lastPage.totalCount / 20);
                 if (pages.length < (totalPage + 1)) {
                     return pages.length + 1
