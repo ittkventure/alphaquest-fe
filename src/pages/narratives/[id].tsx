@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import CustomTooltip2 from "@/components/ProjectDetail/LineChart/CustomTooltip2";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { apiTwitter } from "@/api-client";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
@@ -29,6 +29,10 @@ import { UserPayType } from "@/api-client/types/AuthType";
 import { PlaceholderChart2 } from "@/assets/images";
 import moment from "moment";
 import { formatSelectOptions, formatUrlRevert } from "@/utils/string";
+import { WatchListTypes } from "@/api-client/twitter";
+import { toast } from "react-toastify";
+import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 const ChartDetail = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -65,7 +69,11 @@ const ChartDetail = () => {
     }
   }, [router.query]);
 
-  const { data, isLoading: isLoadingIOT } = useQuery(
+  const {
+    data,
+    isLoading: isLoadingIOT,
+    refetch: chartInterestOverTimeRefetch,
+  } = useQuery(
     ["chartInterestOverTime", authState?.access_token, id, timeFrame],
     async () =>
       await apiTwitter.getChartInterestOverTime(
@@ -104,6 +112,22 @@ const ChartDetail = () => {
         name: moment(value?.timestamp * 1000).format("MMM YYYY"),
       };
     }) ?? [];
+
+  const addWatchListMutate = useMutation({
+    mutationFn: (params: {
+      refId: string;
+      type: WatchListTypes;
+      subType: string;
+    }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
+    onSuccess: () => {
+      chartInterestOverTimeRefetch();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
+    },
+  });
 
   const _renderTable = () => {
     if (!isLoadingRelateListProject && dataRelateListProject?.length === 0)
@@ -170,7 +194,40 @@ const ChartDetail = () => {
           <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
         </div>
         <div className="flex flex-col gap-6 px-[100px]  max-lg:px-7">
-          <h1 className="font-bold text-3xl text-start">{data?.displayName}</h1>
+          <div className="flex justify-between items-center">
+            <h1 className="font-bold text-3xl text-start">
+              {data?.displayName}
+            </h1>
+            <button
+              onClick={() => {
+                if (!authState?.access_token) {
+                  onClickPaymentTrial();
+                  return;
+                }
+                addWatchListMutate.mutate({
+                  refId: data?.keyword,
+                  type: WatchListTypes.NARRATIVE,
+                  subType: timeFrame.code ?? "",
+                });
+              }}
+              disabled={addWatchListMutate.isLoading}
+              className="w-10 h-8 flex justify-center items-center "
+            >
+              {addWatchListMutate.isLoading && (
+                <Spinner customClassName="ml-2 pl-0 mr-0" />
+              )}
+
+              {!addWatchListMutate.isLoading &&
+                (data?.inWatchlist ? (
+                  <HeartIconBold type="" className="w-6 h-6 text-primary-500" />
+                ) : (
+                  <HeartIcon
+                    type=""
+                    className="w-6 h-6 text-white hover:text-success-600 transition-all duration-200"
+                  />
+                ))}
+            </button>
+          </div>
           <p>{data?.description}</p>
 
           <div className="mt-10 bg-[#171B28] p-10">

@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useState, useRef } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { apiTwitter } from "@/api-client";
 import { AlphaHunterDetail } from "@/api-client/types/TwitterType";
@@ -14,6 +14,9 @@ import TableCommon from "../TableCommon";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
 import { WatchListTypes } from "@/api-client/twitter";
+import Spinner2 from "../Spinner2";
+import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 interface IAlphaHunter {
   userId?: string;
@@ -45,6 +48,8 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         block: "start",
       });
   });
+
+  useContext(AuthContext);
 
   const listEarlyFollower = useQuery(
     [
@@ -130,6 +135,22 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       ),
   });
 
+  const addWatchListAHMutate = useMutation({
+    mutationFn: (params: {
+      refId: string;
+      type: WatchListTypes;
+      subType: string;
+    }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
+    onSuccess: () => {
+      alphaHunterDetail.refetch();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
+    },
+  });
+
   const { followersAlphaHunter } = useColumFollowersAlphaHunter({
     isLinkToAlphaHunter: false,
   });
@@ -212,13 +233,40 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
 
   return (
     <div className={`w-full h-full overflow-x-hidden`}>
-      <div>
-        <AlphaProfileCard
-          item={alphaHunterDetail?.data}
-          isLoading={
-            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
-          }
-        />
+      <div className="flex items-center">
+        <div className="flex-1">
+          <AlphaProfileCard
+            item={alphaHunterDetail?.data}
+            isLoading={
+              alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
+            }
+            buttonHeart={
+              <button
+                onClick={() => {
+                  if (!authState?.access_token) {
+                    onClickPaymentTrial();
+                    return;
+                  }
+                  addWatchListAHMutate.mutate({
+                    refId: alphaHunterDetail?.data?.userId ?? "",
+                    type: WatchListTypes.ALPHA_HUNTER,
+                    subType: "",
+                  });
+                }}
+                disabled={addWatchListAHMutate.isLoading}
+              >
+                {addWatchListAHMutate.isLoading && <Spinner2 />}
+
+                {!addWatchListAHMutate.isLoading &&
+                  (alphaHunterDetail?.data?.inWatchlist ? (
+                    <HeartIconBold className="h-6 w-6 text-red-500 transition-all duration-200" />
+                  ) : (
+                    <HeartIcon className="h-6 w-6 hover:text-success-500 transition-all duration-200" />
+                  ))}
+              </button>
+            }
+          />
+        </div>
       </div>
 
       <div className="px-[100px] max-[1450px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">

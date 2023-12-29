@@ -3,7 +3,8 @@ export type SortByType =
   | "SCORE"
   | "DISCOVERED_DATE"
   | "TWITTER_FOLLOWER"
-  | "TWITTER_CREATED_DATE" | "WATCHLIST_MOST_RECENT_DATE_ADDED";
+  | "TWITTER_CREATED_DATE"
+  | "WATCHLIST_MOST_RECENT_DATE_ADDED";
 
 export interface TwitterGetListRequest {
   pageNumber: number;
@@ -144,6 +145,7 @@ export interface AlphaHunterDetail {
   domByBlockchain: DomByBlockchain;
   domByCategory: DomByCategory;
   attributes: AttributesType[];
+  inWatchlist?: boolean;
 }
 
 export interface DomByBlockchain {

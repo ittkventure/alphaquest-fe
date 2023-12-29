@@ -32,7 +32,6 @@ import {
 import { formatSelectOptions, formatUrl } from "@/utils/string";
 import { WatchListTypes } from "@/api-client/twitter";
 import Spinner from "@/components/Spinner";
-import { Toast } from "react-toastify/dist/components";
 import { toast } from "react-toastify";
 import { UserPayType } from "@/api-client/types/AuthType";
 
