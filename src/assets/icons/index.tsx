@@ -53,6 +53,9 @@ import ShareIcon from "./share-icon.svg";
 import FacebookWhiteIcon from "./facebook-white-icon.svg";
 import TwitterWhiteIcon from "./twitter-white-icon.svg";
 import TelegramWhiteIcon from "./tele-white-icon.svg";
+import BitcoinIcon from "./bitcoin-icon.svg";
+import CreditCardIcon from "./credit-card-icon.svg";
+import Tick2Icon from "./tick-2-icon.svg";
 
 export {
   QuoteIcon,
@@ -103,4 +106,7 @@ export {
   FacebookWhiteIcon,
   TwitterWhiteIcon,
   TelegramWhiteIcon,
+  BitcoinIcon,
+  CreditCardIcon,
+  Tick2Icon,
 };

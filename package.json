@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3000",
+    "dev": "next dev -p 4200",
     "build": "next build",
     "start": "next start -p 3000",
     "lint": "next lint"
@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.7.12",
     "@headlessui/tailwindcss": "^0.1.2",
     "@heroicons/react": "^2.0.16",
+    "@iofate/react-coinbase-commerce": "^1.0.0",
     "@next/font": "13.1.6",
     "@tippyjs/react": "^4.2.6",
     "@types/node": "18.14.1",
