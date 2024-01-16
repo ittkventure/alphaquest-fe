@@ -1,9 +1,12 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React from "react";
 
-interface SEOType { }
+interface SEOType {}
 
 const SEO = () => {
+  const router = useRouter();
+  const isMainPage = router.asPath === "/projects";
   return (
     <Head>
       <title>AlphaQuest - Uncover The Next Big Thing in Crypto Now</title>
@@ -11,18 +14,37 @@ const SEO = () => {
         name="description"
         content="Be the first to discover the hottest crypto trends and projects with our powerful crypto research tool"
       />
+
+      {!isMainPage && <meta name="robots" content="noindex" />}
       <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+      <meta
+        content="Alpha Quest - Uncover The Next Big Thing in Crypto Now"
+        property="og:title"
+      />
+      <meta
+        content="Discover the hottest cryptocurrency projects before they take off with Alpha Quest. Start your 7-day trial for only $9!"
+        property="og:description"
+      />
+      <meta property="og:type" content="website" />
+      <meta
+        content="https://alphaquest.io/images/thumb.png"
+        property="og:image"
+      />
 
-      <meta content="Alpha Quest - Uncover The Next Big Thing in Crypto Now" property="og:title"/>
-      <meta content="Discover the hottest cryptocurrency projects before they take off with Alpha Quest. Start your 7-day trial for only $9!" property="og:description"/>
-      <meta property="og:type" content="website"/>
-      <meta content="https://alphaquest.io/images/thumb.png" property="og:image"/>
-
-      <meta content="Alpha Quest - Uncover The Next Big Thing in Crypto Now" property="twitter:title"/>
-      <meta content="Discover the hottest cryptocurrency projects before they take off with Alpha Quest. Start your 7-day trial for only $9!" property="twitter:description"/>
-      <meta content="https://alphaquest.io/images/thumb.png" property="twitter:image"/>
-      <meta content="summary_large_image" name="twitter:card"/>
+      <meta
+        content="Alpha Quest - Uncover The Next Big Thing in Crypto Now"
+        property="twitter:title"
+      />
+      <meta
+        content="Discover the hottest cryptocurrency projects before they take off with Alpha Quest. Start your 7-day trial for only $9!"
+        property="twitter:description"
+      />
+      <meta
+        content="https://alphaquest.io/images/thumb.png"
+        property="twitter:image"
+      />
+      <meta content="summary_large_image" name="twitter:card" />
 
       <link rel="icon" href="/favicon.ico" />
       {/* <meta name="robots" content="noindex" /> */}
@@ -91,7 +113,7 @@ const SEO = () => {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', 'G-L12NY9ZK82');
-          `
+          `,
         }}
       />
       <link rel="manifest" href="/manifest.json" />
