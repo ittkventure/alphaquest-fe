@@ -22,7 +22,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { WatchListTypes } from "@/api-client/twitter";
 
 export const listUrl = [
   {
@@ -102,29 +101,29 @@ const TableRow: FC<TableRowTypes> = ({
 
   const onAddItemToWatchList = async () => {
     if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.upgrade_to_pro, {
-        url: router.pathname,
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/login",
       });
-      if (authState) {
-        setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-        mixpanelTrack(event_name_enum.inbound, {
-          url: "/pricing",
-        });
-        router.push("/pricing?action=open");
-      } else {
-        mixpanelTrack(event_name_enum.inbound, {
-          url: "/sign-up",
-        });
-        setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-        router.push("/sign-up");
-      }
+      router.push("/login");
+      return;
+    }
+    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
+      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
+      router.push("/pricing?action=open");
+
+      return;
     }
     try {
       setIsLoading(true);
 
       if (authState?.access_token) {
-        await apiTwitter.addWatchList(itemState.userId, WatchListTypes.PROJECT);
-
+        await apiTwitter.putToWatchList(
+          itemState.userId,
+          authState?.access_token
+        );
         mixpanelTrack(event_name_enum.on_add_watch_list, {
           on_add_watch_list: `User add the project ${itemState.name} to watchlist`,
         });
@@ -134,11 +133,8 @@ const TableRow: FC<TableRowTypes> = ({
         toast.warning("Please login for use this feature");
       }
       setIsLoading(false);
-    } catch (error: any) {
+    } catch (error) {
       setIsLoading(false);
-      toast.error(
-        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
-      );
     }
   };
 
@@ -252,7 +248,7 @@ const TableRow: FC<TableRowTypes> = ({
         </div>
         <div className="mr-4">
           <div
-            className={`flex max-lg:flex-col max-lg:items-start max-lg:gap-1 items-center ${
+            className={`flex items-center ${
               itemState.name !== "UNKNOWN"
                 ? ""
                 : "w-[160px] h-5 rounded-2xl mb-[6px] bg-secondary-600 animate-pulse"
@@ -272,7 +268,7 @@ const TableRow: FC<TableRowTypes> = ({
                 >
                   {itemState.name}
                 </p>
-                <div className="flex ">
+                <div className="flex">
                   <button
                     onClick={() => {
                       mixpanelTrack(event_name_enum.outbound, {
@@ -331,7 +327,7 @@ const TableRow: FC<TableRowTypes> = ({
               {itemState.description}
             </p>
           </div>
-          <div className="flex flex-wrap">
+          <div className="flex">
             <p
               onClick={
                 onClickAction
@@ -362,7 +358,16 @@ const TableRow: FC<TableRowTypes> = ({
           </div>
         </div>
       </div>
-      <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
+      <div
+        className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center "
+        onClick={
+          onClickAction
+            ? () => {
+                if (itemState.name !== "UNKNOWN") onClickAction();
+              }
+            : () => {}
+        }
+      >
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
           <p>+{itemState.trendingScore}</p>
         </div>

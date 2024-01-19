@@ -10,9 +10,14 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 interface IAlphaProfileCard {
   item?: AlphaHunterDetail;
   isLoading?: boolean;
+  buttonHeart?: React.ReactNode;
 }
 
-const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
+const AlphaProfileCard: FC<IAlphaProfileCard> = ({
+  item,
+  isLoading,
+  buttonHeart,
+}) => {
   const router = useRouter();
 
   const _renderNewTag = () => {
@@ -93,7 +98,7 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({ item, isLoading }) => {
                 </div>
                 <div className="ml-20 max-lg:ml-[20px]">
                   <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
-                    {/* <div>{_renderHeartButton()}</div> */}
+                    <div>{buttonHeart}</div>
                   </div>
                 </div>
               </div>

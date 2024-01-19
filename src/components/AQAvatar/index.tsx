@@ -4,11 +4,16 @@ import { LogoCircle } from "@/assets/images";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { StarIcon } from "@heroicons/react/24/solid";
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { FC, useContext } from "react";
 
-const AQAvatar = () => {
+interface Props {
+  isShowText?: boolean;
+}
+
+const AQAvatar: FC<Props> = ({ isShowText = false }) => {
   const { accountExtendDetail } = useContext(AuthContext);
 
   return (
@@ -41,11 +46,24 @@ const AQAvatar = () => {
         ) : null}
 
         <div className="pl-2">
-          <p className=" text-[16px] max-lg:hidden">
+          <p
+            className={classNames({
+              "text-[16px] max-lg:hidden": !isShowText,
+              "text-[16px] max-lg:block pl-2": isShowText,
+            })}
+          >
             {accountExtendDetail?.username}
           </p>
           {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
-            <p className="max-lg:hidden text-yellow-400">PRO</p>
+            <p
+              className={classNames({
+                "text-[12px] max-lg:hidden text-yellow-400": !isShowText,
+                "text-[12px] max-lg:block font-bold mr-[14px] text-yellow-400":
+                  isShowText,
+              })}
+            >
+              PRO
+            </p>
           ) : null}
         </div>
       </div>

@@ -49,6 +49,24 @@ class ApiTwitter extends ApiClientBase {
   }
 
   /**
+   * getListTwitter
+   */
+  public async getListTwitterOnlyAvax(
+    params: TwitterGetListRequest,
+    access_token: string
+  ): Promise<BaseResponse<TwitterItem> | any> {
+    const res = await this.instance.get(
+      `/api/app/twitter/avax-list?${qs.stringify(params)}`,
+      {
+        headers: {
+          Authorization: "Bearer " + access_token,
+        },
+      }
+    );
+    return res.data;
+  }
+
+  /**
    * getListTwitterWatchList
    */
   public async getListTwitterWatchList(

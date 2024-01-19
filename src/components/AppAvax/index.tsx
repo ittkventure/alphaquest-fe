@@ -28,6 +28,7 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { getAccessToken } from "@/utils/access-token";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -58,10 +59,10 @@ const AppContent: FC<AppContentTypes> = ({
   const [newest, setNewest] = useState<string>(
     tab ? tab?.toString() : "trending"
   );
-  const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
+  const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("30D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
   const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs followed");
-  const [timeLabel, setTimeLabel] = useState<string>("7D");
+  const [timeLabel, setTimeLabel] = useState<string>("30D");
 
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
@@ -123,12 +124,7 @@ const AppContent: FC<AppContentTypes> = ({
   }, [router.pathname]);
 
   useEffect(() => {
-    if (
-      pageNumber !== 1 &&
-      firstCalled &&
-      accountExtendDetail?.currentPlanKey !== "FREE"
-    )
-      fetchDataLoadMore();
+    if (pageNumber !== 1 && firstCalled) fetchDataLoadMore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNumber, accountExtendDetail]);
 
@@ -164,7 +160,7 @@ const AppContent: FC<AppContentTypes> = ({
       setPageNumber(1);
       setHasLoadMore(true);
 
-      const data = await apiTwitter.getListTwitter(
+      const data = await apiTwitter.getListTwitterOnlyAvax(
         {
           pageNumber: 1,
           pageSize:
@@ -172,14 +168,8 @@ const AppContent: FC<AppContentTypes> = ({
           sortBy,
           timeFrame,
           newest: tabCheck === "newest" ? true : false,
-          categories:
-            categoryParams ??
-            (categorySelected?.code ? [categorySelected.code] : []),
-          chains:
-            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
-        authState?.access_token ?? "",
-        authState?.access_token ? false : true
+        authState?.access_token ?? ""
       );
 
       setIsLoading(false);
@@ -210,26 +200,20 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   const fetchDataLoadMore = async () => {
+    if (!getAccessToken()) return;
     try {
-      if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
 
-      const data = await apiTwitter.getListTwitter(
+      const data = await apiTwitter.getListTwitterOnlyAvax(
         {
           pageNumber,
           pageSize,
           sortBy,
           timeFrame,
           newest: newest === "newest" ? true : false,
-          categories:
-            categoryParams ??
-            (categorySelected?.code ? [categorySelected.code] : []),
-          chains:
-            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
         },
-        authState?.access_token ?? "",
-        authState?.access_token ? false : true
+        authState?.access_token ?? ""
       );
 
       setIsLoadingMore(false);
@@ -319,23 +303,25 @@ const AppContent: FC<AppContentTypes> = ({
             {totalCount.toLocaleString()} projects discovered during the last
           </p>
           <div className="flex">
-            <MonthSelect
+            <p className="text-success-500">30D</p>
+            {/* <MonthSelect
               onChangeSelect={(month) => {
                 mixpanelTrack(event_name_enum.on_filter_project, {
                   url: router.pathname,
-                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
+                  value_search: (month.value as TimeFrameTypes) ?? "30D",
                   message:
                     "projects discovered during the last " +
-                      (month.value as TimeFrameTypes) ?? "ALL",
+                      (month.value as TimeFrameTypes) ?? "30D",
                 });
-                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-                setTimeLabel(month.label ?? "ALL");
+                setTimeFrame((month.value as TimeFrameTypes) ?? "30D");
+                setTimeLabel(month.label ?? "30D");
               }}
               defaultData={{
                 value: timeFrame,
                 label: timeLabel,
               }}
-            />
+              disabled={true}
+            /> */}
             <div className="flex">
               <p className="mx-2">sorted by</p>
               <MonthSelect
@@ -363,25 +349,24 @@ const AppContent: FC<AppContentTypes> = ({
   };
 
   const renderUpBtn = () => {
-    if (router.pathname === "/watchlist/projects") return null;
-    return accountExtendDetail?.currentPlanKey === UserPayType.FREE ||
-      !accountExtendDetail?.currentPlanKey ? (
+    // if (router.pathname === "/watchlist/projects") return null;
+    return !getAccessToken() ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
         <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-          <p className="mb-4">Upgrade account for full access</p>
+          <p className="mb-4">Sign up to access free dashboard</p>
 
           <button
-            onClick={onClickPaymentTrial}
+            onClick={() => router.push("/sign-up")}
             className="px-3 py-2 bg-primary-500 font-workSansRegular text-[1rem] flex justify-center items-center"
           >
-            <Image
+            {/* <Image
               src={CrownIcon}
               width={17}
               height={14}
               alt="crown-icon"
               className="mr-2"
-            />
-            Start 7-day trial
+            /> */}
+            Discover Now
           </button>
         </div>
       </div>
@@ -392,18 +377,17 @@ const AppContent: FC<AppContentTypes> = ({
     <div className="w-full relative ">
       {renderUpBtn()}
       <div className="p-6">
-        <Header />
+        <Header title="New Avalanche Projects Dec 2023" />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
       </div>
-      {/* <div className="hidden max-lg:block">
+      <div className="hidden max-lg:block">
         <TabApp onChangeTab={_handleSelectTab} />
-      </div> */}
+      </div>
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
-          {!chainsParams && !categoryParams && (
-            <div className="flex max-lg:flex-col max-lg:gap-4 max-lg:items-center justify-between max-lg:mt-5">
-              <div className="flex">
+          <div className="flex max-lg:flex-col max-lg:gap-4 max-lg:items-center justify-between max-lg:mt-5">
+            {/* <div className="flex">
                 <div className="mr-3">
                   <SelectCustom
                     placeholder="Chain - All"
@@ -461,26 +445,23 @@ const AppContent: FC<AppContentTypes> = ({
                     selectedValue={categorySelected}
                   />
                 </div>
-              </div>
+              </div> */}
 
-              <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
-                <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
+            {/* <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
+              <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
 
-                <input
-                  className="2xl:w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
-                  placeholder="Search"
-                  onKeyPress={(event) => {
-                    if (event.key === "Enter" && event.currentTarget.value) {
-                      setKeyword(event.currentTarget.value ?? "");
-                      router.push(
-                        "/search?keyword=" + event.currentTarget.value
-                      );
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          )}
+              <input
+                className="2xl:w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
+                placeholder="Search"
+                onKeyPress={(event) => {
+                  if (event.key === "Enter" && event.currentTarget.value) {
+                    setKeyword(event.currentTarget.value ?? "");
+                    router.push("/search?keyword=" + event.currentTarget.value);
+                  }
+                }}
+              />
+            </div> */}
+          </div>
         </div>
 
         <div className="mt-7 max-lg:mt-9">
@@ -506,10 +487,7 @@ const AppContent: FC<AppContentTypes> = ({
             <SkeletonLoading numberOfRow={10} />
           ) : null}
           {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
-          {!isLoadingMore &&
-          !errorMsg &&
-          !isLoading &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+          {!isLoadingMore && !errorMsg && !isLoading ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
           ) : null}
         </div>

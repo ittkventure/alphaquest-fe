@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-interface MenuItemType {
+export interface MenuItemType {
   key: string;
   icon: JSX.Element;
   label: string;

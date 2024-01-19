@@ -22,36 +22,27 @@ import { useRouter } from "next/router";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
-import { CrownIcon, InfoIcon } from "@/assets/icons";
+import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
   totalCountProps?: string;
   tab?: "watchlist" | "trending" | "newest" | string;
-  chainsParams?: string[];
-  categoryParams?: string[];
-  chainQuery?: string;
-  categoryQuery?: string;
+  keywordProps?: string;
 }
 
 const AppContent: FC<AppContentTypes> = ({
   listItemsProps,
   totalCountProps,
   tab,
-  chainsParams,
-  categoryParams,
-  chainQuery,
-  categoryQuery,
+  keywordProps,
 }) => {
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
-  const { setKeyword, keyword } = useContext(SearchContext);
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -60,8 +51,6 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
-  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs followed");
-  const [timeLabel, setTimeLabel] = useState<string>("7D");
 
   const [hasLoadMore, setHasLoadMore] = useState(true);
   const observer: React.MutableRefObject<any> = useRef();
@@ -75,15 +64,10 @@ const AppContent: FC<AppContentTypes> = ({
   const [firstCalled, setFirstCalled] = useState(false);
   const [chains, setChains] = useState<Array<OptionType>>([]);
   const [category, setCategory] = useState<Array<OptionType>>([]);
-  const [chainSelected, setChainSelected] = useState<OptionType>({
-    code: chainQuery ?? "",
-    name: chainQuery ?? "Chain - All",
-  });
-  const [categorySelected, setCategorySelected] = useState<OptionType>({
-    code: categoryQuery ?? "",
-    name: categoryQuery ?? "Category - All",
-  });
+  const [chainSelected, setChainSelected] = useState<OptionType>();
+  const [categorySelected, setCategorySelected] = useState<OptionType>();
   const apiTwitter = new ApiTwitter();
+  const { keyword, setKeyword } = useContext(SearchContext);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   useEffect(() => {
@@ -91,26 +75,6 @@ const AppContent: FC<AppContentTypes> = ({
     fetchCategoryAndChain("CHAIN");
     fetchCategoryAndChain("CATEGORY");
   }, []);
-
-  const { category: categoryQueryPath, chain: chainQueryPath } = router.query;
-
-  useEffect(() => {
-    if (categoryQuery)
-      setCategorySelected({
-        name: categoryQueryPath?.toString() ?? categoryQuery,
-        code: categoryQuery,
-      });
-    else {
-    }
-
-    if (chainQuery) setChainSelected({ name: chainQuery, code: chainQuery });
-  }, [categoryQuery, chainQuery]);
-
-  useEffect(() => {
-    if (!categoryQueryPath)
-      setCategorySelected({ name: "Category - All", code: "" });
-    if (!chainQueryPath) setChainSelected({ name: "Chain - All", code: "" });
-  }, [categoryQueryPath, chainQueryPath]);
 
   useEffect(() => {
     if (firstCalled) fetchData();
@@ -121,6 +85,18 @@ const AppContent: FC<AppContentTypes> = ({
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.pathname]);
+
+  useEffect(() => {
+    if (keyword) fetchData();
+  }, [keyword]);
+
+  useEffect(() => {
+    if (keyword || keywordProps)
+      mixpanelTrack(event_name_enum.on_search_keyword, {
+        url: router.pathname,
+        value_search: keyword ?? keywordProps,
+      });
+  }, [keyword, keywordProps]);
 
   useEffect(() => {
     if (
@@ -163,20 +139,13 @@ const AppContent: FC<AppContentTypes> = ({
       setErrorMsg("");
       setPageNumber(1);
       setHasLoadMore(true);
-
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber: 1,
           pageSize:
             accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
-          sortBy,
-          timeFrame,
-          newest: tabCheck === "newest" ? true : false,
-          categories:
-            categoryParams ??
-            (categorySelected?.code ? [categorySelected.code] : []),
-          chains:
-            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
+          searchText: keyword && keyword !== "" ? keyword : keywordProps,
+          timeFrame: "7D",
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -214,19 +183,12 @@ const AppContent: FC<AppContentTypes> = ({
       if (!authState?.access_token) return;
       setIsLoadingMore(true);
       setErrorMsg("");
-
       const data = await apiTwitter.getListTwitter(
         {
           pageNumber,
           pageSize,
-          sortBy,
-          timeFrame,
-          newest: newest === "newest" ? true : false,
-          categories:
-            categoryParams ??
-            (categorySelected?.code ? [categorySelected.code] : []),
-          chains:
-            chainsParams ?? (chainSelected?.code ? [chainSelected.code] : []),
+          searchText: keyword && keyword !== "" ? keyword : keywordProps,
+          timeFrame: "7D",
         },
         authState?.access_token ?? "",
         authState?.access_token ? false : true
@@ -291,7 +253,6 @@ const AppContent: FC<AppContentTypes> = ({
     return (
       <TableContent
         initListRows={listItems ?? []}
-        isAnimation={newest === "watchlist" ? true : false}
         onRefreshTable={() => {
           fetchData();
         }}
@@ -314,50 +275,10 @@ const AppContent: FC<AppContentTypes> = ({
   const renderDes = () => {
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
-        <div className="flex flex-col justify-start max-lg:w-[90vw]">
-          <p>
-            {totalCount.toLocaleString()} projects discovered during the last
-          </p>
-          <div className="flex">
-            <MonthSelect
-              onChangeSelect={(month) => {
-                mixpanelTrack(event_name_enum.on_filter_project, {
-                  url: router.pathname,
-                  value_search: (month.value as TimeFrameTypes) ?? "ALL",
-                  message:
-                    "projects discovered during the last " +
-                      (month.value as TimeFrameTypes) ?? "ALL",
-                });
-                setTimeFrame((month.value as TimeFrameTypes) ?? "ALL");
-                setTimeLabel(month.label ?? "ALL");
-              }}
-              defaultData={{
-                value: timeFrame,
-                label: timeLabel,
-              }}
-            />
-            <div className="flex">
-              <p className="mx-2">sorted by</p>
-              <MonthSelect
-                onChangeSelect={(month) => {
-                  mixpanelTrack(event_name_enum.on_sort_project, {
-                    url: router.pathname,
-                    value_sort: (month.value as SortByType) ?? "SCORE",
-                    message:
-                      "sorted by" + (month.value as SortByType) ?? "SCORE",
-                  });
-                  setSortBy((month.value as SortByType) ?? "SCORE");
-                  setSortByLabel(month.label ?? "# of KOLs followed");
-                }}
-                defaultData={{
-                  value: sortBy,
-                  label: sortByLabel,
-                }}
-                listData={initListSort as Array<any>}
-              />
-            </div>
-          </div>
-        </div>
+        <p>
+          We Found {totalCount.toLocaleString()} Results With "
+          {keywordProps ?? keyword}"
+        </p>
       </div>
     );
   };
@@ -368,7 +289,7 @@ const AppContent: FC<AppContentTypes> = ({
       !accountExtendDetail?.currentPlanKey ? (
       <div className="fixed w-full h-[300px] bottom-0 left-0 bg-linear-backdrop z-10 pl-64 max-lg:pl-0">
         <div className="w-full h-[300px] flex flex-col justify-center items-center z-10 mt-10">
-          <p className="mb-4">Upgrade account for full access</p>
+          <p className="mb-4">Upgrade account to see all</p>
 
           <button
             onClick={onClickPaymentTrial}
@@ -395,133 +316,26 @@ const AppContent: FC<AppContentTypes> = ({
         <Header />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
       </div>
-      {/* <div className="hidden max-lg:block">
+      <div className="hidden max-lg:block">
         <TabApp onChangeTab={_handleSelectTab} />
-      </div> */}
+      </div>
       <div className="px-6 pb-6 ">
         <div className="flex max-lg:flex-col max-lg:items-center justify-between">
           {renderDes()}
-          {!chainsParams && !categoryParams && (
-            <div className="flex max-lg:flex-col max-lg:gap-4 max-lg:items-center justify-between max-lg:mt-5">
-              <div className="flex">
-                <div className="mr-3">
-                  <SelectCustom
-                    placeholder="Chain - All"
-                    initList={chains}
-                    onChangeSelected={(item: any) => {
-                      mixpanelTrack(event_name_enum.on_filter_chain, {
-                        url: router.pathname,
-                        code: item?.code,
-                        name: item?.name,
-                      });
-                      setChainSelected(item);
-                      let query = "";
-                      if (!item?.code) {
-                        if (categoryQuery) {
-                          query = `?category=${categoryQuery}`;
-                        } else {
-                          query = "";
-                        }
-                      } else if (categorySelected?.code) {
-                        query = `?category=${categorySelected?.code}&chain=${item?.code}`;
-                      } else {
-                        query = `?chain=${item?.code}`;
-                      }
-                      router.push(`/projects/${tab ?? ""}${query}`);
-                    }}
-                    selectedValue={chainSelected}
-                  />
-                </div>
-                <div>
-                  <SelectCustom
-                    placeholder="Category - All"
-                    initList={category}
-                    onChangeSelected={(item: any) => {
-                      mixpanelTrack(event_name_enum.on_filter_category, {
-                        url: router.pathname,
-                        code: item?.code,
-                        name: item?.name,
-                      });
-                      setCategorySelected(item);
-                      let query = "";
-                      if (!item?.code) {
-                        if (chainQuery) {
-                          query = `?chain=${chainQuery}`;
-                        } else {
-                          query = "";
-                        }
-                      } else if (chainSelected?.code) {
-                        query = `?category=${item?.code}&chain=${chainSelected?.code}`;
-                      } else {
-                        query = `?category=${item?.code}`;
-                      }
-
-                      router.push(`/projects/${tab ?? ""}${query}`);
-                    }}
-                    selectedValue={categorySelected}
-                  />
-                </div>
-              </div>
-
-              <div className="relative max-lg:w-full max-lg:left-[-4px] max-lg:mr-2 ml-4 flex-1">
-                <MagnifyingGlassIcon className="w-4 h-4 max-lg:w-4 max-xl:h-4 text-white absolute max-xl:top-[8px] top-[11px] left-[5px]" />
-
-                <input
-                  className="2xl:w-96 max-lg:w-full max-lg:h-8 max-lg:py-1 bg-secondary-600 py-[6px] pl-8 max-lg:pl-7 max-lg:text-sm "
-                  placeholder="Search"
-                  onKeyPress={(event) => {
-                    if (event.key === "Enter" && event.currentTarget.value) {
-                      setKeyword(event.currentTarget.value ?? "");
-                      router.push(
-                        "/search?keyword=" + event.currentTarget.value
-                      );
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="mt-7 max-lg:mt-9">
-          <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
-            <span>Project</span>
-            <div className="flex items-center gap-1">
-              <span>New KOLs followed</span>
-              <div
-                data-tooltip-id="info-tooltip-kol"
-                className="cursor-pointer"
-              >
-                <Image src={InfoIcon} width={20} height={20} alt="icon" />
-              </div>
-            </div>
-          </div>
           {isSearchLoading ? null : _renderTable()}
-          {errorMsg ? (
-            <div className="h-[60vh] flex justify-center items-start">
-              <p className="mt-10 text-center">{errorMsg}</p>
-            </div>
-          ) : null}
+          {errorMsg ? <p className="mt-10 text-center">{errorMsg}</p> : null}
           {isLoading || isSearchLoading ? (
             <SkeletonLoading numberOfRow={10} />
           ) : null}
           {isLoadingMore ? <SkeletonLoading numberOfRow={3} /> : null}
-          {!isLoadingMore &&
-          !errorMsg &&
-          !isLoading &&
-          accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM ? (
+          {!isLoadingMore && !errorMsg && !isLoading ? (
             <div className="h-7 w-full" ref={triggerElement}></div>
           ) : null}
         </div>
       </div>
-      <ReactTooltip
-        id="info-tooltip-kol"
-        className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
-        place="bottom"
-        content={`Number of new Alpha Hunters who followed ${
-          timeLabel === "ALL" ? "all" : `last ${timeLabel}`
-        }. Click on the project to find out which Alpha Hunters are following it.`}
-      />
     </div>
   );
 };

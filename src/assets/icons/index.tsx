@@ -48,6 +48,12 @@ import ProjectIcon from "./project-icon.svg";
 import InfoIcon2 from "./info-icon.svg";
 import NarrativesIcon from "./narratives-icon.svg";
 
+import ShareIcon from "./share-icon.svg";
+
+import FacebookWhiteIcon from "./facebook-white-icon.svg";
+import TwitterWhiteIcon from "./twitter-white-icon.svg";
+import TelegramWhiteIcon from "./tele-white-icon.svg";
+
 export {
   QuoteIcon,
   DocumentTextIcon,
@@ -93,4 +99,8 @@ export {
   ProjectIcon,
   InfoIcon2,
   NarrativesIcon,
+  ShareIcon,
+  FacebookWhiteIcon,
+  TwitterWhiteIcon,
+  TelegramWhiteIcon,
 };
