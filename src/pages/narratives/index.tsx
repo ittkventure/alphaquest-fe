@@ -1,5 +1,5 @@
 import { apiTwitter } from "@/api-client";
-import { ChessKingHIcon } from "@/assets/icons";
+import { ChessKingHIcon, CreditCardIcon } from "@/assets/icons";
 import { PlaceholderChart } from "@/assets/images";
 import Header from "@/components/App/Header";
 import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
@@ -70,7 +70,6 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
         );
       },
     });
-
     const listData =
       item?.chart?.timelineData.map((value: any) => {
         return {

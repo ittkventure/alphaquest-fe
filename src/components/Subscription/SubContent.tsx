@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 import Spinner from "../Spinner";
 import classNames from "classnames";
+import { BitcoinIcon, CreditCardIcon, Tick2Icon } from "@/assets/icons";
+import Image from "next/image";
 
 interface ISubContent {
   onPayment: (withoutTrial: boolean, isYear: boolean) => void;
@@ -48,7 +50,26 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                   </p>
                 </div>
 
-                <div className="mt-[91px] max-lg:mt-5 max-lg:w-full  max-lg:justify-center flex justify-end">
+                <div className="mt-[91px] gap-6 max-lg:mt-5 max-lg:w-full  max-lg:justify-center flex justify-end">
+                  <button
+                    onClick={() => {
+                      mixpanelTrack(event_name_enum.inbound, {
+                        url: "/projects/trending",
+                      });
+
+                      router.push("/projects/trending");
+                    }}
+                    className="px-6 max-h-12 max-lg:text-sm max-lg:w-full gap-1 py-[10px] border text-primary-500 border-primary-500 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div className="mr-1">
+                        <Spinner />
+                      </div>
+                    ) : null}
+                    <Image src={BitcoinIcon} alt="" height={24} />
+                    Pay with crypto
+                  </button>
                   <button
                     disabled={isLoading}
                     onClick={() => {
@@ -58,7 +79,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
                       router.push("/projects/trending");
                     }}
-                    className={`py-3 px-6 flex items-center  bg-primary-500 ${
+                    className={`py-3 px-6 gap-2 flex items-center  bg-primary-500 ${
                       isLoading ? "opacity-40" : ""
                     }`}
                   >
@@ -67,7 +88,9 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                         <Spinner />
                       </div>
                     ) : null}
-                    <p>Access Now</p>
+                    <Image src={CreditCardIcon} alt="" height={24} />
+
+                    <p>Pay with card</p>
                   </button>
                 </div>
               </div>
@@ -116,21 +139,50 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                   <p className="ml-2">Weekly Newsletter</p>
                 </div>
 
-                <div className="mt-[43px] max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
+                <div className="mt-[43px] gap-6 max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
                   <button
+                    onClick={() => {
+                      // payment
+                      mixpanelTrack(event_name_enum.inbound, {
+                        url: "/projects/trending",
+                      });
+
+                      router.push("/projects/trending");
+                    }}
+                    className="px-6 max-h-12 max-lg:text-sm max-lg:w-full gap-1 py-[10px] border text-primary-500 border-primary-500 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
                     disabled={isLoading}
-                    onClick={() => onPayment(true, isYear)}
-                    className={`py-3 px-6 bg-primary-500 flex items-center ${
-                      isLoading ? "opacity-40" : ""
-                    }`}
                   >
                     {isLoading ? (
-                      <div className="mr-2">
+                      <div className="mr-1">
                         <Spinner />
                       </div>
                     ) : null}
-                    <p>Subscribe Now</p>
+                    <Image src={BitcoinIcon} alt="" height={24} />
+                    Pay with crypto
                   </button>
+                  <div className="flex flex-col gap-[2px]">
+                    <button
+                      disabled={isLoading}
+                      onClick={() => onPayment(true, isYear)}
+                      className={`py-3 px-6 gap-2 bg-primary-500 flex items-center ${
+                        isLoading ? "opacity-40" : ""
+                      }`}
+                    >
+                      {isLoading ? (
+                        <div className="mr-2">
+                          <Spinner />
+                        </div>
+                      ) : null}
+                      <Image src={CreditCardIcon} alt="" height={24} />
+                      <p>Pay with card</p>
+                    </button>
+                    <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
+                      <Image src={Tick2Icon} alt="" height={8} width={10} />
+                      <p className="text-center text-success-500 text-sm font-workSansRegular">
+                        Easier for renewals
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -161,7 +213,26 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                 </p>
               </div>
 
-              <div className="mt-[91px] max-lg:mt-5 max-lg:w-full  max-lg:justify-center flex justify-end">
+              <div className="mt-[91px] gap-6 max-lg:mt-5 max-lg:w-full  max-lg:justify-center flex justify-end">
+                <button
+                  onClick={() => {
+                    mixpanelTrack(event_name_enum.inbound, {
+                      url: "/projects/trending",
+                    });
+
+                    router.push("/projects/trending");
+                  }}
+                  className="px-6  max-h-12 max-lg:text-sm max-lg:w-full gap-1 py-[10px] border text-primary-500 border-primary-500 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <div className="mr-1">
+                      <Spinner />
+                    </div>
+                  ) : null}
+                  <Image src={BitcoinIcon} alt="" height={24} />
+                  Pay with crypto
+                </button>
                 <button
                   disabled={isLoading}
                   onClick={() => {
@@ -171,7 +242,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
                     router.push("/projects/trending");
                   }}
-                  className={`py-3 px-6 flex items-center  bg-primary-500 ${
+                  className={`py-3 px-6 gap-2 flex items-center  bg-primary-500 ${
                     isLoading ? "opacity-40" : ""
                   }`}
                 >
@@ -180,7 +251,9 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                       <Spinner />
                     </div>
                   ) : null}
-                  <p>Access Now</p>
+                  <Image src={CreditCardIcon} alt="" height={24} />
+
+                  <p>Pay with card</p>
                 </button>
               </div>
             </div>
@@ -221,21 +294,50 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                 <p className="ml-2">Weekly Newsletter</p>
               </div>
 
-              <div className="mt-[43px] max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
+              <div className="mt-[43px] gap-6 max-lg:mt-5 max-lg:w-full max-lg:justify-center flex justify-end">
                 <button
+                  onClick={() => {
+                    mixpanelTrack(event_name_enum.inbound, {
+                      url: "/projects/trending",
+                    });
+
+                    router.push("/projects/trending");
+                  }}
+                  className="px-6 max-h-12 max-lg:text-sm max-lg:w-full gap-1 py-[10px] border text-primary-500 border-primary-500 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
                   disabled={isLoading}
-                  onClick={() => onPayment(true, isYear)}
-                  className={`py-3 px-6 bg-primary-500 flex items-center ${
-                    isLoading ? "opacity-40" : ""
-                  }`}
                 >
                   {isLoading ? (
-                    <div className="mr-2">
+                    <div className="mr-1">
                       <Spinner />
                     </div>
                   ) : null}
-                  <p>Subscribe Now</p>
+                  <Image src={BitcoinIcon} alt="" height={24} />
+                  Pay with crypto
                 </button>
+                <div className="flex flex-col gap-[2px]">
+                  <button
+                    disabled={isLoading}
+                    onClick={() => onPayment(true, isYear)}
+                    className={`py-3 px-6 gap-2 bg-primary-500 flex items-center ${
+                      isLoading ? "opacity-40" : ""
+                    }`}
+                  >
+                    {isLoading ? (
+                      <div className="mr-2">
+                        <Spinner />
+                      </div>
+                    ) : null}
+                    <Image src={CreditCardIcon} alt="" height={24} />
+
+                    <p>Pay with card</p>
+                  </button>
+                  <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
+                    <Image src={Tick2Icon} alt="" height={8} width={10} />
+                    <p className="text-center text-success-500 text-sm font-workSansRegular">
+                      Easier for renewals
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
