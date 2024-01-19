@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
-import { CreditCardIcon, BitcoinIcon, Tick2Icon } from "@/assets/icons";
+import { CreditCardIcon, Tick2Icon } from "@/assets/icons";
 import Image from "next/image";
 
 const Subscription = () => {
@@ -133,19 +133,6 @@ const Subscription = () => {
           </div>
 
           <div className="max-lg:w-full max-lg:mt-6 flex gap-6">
-            <button
-              onClick={() => getPaymentLink(false, false)}
-              className="px-6 max-h-12 max-lg:text-sm max-lg:w-full gap-1 py-[10px] border text-primary-500 border-primary-500 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="mr-1">
-                  <Spinner />
-                </div>
-              ) : null}
-              <Image src={BitcoinIcon} alt="" height={24} />
-              Pay with crypto
-            </button>
             <div className="flex flex-col gap-[2px]">
               <button
                 onClick={() => getPaymentLink(false, false)}

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
+import "@iofate/react-coinbase-commerce/dist/esm/index.css"
 import PaddleLoader from "./../components/Payment";
 import ContextConsumer from "@/contexts";
 
