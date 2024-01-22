@@ -207,6 +207,11 @@ select:-webkit-autofill:focus {
 
 .animate-spin	{
   animation: spin 1s linear infinite;
-  
+}
+
+/* custom react coinbase */
+.coinbase-commerce-iframe {
+  background-color: white;
+  opacity: 0.9;
 }
 
