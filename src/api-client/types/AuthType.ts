@@ -13,6 +13,7 @@ export interface LoginResponseType {
 }
 
 export interface AccountDetailResponse {
+  id: string;
   name: string;
   currentPlanKey: string;
   planExpiredAt: string;

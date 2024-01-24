@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { FC, useContext, useState } from "react";
 import AQAvatar from "../AQAvatar";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 interface HomeNavTypes {
   isApp?: boolean;
@@ -53,7 +54,8 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
       mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
 
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
 

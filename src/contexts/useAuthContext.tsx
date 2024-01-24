@@ -82,6 +82,7 @@ export const useAuthContext = (): IAuthContext => {
         authState?.access_token ?? ""
       );
       setAccountExtendDetail(accountEDData);
+      localStorage.setItem("userId", accountEDData?.id)
       mixpanelSetUserId(accountEDData.username);
 
       return;
@@ -95,7 +96,7 @@ export const useAuthContext = (): IAuthContext => {
     setAuthState(authState);
   };
   const handleLogOut = () => {
-    localStorage.removeItem("AQToken");
+    localStorage.clear();
     setAuthState(null);
     setAccountExtendDetail(null);
     setCanCancel(null);

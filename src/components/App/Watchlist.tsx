@@ -31,6 +31,7 @@ import Narratives from "../Narratives";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import TopAlphaHunterByDiscoveries from "../TopAlphaHunterByDiscoveries";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 type TabTypes = "narratives" | "projects" | "alpha-hunters";
 
@@ -124,7 +125,8 @@ const Watchlist: FC<WatchlistTypes> = ({
         url: "/pricing?action=open",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

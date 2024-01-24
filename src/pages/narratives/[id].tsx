@@ -33,6 +33,7 @@ import { WatchListTypes } from "@/api-client/twitter";
 import { toast } from "react-toastify";
 import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 const ChartDetail = () => {
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -150,7 +151,8 @@ const ChartDetail = () => {
         url: "/pricing",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

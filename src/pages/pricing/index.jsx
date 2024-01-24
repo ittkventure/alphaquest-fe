@@ -9,6 +9,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { CreditCardIcon, Tick2Icon } from "@/assets/icons";
+import Image from "next/image";
 
 const Subscription = () => {
   const { authState, typePayment, setTypePaymentAction } =
@@ -130,19 +132,28 @@ const Subscription = () => {
             </p>
           </div>
 
-          <div className="max-lg:w-full max-lg:mt-6">
-            <button
-              onClick={() => getPaymentLink(false, false)}
-              className="px-6 max-lg:text-sm max-lg:w-full py-[10px] bg-success-600 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="mr-1">
-                  <Spinner />
-                </div>
-              ) : null}
-              Try the Pro Plan for 7 days
-            </button>
+          <div className="max-lg:w-full max-lg:mt-6 flex gap-6">
+            <div className="flex flex-col gap-[2px]">
+              <button
+                onClick={() => getPaymentLink(false, false)}
+                className="px-6 max-lg:text-sm max-lg:w-full gap-1 py-[10px] bg-primary-500 font-workSansRegular text-[1.125rem] flex  justify-center items-center"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="mr-1">
+                    <Spinner />
+                  </div>
+                ) : null}
+                <Image src={CreditCardIcon} alt="" height={24} />
+                Pay with card
+              </button>
+              <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
+                <Image src={Tick2Icon} alt="" height={8} width={10} />
+                <p className="text-center text-success-500 text-sm font-workSansRegular">
+                  Easier for renewals
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
