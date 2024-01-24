@@ -53,6 +53,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { WatchListTypes } from "@/api-client/twitter";
 import { Menu, Transition } from "@headlessui/react";
 import { Copy } from "iconsax-react";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 interface IProjectDetail {
   userId?: string;
@@ -313,7 +314,8 @@ const ProjectDetail: FC<IProjectDetail> = ({
         url: "/pricing?action=open",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

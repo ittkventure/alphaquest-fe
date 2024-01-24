@@ -5,6 +5,7 @@ import ProjectDetail from "@/components/ProjectDetail";
 import Spinner from "@/components/Spinner";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import AppLayout from "@/layouts/AppLayout";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -27,7 +28,8 @@ const ProjectPage: FC<Props> = ({ nameProject }) => {
         url: "/pricing",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

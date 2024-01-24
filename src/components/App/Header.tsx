@@ -20,6 +20,7 @@ import {
   clearAllNotiByClick,
 } from "@/api-client/notification";
 import QuickSearch from "./QuickSearch";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 interface IHeader {
   title?: string;
@@ -67,7 +68,8 @@ const Header: FC<IHeader> = ({ title }) => {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
       });
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

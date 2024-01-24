@@ -19,6 +19,7 @@ import SubscriptionItem from "@/components/Home/SubscriptionItem";
 import CustomTooltipNotLabel from "@/components/ProjectDetail/LineChart/CustomTooltipNotLabel";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import HomeLayout from "@/layouts/HomeLayout";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 import { formatNumber } from "@/utils/formatNumber";
 import { listDiscoverProjects } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
@@ -177,7 +178,8 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
     if (authState) {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;

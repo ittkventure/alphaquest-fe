@@ -25,6 +25,7 @@ import Image from "next/image";
 import { CrownIcon } from "@/assets/icons";
 import { initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 interface WatchlistTypes {
   listItemsProps?: TwitterItem[];
@@ -104,7 +105,8 @@ const Watchlist: FC<WatchlistTypes> = ({
         url: "/pricing?action=open",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

@@ -28,6 +28,7 @@ import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -146,7 +147,8 @@ const AppContent: FC<AppContentTypes> = ({
         url: "/pricing",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
