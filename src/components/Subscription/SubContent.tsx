@@ -24,7 +24,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
           <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
             <div className="relative mx-6 max-lg:mx-0 w-[576px] max-xl:w-full">
               <div className="rounded-[100%] w-52 h-52 custom-circle-bg absolute top-[-30px] right-[-30px]"></div>
-              <div className="w-full p-10 max-lg:p-5 custom-card-sub backdrop-blur-md min-h-[432px]">
+              <div className="w-full p-10 max-lg:p-5 custom-card-sub backdrop-blur-md min-h-[412px]">
                 <div className="flex justify-center font-workSansSemiBold items-center border-[0.5px] border-secondary-700 text-success-600 w-[55px] py-[2px] rounded-[20px]">
                   <p>FREE</p>
                 </div>
@@ -113,16 +113,16 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                       <Image src={CreditCardIcon} alt="" height={24} />
                       <p>Pay with card</p>
                     </button>
-                    <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
+                    {/* <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
                       <Image src={Tick2Icon} alt="" height={8} width={10} />
                       <p className="text-center text-success-500 text-sm font-workSansRegular">
                         Easier for renewals
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
-              <CoinbaseCommerceButton checkoutId="839fd09c-07b3-4c07-9596-8e267a210501">
+              {/* <CoinbaseCommerceButton checkoutId="839fd09c-07b3-4c07-9596-8e267a210501">
                 <div
                   onClick={() => {
                     // payment
@@ -140,7 +140,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                   <Image src={BitcoinIcon} alt="" height={24} />
                   Pay with crypto
                 </div>
-              </CoinbaseCommerceButton>
+              </CoinbaseCommerceButton> */}
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
         <div className="flex max-lg:flex-col justify-center max-w-[1350px]">
           <div className="relative mx-6 max-lg:mx-0 w-[576px] max-xl:w-full">
             <div className="rounded-[100%] w-52 h-52 custom-circle-bg absolute top-[-30px] right-[-30px]"></div>
-            <div className="w-full p-10 max-lg:p-5 custom-card-sub backdrop-blur-md min-h-[380px]">
+            <div className="w-full p-10 max-lg:p-5 custom-card-sub backdrop-blur-md min-h-[360px]">
               <div className="flex justify-center font-workSansSemiBold items-center border-[0.5px] border-secondary-700 text-success-600 w-[55px] py-[2px] rounded-[20px]">
                 <p>FREE</p>
               </div>
@@ -224,16 +224,16 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
 
                     <p>Pay with card</p>
                   </button>
-                  <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
+                  {/* <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
                     <Image src={Tick2Icon} alt="" height={8} width={10} />
                     <p className="text-center text-success-500 text-sm font-workSansRegular">
                       Easier for renewals
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
-            <CoinbaseCommerceButton checkoutId="9d11254d-cc2d-471c-ab6d-78a2db1c25ae">
+            {/* <CoinbaseCommerceButton checkoutId="9d11254d-cc2d-471c-ab6d-78a2db1c25ae">
               <div
                 onClick={() => {
                   mixpanelTrack(event_name_enum.inbound, {
@@ -250,7 +250,7 @@ const SubContent: FC<ISubContent> = ({ onPayment, isLoading }) => {
                 <Image src={BitcoinIcon} alt="" height={24} />
                 Pay with crypto
               </div>
-            </CoinbaseCommerceButton>
+            </CoinbaseCommerceButton> */}
           </div>
         </div>
       </div>

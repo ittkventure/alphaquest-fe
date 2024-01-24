@@ -11,6 +11,7 @@ import Spinner from "@/components/Spinner";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { CreditCardIcon, Tick2Icon } from "@/assets/icons";
 import Image from "next/image";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 const Subscription = () => {
   const { authState, typePayment, setTypePaymentAction } =
@@ -73,36 +74,33 @@ const Subscription = () => {
   }, [typePayment, router.query]);
 
   const getPaymentLink = async (withoutTrial, isYear) => {
-    setIsLoading(true);
-    try {
-      if (authState) {
-        const paymentLink = await apiPayment.getLinkPayment(
-          authState?.access_token,
-          withoutTrial,
-          isYear
-        );
-        Paddle.Checkout.open({
-          override: paymentLink,
-        });
-        setIsLoading(false);
-      } else {
-        setTypePaymentAction
-          ? setTypePaymentAction(
-              withoutTrial ? TypePayment.PRO : TypePayment.TRIAL
-            )
-          : null;
-        mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
+    // setIsLoading(true);
 
-        router.push("/sign-up");
-        setIsLoading(false);
-      }
-    } catch (error) {
-      if (error?.response?.data?.error?.data?.messsage) {
-        toast.error(error?.response?.data?.error?.data?.messsage);
-      } else {
-        toast.error("Error when payment, please try again!");
-      }
-      setIsLoading(false);
+    if (authState) {
+      // const paymentLink = await apiPayment.getLinkPayment(
+      //   authState?.access_token,
+      //   withoutTrial,
+      //   isYear
+      // );
+      // Paddle.Checkout.open({
+      //   override: paymentLink,
+      // });
+      // setIsLoading(false);
+      mixpanelTrack(event_name_enum.inbound, {
+        url: "/pricing",
+      });
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
+    } else {
+      setTypePaymentAction
+        ? setTypePaymentAction(
+            withoutTrial ? TypePayment.PRO : TypePayment.TRIAL
+          )
+        : null;
+      mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
+
+      router.push("/sign-up");
+      // setIsLoading(false);
     }
   };
 
@@ -147,12 +145,12 @@ const Subscription = () => {
                 <Image src={CreditCardIcon} alt="" height={24} />
                 Pay with card
               </button>
-              <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
+              {/* <div className="bg-success-500 bg-opacity-10 flex gap-[6px] justify-center items-center">
                 <Image src={Tick2Icon} alt="" height={8} width={10} />
                 <p className="text-center text-success-500 text-sm font-workSansRegular">
                   Easier for renewals
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
