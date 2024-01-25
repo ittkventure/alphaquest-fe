@@ -69,7 +69,7 @@ const Header: FC<IHeader> = ({ title }) => {
         url: "/pricing",
       });
       const userId = getUserId();
-      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}&plan=trial`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

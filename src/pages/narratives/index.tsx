@@ -34,6 +34,7 @@ import { WatchListTypes } from "@/api-client/twitter";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-toastify";
 import { UserPayType } from "@/api-client/types/AuthType";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
 interface NarrativesItemProps {
   data: any;
@@ -255,7 +256,8 @@ const ChartPage = () => {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/pricing",
       });
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}&plan=pro`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",
