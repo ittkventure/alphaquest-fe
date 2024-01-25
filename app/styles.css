@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-card-sub-border-linear {
+  border-image-slice: 1;
+  border-image-source: linear-gradient(to right bottom, #e25148, #24b592);
+}
+
+.custom-card-sub {
+  background: linear-gradient(
+    245.26deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(17px);
+}
+
+.linear-bg-gradient-subscription-2 {
+  background: linear-gradient(266.9deg, #24b592 0%, #e25148 100%);
+  opacity: 0.15;
+}
+
+.linear-bg-gradient-home {
+  background: linear-gradient(180deg, rgba(36, 181, 146, 0) 0%, #24b592 63.3%);
+}
+
+.linear-bg-gradient-subscription {
+  background: linear-gradient(180deg, #191e2d 0%, rgba(25, 30, 45, 0) 100%);
+}
+
+.react-multiple-carousel__arrow--right {
+  background: #3b435c !important;
+  right: 0 !important;
+}
+
+.react-multiple-carousel__arrow--left {
+  background: #3b435c !important;
+  left: 0 !important;
+}
+
+/* custom rc-pagination */
+.rc-pagination-item {
+  background-color: transparent !important;
+  border-color: #24b592 !important;
+}
+
+.rc-pagination-item a {
+  color: white !important;
+}
+
+.rc-pagination-item-active a {
+  color: #24b592 !important;
+}
+
+.linear-bg-gradient-pick {
+  background: linear-gradient(267deg, #24b592 0%, #e25148 100%);
+  opacity: 0.15;
+}
+
+.linear-bg-gradient-pick:hover {
+  opacity: 0.4;
+}

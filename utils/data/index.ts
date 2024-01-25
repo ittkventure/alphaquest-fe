@@ -1,0 +1,1 @@
+export const AQ_APP_URL = "https://app.alphaquest.io"

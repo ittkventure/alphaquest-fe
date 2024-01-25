@@ -36,6 +36,15 @@ module.exports = {
           900: "#11141E",
           300: "#3F3F46",
         },
+        primary: "#11141E",
+        main: "#24B592",
+        btn: "#E25148",
+        white: "#FAFAFA",
+        card: "#171B28",
+        item: "rgba(255, 255, 255, 0.1)",
+        gray: {
+          400: "#A1A1AA",
+        }
       },
       fontFamily: {
         workSansExtraLight: "WorkSans-ExtraLight",
