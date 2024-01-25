@@ -1,6 +1,7 @@
 import { UserPayType } from "@/api-client/types/AuthType";
 import { CrownIcon } from "@/assets/icons";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
+import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -24,7 +25,8 @@ const UpgradeProButton: FC<IUpgradeProButtonProps> = ({ length = 0 }) => {
         url: "/pricing",
       });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      router.push("/pricing?action=open");
+      const userId = getUserId();
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}&plan=pro`);
     } else {
       mixpanelTrack(event_name_enum.inbound, {
         url: "/sign-up",

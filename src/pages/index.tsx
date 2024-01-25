@@ -179,7 +179,7 @@ const Home: NextPage<HomePageType> = ({ gemCount }) => {
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
       const userId = getUserId();
-      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}&plan=trial`);
     } else {
       mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;

@@ -7,7 +7,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import AQAvatar from "../AQAvatar";
 import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 
@@ -55,7 +55,7 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
 
       setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
       const userId = getUserId();
-      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`);
+      router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}&plan=trial`);
     } else {
       mixpanelTrack(event_name_enum.inbound, { url: "/sign-up" });
 
@@ -132,15 +132,16 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
               Projects
             </Link>
           </li>
-          <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
-            <Link
+          <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300 cursor-pointer">
+            <span
               onClick={() => {
                 mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
+                const userId = getUserId();
+                router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`)
               }}
-              href="/pricing"
             >
               Pricing
-            </Link>
+            </span>
           </li>
           <li className="max-lg:flex-1 mt-3 hover:text-success-500 transition-all duration-300">
             <Link href="https://docs.alphaquest.io/">Docs</Link>
@@ -225,15 +226,16 @@ const HomeNav: FC<HomeNavTypes> = ({ isApp }) => {
                 Projects
               </Link>
             </li>
-            <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300">
-              <Link
-                onClick={() => {
+            <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300 cursor-pointer">
+              <span
+                 onClick={() => {
                   mixpanelTrack(event_name_enum.inbound, { url: "/pricing" });
+                  const userId = getUserId();
+                  router.push(`${AQ_BLOG_URL}/pricing?userId=${userId}`)
                 }}
-                href="/pricing"
               >
                 Pricing
-              </Link>
+              </span>
             </li>
             <li className="max-lg:flex-1 mr-6 hover:text-success-500 transition-all duration-300">
               <Link href="https://docs.alphaquest.io/">Docs</Link>
