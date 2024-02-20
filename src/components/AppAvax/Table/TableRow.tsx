@@ -99,22 +99,26 @@ const TableRow: FC<TableRowTypes> = ({
     setItemState(item);
   }, [item]);
 
-  const onAddItemToWatchList = async () => {
+  const onAddItemToWatchList = async (e: any) => {
+    // prevent open modal when click heart button
+    e.stopPropagation();
     if (!authState?.access_token) {
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/login",
+      mixpanelTrack(event_name_enum.upgrade_to_pro, {
+        url: router.pathname,
       });
-      router.push("/login");
-      return;
-    }
-    if (accountExtendDetail?.currentPlanKey === UserPayType.FREE) {
-      setTypePaymentAction ? setTypePaymentAction(TypePayment.PRO) : null;
-      mixpanelTrack(event_name_enum.inbound, {
-        url: "/pricing",
-      });
-      router.push("/pricing?action=open");
-
-      return;
+      if (authState) {
+        setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+        mixpanelTrack(event_name_enum.inbound, {
+          url: "/pricing",
+        });
+        router.push("/pricing?action=open");
+      } else {
+        mixpanelTrack(event_name_enum.inbound, {
+          url: "/sign-up",
+        });
+        setTypePaymentAction ? setTypePaymentAction(TypePayment.TRIAL) : null;
+        router.push("/sign-up");
+      }
     }
     try {
       setIsLoading(true);
@@ -133,8 +137,9 @@ const TableRow: FC<TableRowTypes> = ({
         toast.warning("Please login for use this feature");
       }
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
+      toast.error(error?.response?.data?.error?.message);
     }
   };
 
@@ -162,7 +167,7 @@ const TableRow: FC<TableRowTypes> = ({
   const _renderHeartButton = () => {
     return (
       <button
-        onClick={onAddItemToWatchList}
+        onClick={(e) => onAddItemToWatchList(e)}
         className="max-lg:mt-2 flex justify-center items-center w-7"
         disabled={isLoading}
       >
