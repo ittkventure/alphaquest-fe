@@ -29,6 +29,7 @@ import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { getAccessToken } from "@/utils/access-token";
+import { fetchFreeDashboard } from "@/api-client/free-dashboard";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -38,6 +39,8 @@ interface AppContentTypes {
   categoryParams?: string[];
   chainQuery?: string;
   categoryQuery?: string;
+  pageTitle: string;
+  slug: string | string[];
 }
 
 const AppContent: FC<AppContentTypes> = ({
@@ -48,6 +51,8 @@ const AppContent: FC<AppContentTypes> = ({
   categoryParams,
   chainQuery,
   categoryQuery,
+  pageTitle,
+  slug,
 }) => {
   const router = useRouter();
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -160,17 +165,26 @@ const AppContent: FC<AppContentTypes> = ({
       setPageNumber(1);
       setHasLoadMore(true);
 
-      const data = await apiTwitter.getListTwitterOnlyAvax(
-        {
-          pageNumber: 1,
-          pageSize:
-            accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
-          sortBy,
-          timeFrame,
-          newest: tabCheck === "newest" ? true : false,
-        },
-        authState?.access_token ?? ""
-      );
+      // const data = await apiTwitter.getListTwitterOnlyAvax(
+      //   {
+      //     pageNumber: 1,
+      //     pageSize:
+      //       accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
+      //     sortBy,
+      //     timeFrame,
+      //     newest: tabCheck === "newest" ? true : false,
+      //   },
+      //   authState?.access_token ?? ""
+      // );
+
+      const data = await fetchFreeDashboard(slug, {
+        pageNumber,
+        pageSize:
+          accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
+        sortBy,
+        timeFrame,
+        newest: tabCheck === "newest" ? true : false,
+      });
 
       setIsLoading(false);
       if (
@@ -205,16 +219,14 @@ const AppContent: FC<AppContentTypes> = ({
       setIsLoadingMore(true);
       setErrorMsg("");
 
-      const data = await apiTwitter.getListTwitterOnlyAvax(
-        {
-          pageNumber,
-          pageSize,
-          sortBy,
-          timeFrame,
-          newest: newest === "newest" ? true : false,
-        },
-        authState?.access_token ?? ""
-      );
+      const data = await fetchFreeDashboard(slug, {
+        pageNumber,
+        pageSize:
+          accountExtendDetail?.currentPlanKey === "FREE" ? 10 : pageSize,
+        sortBy,
+        timeFrame,
+        newest: newest === "newest" ? true : false,
+      });
 
       setIsLoadingMore(false);
       if (pageNumber === 1) setListItem([]);
@@ -377,7 +389,7 @@ const AppContent: FC<AppContentTypes> = ({
     <div className="w-full relative ">
       {renderUpBtn()}
       <div className="p-6">
-        <Header title="New Avalanche Projects Dec 2023" />
+        <Header title={pageTitle} />
         <div className="h-[1px] bg-white bg-opacity-20 my-4 max-lg:hidden" />
       </div>
       <div className="hidden max-lg:block">
