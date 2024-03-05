@@ -870,7 +870,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
         id="info-tooltip"
         className="!bg-[#282E44] max-w-[300px] text-white text-[12px] p-4 !rounded-none"
         place="right"
-        content="Top interacting wallets can be calculated by # of transactions or by Eth volume. Use the selector to choose"
+        content="This chart presents historical data on the number of Alpha Hunters following and the growth of Twitter followers. Hover over the chart to identify the Alpha Hunters who followed before the surges in Twitter followers"
       />
     </div>
   );

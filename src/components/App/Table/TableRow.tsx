@@ -217,7 +217,7 @@ const TableRow: FC<TableRowTypes> = ({
       }
     >
       <div className="flex items-center cursor-pointer">
-        <div className="mr-4">
+        <div className="mr-4 max-lg:hidden">
           <p className="text-right w-6">{index + 1}</p>
         </div>
         <div

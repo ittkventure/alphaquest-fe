@@ -46,6 +46,7 @@
     "recharts": "2.7.2",
     "swiper": "9.1.1",
     "typescript": "4.9.5",
+    "usehooks-ts": "^2.15.1",
     "uuid": "9.0.1",
     "yup": "1.0.2"
   },

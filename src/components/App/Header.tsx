@@ -1,6 +1,6 @@
 import { CrownIcon } from "@/assets/icons";
 import { LogoWithText } from "@/assets/images";
-import { NotificationHeader } from "@/assets/icons";
+import { NotificationHeader, CoinWhiteIcon } from "@/assets/icons";
 import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { capitalized } from "@/utils/tools";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -11,7 +11,12 @@ import AQAvatar from "../AQAvatar";
 import { UserPayType } from "@/api-client/types/AuthType";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
-import { XMarkIcon } from "@heroicons/react/24/solid";
+import {
+  XMarkIcon,
+  Bars3Icon,
+  HeartIcon,
+  FolderIcon,
+} from "@heroicons/react/24/solid";
 import NotificationContent from "./NotificationContent";
 import { useMutation, useQuery } from "react-query";
 import NumberNotification from "./NumberNotification";
@@ -21,10 +26,18 @@ import {
 } from "@/api-client/notification";
 import QuickSearch from "./QuickSearch";
 import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
+import { Profile } from "iconsax-react";
 
 interface IHeader {
   title?: string;
 }
+
+type SideMenuMobile = {
+  icon?: JSX.Element;
+  label: string;
+  href: string;
+  isChildren?: boolean;
+};
 
 const Header: FC<IHeader> = ({ title }) => {
   const router = useRouter();
@@ -40,6 +53,7 @@ const Header: FC<IHeader> = ({ title }) => {
 
   const [openNotification, setOpenNotification] = useState(false);
   let notiRef: React.MutableRefObject<any> = useRef();
+  const [openMenuMobile, setOpenMenuMobile] = useState(false);
   useEffect(() => {
     // click outside to close notification content
     let handler = (e: any) => {
@@ -113,6 +127,39 @@ const Header: FC<IHeader> = ({ title }) => {
     }
   );
 
+  const sideMenuMobile: SideMenuMobile[] = [
+    {
+      label: "Watchlist",
+      icon: <HeartIcon className="h-6 w-6" />,
+      href: "/watchlist/narratives",
+    },
+    {
+      label: "Narratives",
+      icon: <Image src={CoinWhiteIcon} width={20} height={20} alt="nar alt" />,
+      href: "/narratives",
+    },
+    {
+      label: "Projects",
+      icon: <FolderIcon className="h-6 w-6" />,
+      href: "/projects",
+    },
+    {
+      label: "Trending",
+      href: "/projects/trending",
+      isChildren: true,
+    },
+    {
+      label: "Newest",
+      href: "/projects/newest",
+      isChildren: true,
+    },
+    {
+      label: "Alpha Hunters",
+      icon: <Profile variant="Bold" className="h-6 w-6" />,
+      href: "/alpha-hunters",
+    },
+  ];
+
   return (
     <div className="flex justify-between items-center w-full">
       <div>
@@ -120,13 +167,45 @@ const Header: FC<IHeader> = ({ title }) => {
           {renderTitle()}
         </h1>
         <div className="hidden max-lg:block">
-          <Image
-            src={LogoWithText}
-            width={169}
-            height={40}
-            alt="logo"
-            className="max-lg:w-[120px]"
-          />
+          <div className="flex gap-2 items-center">
+            <Bars3Icon
+              className="h-6 w-6"
+              onClick={() => setOpenMenuMobile(true)}
+            />
+            <Image
+              src={LogoWithText}
+              width={169}
+              height={32}
+              alt="logo"
+              className="max-lg:w-[120px] mt-1"
+            />
+          </div>
+          {openMenuMobile && (
+            <div className="fixed h-screen bg-dark-900 z-[1000] top-0 left-0 w-full flex flex-col gap-4 px-6 pt-6">
+              <XMarkIcon
+                className="h-7 w-7 transition-all duration-300"
+                onClick={() => setOpenMenuMobile(false)}
+              />
+              <div className="flex flex-col">
+                {sideMenuMobile?.map((sideItem: SideMenuMobile) => (
+                  <div
+                    className={`${
+                      sideItem?.isChildren
+                        ? "py-4 ml-14"
+                        : "flex gap-4 items-center p-4"
+                    } mr-4 border-b border-gray-800 hover:bg-secondary-600`}
+                    onClick={() => {
+                      router.push(sideItem?.href);
+                      setOpenMenuMobile(false);
+                    }}
+                  >
+                    {sideItem?.icon}
+                    <span>{sideItem?.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -230,7 +309,11 @@ const Header: FC<IHeader> = ({ title }) => {
             {openNotification && (
               <NotificationContent
                 closeNotification={() => setOpenNotification(false)}
-                onClickPaymentTrial={accountExtendDetail?.currentPlanKey === UserPayType.FREE ? onClickPaymentTrial : undefined}
+                onClickPaymentTrial={
+                  accountExtendDetail?.currentPlanKey === UserPayType.FREE
+                    ? onClickPaymentTrial
+                    : undefined
+                }
               />
             )}
           </div>
