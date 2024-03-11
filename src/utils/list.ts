@@ -15,24 +15,26 @@ import {
 import { TableObject } from "@/components/App/Table/TableRow";
 import { DiscoverProjectItemTypes } from "@/components/Home/DiscoverProjectItem";
 
-const initListSort = [
-  {
-    label: "# of KOLs followed",
-    value: "SCORE",
-  },
-  {
-    label: "Discovered Date",
-    value: "DISCOVERED_DATE",
-  },
-  {
-    label: "Twitter Follow",
-    value: "TWITTER_FOLLOWER",
-  },
-  {
-    label: "Twitter Create Date",
-    value: "TWITTER_CREATED_DATE",
-  },
-];
+const initListSort = (isMentioned: boolean) => {
+  return [
+    {
+      label: isMentioned ? "# of KOLs mentioned" : "# of KOLs followed",
+      value: "SCORE",
+    },
+    {
+      label: "Discovered Date",
+      value: "DISCOVERED_DATE",
+    },
+    {
+      label: "Twitter Follow",
+      value: "TWITTER_FOLLOWER",
+    },
+    {
+      label: "Twitter Create Date",
+      value: "TWITTER_CREATED_DATE",
+    },
+  ];
+};
 
 const initListSortForWatchlist = [
   {

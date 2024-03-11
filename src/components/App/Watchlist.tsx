@@ -23,7 +23,7 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
 import { CrownIcon, InfoIcon } from "@/assets/icons";
-import { initListSort, initListSortForWatchlist } from "@/utils/list";
+import { initListMonth, initListSort, initListSortForWatchlist } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
@@ -411,6 +411,7 @@ const Watchlist: FC<WatchlistTypes> = ({
                 value: timeFrame,
                 label: timeLabel,
               }}
+              listData={initListMonth}
             />
           </div>
         </div>

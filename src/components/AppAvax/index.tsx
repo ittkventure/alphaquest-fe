@@ -351,7 +351,7 @@ const AppContent: FC<AppContentTypes> = ({
                   value: sortBy,
                   label: sortByLabel,
                 }}
-                listData={initListSort as Array<any>}
+                listData={initListSort(false) as Array<any>}
               />
             </div>
           </div>

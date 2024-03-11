@@ -23,7 +23,7 @@ import { AuthContext, TypePayment } from "@/contexts/useAuthContext";
 import { UserPayType } from "@/api-client/types/AuthType";
 import Image from "next/image";
 import { CrownIcon, InfoIcon } from "@/assets/icons";
-import { initListSort } from "@/utils/list";
+import { initListMonth, initListSort } from "@/utils/list";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -86,6 +86,12 @@ const AppContent: FC<AppContentTypes> = ({
   });
   const apiTwitter = new ApiTwitter();
   const [isSearchLoading, setIsSearchLoading] = useState(false);
+  console.log(sortByLabel);
+
+  useEffect(() => {
+    if (tab === "most-mentioned") setSortByLabel("# of KOLs mentioned");
+    else setSortByLabel("# of KOLs followed")
+  }, [tab]);
 
   useEffect(() => {
     setFirstCalled(true);
@@ -318,7 +324,9 @@ const AppContent: FC<AppContentTypes> = ({
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
         <div className="flex flex-col justify-start max-lg:w-[90vw]">
           <p>
-            {totalCount.toLocaleString()} projects discovered during the last
+            {`${totalCount.toLocaleString()} projects ${
+              tab === "most-mentioned" ? "mentioned" : "discovered"
+            } during the last`}
           </p>
           <div className="flex">
             <MonthSelect
@@ -337,6 +345,7 @@ const AppContent: FC<AppContentTypes> = ({
                 value: timeFrame,
                 label: timeLabel,
               }}
+              listData={initListMonth}
             />
             <div className="flex">
               <p className="mx-2">sorted by</p>
@@ -349,13 +358,17 @@ const AppContent: FC<AppContentTypes> = ({
                       "sorted by" + (month.value as SortByType) ?? "SCORE",
                   });
                   setSortBy((month.value as SortByType) ?? "SCORE");
-                  setSortByLabel(month.label ?? "# of KOLs followed");
+                  const label =
+                    tab === "most-mentioned"
+                      ? "# of KOLs mentioned"
+                      : "# of KOLs followed";
+                  setSortByLabel(month.label ?? label);
                 }}
                 defaultData={{
                   value: sortBy,
                   label: sortByLabel,
                 }}
-                listData={initListSort as Array<any>}
+                listData={initListSort(tab === "most-mentioned") as Array<any>}
               />
             </div>
           </div>
@@ -489,7 +502,11 @@ const AppContent: FC<AppContentTypes> = ({
           <div className="bg-[#1F2536] h-10 px-14 flex justify-between items-center font-normal text-sm text-white mb-6 max-lg:hidden">
             <span>Project</span>
             <div className="flex items-center gap-1">
-              <span>New KOLs followed</span>
+              {tab === "most-mentioned" ? (
+                <span>New KOLs mentioned</span>
+              ) : (
+                <span>New KOLs followed</span>
+              )}
               <div
                 data-tooltip-id="info-tooltip-kol"
                 className="cursor-pointer"

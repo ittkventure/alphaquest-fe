@@ -17,7 +17,7 @@ import React, { useState } from "react";
 
 export interface MenuItemType {
   key: string;
-  icon: JSX.Element;
+  icon?: JSX.Element;
   label: string;
   active: boolean;
 }
@@ -66,6 +66,11 @@ const SideMenu = () => {
       key: "newest",
       icon: <BoltIcon className="h-5 w-5 mr-2" />,
       label: "Newest",
+      active: false,
+    },
+    {
+      key: "most-mentioned",
+      label: "Most Mentioned",
       active: false,
     },
   ]);

@@ -24,7 +24,6 @@ const MonthSelect: FC<MonthSelectTypes> = ({
   className,
   selectBoxClassName
 }) => {
-  const [listMonth, setListMonth] = useState(listData ?? initListMonth);
   const [isShowMenu, setIsShowMenu] = useState(false);
   const [selectedValue, setSelectedValue] = useState<MothType>(
     defaultData ?? {
@@ -68,7 +67,7 @@ const MonthSelect: FC<MonthSelectTypes> = ({
             selectBoxClassName
           )}
         >
-          {listMonth.map((value, index) => (
+          {listData?.map((value, index) => (
             <button
               key={index.toString()}
               className={`flex justify-center items-center py-2 hover:bg-success-500 font-workSansLight w-full px-2 ${

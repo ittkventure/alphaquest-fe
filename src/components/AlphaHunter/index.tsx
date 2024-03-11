@@ -17,6 +17,8 @@ import { WatchListTypes } from "@/api-client/twitter";
 import Spinner2 from "../Spinner2";
 import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { Tab } from "@headlessui/react";
+import classNames from "classnames";
 
 interface IAlphaHunter {
   userId?: string;
@@ -269,6 +271,68 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         </div>
       </div>
 
+      <div className="px-[100px]">
+        <Tab.Group vertical>
+          <Tab.List className="w-full border-b border-white/20">
+            <Tab>
+              {({ selected }) => (
+                /* Use the `selected` state to conditionally style the selected tab. */
+                <div
+                  className={classNames(
+                    "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                    {
+                      "text-primary-500 border-b-[3px] border-primary-500":
+                        selected,
+                    }
+                  )}
+                >
+                  Alpha Hunters Followed
+                </div>
+              )}
+            </Tab>
+            <Tab>
+              {({ selected }) => (
+                /* Use the `selected` state to conditionally style the selected tab. */
+                <div
+                  className={classNames(
+                    "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                    {
+                      "text-primary-500 border-b-[3px] border-primary-500":
+                        selected,
+                    }
+                  )}
+                >
+                  Alpha Hunters Mentioned
+                </div>
+              )}
+            </Tab>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <div className="grid grid-cols-2 gap-6  mt-5 max-[1450px]:px-4 w-full">
+                <div className="border border-white border-opacity-10 p-4 rounded-lg">
+                  <p>Current Twitter Followers</p>
+
+                  <p className="text-xl max-lg:text-sm">
+                    {alphaHunterDetail?.data?.followerCount ?? 0}
+                  </p>
+                </div>
+
+                <div className="border border-white border-opacity-10 p-4 rounded-lg">
+                  <p>Total Alpha Following</p>
+
+                  <p className="text-xl max-lg:text-sm">
+                    {" "}
+                    {alphaHunterDetail?.data?.alphaFollowingCount ?? 0}
+                  </p>
+                </div>
+              </div>
+              Content 1
+            </Tab.Panel>
+            <Tab.Panel>Content 2</Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+      </div>
       <div className="px-[100px] max-[1450px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
         <AlphaCard
           items={formatDataChart(

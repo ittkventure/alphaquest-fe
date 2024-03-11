@@ -109,31 +109,6 @@ const AlphaProfileCard: FC<IAlphaProfileCard> = ({
           </div>
         </div>
       </div>
-
-      <div className="grid grid-cols-2 gap-6  mt-5 px-[100px] max-[1450px]:px-4 w-full">
-        <div className="border border-white border-opacity-10 p-4 rounded-lg">
-          <p>Current Twitter Followers</p>
-
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <p className="text-xl max-lg:text-sm">{item?.followerCount ?? 0}</p>
-          )}
-        </div>
-
-        <div className="border border-white border-opacity-10 p-4 rounded-lg">
-          <p>Total Alpha Following</p>
-
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <p className="text-xl max-lg:text-sm">
-              {" "}
-              {item?.alphaFollowingCount ?? 0}
-            </p>
-          )}
-        </div>
-      </div>
     </div>
   );
 };

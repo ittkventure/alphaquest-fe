@@ -110,6 +110,7 @@ const Header: FC<IHeader> = ({ title }) => {
 
     if (title) return title;
 
+    if (tab === "most-mentioned") return "Most Mentioned Projects by Alpha Hunters"
     return capitalized(tab ? tab?.toString() : "Trending");
   };
 
