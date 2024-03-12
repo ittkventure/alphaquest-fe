@@ -100,6 +100,7 @@ const Header: FC<IHeader> = ({ title }) => {
   };
 
   const renderTitle = () => {
+    if (tab === "mentioned") return "Projects Mentioned by Top Alpha Hunters"
     if (router.pathname.indexOf("watchlist") !== -1) return "Watchlist";
     if (router.pathname.indexOf("/search") !== -1) return "Search";
     if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunters";

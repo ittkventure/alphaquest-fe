@@ -31,6 +31,7 @@ const SideMenu = () => {
   };
 
   const [isShowSubMenuProject, setIsShowSubMenuProject] = useState(true);
+  const [isShowSubMenuAlpha, setIsShowSubMenuAlpha] = useState(true);
 
   const [listMenu, setListMenu] = useState<MenuItemType[]>([
     {
@@ -74,6 +75,19 @@ const SideMenu = () => {
       active: false,
     },
   ]);
+
+  const listMenuAlphaHunter: MenuItemType[] = [
+    {
+      key: "alpha-hunters",
+      label: "Alpha Hunters",
+      active: false,
+    },
+    {
+      key: "mentioned",
+      label: "Most Mentioned",
+      active: false,
+    },
+  ];
 
   const _checkActiveTab = (item: MenuItemType, index: number) => {
     if (
@@ -193,33 +207,64 @@ const SideMenu = () => {
             );
           })}
         </ul>
-        <button
-          className="mt-2 w-full"
-          onClick={() => router.push("/alpha-hunters")}
-        >
-          <div
-            className={classNames(
-              "p-[13px] flex justify-between items-center w-full transition-all duration-300",
-              {
-                "bg-success-500": router.pathname.includes("/alpha-hunters"),
-                "hover:bg-secondary-600":
-                  !router.pathname.includes("/alpha-hunters"),
-              }
-            )}
+
+        <ul>
+          <button
+            className="mt-2 w-full"
+            onClick={() => setIsShowSubMenuAlpha(!isShowSubMenuAlpha)}
           >
-            <div className="flex items-center">
-              <Profile variant="Bold" className="h-6 w-6 mr-2" />
-              <p className="text-white">Alpha Hunters</p>
+            <div className="p-[13px] flex justify-between items-center w-full">
+              <div className="flex items-center">
+                <Profile variant="Bold" className="h-6 w-6 mr-2" />
+                <p className="text-white">Alpha Hunters</p>
+              </div>
+              {
+                <ChevronDownIcon
+                  className={classNames("h-5 w-5 transition-all duration-200", {
+                    "transform rotate-180": isShowSubMenuAlpha,
+                  })}
+                />
+              }
             </div>
-            {/* {
-              <ChevronDownIcon
-                className={classNames("h-5 w-5 transition-all duration-200", {
-                  "transform rotate-180": isShowSubMenuProject,
+          </button>
+          {listMenuAlphaHunter.map((value, index) => {
+            return (
+              <li
+                className={classNames("mt-2 transition-all duration-200", {
+                  "h-[50px] opacity-100": isShowSubMenuAlpha,
+                  "h-0 opacity-0": !isShowSubMenuAlpha,
                 })}
-              />
-            } */}
-          </div>
-        </button>
+                key={value.key}
+              >
+                <div
+                  className={`p-[13px] transition-all duration-300 ${_checkActiveTab(
+                    value,
+                    index
+                  )} w-full`}
+                >
+                  <Link
+                    onClick={() => {
+                      mixpanelTrack(event_name_enum.inbound, {
+                        url:
+                          value.key === "mentioned"
+                            ? "/alpha-hunters/mentioned"
+                            : `/alpha-hunters`,
+                      });
+                    }}
+                    href={
+                      value.key === "mentioned"
+                        ? "/alpha-hunters/mentioned"
+                        : `/alpha-hunters`
+                    }
+                    className={`flex transition-all duration-300 text-white`}
+                  >
+                    <p className="ml-7">{value.label}</p>
+                  </Link>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </ul>
 
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">

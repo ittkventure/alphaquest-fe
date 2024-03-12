@@ -10,10 +10,12 @@ import Link from "next/link";
 import useResponsive from "@/hooks/useWindowDimensions";
 interface IProjectsFollowedRowProps {
   projectsFollowedLastXDays: Array<ProjectsFollowedLastXday>;
+  isMentioned?: boolean;
 }
 
 const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
   projectsFollowedLastXDays,
+  isMentioned,
 }) => {
   const router = useRouter();
   const { setTypePaymentAction, authState } = useContext(AuthContext);
@@ -79,7 +81,7 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                     if (project.username === "UNKNOWN")
                       return (
                         <div className="flex items-center gap-2 mb-3 bg-[#282E44] px-6">
-                          <p>Followed</p>
+                          <p>{isMentioned ? "Mention": "Followed"}</p>
                           <img
                             src={project.profileImageUrl}
                             alt=""
@@ -108,7 +110,7 @@ const ProjectsFollowedRow: FC<IProjectsFollowedRowProps> = ({
                         }
                       >
                         <div className="flex items-center gap-2 mb-3 bg-[#282E44] px-6">
-                          <p>Followed</p>
+                          <p>{isMentioned ? "Mention": "Followed"}</p>
                           <img
                             src={project.profileImageUrl}
                             alt=""

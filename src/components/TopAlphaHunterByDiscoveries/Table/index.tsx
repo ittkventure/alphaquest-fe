@@ -22,6 +22,7 @@ interface IAlphaItemProps {
   index: number;
   refetch?: () => void;
   isWatchList?: boolean;
+  isMentioned?: boolean;
 }
 
 const AlphaItem: FC<IAlphaItemProps> = ({
@@ -29,6 +30,7 @@ const AlphaItem: FC<IAlphaItemProps> = ({
   index,
   refetch,
   isWatchList,
+  isMentioned,
 }) => {
   const [heart, setHeart] = useState(item.inWatchlist);
   const router = useRouter();
@@ -84,11 +86,16 @@ const AlphaItem: FC<IAlphaItemProps> = ({
       <div className="w-[521px] ml-3">
         <ProjectsFollowedRow
           projectsFollowedLastXDays={item?.projectsFollowedLastXDays}
+          isMentioned={isMentioned}
         />
       </div>
       <div className="pr-4 w-[calc(100%-1150px)]">
-        <div className="flex items-center justify-between">
-          <p>{item.numberOfEarlyDiscoveries}</p>
+        <div
+          className={`flex items-center ${
+            isMentioned ? "justify-end" : "justify-between"
+          }`}
+        >
+          {!isMentioned && <p>{item.numberOfEarlyDiscoveries}</p>}
           <button
             onClick={() => {
               if (!authState?.access_token) {
@@ -124,36 +131,51 @@ interface ITableTopAlphaHunterByDiscoveriesProps {
   followers: number | string;
   refetch?: () => void;
   isWatchList?: boolean;
+  isMentioned?: boolean;
 }
 
 const TableTopAlphaHunterByDiscoveries: FC<
   ITableTopAlphaHunterByDiscoveriesProps
-> = ({ topAlphaList, timeFrame, followers, refetch, isWatchList }) => {
+> = ({
+  topAlphaList,
+  timeFrame,
+  followers,
+  refetch,
+  isWatchList,
+  isMentioned,
+}) => {
   return (
     <div className="w-full overflow-auto">
       <div className="min-w-[1260px] ">
         <div className="flex flex-row bg-[#1F2536] py-3">
-          <div className="w-[293px] pl-11 mr-24">Account</div>
+          <div className={`w-[293px] pl-11 ${isMentioned ? "mr-16" : "mr-24"}`}>Account</div>
           <div className="w-[127px]">Followers</div>
-          <div className="w-[214px]">Total # of Projects Followed</div>
+
+          <div className="w-[214px]">
+            Total # of Projects {isMentioned ? "Mentioned" : "Followed"}
+          </div>
+
           <div className="w-[521px] ml-3">
-            Projects Followed last {timeFrame?.replaceAll("D", "")} days
+            Projects {isMentioned ? "Mentioned" : "Followed"} last{" "}
+            {timeFrame?.replaceAll("D", "")} days
           </div>
-          <div className="pr-4 flex items-center w-[calc(100%-1150px)] gap-1">
-            # of Early Discoveries{" "}
-            <div
-              data-tooltip-id="info-tooltip-discoveries"
-              className="cursor-pointer"
-            >
-              <Image
-                src={InfoIcon2}
-                width={20}
-                height={20}
-                alt="InfoIcon2"
-                className="min-h-[20px] min-w-[20px]"
-              />
+          {!isMentioned && (
+            <div className="pr-4 flex items-center w-[calc(100%-1150px)] gap-1">
+              # of Early Discoveries{" "}
+              <div
+                data-tooltip-id="info-tooltip-discoveries"
+                className="cursor-pointer"
+              >
+                <Image
+                  src={InfoIcon2}
+                  width={20}
+                  height={20}
+                  alt="InfoIcon2"
+                  className="min-h-[20px] min-w-[20px]"
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {topAlphaList.map((item, index) => {
@@ -164,6 +186,7 @@ const TableTopAlphaHunterByDiscoveries: FC<
               index={index}
               refetch={refetch}
               isWatchList={isWatchList}
+              isMentioned={isMentioned}
             />
           );
         })}

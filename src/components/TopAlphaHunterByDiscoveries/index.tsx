@@ -21,10 +21,12 @@ import classNames from "classnames";
 
 interface ITopAlphaHunterByDiscoveriesProps {
   isWatchList?: boolean;
+  isMentioned?: boolean;
 }
 
 const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
   isWatchList,
+  isMentioned,
 }) => {
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("30D");
   const [timeLabel, setTimeLabel] = useState<string>("30D");
@@ -167,32 +169,64 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
             />
           </div>
           <div className="flex items-center mt-4 gap-1">
-            <p>sorted by # of projects with less than </p>
-            <MonthSelect
-              onChangeSelect={(month) => {
-                setFollowers((month.value as TimeFrameTypes) ?? "500");
-                setFollowersLabel(month.label ?? "500 followers");
-              }}
-              defaultData={{
-                value: followers,
-                label: followersLabel,
-              }}
-              listData={[
-                {
-                  label: "100 followers",
-                  value: "100",
-                },
-                {
-                  label: "500 followers",
-                  value: "500",
-                },
-                {
-                  label: "1000 followers",
-                  value: "1000",
-                },
-              ]}
-            />
-            <p className="ml-1">they discovered</p>
+            {isMentioned ? (
+              <>
+                <p>sorted by</p>
+                <MonthSelect
+                  onChangeSelect={(month) => {
+                    setFollowers((month.value as TimeFrameTypes) ?? "500");
+                    setFollowersLabel(month.label ?? "500 followers");
+                  }}
+                  defaultData={{
+                    value: followers,
+                    label: followersLabel,
+                  }}
+                  listData={[
+                    {
+                      label: "100 followers",
+                      value: "100",
+                    },
+                    {
+                      label: "500 followers",
+                      value: "500",
+                    },
+                    {
+                      label: "1000 followers",
+                      value: "1000",
+                    },
+                  ]}
+                />
+              </>
+            ) : (
+              <>
+                <p>sorted by # of projects with less than </p>
+                <MonthSelect
+                  onChangeSelect={(month) => {
+                    setFollowers((month.value as TimeFrameTypes) ?? "500");
+                    setFollowersLabel(month.label ?? "500 followers");
+                  }}
+                  defaultData={{
+                    value: followers,
+                    label: followersLabel,
+                  }}
+                  listData={[
+                    {
+                      label: "100 followers",
+                      value: "100",
+                    },
+                    {
+                      label: "500 followers",
+                      value: "500",
+                    },
+                    {
+                      label: "1000 followers",
+                      value: "1000",
+                    },
+                  ]}
+                />
+                <p className="ml-1">they discovered</p>
+              </>
+            )}
           </div>
         </div>
         <div className="flex max-lg:items-center justify-between max-lg:mt-5">
@@ -222,6 +256,7 @@ const TopAlphaHunterByDiscoveries: FC<ITopAlphaHunterByDiscoveriesProps> = ({
       <div className="mt-6">
         {
           <TableTopAlphaHunterByDiscoveries
+            isMentioned={isMentioned}
             timeFrame={timeFrame}
             topAlphaList={topAlphaListState}
             followers={followers}
