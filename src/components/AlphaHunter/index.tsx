@@ -13,12 +13,14 @@ import Spinner from "../Spinner";
 import TableCommon from "../TableCommon";
 import useColumTwitterChangeLogs from "@/hooks/useTable/useColumTwitterChangeLogs";
 import useColumFollowersAlphaHunter from "@/hooks/useTable/useColumFollowersAlphaHunter";
+import useColumnAlphaHunterMention from "@/hooks/useTable/useColumnAlphaHunterMention";
 import { WatchListTypes } from "@/api-client/twitter";
 import Spinner2 from "../Spinner2";
 import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
+import { Tweet } from "react-twitter-widgets";
 
 interface IAlphaHunter {
   userId?: string;
@@ -157,6 +159,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
     isLinkToAlphaHunter: false,
   });
   const { changeLogs } = useColumTwitterChangeLogs();
+  const {  alphaHunterMention } = useColumnAlphaHunterMention();
 
   const onAddItemToWatchList = async () => {
     // if (!authState?.access_token) {
@@ -327,167 +330,215 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
                   </p>
                 </div>
               </div>
-              Content 1
-            </Tab.Panel>
-            <Tab.Panel>Content 2</Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-      </div>
-      <div className="px-[100px] max-[1450px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
-        <AlphaCard
-          items={formatDataChart(
-            alphaHunterDetail?.data?.domByBlockchain ?? {}
-          )}
-          label="Alpha by Blockchain"
-          isLoading={
-            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
-          }
-        />
-        <AlphaCard
-          items={formatDataChart(alphaHunterDetail?.data?.domByCategory ?? {})}
-          label="Alpha by Category"
-          isLoading={
-            alphaHunterDetail?.isLoading || alphaHunterDetail?.isFetching
-          }
-        />
-      </div>
 
-      <div className="px-[100px] max-[1450px]:px-4 text-sm max-lg:px-[10px]">
-        <div>
-          <div className="flex items-center mt-14 ">
-            <h3 className="text-lg font-workSansSemiBold  mr-3">
-              Earliest Discovery
-            </h3>
+              {/* Alpha card */}
+              <div className="max-[1450px]:px-4 grid grid-cols-2 gap-6 mt-[60px] max-md:grid-cols-1">
+                <AlphaCard
+                  items={formatDataChart(
+                    alphaHunterDetail?.data?.domByBlockchain ?? {}
+                  )}
+                  label="Alpha by Blockchain"
+                  isLoading={
+                    alphaHunterDetail?.isLoading ||
+                    alphaHunterDetail?.isFetching
+                  }
+                />
+                <AlphaCard
+                  items={formatDataChart(
+                    alphaHunterDetail?.data?.domByCategory ?? {}
+                  )}
+                  label="Alpha by Category"
+                  isLoading={
+                    alphaHunterDetail?.isLoading ||
+                    alphaHunterDetail?.isFetching
+                  }
+                />
+              </div>
 
-            {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+              {/* Earliest Discovery area */}
+              <div className="flex items-center mt-14 ">
+                <h3 className="text-lg font-workSansSemiBold  mr-3">
+                  Earliest Discovery
+                </h3>
+              </div>
+              <div className="mt-5 mx-8 max-[1450px]:mx-0">
+                <TableCommon
+                  columns={followersAlphaHunter ?? []}
+                  data={listEarlyFollower.data?.items ?? []}
+                  onChangePage={function (_pageNumber: number): void {
+                    setPage(_pageNumber);
+                  }}
+                  isLoading={listEarlyFollower.isLoading}
+                  paginationInfo={{
+                    currentPage: page,
+                    pageNumber: page,
+                    pageSize: 10,
+                    totalPages: listEarlyFollower?.data?.totalCount
+                      ? Math.ceil(listEarlyFollower?.data?.totalCount / 20)
+                      : 0,
+                    totalElements: listEarlyFollower?.data?.totalCount ?? 0,
+                  }}
+                  onSort={(isSortedDesc) => {
+                    if (isSortedDesc === undefined) return;
+                    setIsDescSorted(isSortedDesc);
+                  }}
+                  isSortedDesc={isDescSorted}
+                />
+              </div>
+
+              {/* Latest Following area */}
+              <div ref={followRef}>
+                <div className="flex items-center mt-14 ">
+                  <h3 className="text-lg font-workSansSemiBold  mr-3">
+                    Latest Following
+                  </h3>
+
+                  {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
             BETA
           </div> */}
-          </div>
-          <div className="mt-5 mx-8 max-[1450px]:mx-0">
-            <TableCommon
-              columns={followersAlphaHunter ?? []}
-              data={listEarlyFollower.data?.items ?? []}
-              onChangePage={function (_pageNumber: number): void {
-                setPage(_pageNumber);
-              }}
-              isLoading={listEarlyFollower.isLoading}
-              paginationInfo={{
-                currentPage: page,
-                pageNumber: page,
-                pageSize: 10,
-                totalPages: listEarlyFollower?.data?.totalCount
-                  ? Math.ceil(listEarlyFollower?.data?.totalCount / 20)
-                  : 0,
-                totalElements: listEarlyFollower?.data?.totalCount ?? 0,
-              }}
-              onSort={(isSortedDesc) => {
-                if (isSortedDesc === undefined) return;
-                setIsDescSorted(isSortedDesc);
-              }}
-              isSortedDesc={isDescSorted}
-            />
-          </div>
-        </div>
+                </div>
+                <div className="mt-5 mx-8 max-[1450px]:mx-0">
+                  <TableCommon
+                    columns={followersAlphaHunter ?? []}
+                    data={listLastFollower.data?.items ?? []}
+                    onChangePage={function (_pageNumber: number): void {
+                      setPageLast(_pageNumber);
+                    }}
+                    isLoading={listLastFollower.isLoading}
+                    paginationInfo={{
+                      currentPage: pageLast,
+                      pageNumber: pageLast,
+                      pageSize: 10,
+                      totalPages: listLastFollower?.data?.totalCount
+                        ? Math.ceil(listLastFollower?.data?.totalCount / 20)
+                        : 0,
+                      totalElements: listLastFollower?.data?.totalCount ?? 0,
+                    }}
+                    onSort={(isSortedDesc) => {
+                      if (isSortedDesc === undefined) return;
+                      setIsDescSortedLast(isSortedDesc);
+                    }}
+                    isSortedDesc={isDescSortedLast}
+                  />
+                </div>
+              </div>
 
-        <div ref={followRef}>
-          <div className="flex items-center mt-14 ">
-            <h3 className="text-lg font-workSansSemiBold  mr-3">
-              Latest Following
-            </h3>
+              {/* Twitter changelogs area */}
+              <div className="max-[1450px]:px-4 text-sm max-lg:px-[10px]">
+                <div ref={changelogsRef}>
+                  <div className="flex items-center mt-14 ">
+                    <h3 className="text-lg font-workSansSemiBold mr-3">
+                      Twitter changelogs
+                    </h3>
 
-            {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
-            BETA
-          </div> */}
-          </div>
-          <div className="mt-5 mx-8 max-[1450px]:mx-0">
-            <TableCommon
-              columns={followersAlphaHunter ?? []}
-              data={listLastFollower.data?.items ?? []}
-              onChangePage={function (_pageNumber: number): void {
-                setPageLast(_pageNumber);
-              }}
-              isLoading={listLastFollower.isLoading}
-              paginationInfo={{
-                currentPage: pageLast,
-                pageNumber: pageLast,
-                pageSize: 10,
-                totalPages: listLastFollower?.data?.totalCount
-                  ? Math.ceil(listLastFollower?.data?.totalCount / 20)
-                  : 0,
-                totalElements: listLastFollower?.data?.totalCount ?? 0,
-              }}
-              onSort={(isSortedDesc) => {
-                if (isSortedDesc === undefined) return;
-                setIsDescSortedLast(isSortedDesc);
-              }}
-              isSortedDesc={isDescSortedLast}
-            />
-          </div>
-        </div>
-
-        <div ref={changelogsRef}>
-          <div className="flex items-center mt-14 ">
-            <h3 className="text-lg font-workSansSemiBold mr-3">
-              Twitter changelogs
-            </h3>
-
-            {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+                    {/* <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
               BETA
             </div> */}
-          </div>
+                  </div>
 
-          {listAlphaHunterChangeLog.data?.items?.length > 0 ? (
-            <div className="mt-5 mx-8 max-[1450px]:mx-0">
-              <TableCommon
-                columns={changeLogs ?? []}
-                data={
-                  listAlphaHunterChangeLog.data?.items
-                    ? listAlphaHunterChangeLog.data?.items.map((item: any) => {
-                        return {
-                          ...item,
-                          profileImageUrl:
-                            listAlphaHunterChangeLog.data.profileImageUrl,
-                        };
-                      })
-                    : []
-                }
-                onChangePage={function (_pageNumber: number): void {
-                  setPageUserChangeLog(_pageNumber);
-                }}
-                isLoading={listAlphaHunterChangeLog.isLoading}
-                paginationInfo={{
-                  currentPage: pageUserChangeLog,
-                  pageNumber: pageUserChangeLog,
-                  pageSize: 10,
-                  totalPages: listAlphaHunterChangeLog?.data?.totalCount
-                    ? Math.ceil(listAlphaHunterChangeLog?.data?.totalCount / 20)
-                    : 0,
-                  totalElements:
-                    listAlphaHunterChangeLog?.data?.totalCount ?? 0,
-                }}
-                onSort={(isSortedDesc) => {
-                  if (isSortedDesc === undefined) return;
-                  setIsDescSortedChangeLog(isSortedDesc);
-                }}
-                isSortedDesc={isDescSortedChangeLog}
-                isShowHeader={false}
-                isPaddingX
-              />
-            </div>
-          ) : !listAlphaHunterChangeLog.isLoading ? (
-            <div className="w-full flex justify-start items-center mb-20 mt-4">
-              <p className="text-secondary-400">
-                {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                  ? "This Twitter account has not made any changes yet"
-                  : "This section is exclusively revealed to our Pro members. Upgrade your membership to get instant access!"}
-              </p>
-            </div>
-          ) : (
-            <div className="w-full flex justify-center items-center">
-              <Spinner />
-            </div>
-          )}
-        </div>
+                  {listAlphaHunterChangeLog.data?.items?.length > 0 ? (
+                    <div className="mt-5 mx-8 max-[1450px]:mx-0">
+                      <TableCommon
+                        columns={changeLogs ?? []}
+                        data={
+                          listAlphaHunterChangeLog.data?.items
+                            ? listAlphaHunterChangeLog.data?.items.map(
+                                (item: any) => {
+                                  return {
+                                    ...item,
+                                    profileImageUrl:
+                                      listAlphaHunterChangeLog.data
+                                        .profileImageUrl,
+                                  };
+                                }
+                              )
+                            : []
+                        }
+                        onChangePage={function (_pageNumber: number): void {
+                          setPageUserChangeLog(_pageNumber);
+                        }}
+                        isLoading={listAlphaHunterChangeLog.isLoading}
+                        paginationInfo={{
+                          currentPage: pageUserChangeLog,
+                          pageNumber: pageUserChangeLog,
+                          pageSize: 10,
+                          totalPages: listAlphaHunterChangeLog?.data?.totalCount
+                            ? Math.ceil(
+                                listAlphaHunterChangeLog?.data?.totalCount / 20
+                              )
+                            : 0,
+                          totalElements:
+                            listAlphaHunterChangeLog?.data?.totalCount ?? 0,
+                        }}
+                        onSort={(isSortedDesc) => {
+                          if (isSortedDesc === undefined) return;
+                          setIsDescSortedChangeLog(isSortedDesc);
+                        }}
+                        isSortedDesc={isDescSortedChangeLog}
+                        isShowHeader={false}
+                        isPaddingX
+                      />
+                    </div>
+                  ) : !listAlphaHunterChangeLog.isLoading ? (
+                    <div className="w-full flex justify-start items-center mb-20 mt-4">
+                      <p className="text-secondary-400">
+                        {accountExtendDetail?.currentPlanKey ===
+                        UserPayType.PREMIUM
+                          ? "This Twitter account has not made any changes yet"
+                          : "This section is exclusively revealed to our Pro members. Upgrade your membership to get instant access!"}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="w-full flex justify-center items-center">
+                      <Spinner />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>
+              <div className="grid grid-cols-2 gap-6 mt-5 max-[1450px]:px-4 w-full">
+                <div className="border border-white border-opacity-10 p-4 rounded-lg">
+                  <p>Current Twitter Mentioned</p>
+
+                  <p className="text-xl max-lg:text-sm">
+                    {alphaHunterDetail?.data?.followerCount ?? 0}
+                  </p>
+                </div>
+
+                <div className="border border-white border-opacity-10 p-4 rounded-lg">
+                  <p>Total Alpha Mentioned</p>
+
+                  <p className="text-xl max-lg:text-sm">
+                    {" "}
+                    {alphaHunterDetail?.data?.alphaFollowingCount ?? 0}
+                  </p>
+                </div>
+              </div>
+
+              {/* Project mentioned area */}
+
+              <div className="mt-6">
+                <h3>20 Alpha Hunters mentioned last 30 days</h3>
+                <div className="mt-14">
+                  <TableCommon columns={alphaHunterMention ?? []} data={[]} onChangePage={() => {}} />
+                </div>
+              </div>
+
+              {/* Search area */}
+              <div className="mt-6">
+                <div className="flex justify-between">
+                  <p>{`50 Tweets from ${alphaHunterDetail?.data?.name} Metntioning Projects`}</p>
+                  <p>Search</p>
+                </div>
+                <div className="flex justify-center flex-col gap-3 items-center">
+                  <Tweet tweetId="1771909813066436902" />
+                  <Tweet tweetId="1772231064288977161" />
+                </div>
+              </div>
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </div>
     </div>
   );

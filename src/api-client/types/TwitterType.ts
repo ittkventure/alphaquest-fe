@@ -187,3 +187,17 @@ export interface Url {
   type: string;
   url: string;
 }
+
+export interface AlphaHunterMentionItem {
+  userId: string;
+  profileImageUrl: string;
+  name: string;
+  username: string;
+  followerCountAtTime: number;
+  followingDate: string;
+  tags?: string[];
+  twitterUrl: string;
+  followersAtTime?: number;
+  followingTime?: string;
+  attributes?: AttributesType[];
+}

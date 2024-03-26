@@ -49,7 +49,7 @@ const TableCustom: FC<ITableCustom> = ({
     });
   const { authState, accountExtendDetail, setTypePaymentAction } =
     useContext(AuthContext);
-  const isShowAll = !isLoading && data.length >= 10;
+  const isShowAll = !isLoading && data?.length >= 10;
 
   return (
     <div className="w-full">

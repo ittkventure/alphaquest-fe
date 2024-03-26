@@ -215,3 +215,7 @@ select:-webkit-autofill:focus {
   opacity: 0.9;
 }
 
+.twitter-tweet-rendered {
+  min-width: 600px;
+}
+
