@@ -51,9 +51,10 @@ import LineChartCustom from "./LineChart";
 import TabButton from "./TabButton";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { WatchListTypes } from "@/api-client/twitter";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, Tab, Transition } from "@headlessui/react";
 import { Copy } from "iconsax-react";
 import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
+import classNames from "classnames";
 
 interface IProjectDetail {
   userId?: string;
@@ -601,237 +602,284 @@ const ProjectDetail: FC<IProjectDetail> = ({
       </div>
 
       <div className="px-[100px] text-sm max-lg:px-[10px]">
-        <div className="grid grid-cols-2 gap-6  mt-5">
-          <div className="border border-white rounded-lg border-opacity-10 p-4">
-            <p>Twitter Followers When discovered</p>
-            {twitterDetail.isLoading || twitterDetail.isFetching ? (
-              <Spinner customClassName="my-1" />
-            ) : (
-              <p className="text-xl max-lg:text-sm">
-                {twitterDetail.data?.twitterFollowersWhenDiscovered}
-              </p>
-            )}
-          </div>
+        <Tab.Group vertical>
+          <Tab.List className="w-full border-b border-white/20">
+            <Tab>
+              {({ selected }) => (
+                /* Use the `selected` state to conditionally style the selected tab. */
+                <div
+                  className={classNames(
+                    "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                    {
+                      "text-primary-500 border-b-[3px] border-primary-500":
+                        selected,
+                    }
+                  )}
+                >
+                  Alpha Hunters Followed
+                </div>
+              )}
+            </Tab>
+            <Tab>
+              {({ selected }) => (
+                /* Use the `selected` state to conditionally style the selected tab. */
+                <div
+                  className={classNames(
+                    "mr-6 font-workSansSemiBold text-[18px] leading-6 py-5",
+                    {
+                      "text-primary-500 border-b-[3px] border-primary-500":
+                        selected,
+                    }
+                  )}
+                >
+                  Alpha Hunters Mentioned
+                </div>
+              )}
+            </Tab>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <div className="grid grid-cols-2 gap-6  mt-5">
+                <div className="border border-white rounded-lg border-opacity-10 p-4">
+                  <p>Twitter Followers When discovered</p>
+                  {twitterDetail.isLoading || twitterDetail.isFetching ? (
+                    <Spinner customClassName="my-1" />
+                  ) : (
+                    <p className="text-xl max-lg:text-sm">
+                      {twitterDetail.data?.twitterFollowersWhenDiscovered}
+                    </p>
+                  )}
+                </div>
 
-          <div className="border border-white rounded-lg border-opacity-10 p-4">
-            <p>Twitter Created Date</p>
+                <div className="border border-white rounded-lg border-opacity-10 p-4">
+                  <p>Twitter Created Date</p>
 
-            {twitterDetail.isLoading || twitterDetail.isFetching ? (
-              <Spinner customClassName="my-1" />
-            ) : (
-              <p className="text-xl max-lg:text-sm">
-                {moment(twitterDetail.data?.twitterCreatedDate).format(
-                  "MM/DD/YYYY - HH:mm"
-                )}
-              </p>
-            )}
-          </div>
+                  {twitterDetail.isLoading || twitterDetail.isFetching ? (
+                    <Spinner customClassName="my-1" />
+                  ) : (
+                    <p className="text-xl max-lg:text-sm">
+                      {moment(twitterDetail.data?.twitterCreatedDate).format(
+                        "MM/DD/YYYY - HH:mm"
+                      )}
+                    </p>
+                  )}
+                </div>
 
-          <div className="border border-white rounded-lg border-opacity-10 p-4">
-            <p>Current Twitter Followers</p>
-            {twitterDetail.isLoading || twitterDetail.isFetching ? (
-              <Spinner customClassName="my-1" />
-            ) : (
-              <p className="text-xl max-lg:text-sm">
-                {twitterDetail.data?.currentTwitterFollowers}
-              </p>
-            )}
-          </div>
+                <div className="border border-white rounded-lg border-opacity-10 p-4">
+                  <p>Current Twitter Followers</p>
+                  {twitterDetail.isLoading || twitterDetail.isFetching ? (
+                    <Spinner customClassName="my-1" />
+                  ) : (
+                    <p className="text-xl max-lg:text-sm">
+                      {twitterDetail.data?.currentTwitterFollowers}
+                    </p>
+                  )}
+                </div>
 
-          <div className="border border-white rounded-lg border-opacity-10 p-4">
-            <p>Discovered Date</p>
-            {twitterDetail.isLoading || twitterDetail.isFetching ? (
-              <Spinner customClassName="my-1" />
-            ) : (
-              <p className="text-xl max-lg:text-sm">
-                {moment(twitterDetail.data?.discoveredDate).format(
-                  "MM/DD/YYYY - HH:mm"
-                )}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Chart */}
-
-        <div className="bg-dark-800 py-9 px-6 mt-14" ref={followRef}>
-          <div className="flex justify-between items-center mb-[51px] max-sm:flex-col">
-            <div className="flex ">
-              <p className=" text-[16px] font-workSansMedium mr-1">
-                # of Alpha Hunters Following and Twitter Followers Growth
-              </p>
-              <div data-tooltip-id="info-tooltip" className="cursor-pointer">
-                <Image src={InfoIcon} width={16} height={16} alt="icon" />
+                <div className="border border-white rounded-lg border-opacity-10 p-4">
+                  <p>Discovered Date</p>
+                  {twitterDetail.isLoading || twitterDetail.isFetching ? (
+                    <Spinner customClassName="my-1" />
+                  ) : (
+                    <p className="text-xl max-lg:text-sm">
+                      {moment(twitterDetail.data?.discoveredDate).format(
+                        "MM/DD/YYYY - HH:mm"
+                      )}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="flex max-sm:w-full max-sm:justify-end max-sm:mt-[34px]">
-              <TabButton
-                label="7D"
-                onClick={() => setSelectedDate(SelectedDateEnum.sevenD)}
-                active={selectedDate === SelectedDateEnum.sevenD}
-              />
-              <TabButton
-                label="30D"
-                onClick={() => setSelectedDate(SelectedDateEnum.thirtyD)}
-                active={selectedDate === SelectedDateEnum.thirtyD}
-              />
-              {/* <TabButton
+              {/* Chart */}
+
+              <div className="bg-dark-800 py-9 px-6 mt-14" ref={followRef}>
+                <div className="flex justify-between items-center mb-[51px] max-sm:flex-col">
+                  <div className="flex ">
+                    <p className=" text-[16px] font-workSansMedium mr-1">
+                      # of Alpha Hunters Following and Twitter Followers Growth
+                    </p>
+                    <div
+                      data-tooltip-id="info-tooltip"
+                      className="cursor-pointer"
+                    >
+                      <Image src={InfoIcon} width={16} height={16} alt="icon" />
+                    </div>
+                  </div>
+
+                  <div className="flex max-sm:w-full max-sm:justify-end max-sm:mt-[34px]">
+                    <TabButton
+                      label="7D"
+                      onClick={() => setSelectedDate(SelectedDateEnum.sevenD)}
+                      active={selectedDate === SelectedDateEnum.sevenD}
+                    />
+                    <TabButton
+                      label="30D"
+                      onClick={() => setSelectedDate(SelectedDateEnum.thirtyD)}
+                      active={selectedDate === SelectedDateEnum.thirtyD}
+                    />
+                    {/* <TabButton
                 label="ALL"
                 onClick={() => setSelectedDate(SelectedDateEnum.all)}
                 active={selectedDate === SelectedDateEnum.all}
               /> */}
-            </div>
-          </div>
+                  </div>
+                </div>
 
-          <div className="flex justify-between">
-            <p
-              className="rotate-180 text-center"
-              style={{ writingMode: "vertical-rl" }}
-            >
-              # of Alpha Hunters Following
-            </p>
+                <div className="flex justify-between">
+                  <p
+                    className="rotate-180 text-center"
+                    style={{ writingMode: "vertical-rl" }}
+                  >
+                    # of Alpha Hunters Following
+                  </p>
 
-            <LineChartCustom
-              data={twitterChartFollower?.data ?? []}
-              loading={twitterChartFollower?.isLoading}
-            />
+                  <LineChartCustom
+                    data={twitterChartFollower?.data ?? []}
+                    loading={twitterChartFollower?.isLoading}
+                  />
 
-            <p
-              className="rotate-180 text-center mr-2"
-              style={{ writingMode: "vertical-rl" }}
-            >
-              Twitter Followers
-            </p>
-          </div>
+                  <p
+                    className="rotate-180 text-center mr-2"
+                    style={{ writingMode: "vertical-rl" }}
+                  >
+                    Twitter Followers
+                  </p>
+                </div>
 
-          <div className="flex mt-8 max-sm:flex-col">
-            <div className="flex">
-              <div className="bg-[#E25148] rounded-full w-3 h-3 mr-2 mt-1" />
-              <p className="text-sm font-workSansLight">
-                # of Alpha Hunters Following
-              </p>
-            </div>
+                <div className="flex mt-8 max-sm:flex-col">
+                  <div className="flex">
+                    <div className="bg-[#E25148] rounded-full w-3 h-3 mr-2 mt-1" />
+                    <p className="text-sm font-workSansLight">
+                      # of Alpha Hunters Following
+                    </p>
+                  </div>
 
-            <div className="flex ml-6 max-sm:ml-0 max-sm:mt-2">
-              <div className="bg-[#24B592] rounded-full w-3 h-3 mr-2 mt-1 " />
-              <p className="text-sm font-workSansLight">Twitter Followers</p>
-            </div>
-          </div>
-        </div>
+                  <div className="flex ml-6 max-sm:ml-0 max-sm:mt-2">
+                    <div className="bg-[#24B592] rounded-full w-3 h-3 mr-2 mt-1 " />
+                    <p className="text-sm font-workSansLight">
+                      Twitter Followers
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-        <div className="flex items-center mt-14 ">
-          <h3 className="text-lg font-workSansSemiBold mr-3">
-            Earliest Alpha Hunter
-          </h3>
-        </div>
-        <div className="mt-5 mx-8 max-lg:mx-0">
-          <TableCommon
-            columns={followers ?? []}
-            data={listAlphaHunter.data?.items ?? []}
-            onChangePage={function (_pageNumber: number): void {
-              setPage(_pageNumber);
-            }}
-            isLoading={listAlphaHunter.isLoading}
-            paginationInfo={{
-              currentPage: page,
-              pageNumber: page,
-              pageSize: 10,
-              totalPages: listAlphaHunter?.data?.totalCount
-                ? Math.ceil(listAlphaHunter?.data?.totalCount / 20)
-                : 0,
-              totalElements: listAlphaHunter?.data?.totalCount ?? 0,
-            }}
-            onSort={(isSortedDesc) => {
-              if (isSortedDesc === undefined) return;
-              setIsDescSorted(isSortedDesc);
-            }}
-            isSortedDesc={isDescSorted}
-          />
-        </div>
+              <div className="flex items-center mt-14 ">
+                <h3 className="text-lg font-workSansSemiBold mr-3">
+                  Earliest Alpha Hunter
+                </h3>
+              </div>
+              <div className="mt-5 mx-8 max-lg:mx-0">
+                <TableCommon
+                  columns={followers ?? []}
+                  data={listAlphaHunter.data?.items ?? []}
+                  onChangePage={function (_pageNumber: number): void {
+                    setPage(_pageNumber);
+                  }}
+                  isLoading={listAlphaHunter.isLoading}
+                  paginationInfo={{
+                    currentPage: page,
+                    pageNumber: page,
+                    pageSize: 10,
+                    totalPages: listAlphaHunter?.data?.totalCount
+                      ? Math.ceil(listAlphaHunter?.data?.totalCount / 20)
+                      : 0,
+                    totalElements: listAlphaHunter?.data?.totalCount ?? 0,
+                  }}
+                  onSort={(isSortedDesc) => {
+                    if (isSortedDesc === undefined) return;
+                    setIsDescSorted(isSortedDesc);
+                  }}
+                  isSortedDesc={isDescSorted}
+                />
+              </div>
 
-        <div className="flex items-center mt-14" ref={changelogsRef}>
-          <h3 className="text-lg font-workSansSemiBold mr-3">
-            Twitter changelogs
-          </h3>
-        </div>
+              <div className="flex items-center mt-14" ref={changelogsRef}>
+                <h3 className="text-lg font-workSansSemiBold mr-3">
+                  Twitter changelogs
+                </h3>
+              </div>
 
-        {listChangeLog.length > 0 ? (
-          <div className="mt-5 mx-8">
-            <TableCommon
-              columns={changeLogs ?? []}
-              data={listChangeLog}
-              onChangePage={function (_pageNumber: number): void {
-                setPageUserChangeLog(_pageNumber);
-              }}
-              isLoading={listUserChangeLog.isLoading}
-              paginationInfo={{
-                currentPage: pageUserChangeLog,
-                pageNumber: pageUserChangeLog,
-                pageSize: 10,
-                totalPages: listUserChangeLog?.data?.totalCount
-                  ? Math.ceil(listUserChangeLog?.data?.totalCount / 20)
-                  : 0,
-                totalElements: listUserChangeLog?.data?.totalCount ?? 0,
-              }}
-              onSort={(isSortedDesc) => {
-                if (isSortedDesc === undefined) return;
-                setIsDescSortedChangeLog(isSortedDesc);
-              }}
-              isSortedDesc={isDescSortedChangeLog}
-              isShowHeader={false}
-              isPaddingX={isPaddingX}
-            />
-          </div>
-        ) : !listUserChangeLog.isLoading ? (
-          <div className="w-full flex justify-start items-center mb-20 mt-4">
-            <p className="text-secondary-400">
-              {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
-                ? "This Twitter account has not made any changes yet"
-                : "This section is exclusively revealed to our Pro members. Upgrade your membership to get instant access!"}
-            </p>
-          </div>
-        ) : (
-          <div className="w-full flex justify-center items-center">
-            <Spinner />
-          </div>
-        )}
+              {listChangeLog.length > 0 ? (
+                <div className="mt-5 mx-8">
+                  <TableCommon
+                    columns={changeLogs ?? []}
+                    data={listChangeLog}
+                    onChangePage={function (_pageNumber: number): void {
+                      setPageUserChangeLog(_pageNumber);
+                    }}
+                    isLoading={listUserChangeLog.isLoading}
+                    paginationInfo={{
+                      currentPage: pageUserChangeLog,
+                      pageNumber: pageUserChangeLog,
+                      pageSize: 10,
+                      totalPages: listUserChangeLog?.data?.totalCount
+                        ? Math.ceil(listUserChangeLog?.data?.totalCount / 20)
+                        : 0,
+                      totalElements: listUserChangeLog?.data?.totalCount ?? 0,
+                    }}
+                    onSort={(isSortedDesc) => {
+                      if (isSortedDesc === undefined) return;
+                      setIsDescSortedChangeLog(isSortedDesc);
+                    }}
+                    isSortedDesc={isDescSortedChangeLog}
+                    isShowHeader={false}
+                    isPaddingX={isPaddingX}
+                  />
+                </div>
+              ) : !listUserChangeLog.isLoading ? (
+                <div className="w-full flex justify-start items-center mb-20 mt-4">
+                  <p className="text-secondary-400">
+                    {accountExtendDetail?.currentPlanKey === UserPayType.PREMIUM
+                      ? "This Twitter account has not made any changes yet"
+                      : "This section is exclusively revealed to our Pro members. Upgrade your membership to get instant access!"}
+                  </p>
+                </div>
+              ) : (
+                <div className="w-full flex justify-center items-center">
+                  <Spinner />
+                </div>
+              )}
 
-        <div className="flex items-center mt-14 ">
-          <h3 className="text-lg font-workSansSemiBold mr-3">
-            More Alpha like {twitterDetail.data?.name}
-          </h3>
-          <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
-            BETA
-          </div>
-        </div>
-        <div className="mt-5 mx-8 max-lg:mx-0">
-          <TableCommon
-            columns={twitterAlphaLikeColumn ?? []}
-            data={listTwitterProjectLike.data?.items ?? []}
-            onChangePage={function (_pageNumber: number): void {
-              setPageAlphaLike(_pageNumber);
-            }}
-            isLoading={listTwitterProjectLike.isLoading}
-            paginationInfo={{
-              currentPage: pageAlphaLike,
-              pageNumber: pageAlphaLike,
-              pageSize: 10,
-              totalPages: listTwitterProjectLike?.data?.totalCount
-                ? Math.ceil(listTwitterProjectLike?.data?.totalCount / 20)
-                : 0,
-              totalElements: listTwitterProjectLike?.data?.totalCount ?? 0,
-            }}
-            onSort={(isSortedDesc) => {
-              if (isSortedDesc === undefined) return;
-              setIsDescSorted(isSortedDesc);
-            }}
-            isSortedDesc={isDescSorted}
-            isHeightMore={true}
-            isPaddingX={true}
-            isPage={isPage}
-          />
-        </div>
+              <div className="flex items-center mt-14 ">
+                <h3 className="text-lg font-workSansSemiBold mr-3">
+                  More Alpha like {twitterDetail.data?.name}
+                </h3>
+                <div className="px-[6px] py-[2px] bg-orange-400 rounded-sm text-orange-400 font-workSansSemiBold bg-opacity-30">
+                  BETA
+                </div>
+              </div>
+              <div className="mt-5 mx-8 max-lg:mx-0">
+                <TableCommon
+                  columns={twitterAlphaLikeColumn ?? []}
+                  data={listTwitterProjectLike.data?.items ?? []}
+                  onChangePage={function (_pageNumber: number): void {
+                    setPageAlphaLike(_pageNumber);
+                  }}
+                  isLoading={listTwitterProjectLike.isLoading}
+                  paginationInfo={{
+                    currentPage: pageAlphaLike,
+                    pageNumber: pageAlphaLike,
+                    pageSize: 10,
+                    totalPages: listTwitterProjectLike?.data?.totalCount
+                      ? Math.ceil(listTwitterProjectLike?.data?.totalCount / 20)
+                      : 0,
+                    totalElements:
+                      listTwitterProjectLike?.data?.totalCount ?? 0,
+                  }}
+                  onSort={(isSortedDesc) => {
+                    if (isSortedDesc === undefined) return;
+                    setIsDescSorted(isSortedDesc);
+                  }}
+                  isSortedDesc={isDescSorted}
+                  isHeightMore={true}
+                  isPaddingX={true}
+                  isPage={isPage}
+                />
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>Content 2</Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
       </div>
 
       {accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM ? (

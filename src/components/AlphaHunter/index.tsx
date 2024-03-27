@@ -17,7 +17,7 @@ import useColumnAlphaHunterMention from "@/hooks/useTable/useColumnAlphaHunterMe
 import { WatchListTypes } from "@/api-client/twitter";
 import Spinner2 from "../Spinner2";
 import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import { Tweet } from "react-twitter-widgets";
@@ -159,7 +159,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
     isLinkToAlphaHunter: false,
   });
   const { changeLogs } = useColumTwitterChangeLogs();
-  const {  alphaHunterMention } = useColumnAlphaHunterMention();
+  const { alphaHunterMention } = useColumnAlphaHunterMention();
 
   const onAddItemToWatchList = async () => {
     // if (!authState?.access_token) {
@@ -289,7 +289,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
                     }
                   )}
                 >
-                  Alpha Hunters Followed
+                  Followed Projects
                 </div>
               )}
             </Tab>
@@ -305,7 +305,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
                     }
                   )}
                 >
-                  Alpha Hunters Mentioned
+                  Mentioned Projects
                 </div>
               )}
             </Tab>
@@ -521,7 +521,11 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
               <div className="mt-6">
                 <h3>20 Alpha Hunters mentioned last 30 days</h3>
                 <div className="mt-14">
-                  <TableCommon columns={alphaHunterMention ?? []} data={[]} onChangePage={() => {}} />
+                  <TableCommon
+                    columns={alphaHunterMention ?? []}
+                    data={[]}
+                    onChangePage={() => {}}
+                  />
                 </div>
               </div>
 
@@ -529,7 +533,18 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
               <div className="mt-6">
                 <div className="flex justify-between">
                   <p>{`50 Tweets from ${alphaHunterDetail?.data?.name} Metntioning Projects`}</p>
-                  <p>Search</p>
+                  <div className="relative max-lg:mr-2 max-lg:hidden">
+                    <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
+
+                    <input
+                      className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7 max-lg:text-sm "
+                      placeholder="Search"
+                      value={""}
+                      onChange={(e) => {
+                        console.log(e);
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="flex justify-center flex-col gap-3 items-center">
                   <Tweet tweetId="1771909813066436902" />
