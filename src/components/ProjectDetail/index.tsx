@@ -55,6 +55,9 @@ import { Menu, Tab, Transition } from "@headlessui/react";
 import { Copy } from "iconsax-react";
 import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
 import classNames from "classnames";
+import AlphaHunterMention from "@/pages/alpha-hunters/[tab]";
+import AlphaMentionProjects from "./Mention/AlphaMentionProjects";
+import TweetMention from "./Mention/TweetMention";
 
 interface IProjectDetail {
   userId?: string;
@@ -877,7 +880,10 @@ const ProjectDetail: FC<IProjectDetail> = ({
                 />
               </div>
             </Tab.Panel>
-            <Tab.Panel>Content 2</Tab.Panel>
+            <Tab.Panel>
+              <AlphaMentionProjects />
+              <TweetMention />
+            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>
