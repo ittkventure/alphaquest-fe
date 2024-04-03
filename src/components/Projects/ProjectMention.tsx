@@ -3,14 +3,19 @@ import { CrownIcon, InfoIcon } from "@/assets/icons";
 import { AuthContext } from "@/contexts/useAuthContext";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Header from "../App/Header";
 import SelectCustom, { OptionType } from "../common/Select";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import TableContent from "../App/Table/TableContent";
-import { projectsMention } from "@/mocks";
 import MonthSelect from "../App/MonthSelect";
 import { SortByType, TimeFrameTypes } from "@/api-client/types/TwitterType";
 import { initListMonth, initListSort } from "@/utils/list";
@@ -19,6 +24,7 @@ import ApiTwitter from "@/api-client/twitter";
 import Spinner from "../Spinner";
 import { useProjectsMention } from "@/hooks/useProjectsMention";
 import { AlphaMentionProjectsParams } from "@/api-client/mentioned/projects";
+import SkeletonLoading from "../App/Table/SkeletonLoading";
 
 type ProjectMentionProps = {
   chainQuery?: string;
@@ -70,16 +76,40 @@ export default function ProjectMention({
       };
     }
     return newParams;
-  }, [chainSelected.code, categorySelected.code]);
+  }, [chainSelected.code, categorySelected.code, searchText, timeFrame]);
 
   const { data: chains } = useQuery(["getChains"], () => apiTwitter.getChain());
   const { data: categories } = useQuery(["getCategories"], () =>
     apiTwitter.getCategory()
   );
 
-  const { projectsMention, isLoading } = useProjectsMention(
+  const {
+    projectsMention,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+  } = useProjectsMention(
     params,
     accountExtendDetail?.currentPlanKey === UserPayType.FREE
+  );
+
+  // IntersectionObserver to handle Infinite Scroll
+  const observer = useRef<IntersectionObserver>();
+
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, hasNextPage]
   );
 
   const renderUpBtn = () => {
@@ -164,17 +194,6 @@ export default function ProjectMention({
     );
   };
 
-  const _renderTable = () => {
-    return (
-      <TableContent
-        initListRows={projectsMention?.items ?? []}
-        isAnimation={false}
-        onRefreshTable={() => {
-          //   fetchData();
-        }}
-      />
-    );
-  };
   return (
     <>
       {isLoading ? (
@@ -291,8 +310,15 @@ export default function ProjectMention({
                   </div>
                 </div>
               </div>
-              {/* {isSearchLoading ? null : _renderTable()} */}
-              {_renderTable()}
+              <TableContent
+                initListRows={projectsMention?.items ?? []}
+                isAnimation={false}
+                onRefreshTable={() => {
+                  refetch()
+                }}
+                lastElement={lastElementRef}
+              />
+              {isFetchingNextPage ? <SkeletonLoading numberOfRow={3} /> : null}
               {/* {errorMsg ? (
             <div className="h-[60vh] flex justify-center items-start">
               <p className="mt-10 text-center">{errorMsg}</p>

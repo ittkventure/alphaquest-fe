@@ -12,6 +12,7 @@ interface TableContentTypes {
   isAnimation?: boolean;
   onRefreshTable?: () => void;
   isShowWatchList?: boolean;
+  lastElement?: (node: HTMLDivElement) => void;
 }
 
 const TableContent: FC<TableContentTypes> = ({
@@ -19,6 +20,7 @@ const TableContent: FC<TableContentTypes> = ({
   isAnimation,
   onRefreshTable,
   isShowWatchList = true,
+  lastElement,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
@@ -29,26 +31,31 @@ const TableContent: FC<TableContentTypes> = ({
     <div>
       {initListRows?.map((value, index) => {
         return (
-          <TableRow
-            key={index}
-            item={value}
-            index={index}
-            isAnimation={isAnimation}
-            onClickAction={() => {
-              // when user using mobile redirect project detail page
-              if (width <= 430) {
-                router.push(`/project/${value?.username}`);
-                return;
-              }
-              setUserId(value.username);
-              mixpanelTrack(event_name_enum.on_open_project_detail, {
-                projectName: value.name,
-              });
-              setIsOpen(true);
-            }}
-            isShowWatchList={isShowWatchList}
-            onRefreshTable={onRefreshTable}
-          />
+          <div
+            key={value.userId}
+            ref={initListRows?.length === index + 1 ? lastElement : null}
+          >
+            <TableRow
+              key={index}
+              item={value}
+              index={index}
+              isAnimation={isAnimation}
+              onClickAction={() => {
+                // when user using mobile redirect project detail page
+                if (width <= 430) {
+                  router.push(`/project/${value?.username}`);
+                  return;
+                }
+                setUserId(value.username);
+                mixpanelTrack(event_name_enum.on_open_project_detail, {
+                  projectName: value.name,
+                });
+                setIsOpen(true);
+              }}
+              isShowWatchList={isShowWatchList}
+              onRefreshTable={onRefreshTable}
+            />
+          </div>
         );
       })}
 

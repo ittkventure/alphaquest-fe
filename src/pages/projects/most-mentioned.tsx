@@ -1,6 +1,5 @@
 import ProjectMention from "@/components/Projects/ProjectMention";
 import AppLayout from "@/layouts/AppLayout";
-import { projectsMention } from "@/mocks";
 import { NextPage } from "next";
 
 interface Props {

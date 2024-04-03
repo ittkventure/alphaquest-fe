@@ -58,6 +58,7 @@ import classNames from "classnames";
 import AlphaHunterMention from "@/pages/alpha-hunters/[tab]";
 import AlphaMentionProjects from "./Mention/AlphaMentionProjects";
 import TweetMention from "./Mention/TweetMention";
+import AlphaHunterMentionCount from "./Mention/AlphaMentionCount";
 
 interface IProjectDetail {
   userId?: string;
@@ -91,6 +92,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
   const [selectedDate, setSelectedDate] = useState<SelectedDateEnum>(
     SelectedDateEnum.sevenD
   );
+  const [currentTab, setCurrentTab] = useState(0);
 
   const changelogsRef: React.MutableRefObject<any> = useRef();
   const followRef: React.MutableRefObject<any> = useRef();
@@ -104,6 +106,11 @@ const ProjectDetail: FC<IProjectDetail> = ({
         block: "start",
       });
   });
+
+  // auto set Alpha Hunters Followed tab when router change
+  useEffect(() => {
+    setCurrentTab(0);
+  }, [router.asPath]);
 
   const listAlphaHunter = useQuery(
     [
@@ -605,7 +612,12 @@ const ProjectDetail: FC<IProjectDetail> = ({
       </div>
 
       <div className="px-[100px] text-sm max-lg:px-[10px]">
-        <Tab.Group vertical>
+        <Tab.Group
+          vertical
+          defaultIndex={0}
+          selectedIndex={currentTab}
+          onChange={(tab) => setCurrentTab(tab)}
+        >
           <Tab.List className="w-full border-b border-white/20">
             <Tab>
               {({ selected }) => (
@@ -881,8 +893,9 @@ const ProjectDetail: FC<IProjectDetail> = ({
               </div>
             </Tab.Panel>
             <Tab.Panel>
+              <AlphaHunterMentionCount username={userId} />
               <AlphaMentionProjects />
-              <TweetMention />
+              <TweetMention username={userId} name={twitterDetail.data?.name} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
