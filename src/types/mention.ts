@@ -19,3 +19,33 @@ export type AlphaMentionProject = {
     tweetUrls: string[];
   }[];
 };
+
+export type ProjectsMention = {
+  name: string;
+  username: string;
+  userId: string;
+  description?: string;
+  infoUrl?: string;
+  twitterUrl?: string;
+  profileImageUrl: string;
+  discoveredTime: string;
+  createdAt?: string;
+  chain?: {
+    code: string;
+    name: string;
+    type: string;
+  },
+  categories?: {
+    code: string;
+    name: string;
+    type: string;
+  }[],
+  urls?: {
+    type: string;
+    url: string;
+  }[]
+  score?: number;
+  trendingScore?: number;
+  followersCount?: number;
+  inWatchlist?: boolean;
+}

@@ -101,8 +101,8 @@ const SideMenu = () => {
       if (tab === item.key) return "bg-success-500";
       return "hover:bg-secondary-600";
     }
-
-    if (router.pathname?.includes(item.key)) return "bg-success-500";
+    
+    if (router.pathname?.includes(item.key) && item.key !== "mentioned") return "bg-success-500";
     return "hover:bg-secondary-600";
   };
 

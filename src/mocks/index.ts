@@ -6082,3 +6082,312 @@ export const tweetsMention = {
   ],
   totalCount: 61,
 };
+
+export const projectsMention = {
+  items: [
+    {
+      mentionedCount: 113,
+      name: "BlockGames",
+      username: "GetBlockGames",
+      userId: "1507448332280602629",
+      description:
+        "BlockGames is a cross-chain, cross-game, decentralized player network powered by Universal Player Profiles. $BLOCK soon.\n\nJoin now: https://t.co/MMNQ9y0v8Q",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/1507448332280602629",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1669698721477455872/QTR7pMsP_normal.jpg",
+      discoveredTime: "2023-02-16T16:51:37.104247Z",
+      createdAt: "2022-03-25T20:04:48Z",
+      chain: null,
+      categories: [
+        {
+          code: "nft-game",
+          name: "NFT Games",
+          type: null,
+        },
+      ],
+      urls: [
+        {
+          type: "Discord",
+          url: "http://discord.gg/blockgames",
+        },
+      ],
+      score: 3890,
+      trendingScore: 230,
+      followersCount: 698666,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 61,
+      name: "Blast",
+      username: "Blast_L2",
+      userId: "1686089393268752384",
+      description:
+        "The L2 with native yield. \n\nDiscord: https://t.co/oWuqLcC1c0",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/1686089393268752384",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1726739354700173312/OeT9Ef1J_normal.jpg",
+      discoveredTime: "2023-11-10T14:47:40.662273Z",
+      createdAt: "2023-07-31T19:00:20Z",
+      chain: null,
+      categories: [
+        {
+          code: "layer-2",
+          name: "Layer 2",
+          type: null,
+        },
+      ],
+      urls: [
+        {
+          type: "Discord",
+          url: "http://discord.gg/blast-l2",
+        },
+        {
+          type: "Website",
+          url: "https://blast.io",
+        },
+      ],
+      score: 140,
+      trendingScore: 148,
+      followersCount: 555755,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 43,
+      name: "Fjord Foundry",
+      username: "FjordFoundry",
+      userId: "1402797688664428545",
+      description:
+        "Connecting innovative projects and engaged backers through a community-focused platform, offering fair and transparent Liquidity Bootstrapping Pools (LBPs).",
+      infoUrl: "https://t.co/rJkdPEJv7B",
+      twitterUrl: "https://twitter.com/i/user/1402797688664428545",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1572885646112219136/XpMRWwtg_normal.jpg",
+      discoveredTime: "2022-01-06T14:19:56.326452Z",
+      createdAt: "2021-06-10T01:20:20Z",
+      chain: null,
+      categories: [],
+      urls: [
+        {
+          type: "Website",
+          url: "https://fjordfoundry.com",
+        },
+      ],
+      score: 8204,
+      trendingScore: 55,
+      followersCount: 54224,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 34,
+      name: "sophon",
+      username: "sophonxyz",
+      userId: "1745068432851193856",
+      description:
+        "Sophon is a modular blockchain powered by ████████ and ██████ on  ████████████, leading us all towards a brighter future.",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/1745068432851193856",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1763520773249978369/9k4jAYsY_normal.jpg",
+      discoveredTime: "2024-02-29T17:49:07.408619Z",
+      createdAt: "2024-01-10T13:02:36Z",
+      chain: null,
+      categories: [],
+      urls: [
+        {
+          type: "Website",
+          url: "http://sophon.xyz",
+        },
+      ],
+      score: 110,
+      trendingScore: 328,
+      followersCount: 42642,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 33,
+      name: "a KID called BEAST",
+      username: "akidcalledbeast",
+      userId: "1471084534208815106",
+      description:
+        "A digital collectable at the intersect of art, culture, fashion and music | https://t.co/h4T1elsxib",
+      infoUrl: "https://t.co/Tw4bubmAPN",
+      twitterUrl: "https://twitter.com/i/user/1471084534208815106",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1513990519545896963/jCrEwX9e_normal.jpg",
+      discoveredTime: "2023-02-16T16:51:32.442625Z",
+      createdAt: "2021-12-15T11:47:49Z",
+      chain: null,
+      categories: [
+        {
+          code: "nft",
+          name: "NFT",
+          type: null,
+        },
+      ],
+      urls: [],
+      score: 4060,
+      trendingScore: 2,
+      followersCount: 117304,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 30,
+      name: "Nyan Heroes",
+      username: "nyanheroes",
+      userId: "1422280869788622848",
+      description:
+        "Hero-shooter where cats pilot GIANT mechs🐱🤖 Creators of Halo/Destiny. Backed by @MechanismCap @Delphi_Ventures @shimacapital \n\nWishlist on Epic Games Store!",
+      infoUrl: "https://t.co/vR4FyLPXQF",
+      twitterUrl: "https://twitter.com/i/user/1422280869788622848",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1685998900975734784/rhPh2p8V_normal.png",
+      discoveredTime: "2021-10-20T03:18:06.871091Z",
+      createdAt: "2021-08-02T19:41:03Z",
+      chain: null,
+      categories: [],
+      urls: [
+        {
+          type: "LinkTree",
+          url: "https://linktr.ee/nyanheroes",
+        },
+      ],
+      score: 1611,
+      trendingScore: 132,
+      followersCount: 575660,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 27,
+      name: "io.net",
+      username: "ionet_official",
+      userId: "998897550827642880",
+      description:
+        "AI Compute-as-a-Currency,  powered by $IO™ Internet of GPUs™ | Built on @solana\nTelegram: https://t.co/r5t8blnkMN\nDiscord: https://t.co/Rd6T1qdPLj",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/998897550827642880",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1695071187011772416/Hi1XrM1x_normal.jpg",
+      discoveredTime: "2023-08-21T21:52:18.58717Z",
+      createdAt: "2018-05-22T12:05:09Z",
+      chain: {
+        code: "solana",
+        name: "Solana",
+        type: null,
+      },
+      categories: [
+        {
+          code: "ai",
+          name: "AI",
+          type: null,
+        },
+        {
+          code: "DePIN",
+          name: "DePIN",
+          type: null,
+        },
+      ],
+      urls: [
+        {
+          type: "Discord",
+          url: "https://discord.gg/ionetofficial",
+        },
+        {
+          type: "Telegram",
+          url: "https://t.me/io_net",
+        },
+        {
+          type: "Website",
+          url: "https://io.net",
+        },
+      ],
+      score: 130,
+      trendingScore: 254,
+      followersCount: 436271,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 23,
+      name: "TunaChain",
+      username: "TunaChain",
+      userId: "1748794321585733632",
+      description:
+        "Tuna Chain pioneers as the first modular Layer 2 on Bitcoin, featuring a ZK-OP hybrid approach that  seamlessly incorporates Ethereum's EVM capabilities.",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/1748794321585733632",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1754858368072568832/4nAo3JMq_normal.jpg",
+      discoveredTime: "2024-01-31T02:52:23.777669Z",
+      createdAt: "2024-01-20T19:47:57Z",
+      chain: {
+        code: "brc-20",
+        name: "Bitcoin",
+        type: null,
+      },
+      categories: [
+        {
+          code: "layer-2",
+          name: "Layer 2",
+          type: null,
+        },
+      ],
+      urls: [
+        {
+          type: "Website",
+          url: "https://tunachain.io/",
+        },
+      ],
+      score: 90,
+      trendingScore: 56,
+      followersCount: 132394,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 22,
+      name: "GutterToken.com",
+      username: "GutterToken",
+      userId: "1759138223731945472",
+      description: "$GANG partnered with @GutterCatGang",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/1759138223731945472",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1768545540650803200/xHACpcYJ_normal.jpg",
+      discoveredTime: "2024-03-15T18:48:32.824348Z",
+      createdAt: "2024-02-18T08:50:31Z",
+      chain: null,
+      categories: [],
+      urls: [],
+      score: 20,
+      trendingScore: 34,
+      followersCount: 6844,
+      inWatchlist: false,
+    },
+    {
+      mentionedCount: 18,
+      name: "TokenGators 🐊",
+      username: "tokengators",
+      userId: "1594996057573687296",
+      description: "a SuperPaperThings production",
+      infoUrl: null,
+      twitterUrl: "https://twitter.com/i/user/1594996057573687296",
+      profileImageUrl:
+        "https://pbs.twimg.com/profile_images/1757899083006795776/CT_LOEEJ_normal.jpg",
+      discoveredTime: "2023-03-17T09:07:15.125655Z",
+      createdAt: "2022-11-22T10:08:03Z",
+      chain: null,
+      categories: [],
+      urls: [
+        {
+          type: "Website",
+          url: "http://tokengators.com",
+        },
+      ],
+      score: 1380,
+      trendingScore: 10,
+      followersCount: 2329,
+      inWatchlist: false,
+    },
+  ],
+  totalCount: 875,
+};

@@ -1,11 +1,13 @@
 import request from "@/api-client/notification/request";
 import qs from "qs";
 
-type AlphaMentionProjectsParams = {
+export type AlphaMentionProjectsParams = {
   timeFrame?: string;
   pageNumber?: number;
   pageSize?: number;
   searchText?: string;
+  chains?: string;
+  categories?: string;
 };
 
 export const getMentionDetailTab = async (userName: string) => {
@@ -26,11 +28,11 @@ export const getAlphaMentionProjects = async (
 };
 
 export const getAlphaMentionTweet = async (
-    userName: string,
-    params: AlphaMentionProjectsParams
-  ) => {
-    let url = `api/app/twitter/alpha-hunter-mentioned-tweets?username=${userName}`;
-    if (params) url = `${url}&${qs.stringify(params)}`;
-    const res = await request.get(`${url}`);
-    return res;
-  };
+  userName: string,
+  params: AlphaMentionProjectsParams
+) => {
+  let url = `api/app/twitter/alpha-hunter-mentioned-tweets?username=${userName}`;
+  if (params) url = `${url}&${qs.stringify(params)}`;
+  const res = await request.get(`${url}`);
+  return res;
+};

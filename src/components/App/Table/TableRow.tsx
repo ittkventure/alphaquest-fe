@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import React, { FC, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { WatchListTypes } from "@/api-client/twitter";
+import { ProjectsMention } from "@/types/mention";
 
 export const listUrl = [
   {
@@ -73,7 +74,7 @@ export interface TableObject {
 }
 
 interface TableRowTypes {
-  item: TwitterItem;
+  item: TwitterItem | ProjectsMention;
   index: number;
   isAnimation?: boolean;
   onReduceCount?: () => void;

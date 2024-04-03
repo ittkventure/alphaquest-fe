@@ -5,9 +5,10 @@ import TableRow from "./TableRow";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
 import { useWindowSize } from "usehooks-ts";
 import { useRouter } from "next/router";
+import { ProjectsMention } from "@/types/mention";
 
 interface TableContentTypes {
-  initListRows: TwitterItem[];
+  initListRows: TwitterItem[] | ProjectsMention[];
   isAnimation?: boolean;
   onRefreshTable?: () => void;
   isShowWatchList?: boolean;
@@ -19,19 +20,14 @@ const TableContent: FC<TableContentTypes> = ({
   onRefreshTable,
   isShowWatchList = true,
 }) => {
-  const [listRows, setListRows] = useState<TwitterItem[]>(initListRows);
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
   const { width } = useWindowSize();
   const router = useRouter();
 
-  useEffect(() => {
-    setListRows(initListRows);
-  }, [initListRows]);
-
   return (
     <div>
-      {listRows.map((value, index) => {
+      {initListRows?.map((value, index) => {
         return (
           <TableRow
             key={index}
