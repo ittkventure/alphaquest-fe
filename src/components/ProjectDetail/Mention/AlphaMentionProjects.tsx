@@ -4,7 +4,7 @@ import MentionTimeline from "./MentionTimeline";
 
 export default function AlphaMentionProjects() {
   return (
-    <div className="w-full overflow-auto">
+    <div className="w-full overflow-auto mt-6">
       <div className="min-w-[1260px] ">
         <div className="flex flex-row bg-[#1F2536] py-3">
           <div className={`w-[293px] pl-11 ${"mr-24"}`}>Account</div>
@@ -27,7 +27,7 @@ export default function AlphaMentionProjects() {
               <p>{alpha.mentionsCount}</p>
             </div>
             <div className="w-[521px] ml-3">
-              <MentionTimeline />
+              <MentionTimeline tweetTimeline={alpha.tweetTimeline} />
             </div>
            
           </div>
