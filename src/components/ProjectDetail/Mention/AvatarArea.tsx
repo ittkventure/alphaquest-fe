@@ -61,7 +61,7 @@ export default function AvatarArea({ item }: AvatarAreaProps) {
           ) : (
             <div className="flex items-center gap-2">
               <p className="font-workSansMedium">{item.name}</p>
-              <a href={""}>
+              <a href={item.profileUrl}>
                 <Image
                   src={TwitterBlueIcon}
                   width={16}

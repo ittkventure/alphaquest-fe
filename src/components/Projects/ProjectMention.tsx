@@ -3,13 +3,7 @@ import { CrownIcon, InfoIcon } from "@/assets/icons";
 import { AuthContext } from "@/contexts/useAuthContext";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import {
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import Header from "../App/Header";
 import SelectCustom, { OptionType } from "../common/Select";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
@@ -36,8 +30,7 @@ export default function ProjectMention({
   categoryQuery,
 }: ProjectMentionProps) {
   const router = useRouter();
-  const { authState, accountExtendDetail, setTypePaymentAction } =
-    useContext(AuthContext);
+  const { accountExtendDetail } = useContext(AuthContext);
 
   const [chainSelected, setChainSelected] = useState<OptionType>({
     code: chainQuery ?? "",
@@ -314,7 +307,7 @@ export default function ProjectMention({
                 initListRows={projectsMention?.items ?? []}
                 isAnimation={false}
                 onRefreshTable={() => {
-                  refetch()
+                  refetch();
                 }}
                 lastElement={lastElementRef}
               />

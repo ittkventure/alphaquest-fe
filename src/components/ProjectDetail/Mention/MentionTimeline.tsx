@@ -22,7 +22,7 @@ export default function MentionTimeline({ tweetTimeline }: Props) {
         <div className="w-full border-[0.5px] border-dashed border-[#2D354D] " />
       </div>
       <div className="flex gap-3 justify-center items-center w-full pr-10">
-        {tweetTimeline?.map((tweet) => {
+        {tweetTimeline?.slice(0,10).map((tweet) => {
           const id = uuidv4();
           if (tweet.tweetCount === 0)
           return (
