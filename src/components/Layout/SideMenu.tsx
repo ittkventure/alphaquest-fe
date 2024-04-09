@@ -104,6 +104,7 @@ const SideMenu = () => {
 
     if(router.pathname === "/alpha-hunters/mentioned" && item.key === "mentioned") return "bg-success-500";
     
+    if (router.pathname === "/alpha-hunters/mentioned" && item.key === "alpha-hunters") return ""
     if (router.pathname?.includes(item.key) && item.key !== "mentioned") return "bg-success-500";
     return "hover:bg-secondary-600";
   };

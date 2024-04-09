@@ -28,7 +28,6 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
   const {
     tweetsMention,
     isLoading,
-    isFetching,
     hasNextPage,
     fetchNextPage,
   } = useTweetsMention(

@@ -894,7 +894,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
             </Tab.Panel>
             <Tab.Panel>
               <AlphaHunterMentionCount username={userId} />
-              <AlphaMentionProjects />
+              <AlphaMentionProjects username={userId} />
               <TweetMention username={userId} name={twitterDetail.data?.name} />
             </Tab.Panel>
           </Tab.Panels>
