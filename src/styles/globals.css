@@ -219,3 +219,17 @@ select:-webkit-autofill:focus {
   min-width: 600px;
 }
 
+/* custom rc-pagination */
+.rc-pagination-item {
+  background-color: transparent !important;
+  border-color: #24b592 !important;
+}
+
+.rc-pagination-item a {
+  color: white !important;
+}
+
+.rc-pagination-item-active a {
+  color: #24b592 !important;
+}
+
