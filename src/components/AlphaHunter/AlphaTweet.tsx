@@ -1,18 +1,17 @@
-import { useTweetsMention } from "@/api-client/mentioned/projects/useTweetMetion";
+import { useTweetsAlpha } from "@/api-client/mentioned/alphaHunter/useTweetAlpha";
 import { UserPayType } from "@/api-client/types/AuthType";
 import SkeletonLoading from "@/components/App/Table/SkeletonLoading";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useContext, useMemo, useState } from "react";
 import { Tweet } from "react-twitter-widgets";
-import TweetPage from "./TweetPage";
 
-type TweetMentionProps = {
+type Props = {
   username: string;
   name: string | undefined;
 };
 
-export default function TweetMention({ username, name }: TweetMentionProps) {
+export default function AlphaTweet({ username, name }: Props) {
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState(search);
   const { accountExtendDetail } = useContext(AuthContext);
@@ -35,7 +34,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
     status,
     error,
     isFetchingNextPage,
-  } = useTweetsMention(
+  } = useTweetsAlpha(
     username,
     params,
     accountExtendDetail?.currentPlanKey === UserPayType.FREE
@@ -43,8 +42,8 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
 
   return (
     <div className="mt-6">
-      <div className="flex justify-between">
-        <p>{`${total ?? 0} Tweets from ${name} Projects`}</p>
+      <div className="flex justify-between mb-6">
+        <p>{`${total ?? 0} Tweets from ${name || ""} mentioned last 30 days`}</p>
         <div className="relative max-lg:mr-2 max-lg:hidden">
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
