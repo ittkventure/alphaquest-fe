@@ -1,7 +1,6 @@
 import useResponsive from "@/hooks/useWindowDimensions";
 import Popup from "reactjs-popup";
 import { v4 as uuidv4 } from "uuid";
-import { TwitterBlueIcon } from "@/assets/icons";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,6 +10,13 @@ type Props = {
     to: string;
     tweetCount: number;
     tweetUrls: string[];
+    mentionedProjectTweets: {
+      name: string;
+      profileImageUrl: string;
+      profileUrl: string;
+      userId: string;
+      username: string;
+    }[]
   }[];
 };
 
@@ -22,20 +28,22 @@ export default function MentionTimeline({ tweetTimeline }: Props) {
         <div className="w-full border-[0.5px] border-dashed border-[#2D354D] " />
       </div>
       <div className="flex gap-3 justify-center items-center w-full pr-10">
-        {tweetTimeline?.slice(0,10).map((tweet) => {
+        {tweetTimeline?.slice(0, 10).map((tweet) => {
           const id = uuidv4();
           if (tweet.tweetCount === 0)
-          return (
-            <div className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-full" />
-          );
+            return (
+              <div className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-full" />
+            );
           return (
             <>
               <Popup
                 trigger={
                   <div className="relative cursor-pointer">
                     <Image
-                      src={TwitterBlueIcon}
+                      src={tweet?.mentionedProjectTweets[0]?.profileImageUrl}
                       alt=""
+                      width={32}
+                      height={32}
                       className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
                     />
                     {tweet.tweetCount > 1 && (
@@ -53,27 +61,35 @@ export default function MentionTimeline({ tweetTimeline }: Props) {
                 // keepTooltipInside=".tooltipBoundary"
                 arrow={isMd || isSm ? false : true}
               >
-                <div className="bg-[#282E44] pt-4 pb-2 max-h-[377px] max-lg:w-full max-lg:fixed max-lg:bottom-0 max-lg:right-0 overflow-y-scroll overflow-x-hidden">
-                  {tweet.tweetUrls.map((url) => {
-                    return (
-                      <Link
-                        key={url}
-                        href={`${url}`}
-                        target="_blank"
-                      >
-                        <div className="flex items-center gap-2 mb-3 bg-[#282E44] px-6">
-                          <p>Mention link: </p>
-                          <p className="font-workSansMedium text-blue-500 underline">
-                            {url}
-                          </p>
-                        </div>
-                      </Link>
-                    );
-                  })}
+                <div className="bg-[#282E44] z-[9999] pt-4 pb-2 max-h-[377px] max-lg:w-full max-lg:fixed max-lg:bottom-0 max-lg:right-0 overflow-y-scroll overflow-x-hidden">
+                  {tweet.mentionedProjectTweets?.map((url) => (
+                    <Link
+                    key={url.userId}
+                    href={`/project/${url.username}`}
+                    target={
+                      url.username === "UNKNOWN" ? "_self" : "_blank"
+                    }
+                  >
+                    <div className="flex items-center gap-2 mb-3 bg-[#282E44] px-6">
+                      <p>Mentioned</p>
+                      <img
+                        src={url.profileImageUrl}
+                        alt=""
+                        className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
+                      />
+                      <p className="font-workSansMedium">
+                        {url.name} on{" "}
+                        {/* {moment(project.followingTime)
+                          .utc()
+                          .format("MM/DD/YYYY")} */}
+                      </p>
+                    </div>
+                  </Link>
+                  ))}
                 </div>
               </Popup>
             </>
-          )
+          );
         })}
       </div>
     </div>

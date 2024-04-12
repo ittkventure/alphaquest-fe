@@ -21,6 +21,8 @@ import { HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import { Tweet } from "react-twitter-widgets";
+import AlphaMentionCount from "./AlphaMentionCount";
+import ProjectsAlphaMention from "./ProjectsAlphaMention";
 
 interface IAlphaHunter {
   userId?: string;
@@ -497,38 +499,8 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
               </div>
             </Tab.Panel>
             <Tab.Panel>
-              <div className="grid grid-cols-2 gap-6 mt-5 max-[1450px]:px-4 w-full">
-                <div className="border border-white border-opacity-10 p-4 rounded-lg">
-                  <p>Current Twitter Mentioned</p>
-
-                  <p className="text-xl max-lg:text-sm">
-                    {alphaHunterDetail?.data?.followerCount ?? 0}
-                  </p>
-                </div>
-
-                <div className="border border-white border-opacity-10 p-4 rounded-lg">
-                  <p>Total Alpha Mentioned</p>
-
-                  <p className="text-xl max-lg:text-sm">
-                    {" "}
-                    {alphaHunterDetail?.data?.alphaFollowingCount ?? 0}
-                  </p>
-                </div>
-              </div>
-
-              {/* Project mentioned area */}
-
-              <div className="mt-6">
-                <h3>20 Alpha Hunters mentioned last 30 days</h3>
-                <div className="mt-14">
-                  <TableCommon
-                    columns={alphaHunterMention ?? []}
-                    data={[]}
-                    onChangePage={() => {}}
-                  />
-                </div>
-              </div>
-
+              <AlphaMentionCount username={userId} />
+              <ProjectsAlphaMention username={userId} />
               {/* Search area */}
               <div className="mt-6">
                 <div className="flex justify-between">

@@ -31,6 +31,7 @@ export const useTweetsMention = (
   params: AlphaMentionProjectsParams,
   isUserFree: boolean
 ) => {
+  let total;
   const {
     data,
     error,
@@ -50,6 +51,7 @@ export const useTweetsMention = (
         pages: BaseResponse<{ tweetId: string }>[]
       ) => {
         if (isUserFree) return undefined;
+        total = _lastPage.totalCount;
         const totalPage = Math.floor(_lastPage.totalCount / 6);
         if (pages.length < totalPage + 1) {
           return pages.length + 1;
@@ -85,5 +87,6 @@ export const useTweetsMention = (
     refetch,
     tweetsMention,
     data,
+    total,
   };
 };

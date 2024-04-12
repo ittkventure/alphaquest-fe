@@ -6,6 +6,7 @@ import { AuthContext } from "@/contexts/useAuthContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { Tweet } from "react-twitter-widgets";
+import TweetPage from "./TweetPage";
 
 type TweetMentionProps = {
   username: string;
@@ -30,33 +31,21 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
     isLoading,
     hasNextPage,
     fetchNextPage,
+    total,
+    isFetching,
+    status,
+    error,
+    isFetchingNextPage,
   } = useTweetsMention(
     username,
     params,
     accountExtendDetail?.currentPlanKey === UserPayType.FREE
   );
 
-  // IntersectionObserver to handle Infinite Scroll
-  const observer = useRef<IntersectionObserver>();
-
-  const lastElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (isLoading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [isLoading, hasNextPage]
-  );
-
   return (
     <div className="mt-6">
       <div className="flex justify-between">
-        <p>{`50 Tweets from ${name} Projects`}</p>
+        <p>{`${total ?? 0} Tweets from ${name} Projects`}</p>
         <div className="relative max-lg:mr-2 max-lg:hidden">
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 
@@ -73,36 +62,36 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
           />
         </div>
       </div>
-      {isLoading ? (
-        <div className="w-full">
-          <div className="flex justify-center">
-            <SkeletonLoading numberOfRow={10} />
-          </div>
+      {status === "loading" ? (
+        <div className="flex justify-center">
+          <SkeletonLoading numberOfRow={6} />
         </div>
+      ) : status === "error" ? (
+        <div>Error</div>
       ) : (
-        <>
-          {tweetsMention && tweetsMention?.items?.length ? (
-            <div className="flex justify-center flex-col gap-3 items-center">
-              {tweetsMention?.items?.map((tweet, index) => (
-                <div
-                  key={tweet.tweetId}
-                  ref={
-                    tweetsMention?.items?.length === index + 1
-                      ? lastElementRef
-                      : null
-                  }
-                >
-                  <Tweet tweetId={tweet?.tweetId} />
-                </div>
-              ))}
+        <div className="grid grid-cols-2 gap-3">
+          {tweetsMention?.items?.map((tweet) => (
+            <div key={tweet.tweetId}>
+              <Tweet tweetId={tweet?.tweetId} options={{ theme: "dark" }} />
             </div>
-          ) : (
-            <div className="font-medium text-base flex justify-center h-48 w-full">
-              Not found data
-            </div>
-          )}
-        </>
+          ))}
+        </div>
       )}
+
+      <div className="flex items-center justify-center p-4">
+        <button
+          className="py-2 w-32 border-[2px] flex justify-center items-center bg-slate-800 hover:text-success-500 hover:border-success-500 duration-100 transition-all"
+          onClick={() => fetchNextPage()}
+          disabled={!hasNextPage || isFetchingNextPage}
+        >
+          {isFetchingNextPage
+            ? "Loading more..."
+            : hasNextPage
+            ? "Load More"
+            : "Nothing more to load"}
+        </button>
+      </div>
+      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
     </div>
   );
 }
