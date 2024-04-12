@@ -90,7 +90,7 @@ export default function MentionTimeline({
                       </Link>
                       <p className="font-workSansMedium">
                         {url.name} on{" "}
-                        <Link href={url?.tweetUrl} target="_blank">
+                        <Link href={url?.tweetUrl} target="_blank" className="underline">
                           {moment(url?.mentionedAt).utc().format("MM/DD/YYYY")}
                         </Link>
                       </p>
