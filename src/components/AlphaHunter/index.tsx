@@ -21,6 +21,9 @@ import { HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import { Tweet } from "react-twitter-widgets";
+import AlphaMentionCount from "./AlphaMentionCount";
+import ProjectsAlphaMention from "./ProjectsAlphaMention";
+import AlphaTweet from "./AlphaTweet";
 
 interface IAlphaHunter {
   userId?: string;
@@ -497,60 +500,12 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
               </div>
             </Tab.Panel>
             <Tab.Panel>
-              <div className="grid grid-cols-2 gap-6 mt-5 max-[1450px]:px-4 w-full">
-                <div className="border border-white border-opacity-10 p-4 rounded-lg">
-                  <p>Current Twitter Mentioned</p>
-
-                  <p className="text-xl max-lg:text-sm">
-                    {alphaHunterDetail?.data?.followerCount ?? 0}
-                  </p>
-                </div>
-
-                <div className="border border-white border-opacity-10 p-4 rounded-lg">
-                  <p>Total Alpha Mentioned</p>
-
-                  <p className="text-xl max-lg:text-sm">
-                    {" "}
-                    {alphaHunterDetail?.data?.alphaFollowingCount ?? 0}
-                  </p>
-                </div>
-              </div>
-
-              {/* Project mentioned area */}
-
-              <div className="mt-6">
-                <h3>20 Alpha Hunters mentioned last 30 days</h3>
-                <div className="mt-14">
-                  <TableCommon
-                    columns={alphaHunterMention ?? []}
-                    data={[]}
-                    onChangePage={() => {}}
-                  />
-                </div>
-              </div>
-
-              {/* Search area */}
-              <div className="mt-6">
-                <div className="flex justify-between">
-                  <p>{`50 Tweets from ${alphaHunterDetail?.data?.name} Metntioning Projects`}</p>
-                  <div className="relative max-lg:mr-2 max-lg:hidden">
-                    <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
-
-                    <input
-                      className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7 max-lg:text-sm "
-                      placeholder="Search"
-                      value={""}
-                      onChange={(e) => {
-                        console.log(e);
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-center flex-col gap-3 items-center">
-                  <Tweet tweetId="1771909813066436902" />
-                  <Tweet tweetId="1772231064288977161" />
-                </div>
-              </div>
+              <AlphaMentionCount username={userId} />
+              <ProjectsAlphaMention username={userId} />
+              <AlphaTweet
+                username={userId}
+                name={alphaHunterDetail?.data?.name}
+              />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

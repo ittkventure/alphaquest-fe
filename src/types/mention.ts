@@ -16,7 +16,15 @@ export type AlphaMentionProject = {
     from: string;
     to: string;
     tweetCount: number;
-    tweetUrls: string[];
+    mentionedProjectTweets: {
+      name: string;
+      profileImageUrl: string;
+      profileUrl: string;
+      userId: string;
+      username: string;
+      tweetUrl: string;
+      mentionedAt: string;
+    }[]
   }[];
 };
 

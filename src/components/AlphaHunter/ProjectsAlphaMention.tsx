@@ -1,25 +1,17 @@
 import Spinner from "@/components/Spinner";
-import AvatarArea from "./AvatarArea";
-import MentionTimeline from "./MentionTimeline";
-import {
-  AlphaMentionProjectsParams,
-  getAlphaMentionProjects,
-} from "@/api-client/mentioned/projects";
+import { AlphaMentionProjectsParams } from "@/api-client/mentioned/projects";
 import { useQuery } from "react-query";
 import { useMemo, useState } from "react";
 import Pagination from "rc-pagination/lib/Pagination";
+import { getMentionProjectsFromAlpha } from "@/api-client/mentioned/alphaHunter";
+import AvatarArea from "../ProjectDetail/Mention/AvatarArea";
+import MentionTimeline from "../ProjectDetail/Mention/MentionTimeline";
 
 type Props = {
   username: string;
-  name: string | undefined;
-  isPage?: boolean;
 };
 
-export default function AlphaMentionProjects({
-  username,
-  name,
-  isPage,
-}: Props) {
+export default function AlphaMentionProjects({ username }: Props) {
   const [pageNumber, setPageNumber] = useState(1);
   const params: AlphaMentionProjectsParams = useMemo(() => {
     return {
@@ -30,25 +22,19 @@ export default function AlphaMentionProjects({
   }, [pageNumber]);
 
   const { isLoading, data: alphaMentionProjects } = useQuery(
-    ["getAlphaMentionProjects", username, params],
-    () => getAlphaMentionProjects(username, params)
+    ["getMentionProjectsFromAlpha", username, params],
+    () => getMentionProjectsFromAlpha(username, params)
   );
 
   return (
     <div className="w-full overflow-auto mt-6">
       <h3 className="mb-6">
-        {alphaMentionProjects?.data?.totalCount ?? 0} Alpha Hunters mentioned{" "}
-        {name} last 30 days
+        {alphaMentionProjects?.data?.totalCount ?? 0} projects mentioned last 30
+        days
       </h3>
       <div className="min-w-[1260px] ">
         <div className="flex flex-row bg-[#1F2536] py-3">
-          <div
-            className={`w-[293px] pl-11 ${
-              isPage ? "2xl:mr-24 mr-12" : "mr-12"
-            }`}
-          >
-            Account
-          </div>
+          <div className="w-[293px] pl-11 2xl:mr-24 mr-12">Account</div>
           <div className="w-[127px]">Followers</div>
 
           <div className="2xl:w-[214px] w-28"># of mentions</div>
@@ -77,7 +63,7 @@ export default function AlphaMentionProjects({
                   <p>{alpha.mentionsCount}</p>
                 </div>
                 <div className="w-[521px] ml-3">
-                  <MentionTimeline tweetTimeline={alpha.tweetTimeline} isProjectDetail avatar={alpha?.profileImageUrl} />
+                  <MentionTimeline tweetTimeline={alpha.tweetTimeline} />
                 </div>
               </div>
             ))}

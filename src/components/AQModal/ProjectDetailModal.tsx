@@ -30,7 +30,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-[9999]" onClose={closeModal}>
+      <Dialog as="div" className="relative z-[100]" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -59,6 +59,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
                   <ProjectDetail
                     onChangeHeart={onChangeHeart}
                     userId={userId}
+                    isPage={false}
                   />
                 ) : (
                   <div className="w-full flex justify-center items-center">

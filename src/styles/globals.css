@@ -216,7 +216,8 @@ select:-webkit-autofill:focus {
 }
 
 .twitter-tweet-rendered {
-  min-width: 600px;
+  min-width: 300px;
+  max-width: 600px;
 }
 
 /* custom rc-pagination */

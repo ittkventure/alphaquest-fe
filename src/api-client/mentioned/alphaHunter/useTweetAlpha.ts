@@ -20,13 +20,13 @@ const fetcher = async (
     ...params,
     pageNumber: page,
   };
-  let url = `api/app/twitter/alpha-hunter-mentioned-tweets?username=${username}&`;
+  let url = `api/app/twitter-alpha-hunter/alpha-hunter-mentioned-tweets?username=${username}&`;
   if (params) url = `${url}${qs.stringify(newParams)}`;
   const res = await request.get(`${url}`);
   return res.data;
 };
 
-export const useTweetsMention = (
+export const useTweetsAlpha = (
   username: string,
   params: AlphaMentionProjectsParams,
   isUserFree: boolean
