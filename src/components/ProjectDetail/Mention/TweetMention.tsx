@@ -68,13 +68,13 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
       ) : status === "error" ? (
         <div>Error</div>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-center">
           <div>
             {tweetsMention?.items
               ?.slice(0, tweetsMention?.items?.length / 2)
               .map((tweet) => (
                 <div key={tweet.tweetId}>
-                  <Tweet tweetId={tweet.tweetId} />
+                  <Tweet tweetId={tweet.tweetId} options={{ theme: "dark" }} />
                 </div>
               ))}
           </div>
@@ -83,7 +83,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
               ?.slice(tweetsMention?.items?.length / 2)
               .map((tweet) => (
                 <div key={tweet.tweetId}>
-                  <Tweet tweetId={tweet.tweetId} />
+                  <Tweet tweetId={tweet.tweetId} options={{ theme: "dark" }} />
                 </div>
               ))}
           </div>
