@@ -134,7 +134,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<TwitterDetails | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/detail-by-username?username=${userId}`,
+      `/api/app/project/detail-by-username?username=${userId}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
