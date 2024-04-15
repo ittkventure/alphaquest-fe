@@ -216,7 +216,7 @@ select:-webkit-autofill:focus {
 }
 
 .twitter-tweet-rendered {
-  min-width: 300px;
+  min-width: 400px;
   max-width: 600px;
 }
 
