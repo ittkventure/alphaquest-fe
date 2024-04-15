@@ -68,13 +68,33 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
       ) : status === "error" ? (
         <div>Error</div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
-          {tweetsMention?.items?.map((tweet) => (
-            <div key={tweet.tweetId}>
-              <Tweet tweetId={tweet?.tweetId} options={{ theme: "dark" }} />
-            </div>
-          ))}
+        <div className="flex gap-2">
+          <div>
+            {tweetsMention?.items
+              ?.slice(0, tweetsMention?.items?.length / 2)
+              .map((tweet) => (
+                <div key={tweet.tweetId}>
+                  <Tweet tweetId={tweet.tweetId} />
+                </div>
+              ))}
+          </div>
+          <div>
+            {tweetsMention?.items
+              ?.slice(tweetsMention?.items?.length / 2)
+              .map((tweet) => (
+                <div key={tweet.tweetId}>
+                  <Tweet tweetId={tweet.tweetId} />
+                </div>
+              ))}
+          </div>
         </div>
+        // <div className="grid grid-cols-2 gap-3">
+        //   {tweetsMention?.items?.map((tweet) => (
+        //     <div key={tweet.tweetId}>
+        //       <Tweet tweetId={tweet?.tweetId} options={{ theme: "dark" }} />
+        //     </div>
+        //   ))}
+        // </div>
       )}
 
       <div className="flex items-center justify-center p-4">
@@ -90,7 +110,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
             : "Nothing more to load"}
         </button>
       </div>
-      <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+      <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div>
     </div>
   );
 }

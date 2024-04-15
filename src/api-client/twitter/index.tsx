@@ -37,8 +37,8 @@ class ApiTwitter extends ApiClientBase {
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
       !is_guest
-        ? `/api/app/twitter?${qs.stringify(params)}`
-        : `/api/app/twitter/for-guest?${qs.stringify(params)}`,
+        ? `/api/app/project?${qs.stringify(params)}`
+        : `/api/app/project/for-guest?${qs.stringify(params)}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
@@ -74,7 +74,7 @@ class ApiTwitter extends ApiClientBase {
     access_token: string
   ): Promise<BaseResponse<TwitterItem> | any> {
     const res = await this.instance.get(
-      `/api/app/twitter/watchlist-item?${qs.stringify(params)}`,
+      `/api/app/project/watchlist-item?${qs.stringify(params)}`,
       {
         headers: {
           Authorization: "Bearer " + access_token,
@@ -105,7 +105,7 @@ class ApiTwitter extends ApiClientBase {
    */
   public async getGameCount() {
     const res = await this.instance.get(
-      `/api/app/twitter/gem-count?newest=true`
+      `/api/app/project/gem-count?newest=true`
     );
     return res.data;
   }
