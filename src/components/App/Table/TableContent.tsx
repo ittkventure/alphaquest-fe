@@ -13,6 +13,7 @@ interface TableContentTypes {
   onRefreshTable?: () => void;
   isShowWatchList?: boolean;
   lastElement?: (node: HTMLDivElement) => void;
+  isMentioned?: boolean;
 }
 
 const TableContent: FC<TableContentTypes> = ({
@@ -21,6 +22,7 @@ const TableContent: FC<TableContentTypes> = ({
   onRefreshTable,
   isShowWatchList = true,
   lastElement,
+  isMentioned,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userId, setUserId] = useState("");
@@ -54,6 +56,7 @@ const TableContent: FC<TableContentTypes> = ({
               }}
               isShowWatchList={isShowWatchList}
               onRefreshTable={onRefreshTable}
+              isMentioned={isMentioned}
             />
           </div>
         );
