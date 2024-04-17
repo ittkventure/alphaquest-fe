@@ -56,6 +56,7 @@ export interface TwitterItem {
   chain?: TwitterChain;
   categories?: Array<TwitterCategory>;
   inWatchlist?: boolean;
+  mentionedCount?: number;
   urls: URLS[];
 }
 

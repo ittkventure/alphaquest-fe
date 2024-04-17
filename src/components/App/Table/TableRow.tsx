@@ -81,6 +81,7 @@ interface TableRowTypes {
   onRefreshTable?: (userId: string) => void;
   onClickAction?: () => void;
   isShowWatchList?: boolean;
+  isMentioned?: boolean;
 }
 
 const TableRow: FC<TableRowTypes> = ({
@@ -90,6 +91,7 @@ const TableRow: FC<TableRowTypes> = ({
   onRefreshTable,
   onClickAction,
   isShowWatchList,
+  isMentioned,
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -365,7 +367,11 @@ const TableRow: FC<TableRowTypes> = ({
       </div>
       <div className="flex max-lg:flex-col max-lg:justify-between  justify-end items-center ">
         <div className="border border-success-500 text-success-500 px-1 mr-2 max-lg:text-xs">
-          <p>+{itemState.trendingScore}</p>
+          {isMentioned ? (
+            <p>+{itemState.mentionedCount}</p>
+          ) : (
+            <p>+{itemState.trendingScore}</p>
+          )}
         </div>
         {isShowWatchList && _renderHeartButton()}
       </div>

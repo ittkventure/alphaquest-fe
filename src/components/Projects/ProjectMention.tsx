@@ -310,6 +310,7 @@ export default function ProjectMention({
                   refetch();
                 }}
                 lastElement={lastElementRef}
+                isMentioned
               />
               {isFetchingNextPage ? <SkeletonLoading numberOfRow={3} /> : null}
               {/* {errorMsg ? (

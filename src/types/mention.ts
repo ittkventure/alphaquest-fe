@@ -54,6 +54,7 @@ export type ProjectsMention = {
   }[]
   score?: number;
   trendingScore?: number;
+  mentionedCount?: number;
   followersCount?: number;
   inWatchlist?: boolean;
 }
