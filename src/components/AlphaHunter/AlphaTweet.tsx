@@ -4,7 +4,7 @@ import SkeletonLoading from "@/components/App/Table/SkeletonLoading";
 import { AuthContext } from "@/contexts/useAuthContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useContext, useMemo, useState } from "react";
-import { Tweet } from "react-twitter-widgets";
+import TweetPage from "../ProjectDetail/Mention/TweetPage";
 
 type Props = {
   username: string;
@@ -67,13 +67,26 @@ export default function AlphaTweet({ username, name }: Props) {
       ) : status === "error" ? (
         <div>Error</div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
-          {tweetsMention?.items?.map((tweet) => (
-            <div key={tweet.tweetId}>
-              <Tweet tweetId={tweet?.tweetId} options={{ theme: "dark" }} />
-            </div>
-          ))}
+        <div className="flex gap-2 justify-center mt-6">
+        <div className="flex flex-col gap-2 flex-1">
+          {tweetsMention?.items
+            ?.slice(0, tweetsMention?.items?.length / 2)
+            .map((tweet) => (
+              <div key={tweet.tweetId}>
+                <TweetPage tweetContent={tweet} />
+              </div>
+            ))}
         </div>
+        <div className="flex flex-col gap-2 flex-1">
+          {tweetsMention?.items
+            ?.slice(tweetsMention?.items?.length / 2)
+            .map((tweet) => (
+              <div key={tweet.tweetId}>
+                <TweetPage tweetContent={tweet} />
+              </div>
+            ))}
+        </div>
+      </div>
       )}
 
       <div className="flex items-center justify-center p-4">

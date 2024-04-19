@@ -58,3 +58,23 @@ export type ProjectsMention = {
   followersCount?: number;
   inWatchlist?: boolean;
 }
+
+export type Tweet = {
+  tweetId: string;
+  tweetUrl: string;
+  fullText: string;
+  createdAt: string;
+  objects?: {
+    id: string;
+    displayText: string;
+    type: string;
+    url: string;
+  }[];
+  owner: {
+    name: string;
+    username: string;
+    profileUrl: string;
+    profileImageUrl: string;
+  };
+  viewsCount?: number;
+}
