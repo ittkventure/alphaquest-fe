@@ -4,6 +4,7 @@ import request from "@/api-client/notification/request";
 import { BaseResponse } from "@/api-client/types/BaseResponse";
 import { AlphaMentionProjectsParams } from "@/api-client/mentioned/projects";
 import qs from "qs";
+import { Tweet } from "@/types/mention";
 
 const fetcher = async (
   page: number,
@@ -47,8 +48,8 @@ export const useTweetsMention = (
     ({ pageParam = 1 }) => fetcher(pageParam, username, params, isUserFree),
     {
       getNextPageParam: (
-        _lastPage: BaseResponse<{ tweetId: string }>,
-        pages: BaseResponse<{ tweetId: string }>[]
+        _lastPage: BaseResponse<Tweet>,
+        pages: BaseResponse<Tweet>[]
       ) => {
         if (isUserFree) return undefined;
         total = _lastPage.totalCount;
@@ -64,8 +65,8 @@ export const useTweetsMention = (
     () =>
       data?.pages.reduce(
         (
-          prev: BaseResponse<{ tweetId: string }>,
-          page: BaseResponse<{ tweetId: string }>
+          prev: BaseResponse<Tweet>,
+          page: BaseResponse<Tweet>
         ) => {
           return {
             items: [...prev.items, ...page.items],

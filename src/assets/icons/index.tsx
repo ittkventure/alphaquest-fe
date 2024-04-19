@@ -56,6 +56,7 @@ import TelegramWhiteIcon from "./tele-white-icon.svg";
 import BitcoinIcon from "./bitcoin-icon.svg";
 import CreditCardIcon from "./credit-card-icon.svg";
 import Tick2Icon from "./tick-2-icon.svg";
+import XIcon from "./twitter-x-icon.svg";
 
 export {
   QuoteIcon,
@@ -109,4 +110,5 @@ export {
   BitcoinIcon,
   CreditCardIcon,
   Tick2Icon,
+  XIcon,
 };
