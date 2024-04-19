@@ -49,7 +49,7 @@ export interface TwitterItem {
   followersCountChange?: any;
   followingCount?: any;
   followingCountChange?: any;
-  tweetCount?: any;
+  tweetCount?: number;
   tweetCountChange?: any;
   listedCount?: any;
   listedCountChange?: any;
