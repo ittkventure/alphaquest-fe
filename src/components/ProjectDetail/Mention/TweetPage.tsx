@@ -1,4 +1,3 @@
-import SkeletonLoading from "@/components/App/Table/SkeletonLoading";
 import { Tweet } from "@/types/mention";
 import Image from "next/image";
 import { XIcon } from "@/assets/icons";
@@ -14,7 +13,8 @@ const convertInnerHTML = (data: Tweet) => {
     if (
       object.type === "mention" ||
       object.type === "symbol" ||
-      object.type === "url"
+      object.type === "url" ||
+      object.type === "tag"
     ) {
       innerHTML = innerHTML.replaceAll(
         `[[${object.id}]]`,
