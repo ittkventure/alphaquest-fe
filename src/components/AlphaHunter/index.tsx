@@ -20,7 +20,6 @@ import { HeartIcon as HeartIconBold } from "@heroicons/react/24/solid";
 import { HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
-import { Tweet } from "react-twitter-widgets";
 import AlphaMentionCount from "./AlphaMentionCount";
 import ProjectsAlphaMention from "./ProjectsAlphaMention";
 import AlphaTweet from "./AlphaTweet";
