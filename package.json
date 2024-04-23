@@ -27,6 +27,7 @@
     "eslint-config-next": "13.1.6",
     "faker": "6.6.6",
     "iconsax-react": "0.0.8",
+    "jsonwebtoken": "^9.0.2",
     "mixpanel-browser": "2.46.0",
     "moment": "2.29.4",
     "next": "13.1.6",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/mixpanel-browser": "^2.38.1",
     "@types/qs": "^6.9.7",
     "@types/react-linkify": "^1.0.2",

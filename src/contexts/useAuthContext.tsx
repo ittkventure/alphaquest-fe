@@ -5,6 +5,7 @@ import {
 } from "@/api-client/types/AuthType";
 import { mixpanelSetUserId } from "@/utils/mixpanel";
 import React, { useEffect, useState } from "react";
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 export enum TypePayment {
   PRO = "PRO",
@@ -57,6 +58,22 @@ export const useAuthContext = (): IAuthContext => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState?.access_token]);
+
+  useEffect(() => {
+    if (!authState?.access_token) return;
+    let expireInterval = setInterval(() => {
+      const decodedToken = jwt.decode(authState?.access_token, {
+        complete: true
+      }) as JwtPayload
+      if (decodedToken && decodedToken?.payload) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (currentTime > decodedToken?.payload?.exp) {
+          handleLogOut();
+        }
+      }
+    }, 1000 * 60)
+    return () => clearInterval(expireInterval);
+  })
 
   const getUserInfo = async () => {
     const userInfoData = await apiAuth.getUserInfo(
