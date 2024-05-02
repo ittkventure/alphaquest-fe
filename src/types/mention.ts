@@ -1,3 +1,18 @@
+export type TweetTimeline = {
+  from: string;
+  to: string;
+  tweetCount: number;
+  mentionedProjectTweets: {
+    name: string;
+    profileImageUrl: string;
+    profileUrl: string;
+    userId: string;
+    username: string;
+    tweetUrl: string;
+    mentionedAt: string;
+  }[];
+};
+
 export type AlphaMentionProject = {
   userId: string;
   name: string;
@@ -12,20 +27,7 @@ export type AlphaMentionProject = {
   }[];
   followersCount: number;
   mentionsCount: number;
-  tweetTimeline: {
-    from: string;
-    to: string;
-    tweetCount: number;
-    mentionedProjectTweets: {
-      name: string;
-      profileImageUrl: string;
-      profileUrl: string;
-      userId: string;
-      username: string;
-      tweetUrl: string;
-      mentionedAt: string;
-    }[]
-  }[];
+  tweetTimeline: TweetTimeline[];
 };
 
 export type ProjectsMention = {
@@ -42,22 +44,22 @@ export type ProjectsMention = {
     code: string;
     name: string;
     type: string;
-  },
+  };
   categories?: {
     code: string;
     name: string;
     type: string;
-  }[],
+  }[];
   urls?: {
     type: string;
     url: string;
-  }[]
+  }[];
   score?: number;
   trendingScore?: number;
   mentionedCount?: number;
   followersCount?: number;
   inWatchlist?: boolean;
-}
+};
 
 export type Tweet = {
   tweetId: string;
@@ -77,4 +79,4 @@ export type Tweet = {
     profileImageUrl: string;
   };
   viewsCount?: number;
-}
+};

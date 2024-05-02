@@ -49,7 +49,7 @@ export default function AlphaMentionProjects({
           >
             Account
           </div>
-          <div className="w-[127px]">Followers</div>
+          <div className="w-[127px] 2xl:ml-10">Followers</div>
 
           <div className="2xl:w-[214px] w-28"># of mentions</div>
 
@@ -62,6 +62,20 @@ export default function AlphaMentionProjects({
           </div>
         ) : (
           <>
+            <div className="flex flex-row items-center py-3">
+              <div className="w-[333px] pl-[14px] pr-6 2xl:mr-14 mr-4" />
+              <div className="w-[127px] flex items-start" />
+              <div className="2xl:w-[214px] w-28">
+                <p>{alphaMentionProjects?.data?.totalMentionCount || 0}</p>
+              </div>
+              <div className="w-[521px] ml-3">
+                <MentionTimeline
+                  tweetTimeline={
+                    alphaMentionProjects?.data?.summaryTweetTimeline
+                  }
+                />
+              </div>
+            </div>
             {alphaMentionProjects?.data?.items?.map((alpha: any) => (
               <div
                 className="flex flex-row items-center py-3"
@@ -77,7 +91,11 @@ export default function AlphaMentionProjects({
                   <p>{alpha.mentionsCount}</p>
                 </div>
                 <div className="w-[521px] ml-3">
-                  <MentionTimeline tweetTimeline={alpha.tweetTimeline} isProjectDetail avatar={alpha?.profileImageUrl} />
+                  <MentionTimeline
+                    tweetTimeline={alpha.tweetTimeline}
+                    isProjectDetail
+                    avatar={alpha?.profileImageUrl}
+                  />
                 </div>
               </div>
             ))}
