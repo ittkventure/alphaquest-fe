@@ -37,7 +37,7 @@ const SideMenu = () => {
     {
       key: "watchlist",
       icon: <HeartIcon className="h-5 w-5 mr-2" />,
-      label: "Watchlist",
+      label: "Your Watchlist",
       active: false,
     },
     {
@@ -51,7 +51,7 @@ const SideMenu = () => {
           className="mr-2"
         />
       ),
-      label: "Narratives",
+      label: "Trending Narratives",
       active: false,
     },
   ]);
@@ -60,13 +60,13 @@ const SideMenu = () => {
     {
       key: "trending",
       icon: <FireIcon className="h-5 w-5 mr-2" />,
-      label: "Trending",
+      label: "Most Followed",
       active: false,
     },
     {
       key: "newest",
       icon: <BoltIcon className="h-5 w-5 mr-2" />,
-      label: "Newest",
+      label: "Newest Discovered",
       active: false,
     },
     {
@@ -79,12 +79,12 @@ const SideMenu = () => {
   const listMenuAlphaHunter: MenuItemType[] = [
     {
       key: "alpha-hunters",
-      label: "Alpha Hunters",
+      label: "Following",
       active: false,
     },
     {
       key: "mentioned",
-      label: "Most Mentioned",
+      label: "Mentioning",
       active: false,
     },
   ];
