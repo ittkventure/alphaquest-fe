@@ -27,6 +27,7 @@ import MiladyLogo from "./milady-logo.jpg";
 import Pepelogo from "./pepe-logo.jpg";
 import TipcoinLogo from "./tipcoin-logo.jpg";
 import UnibotLogo from "./unibot-logo.jpg";
+import Retweet from "./retweet.png";
 
 export {
   ChartImg,
@@ -56,5 +57,6 @@ export {
   MiladyLogo,
   Pepelogo,
   TipcoinLogo,
-  UnibotLogo
+  UnibotLogo,
+  Retweet,
 };

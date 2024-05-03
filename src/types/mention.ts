@@ -78,5 +78,6 @@ export type Tweet = {
     profileUrl: string;
     profileImageUrl: string;
   };
+  repostedOrReplyTweet: Tweet;
   viewsCount?: number;
 };

@@ -102,10 +102,19 @@ const SideMenu = () => {
       return "hover:bg-secondary-600";
     }
 
-    if(router.pathname === "/alpha-hunters/mentioned" && item.key === "mentioned") return "bg-success-500";
-    
-    if (router.pathname === "/alpha-hunters/mentioned" && item.key === "alpha-hunters") return ""
-    if (router.pathname?.includes(item.key) && item.key !== "mentioned") return "bg-success-500";
+    if (
+      router.pathname === "/alpha-hunters/mentioned" &&
+      item.key === "mentioned"
+    )
+      return "bg-success-500";
+
+    if (
+      router.pathname === "/alpha-hunters/mentioned" &&
+      item.key === "alpha-hunters"
+    )
+      return "";
+    if (router.pathname?.includes(item.key) && item.key !== "mentioned")
+      return "bg-success-500";
     return "hover:bg-secondary-600";
   };
 
@@ -271,48 +280,43 @@ const SideMenu = () => {
       </ul>
 
       <div className="absolute left-0 bottom-0 border-t border-white border-opacity-20 w-full px-6 pt-4 pb-6">
-        <ul>
-          <li className="mt-2">
-            <Link
-              onClick={() => {
-                mixpanelTrack(event_name_enum.outbound, {
-                  url: "https://twitter.com/alphaquestio",
-                });
-              }}
-              href={"https://twitter.com/alphaquestio"}
-              target="_blank"
-            >
-              Twitter
-            </Link>
-          </li>
-
-          <li className="mt-2">
-            <Link
-              onClick={() => {
-                mixpanelTrack(event_name_enum.outbound, {
-                  url: "https://t.me/alphaquestio",
-                });
-              }}
-              href={"https://t.me/alphaquestio"}
-              target="_blank"
-            >
-              Support
-            </Link>
-          </li>
-          <li className="mt-2">
-            <Link
-              onClick={() => {
-                mixpanelTrack(event_name_enum.outbound, {
-                  url: "https://docs.alphaquest.io/",
-                });
-              }}
-              href={"https://docs.alphaquest.io/"}
-              target="_blank"
-            >
-              Docs
-            </Link>
-          </li>
-        </ul>
+        <div className="flex gap-2 justify-center items-center">
+          <Link
+            onClick={() => {
+              mixpanelTrack(event_name_enum.outbound, {
+                url: "https://twitter.com/alphaquestio",
+              });
+            }}
+            href={"https://twitter.com/alphaquestio"}
+            target="_blank"
+          >
+            Twitter
+          </Link>
+          <span className="text-[#24B592]">/</span>
+          <Link
+            onClick={() => {
+              mixpanelTrack(event_name_enum.outbound, {
+                url: "https://t.me/alphaquestio",
+              });
+            }}
+            href={"https://t.me/alphaquestio"}
+            target="_blank"
+          >
+            Support
+          </Link>
+          <span className="text-[#24B592]">/</span>
+          <Link
+            onClick={() => {
+              mixpanelTrack(event_name_enum.outbound, {
+                url: "https://docs.alphaquest.io/",
+              });
+            }}
+            href={"https://docs.alphaquest.io/"}
+            target="_blank"
+          >
+            Docs
+          </Link>
+        </div>
       </div>
     </aside>
   );
