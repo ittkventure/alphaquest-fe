@@ -48,6 +48,20 @@ export default function AlphaMentionProjects({ username }: Props) {
           </div>
         ) : (
           <>
+            <div className="flex flex-row items-center py-3">
+              <div className="w-[333px] pl-[14px] pr-6 2xl:mr-14 mr-4" />
+              <div className="w-[127px] flex items-start" />
+              <div className="2xl:w-[214px] w-28">
+                <p>{alphaMentionProjects?.data?.totalMentionCount || 0}</p>
+              </div>
+              <div className="w-[521px] ml-3">
+                <MentionTimeline
+                  tweetTimeline={
+                    alphaMentionProjects?.data?.summaryTweetTimeline
+                  }
+                />
+              </div>
+            </div>
             {alphaMentionProjects?.data?.items?.map((alpha: any) => (
               <div
                 className="flex flex-row items-center py-3"
