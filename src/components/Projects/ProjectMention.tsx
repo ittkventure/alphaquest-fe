@@ -3,7 +3,14 @@ import { CrownIcon, InfoIcon } from "@/assets/icons";
 import { AuthContext } from "@/contexts/useAuthContext";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useContext, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Header from "../App/Header";
 import SelectCustom, { OptionType } from "../common/Select";
 import { event_name_enum, mixpanelTrack } from "@/utils/mixpanel";
@@ -14,11 +21,12 @@ import MonthSelect from "../App/MonthSelect";
 import { SortByType, TimeFrameTypes } from "@/api-client/types/TwitterType";
 import { initListMonth, initListSort } from "@/utils/list";
 import { useQuery } from "react-query";
-import ApiTwitter from "@/api-client/twitter";
 import Spinner from "../Spinner";
 import { useProjectsMention } from "@/hooks/useProjectsMention";
 import { AlphaMentionProjectsParams } from "@/api-client/mentioned/projects";
 import SkeletonLoading from "../App/Table/SkeletonLoading";
+import { fetchFilterBar } from "@/api-client/filter";
+import { convertOptionsFilterData } from "@/utils/filter";
 
 type ProjectMentionProps = {
   chainQuery?: string;
@@ -41,7 +49,14 @@ export default function ProjectMention({
     name: categoryQuery ?? "Category - All",
   });
 
-  const apiTwitter = new ApiTwitter();
+  const { data: chains } = useQuery(
+    ["getChainsBar", categorySelected.code],
+    () => fetchFilterBar("CHAIN", categorySelected.code, "CATEGORY")
+  );
+  const { data: categories } = useQuery(
+    ["getCategoriesBar", chainSelected.code],
+    () => fetchFilterBar("CATEGORY", chainSelected.code, "CHAIN")
+  );
 
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
@@ -70,11 +85,6 @@ export default function ProjectMention({
     }
     return newParams;
   }, [chainSelected.code, categorySelected.code, searchText, timeFrame]);
-
-  const { data: chains } = useQuery(["getChains"], () => apiTwitter.getChain());
-  const { data: categories } = useQuery(["getCategories"], () =>
-    apiTwitter.getCategory()
-  );
 
   const {
     projectsMention,
@@ -215,7 +225,7 @@ export default function ProjectMention({
                   <div className="mr-3">
                     <SelectCustom
                       placeholder="Chain - All"
-                      initList={chains || []}
+                      initList={convertOptionsFilterData(chains || []) || []}
                       onChangeSelected={(item: any) => {
                         mixpanelTrack(event_name_enum.on_filter_chain, {
                           url: router.pathname,
@@ -243,7 +253,9 @@ export default function ProjectMention({
                   <div>
                     <SelectCustom
                       placeholder="Category - All"
-                      initList={categories || []}
+                      initList={
+                        convertOptionsFilterData(categories || []) || []
+                      }
                       onChangeSelected={(item: any) => {
                         mixpanelTrack(event_name_enum.on_filter_category, {
                           url: router.pathname,
