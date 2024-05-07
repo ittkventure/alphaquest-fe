@@ -70,8 +70,8 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
         <div className="flex gap-2 justify-center mt-6">
           <div className="flex flex-col gap-2 flex-1">
             {tweetsMention?.items
-              ?.slice(0, tweetsMention?.items?.length / 2)
-              .map((tweet) => (
+              ?.filter((d, index) => index % 2 === 0)
+              ?.map((tweet) => (
                 <div key={tweet.tweetId}>
                   <TweetPage tweetContent={tweet} />
                 </div>
@@ -79,7 +79,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
           </div>
           <div className="flex flex-col gap-2 flex-1">
             {tweetsMention?.items
-              ?.slice(tweetsMention?.items?.length / 2)
+              ?.filter((d, index) => index % 2 === 1)
               .map((tweet) => (
                 <div key={tweet.tweetId}>
                   <TweetPage tweetContent={tweet} />
