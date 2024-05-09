@@ -9,7 +9,10 @@ export function convertOptionsFilterData(data: FilterBar[]) {
   return data?.map((d: FilterBar) => {
     return {
       code: d.code,
-      name: `${d.name} (${d.projectCount})`,
+      name:
+        d.name === "Unfiltered"
+          ? `All (${d.projectCount})`
+          : `${d.name} (${d.projectCount})`,
     };
   });
 }

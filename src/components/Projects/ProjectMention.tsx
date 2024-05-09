@@ -48,22 +48,23 @@ export default function ProjectMention({
     code: categoryQuery ?? "",
     name: categoryQuery ?? "Category - All",
   });
-
-  const { data: chains } = useQuery(
-    ["getChainsBar", categorySelected.code],
-    () => fetchFilterBar("CHAIN", categorySelected.code, "CATEGORY")
-  );
-  const { data: categories } = useQuery(
-    ["getCategoriesBar", chainSelected.code],
-    () => fetchFilterBar("CATEGORY", chainSelected.code, "CHAIN")
-  );
-
+  
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
   const [sortBy, setSortBy] = useState<SortByType>("SCORE");
   const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs mentioned");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState(search);
+
+  const { data: chains } = useQuery(
+    ["getChainsBar", categorySelected.code, timeFrame, searchText],
+    () => fetchFilterBar("CHAIN", categorySelected.code, "CATEGORY", timeFrame, searchText)
+  );
+  const { data: categories } = useQuery(
+    ["getCategoriesBar", chainSelected.code, timeFrame],
+    () => fetchFilterBar("CATEGORY", chainSelected.code, "CHAIN", timeFrame, searchText)
+  );
+
   const params = useMemo(() => {
     let newParams: AlphaMentionProjectsParams = {
       searchText,

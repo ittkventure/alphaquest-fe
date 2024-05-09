@@ -89,12 +89,12 @@ const AppContent: FC<AppContentTypes> = ({
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   const { data: chains } = useQuery(
-    ["getChainsBar", categorySelected.code],
-    () => fetchFilterBar("CHAIN", categorySelected.code, "CATEGORY")
+    ["getChainsBar", categorySelected.code, timeFrame],
+    () => fetchFilterBar("CHAIN", categorySelected.code, "CATEGORY", timeFrame, "", tab === "newest")
   );
   const { data: categories } = useQuery(
-    ["getCategoriesBar", chainSelected.code],
-    () => fetchFilterBar("CATEGORY", chainSelected.code, "CHAIN")
+    ["getCategoriesBar", chainSelected.code, timeFrame],
+    () => fetchFilterBar("CATEGORY", chainSelected.code, "CHAIN", timeFrame, "", tab === "newest")
   );
 
   useEffect(() => {
