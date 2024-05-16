@@ -29,6 +29,9 @@ import { SearchContext } from "@/contexts/useSearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { AQ_BLOG_URL, getUserId } from "@/utils/auth";
+import { useQuery } from "react-query";
+import { fetchFilterBar } from "@/api-client/filter";
+import { convertOptionsFilterData } from "@/utils/filter";
 
 interface AppContentTypes {
   listItemsProps?: TwitterItem[];
@@ -74,8 +77,6 @@ const AppContent: FC<AppContentTypes> = ({
   );
   const [errorMsg, setErrorMsg] = useState("");
   const [firstCalled, setFirstCalled] = useState(false);
-  const [chains, setChains] = useState<Array<OptionType>>([]);
-  const [category, setCategory] = useState<Array<OptionType>>([]);
   const [chainSelected, setChainSelected] = useState<OptionType>({
     code: chainQuery ?? "",
     name: chainQuery ?? "Chain - All",
@@ -86,7 +87,15 @@ const AppContent: FC<AppContentTypes> = ({
   });
   const apiTwitter = new ApiTwitter();
   const [isSearchLoading, setIsSearchLoading] = useState(false);
-  console.log(sortByLabel);
+
+  const { data: chains } = useQuery(
+    ["getChainsBar", categorySelected.code, timeFrame],
+    () => fetchFilterBar("CHAIN", categorySelected.code, "CATEGORY", timeFrame, "", tab === "newest")
+  );
+  const { data: categories } = useQuery(
+    ["getCategoriesBar", chainSelected.code, timeFrame],
+    () => fetchFilterBar("CATEGORY", chainSelected.code, "CHAIN", timeFrame, "", tab === "newest")
+  );
 
   useEffect(() => {
     if (tab === "most-mentioned") setSortByLabel("# of KOLs mentioned");
@@ -95,8 +104,6 @@ const AppContent: FC<AppContentTypes> = ({
 
   useEffect(() => {
     setFirstCalled(true);
-    fetchCategoryAndChain("CHAIN");
-    fetchCategoryAndChain("CATEGORY");
   }, []);
 
   const { category: categoryQueryPath, chain: chainQueryPath } = router.query;
@@ -307,18 +314,6 @@ const AppContent: FC<AppContentTypes> = ({
     );
   };
 
-  const fetchCategoryAndChain = async (type: "CHAIN" | "CATEGORY") => {
-    try {
-      if (type === "CHAIN") {
-        const chains = await apiTwitter.getChain();
-        setChains(chains);
-        return;
-      }
-      const category = await apiTwitter.getCategory();
-      setCategory(category);
-    } catch (error) {}
-  };
-
   const renderDes = () => {
     return (
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
@@ -422,7 +417,7 @@ const AppContent: FC<AppContentTypes> = ({
                 <div className="mr-3">
                   <SelectCustom
                     placeholder="Chain - All"
-                    initList={chains}
+                    initList={convertOptionsFilterData(chains || []) || []}
                     onChangeSelected={(item: any) => {
                       mixpanelTrack(event_name_enum.on_filter_chain, {
                         url: router.pathname,
@@ -450,7 +445,7 @@ const AppContent: FC<AppContentTypes> = ({
                 <div>
                   <SelectCustom
                     placeholder="Category - All"
-                    initList={category}
+                    initList={convertOptionsFilterData(categories || []) || []}
                     onChangeSelected={(item: any) => {
                       mixpanelTrack(event_name_enum.on_filter_category, {
                         url: router.pathname,

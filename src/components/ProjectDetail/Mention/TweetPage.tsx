@@ -96,14 +96,14 @@ export default function TweetPage({ tweetContent }: Props) {
       </div>
       {isReposted ? (
         <div
-          className="mt-2"
+          className="mt-2 break-all"
           dangerouslySetInnerHTML={{
             __html: convertInnerHTML(tweetContent?.repostedOrReplyTweet),
           }}
         />
       ) : (
         <div
-          className="mt-2"
+          className="mt-2 break-all"
           dangerouslySetInnerHTML={{ __html: convertInnerHTML(tweetContent) }}
         />
       )}

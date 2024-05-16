@@ -102,33 +102,6 @@ export default function AlphaHunterMention({ isWatchList }: Props) {
               ]}
             />
           </div>
-          <div className="flex items-center mt-4 gap-1">
-            <p>sorted by</p>
-            {/* <MonthSelect
-              onChangeSelect={(month) => {
-                setFollowers((month.value as TimeFrameTypes) ?? "500");
-                setFollowersLabel(month.label ?? "500 followers");
-              }}
-              defaultData={{
-                value: followers,
-                label: followersLabel,
-              }}
-              listData={[
-                {
-                  label: "100 followers",
-                  value: "100",
-                },
-                {
-                  label: "500 followers",
-                  value: "500",
-                },
-                {
-                  label: "1000 followers",
-                  value: "1000",
-                },
-              ]}
-            /> */}
-          </div>
         </div>
       </div>
 
