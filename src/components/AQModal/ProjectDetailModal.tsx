@@ -10,6 +10,7 @@ interface IProjectDetailModal {
   userId: string;
   closeModal: () => void;
   onChangeHeart?: () => void;
+  isMentioned?: boolean;
 }
 
 const ProjectDetailModal: FC<IProjectDetailModal> = ({
@@ -17,6 +18,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
   closeModal,
   userId,
   onChangeHeart,
+  isMentioned,
 }) => {
   useEffect(() => {
     if (isOpen) {
@@ -60,6 +62,7 @@ const ProjectDetailModal: FC<IProjectDetailModal> = ({
                     onChangeHeart={onChangeHeart}
                     userId={userId}
                     isPage={false}
+                    isMentioned={isMentioned}
                   />
                 ) : (
                   <div className="w-full flex justify-center items-center">

@@ -44,6 +44,7 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
   const [isDescSorted, setIsDescSorted] = useState(false);
   const [isDescSortedChangeLog, setIsDescSortedChangeLog] = useState(false);
   const [isDescSortedLast, setIsDescSortedLast] = useState(false);
+  const [currentTab, setCurrentTab] = useState(0);
 
   useEffect(() => {
     if (router.asPath?.includes("follow"))
@@ -54,6 +55,11 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
         block: "start",
       });
   });
+
+  // auto set Mentioned Projects tab when redirect from mention list
+  useEffect(() => {
+    if (router.asPath?.includes("mentioned")) setCurrentTab(1)
+  }, [router.asPath])
 
   useContext(AuthContext);
 
@@ -277,7 +283,12 @@ const AlphaHunter: FC<IAlphaHunter> = ({ userId, onChangeHeart }) => {
       </div>
 
       <div className="px-[100px]">
-        <Tab.Group vertical>
+        <Tab.Group 
+          vertical
+          defaultIndex={0}
+          selectedIndex={currentTab}
+          onChange={(tab) => setCurrentTab(tab)}
+        >
           <Tab.List className="w-full border-b border-white/20">
             <Tab>
               {({ selected }) => (
