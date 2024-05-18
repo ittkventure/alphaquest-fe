@@ -69,6 +69,7 @@ const TableContent: FC<TableContentTypes> = ({
         }}
         userId={userId}
         onChangeHeart={onRefreshTable}
+        isMentioned={isMentioned}
       />
     </div>
   );

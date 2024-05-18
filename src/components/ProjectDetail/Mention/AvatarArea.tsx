@@ -6,9 +6,10 @@ import { AlphaMentionProject } from "@/types/mention";
 
 type AvatarAreaProps = {
   item: AlphaMentionProject;
+  isMentioned?: boolean;
 };
 
-export default function AvatarArea({ item }: AvatarAreaProps) {
+export default function AvatarArea({ item, isMentioned }: AvatarAreaProps) {
   const router = useRouter();
 
   const renderDes = () => {
@@ -42,7 +43,15 @@ export default function AvatarArea({ item }: AvatarAreaProps) {
 
   return (
     <a
-      href={item?.userId ? `/alpha-hunter/${item?.username}` : "#"}
+      href={
+        item?.userId
+          ? `${
+              isMentioned
+                ? `/alpha-hunter/${item?.username}?mentioned`
+                : `/alpha-hunter/${item?.username}`
+            }`
+          : "#"
+      }
       target={item?.userId ?? "_blank"}
     >
       <div className="w-full flex items-center ">

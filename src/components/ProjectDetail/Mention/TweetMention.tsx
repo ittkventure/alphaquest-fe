@@ -43,7 +43,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
   return (
     <div className="mt-6">
       <div className="flex justify-between">
-        <p>{`${total ?? 0} Tweets from ${name} Projects`}</p>
+        <p>{`${total ?? 0} Tweets mentioned ${name} last 30 days`}</p>
         <div className="relative max-lg:mr-2 max-lg:hidden">
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
 

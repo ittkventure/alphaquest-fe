@@ -25,7 +25,7 @@ export default function AlphaHunterMentionTable({
             # of projects mentioned last {timeLabel}
           </div>
 
-          <div className="w-[521px] ml-3">Mentioned tweets</div>
+          <div className="w-[521px] ml-3">Projects mentioned</div>
         </div>
 
         {alphaMentionProjects?.items?.map((alpha, index) => (
@@ -39,7 +39,7 @@ export default function AlphaHunterMentionTable({
             }
           >
             <div className="w-[333px] pl-[14px] pr-6 mr-14">
-              <AvatarArea item={alpha} />
+              <AvatarArea item={alpha} isMentioned />
             </div>
             <div className="w-[127px] flex items-start">
               <p>{alpha.followersCount}</p>

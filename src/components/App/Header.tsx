@@ -165,7 +165,7 @@ const Header: FC<IHeader> = ({ title }) => {
   return (
     <div className="flex justify-between items-center w-full">
       <div>
-        <h1 className="font-workSansSemiBold text-[36px] max-lg:hidden">
+        <h1 className="font-workSansSemiBold text-[30px] 2xl:text-[36px] max-lg:hidden">
           {renderTitle()}
         </h1>
         <div className="hidden max-lg:block">

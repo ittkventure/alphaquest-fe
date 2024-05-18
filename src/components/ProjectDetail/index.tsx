@@ -65,6 +65,7 @@ interface IProjectDetail {
   onChangeHeart?: () => void;
   isPaddingX?: boolean;
   isPage?: boolean;
+  isMentioned?: boolean;
 }
 
 export enum SelectedDateEnum {
@@ -77,6 +78,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
   onChangeHeart,
   isPaddingX,
   isPage,
+  isMentioned,
 }) => {
   if (!userId) return <div />;
   const { authState, accountExtendDetail, setTypePaymentAction } =
@@ -110,6 +112,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
   // auto set Alpha Hunters Followed tab when router change
   useEffect(() => {
     setCurrentTab(0);
+    if (isMentioned) setCurrentTab(1)
   }, [router.asPath]);
 
   const listAlphaHunter = useQuery(
