@@ -37,7 +37,7 @@ const SideMenu = () => {
     {
       key: "watchlist",
       icon: <HeartIcon className="h-5 w-5 mr-2" />,
-      label: "Your Watchlist",
+      label: "Watchlist",
       active: false,
     },
     {
@@ -51,22 +51,22 @@ const SideMenu = () => {
           className="mr-2"
         />
       ),
-      label: "Trending Narratives",
+      label: "Narratives",
       active: false,
     },
   ]);
 
   const [listMenuProject, setListMenuProject] = useState<MenuItemType[]>([
     {
-      key: "trending",
-      icon: <FireIcon className="h-5 w-5 mr-2" />,
-      label: "Most Followed",
-      active: false,
-    },
-    {
       key: "newest",
       icon: <BoltIcon className="h-5 w-5 mr-2" />,
       label: "Newest Discovered",
+      active: false,
+    },
+    {
+      key: "trending",
+      icon: <FireIcon className="h-5 w-5 mr-2" />,
+      label: "Most Followed",
       active: false,
     },
     {

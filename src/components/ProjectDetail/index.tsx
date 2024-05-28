@@ -112,7 +112,7 @@ const ProjectDetail: FC<IProjectDetail> = ({
   // auto set Alpha Hunters Followed tab when router change
   useEffect(() => {
     setCurrentTab(0);
-    if (isMentioned) setCurrentTab(1)
+    if (isMentioned || router.asPath?.includes("mentioned")) setCurrentTab(1)
   }, [router.asPath]);
 
   const listAlphaHunter = useQuery(
