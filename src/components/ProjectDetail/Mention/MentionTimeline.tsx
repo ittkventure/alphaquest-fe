@@ -89,7 +89,6 @@ export default function MentionTimeline({
                           className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
                         />
                       </Link>
-                      <p className="font-workSansMedium">{url.name}</p>
                       <p>Mentioned</p>
                       <p className="">
                         {pjName} on{" "}
