@@ -73,6 +73,7 @@ export default function AlphaMentionProjects({
                   tweetTimeline={
                     alphaMentionProjects?.data?.summaryTweetTimeline
                   }
+                  pjName={name}
                 />
               </div>
             </div>
@@ -95,6 +96,7 @@ export default function AlphaMentionProjects({
                     tweetTimeline={alpha.tweetTimeline}
                     isProjectDetail
                     avatar={alpha?.profileImageUrl}
+                    pjName={name}
                   />
                 </div>
               </div>

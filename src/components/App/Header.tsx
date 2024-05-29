@@ -101,13 +101,16 @@ const Header: FC<IHeader> = ({ title }) => {
 
   const renderTitle = () => {
     if (router.pathname === "/alpha-hunters/mentioned") return "Projects Mentioned by Top Alpha Hunters"
-    if (router.pathname.indexOf("watchlist") !== -1) return "Watchlist";
+    if (router.pathname.indexOf("watchlist") !== -1) return "Your Watchlist";
     if (router.pathname.indexOf("/search") !== -1) return "Search";
+    if (router.pathname.indexOf("/alpha-hunters") !== -1)
+      return "Top Alpha Hunters by Early Discoveries";
     if (router.pathname.indexOf("/alpha-hunter") !== -1) return "Alpha Hunters";
     if (router.pathname.indexOf("/chain") !== -1) return "Chain";
     if (router.pathname.indexOf("/category") !== -1) return "Category";
-    if (router.pathname.indexOf("/alpha-hunters") !== -1)
-      return "Top Alpha Hunters by Early Discoveries";
+    if (router.pathname.indexOf("/narratives") !== -1) return "Trending Narratives";
+    if (tab === "newest") return "Most Recently Discovered Projects";
+    if (tab === "trending") return "Most Followed Projects by Alpha Hunters";
 
     if (title) return title;
 
@@ -165,7 +168,7 @@ const Header: FC<IHeader> = ({ title }) => {
   return (
     <div className="flex justify-between items-center w-full">
       <div>
-        <h1 className="font-workSansSemiBold text-[30px] 2xl:text-[36px] max-lg:hidden">
+        <h1 className="font-workSansSemiBold text-[30px] max-w-[380px] 2xl:max-w-max 2xl:text-[36px] max-lg:hidden">
           {renderTitle()}
         </h1>
         <div className="hidden max-lg:block">
@@ -213,7 +216,7 @@ const Header: FC<IHeader> = ({ title }) => {
 
       <div className="flex justify-center items-center">
         <div
-          className="relative mr-6 max-lg:mr-2 ml-4 max-lg:hidden"
+          className="relative mr-4 max-lg:mr-2 ml-4 max-lg:hidden"
           ref={searchRef}
         >
           <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
@@ -325,7 +328,7 @@ const Header: FC<IHeader> = ({ title }) => {
           <div className="max-lg:flex-1 max-lg:hidden">
             <button
               onClick={onGoSignup}
-              className="py-2 px-6 bg-success-500 text-white"
+              className="py-2 px-4 bg-success-500 text-white"
             >
               Sign up
             </button>
@@ -335,10 +338,10 @@ const Header: FC<IHeader> = ({ title }) => {
         {authState ? (
           <AQAvatar />
         ) : (
-          <div className="mx-6 max-lg:mx-0">
+          <div className="mx-4 max-lg:mx-0">
             <button
               onClick={onGoLogin}
-              className="py-2 px-6  border border-[#00e3b4]  text-white"
+              className="py-2 px-4  border border-[#00e3b4]  text-white"
             >
               Login
             </button>

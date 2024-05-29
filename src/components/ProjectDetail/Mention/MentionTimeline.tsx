@@ -22,12 +22,14 @@ type Props = {
   }[];
   isProjectDetail?: boolean;
   avatar?: string;
+  pjName?: string;
 };
 
 export default function MentionTimeline({
   tweetTimeline,
   isProjectDetail,
   avatar,
+  pjName
 }: Props) {
   const { isSm, isMd } = useResponsive();
   return (
@@ -76,10 +78,9 @@ export default function MentionTimeline({
                 <div className="bg-[#282E44] z-[9999] pt-4 pb-2 max-h-[377px] max-lg:w-full max-lg:fixed max-lg:bottom-0 max-lg:right-0 overflow-y-scroll overflow-x-hidden">
                   {tweet.mentionedProjectTweets?.map((url) => (
                     <div className="flex items-center gap-2 mb-3 bg-[#282E44] px-6">
-                      <p>Mentioned</p>
                       <Link
                         key={url.userId}
-                        href={`/project/${url.username}`}
+                        href={`/project/${url.username}?mentioned`}
                         target={url.username === "UNKNOWN" ? "_self" : "_blank"}
                       >
                         <img
@@ -88,8 +89,9 @@ export default function MentionTimeline({
                           className="w-8 h-8 min-w-[32px] min-h-[32px] bg-white rounded-full"
                         />
                       </Link>
-                      <p className="font-workSansMedium">
-                        {url.name} on{" "}
+                      <p>Mentioned</p>
+                      <p className="">
+                        {pjName} on{" "}
                         <Link href={url?.tweetUrl} target="_blank" className="underline">
                           {moment(url?.mentionedAt).utc().format("MM/DD/YYYY")}
                         </Link>
