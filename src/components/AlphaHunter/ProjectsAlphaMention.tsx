@@ -59,6 +59,7 @@ export default function AlphaMentionProjects({ username }: Props) {
                   tweetTimeline={
                     alphaMentionProjects?.data?.summaryTweetTimeline
                   }
+                  isAlphaHunter
                 />
               </div>
             </div>
@@ -77,7 +78,7 @@ export default function AlphaMentionProjects({ username }: Props) {
                   <p>{alpha.mentionsCount}</p>
                 </div>
                 <div className="w-[521px] ml-3">
-                  <MentionTimeline tweetTimeline={alpha.tweetTimeline} />
+                  <MentionTimeline tweetTimeline={alpha.tweetTimeline} isAlphaHunter />
                 </div>
               </div>
             ))}
