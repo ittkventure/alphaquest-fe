@@ -48,7 +48,7 @@ export default function AlphaHunterMentionTable({
               <p>{alpha.mentionsCount}</p>
             </div>
             <div className="w-[521px] ml-3">
-              <MentionTimeline tweetTimeline={alpha.tweetTimeline} />
+              <MentionTimeline tweetTimeline={alpha.tweetTimeline} isAlphaHunter />
             </div>
           </div>
         ))}
