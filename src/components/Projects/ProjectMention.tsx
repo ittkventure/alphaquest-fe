@@ -33,6 +33,19 @@ type ProjectMentionProps = {
   categoryQuery?: string;
 };
 
+type SortByMentionProject = "most-mentioned" | "followers"
+
+const sortMentions = [
+  {
+    label: "# of KOLs mentioned",
+    value: "most-mentioned",
+  },
+  {
+    label: "Followers",
+    value: "followers",
+  }
+]
+
 export default function ProjectMention({
   chainQuery,
   categoryQuery,
@@ -50,7 +63,7 @@ export default function ProjectMention({
   });
   
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
-  const [sortBy, setSortBy] = useState<SortByType>("SCORE");
+  const [sortBy, setSortBy] = useState<SortByMentionProject>("most-mentioned");
   const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs mentioned");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
   const [search, setSearch] = useState("");
@@ -71,6 +84,7 @@ export default function ProjectMention({
       pageNumber: 1,
       pageSize: 20,
       timeFrame,
+      sortBy,
     };
     if (chainSelected.code) {
       newParams = {
@@ -85,7 +99,7 @@ export default function ProjectMention({
       };
     }
     return newParams;
-  }, [chainSelected.code, categorySelected.code, searchText, timeFrame]);
+  }, [chainSelected.code, categorySelected.code, searchText, timeFrame, sortBy]);
 
   const {
     projectsMention,
@@ -174,22 +188,15 @@ export default function ProjectMention({
               <p className="mx-2">sorted by</p>
               <MonthSelect
                 onChangeSelect={(month) => {
-                  mixpanelTrack(event_name_enum.on_sort_project, {
-                    url: router.pathname,
-                    value_sort: (month.value as SortByType) ?? "SCORE",
-                    message:
-                      "sorted by" + (month.value as SortByType) ?? "SCORE",
-                  });
-                  setSortBy((month.value as SortByType) ?? "SCORE");
+                  setSortBy((month.value as SortByMentionProject) ?? "most-mentioned");
                   const label = "# of KOLs mentioned";
-
                   setSortByLabel(month.label ?? label);
                 }}
                 defaultData={{
                   value: sortBy,
                   label: sortByLabel,
                 }}
-                listData={initListSort(true) as Array<any>}
+                listData={sortMentions}
               />
             </div>
           </div>
