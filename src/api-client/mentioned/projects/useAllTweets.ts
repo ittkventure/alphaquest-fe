@@ -4,32 +4,26 @@ import request from "@/api-client/notification/request";
 import { BaseResponse } from "@/api-client/types/BaseResponse";
 import { AlphaMentionProjectsParams } from "@/api-client/mentioned/projects";
 import qs from "qs";
-import { ProjectsMention } from "@/types/mention";
+import { Tweet } from "@/types/mention";
 
 const fetcher = async (
   page: number,
   params: AlphaMentionProjectsParams,
-  isUserFree: boolean
 ) => {
-  if (isUserFree)
-    params = {
-      ...params,
-      pageSize: 10,
-    };
   const newParams = {
     ...params,
-    pageNumber: page
-  }
-  let url = `api/app/project/most-mentioned`;
-  if (params) url = `${url}?${qs.stringify(newParams)}`;
+    pageNumber: page,
+  };
+  let url = `/api/app/project-mentioned/mentioned-tweets?&`;
+  if (params) url = `${url}${qs.stringify(newParams)}`;
   const res = await request.get(`${url}`);
   return res.data;
 };
 
-export const useProjectsMention = (
+export const useAllTweets = (
   params: AlphaMentionProjectsParams,
-  isUserFree: boolean
 ) => {
+  let total;
   const {
     data,
     error,
@@ -42,14 +36,14 @@ export const useProjectsMention = (
     refetch,
   } = useInfiniteQuery(
     ["getProjectsMention", params],
-    ({ pageParam = 1 }) => fetcher(pageParam, params, isUserFree),
+    ({ pageParam = 1 }) => fetcher(pageParam, params),
     {
       getNextPageParam: (
-        _lastPage: BaseResponse<ProjectsMention>,
-        pages: BaseResponse<ProjectsMention>[]
+        _lastPage: BaseResponse<Tweet>,
+        pages: BaseResponse<Tweet>[]
       ) => {
-        if (isUserFree) return undefined;
-        const totalPage = Math.floor(_lastPage.totalCount / 20);
+        total = _lastPage.totalCount;
+        const totalPage = Math.floor(_lastPage.totalCount / 10);
         if (pages.length < totalPage + 1) {
           return pages.length + 1;
         } else return undefined;
@@ -57,12 +51,12 @@ export const useProjectsMention = (
     }
   );
 
-  const projectsMention = useMemo(
+  const tweetsMention = useMemo(
     () =>
       data?.pages.reduce(
         (
-          prev: BaseResponse<ProjectsMention>,
-          page: BaseResponse<ProjectsMention>
+          prev: BaseResponse<Tweet>,
+          page: BaseResponse<Tweet>
         ) => {
           return {
             items: [...prev.items, ...page.items],
@@ -82,7 +76,8 @@ export const useProjectsMention = (
     isFetchingNextPage,
     isLoading,
     refetch,
-    projectsMention,
+    tweetsMention,
     data,
+    total,
   };
 };
