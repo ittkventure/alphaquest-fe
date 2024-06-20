@@ -9,6 +9,7 @@ export type AlphaMentionProjectsParams = {
   chains?: string;
   categories?: string;
   sortBy?: string;
+  username?: string;
 };
 
 export const getMentionDetailTab = async (userName: string) => {
