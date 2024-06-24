@@ -63,8 +63,8 @@ export default function ProjectMention({
   });
   
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
-  const [sortBy, setSortBy] = useState<SortByMentionProject>("most-mentioned");
-  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs mentioned");
+  const [sortBy, setSortBy] = useState<SortByMentionProject>("followers");
+  const [sortByLabel, setSortByLabel] = useState<string>("Followers");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState(search);
@@ -161,9 +161,7 @@ export default function ProjectMention({
       <div className="flex items-center max-xl:flex-col max-lg:mt-2">
         <div className="flex flex-col justify-start max-lg:w-[90vw]">
           <p>
-            {`${Number(
-              10
-            ).toLocaleString()} projects mentioned during the last`}
+            {projectsMention?.totalCount || 0} projects mentioned during the last
           </p>
           <div className="flex">
             <MonthSelect

@@ -9,14 +9,12 @@ interface Props {
 }
 
 const AppPage: NextPage<Props> = ({
-  newest,
   chainQuery,
   categoryQuery,
 }: Props) => {
- 
   return (
     <AppLayout>
-      <ProjectMention />
+      <ProjectMention chainQuery={chainQuery} categoryQuery={categoryQuery} />
     </AppLayout>
   );
 };
