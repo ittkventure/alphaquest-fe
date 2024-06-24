@@ -150,7 +150,11 @@ const TableRow: FC<TableRowTypes> = ({
     if (itemState.categories.length === 0) return "";
     return itemState.categories.map((value) => (
       <a
-        href={`/projects?category=${value.code}`}
+        href={
+          isMentioned
+            ? `/projects/most-mentioned?category=${value.code}`
+            : `/projects?category=${value.code}`
+        }
         onClick={() => {
           mixpanelTrack(event_name_enum.on_filter_category, {
             url: router.pathname,
@@ -348,7 +352,11 @@ const TableRow: FC<TableRowTypes> = ({
               {moment(itemState.discoveredTime).fromNow()}
             </p>
             <a
-              href={`/projects?chain=${itemState.chain?.code}`}
+              href={
+                isMentioned
+                  ? `/projects/most-mentioned?chain=${itemState.chain?.code}`
+                  : `/projects?chain=${itemState.chain?.code}`
+              }
               onClick={() => {
                 mixpanelTrack(event_name_enum.on_filter_chain, {
                   url: router.pathname,
