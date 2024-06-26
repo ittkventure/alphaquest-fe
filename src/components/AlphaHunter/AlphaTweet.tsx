@@ -91,7 +91,7 @@ export default function AlphaTweet({ username, name }: Props) {
 
       <div className="flex items-center justify-center p-4">
         <button
-          className="py-2 w-32 border-[2px] flex justify-center items-center bg-slate-800 hover:text-success-500 hover:border-success-500 duration-100 transition-all"
+          className="p-2 min-w-32 border-[2px] flex justify-center items-center bg-slate-800 hover:text-success-500 hover:border-success-500 duration-100 transition-all"
           onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetchingNextPage}
         >
