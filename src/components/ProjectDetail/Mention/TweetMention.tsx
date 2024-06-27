@@ -40,6 +40,27 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
     accountExtendDetail?.currentPlanKey === UserPayType.FREE
   );
 
+  if (accountExtendDetail?.currentPlanKey !== UserPayType.PREMIUM) {
+    return (
+      <div className="mt-6">
+        <div className="flex justify-between">
+          <p>{`${total ?? 0} Tweets mentioned ${name} last 30 days`}</p>
+          <div className="relative max-lg:mr-2 max-lg:hidden">
+            <MagnifyingGlassIcon className="w-5 h-5 max-lg:w-4 max-lg:h-4 text-white absolute max-lg:top-[6px] top-[11px] left-[5px]" />
+
+            <input
+              className="w-52 max-lg:w-32 max-lg:py-1 bg-secondary-600 py-2 pl-8 max-lg:pl-7 max-lg:text-sm "
+              placeholder="Search"
+            />
+          </div>
+        </div>
+        <div className="flex justify-center">
+          <SkeletonLoading numberOfRow={3} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-6">
       <div className="flex justify-between">
@@ -91,7 +112,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
 
       <div className="flex items-center justify-center p-4">
         <button
-          className="py-2 w-32 border-[2px] flex justify-center items-center bg-slate-800 hover:text-success-500 hover:border-success-500 duration-100 transition-all"
+          className="p-2 min-w-32 border-[2px] flex justify-center items-center bg-slate-800 hover:text-success-500 hover:border-success-500 duration-100 transition-all"
           onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetchingNextPage}
         >
