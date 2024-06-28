@@ -63,8 +63,8 @@ export default function ProjectMention({
   });
   
   const [timeFrame, setTimeFrame] = useState<TimeFrameTypes>("7D");
-  const [sortBy, setSortBy] = useState<SortByMentionProject>("followers");
-  const [sortByLabel, setSortByLabel] = useState<string>("Followers");
+  const [sortBy, setSortBy] = useState<SortByMentionProject>("most-mentioned");
+  const [sortByLabel, setSortByLabel] = useState<string>("# of KOLs mentioned");
   const [timeLabel, setTimeLabel] = useState<string>("7D");
   const [search, setSearch] = useState("");
   const [searchText, setSearchText] = useState(search);
