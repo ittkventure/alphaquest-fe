@@ -69,7 +69,7 @@ export default function AlphaHunterMention({ isWatchList }: Props) {
         <div>
           <div className="flex items-center gap-1">
             <p>
-              {alphaHuntersMention?.totalCount ?? "..."} Alpha Hunters tracking
+              {alphaHuntersMention?.totalAlphaHunterTrackingCount ?? "..."} Alpha Hunters tracking
               in the last{" "}
             </p>
 
