@@ -81,7 +81,7 @@ export default function TweetMention({ username, name }: TweetMentionProps) {
           />
         </div>
       </div>
-      {status === "loading" ? (
+      {(isLoading || isFetching) ? (
         <div className="flex justify-center">
           <SkeletonLoading numberOfRow={6} />
         </div>
