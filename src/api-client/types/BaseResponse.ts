@@ -6,4 +6,5 @@ export interface BaseResponse<T> {
   profileImageUrl?: string;
   summaryTweetTimeline?: TweetTimeline[];
   totalMentionCount?: number;
+  totalAlphaHunterTrackingCount?: number;
 }
