@@ -39,13 +39,16 @@ export default function MentionTimeline({
   const { isSm, isMd } = useResponsive();
   const router = useRouter();
   const { authState } = useContext(AuthContext);
+  const tweetsTime = tweetTimeline
+    ?.slice(0, 10)
+    ?.sort((a, b) => new Date(a.from).getTime() - new Date(b.from).getTime());
   return (
     <div className="relative flex items-center">
       <div className="absolute w-full pr-10">
         <div className="w-full border-[0.5px] border-dashed border-[#2D354D] " />
       </div>
       <div className="flex gap-3 justify-center items-center w-full pr-10">
-        {tweetTimeline?.slice(0, 10).map((tweet) => {
+        {tweetsTime?.map((tweet) => {
           const id = uuidv4();
           if (tweet.tweetCount === 0)
             return (
