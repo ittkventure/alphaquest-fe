@@ -90,7 +90,7 @@ export default function MentionTimeline({
                     if (url.username === "UNKNOWN")
                       return (
                         <div className="flex items-center gap-2 mb-3 bg-[#282E44] px-6">
-                          <p>Metion</p>
+                          <p>mentioned</p>
                           <img
                             src={url.profileImageUrl}
                             alt=""
