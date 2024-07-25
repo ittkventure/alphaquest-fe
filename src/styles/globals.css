@@ -234,3 +234,6 @@ select:-webkit-autofill:focus {
   color: #24b592 !important;
 }
 
+[data-headlessui-state="selected"] {
+  outline: none !important;
+}

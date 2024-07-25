@@ -54,23 +54,23 @@ const NarrativesItem: FC<NarrativesItemProps> = ({
   const { accountExtendDetail, authState, setTypePaymentAction } =
     useContext(AuthContext);
 
+  const addWatchListMutate = useMutation({
+    mutationFn: (params: {
+      refId: string;
+      type: WatchListTypes;
+      subType: string;
+    }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
+    onSuccess: () => {
+      refetch && refetch();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error?.response?.data?.error?.data?.messsage ?? "Error please try again"
+      );
+    },
+  });
+
   return data?.items?.map((item: any, index: number) => {
-    const addWatchListMutate = useMutation({
-      mutationFn: (params: {
-        refId: string;
-        type: WatchListTypes;
-        subType: string;
-      }) => apiTwitter.addWatchList(params.refId, params.type, params.subType),
-      onSuccess: () => {
-        refetch && refetch();
-      },
-      onError: (error: any) => {
-        toast.error(
-          error?.response?.data?.error?.data?.messsage ??
-            "Error please try again"
-        );
-      },
-    });
     const listData =
       item?.chart?.timelineData.map((value: any) => {
         return {
